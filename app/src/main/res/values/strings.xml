@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">授業管理ソリューション</string>
+    <string name="chapter_attendance">出席管理</string>
+    <string name="title_section1">着座状況</string>
+    <string name="title_section2">出席者一覧</string>
+    <string name="title_section3">再調査</string>
+    <string name="title_section4">ESL忘れ</string>
+    <string name="title_section5">グルーピング</string>
+    <string name="title_section6">クリッカー</string>
+    <string name="title_section7">個人履歴</string>
+    <string name="title_section8">講義内容</string>
+    <string name="title_section9">ヘルプ</string>
+    <string name="title_section10">アプリケーション情報</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="semicolon">;</string>
+    <string name="comma">,</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_attendance_list">出席者一覧</string>
+    <string name="action_sit_situation">着座状況</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_japanese_alphabetical_order_fragment">JapaneseAlphabeticalOrderFragmentActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_kana_index_select">KanaIndexSelectActivity</string>
+
+</resources>

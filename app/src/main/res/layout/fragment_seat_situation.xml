@@ -1,0 +1,23 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jp.pmw.test_en_revolution.SeatSituationFragment">
+
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="357dp"
+        android:layout_height="357dp"
+        android:id="@+id/seat_situation_load"
+        android:layout_gravity="center"
+        android:indeterminate="false" />
+
+    <jp.pmw.test_en_revolution.room.RoomView
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/view"
+        android:layout_gravity="center" />
+
+
+</FrameLayout>
