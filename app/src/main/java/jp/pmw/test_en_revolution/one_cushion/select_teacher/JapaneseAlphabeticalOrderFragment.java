@@ -42,6 +42,10 @@ public class JapaneseAlphabeticalOrderFragment extends Fragment {
     private GridLayout mGridLayout;
 
     private static final int FONT_SIZE = 30;
+    /*50音順のボタンの高さ*/
+    private static final int INITIAL_BUTTON_HEIGHT = 155;
+    /*50音順のボタンの横幅*/
+    private static final int INITIAL_BUTTON_WIDTH = 80;
 
     public JapaneseAlphabeticalOrderFragment() {
     }
@@ -103,8 +107,8 @@ public class JapaneseAlphabeticalOrderFragment extends Fragment {
                     b.setTextSize(FONT_SIZE);
                     //b.setText("::");
                 }
-                b.setHeight(150);
-                b.setWidth(80);
+                b.setHeight(this.INITIAL_BUTTON_HEIGHT);
+                b.setWidth(this.INITIAL_BUTTON_WIDTH);
                 this.mGridLayout.addView(b);
 
             }
@@ -118,8 +122,28 @@ public class JapaneseAlphabeticalOrderFragment extends Fragment {
      * @param v 選択されたボタンの情報
      */
     public void moveToActivity(View v){
+        //タップされたボタンのIDを取得
+        int id = v.getId();
+        /*
+        //タップされたボタンのかなインデックスを取得
+        String tabInitialId = null;
+        //カウンター
+        int counter = 0;
+        for(int i = 0; i < JapaneseAlphabeticalOrder.ALPHABET_BLOCK.length; i++){
+            for(int j = 0; j< JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i].length; j++){
+                ++counter;
+                //もしカウンターとタップしたボタンのＩＤがなじなら
+                //選択された文字を取得する.
+                if(id == counter){
+                    tabInitialId = JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i][j];
+                    break;
+                }
+            }
+        }*/
+
+        //画面遷移をする
         JapaneseAlphabeticalOrderFragmentActivity activity = (JapaneseAlphabeticalOrderFragmentActivity)this.getActivity();
-        activity.doChangeKanaIndexSelectAcitivty();
+        activity.doChangeKanaIndexSelectAcitivty(id);
     }
 
 
@@ -130,9 +154,23 @@ public class JapaneseAlphabeticalOrderFragment extends Fragment {
      * @param v ボタンの情報
      */
     public void confirmTapButtonId(View v){
-        AllSelectActivity activity = (AllSelectActivity)this.getActivity();
+        JapaneseAlphabeticalOrderFragmentActivity activity = (JapaneseAlphabeticalOrderFragmentActivity)this.getActivity();
         int id = v.getId();
-        Toast.makeText(activity, ""+id, Toast.LENGTH_LONG).show();
+
+        //タップされた頭文字を保持する
+        String tabInitialId=null;
+        int counter = 0;
+        for(int i = 0; i < JapaneseAlphabeticalOrder.ALPHABET_BLOCK.length; i++){
+            for(int j = 0; j< JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i].length; j++){
+                ++counter;
+                //もしカウンターとタップしたボタンのＩＤがなじなら
+                //選択された文字を取得する.
+                if(id == counter){
+                    tabInitialId = JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i][j];
+                }
+            }
+        }
+        Toast.makeText(activity, ""+tabInitialId, Toast.LENGTH_LONG).show();
     }
 
     @Override

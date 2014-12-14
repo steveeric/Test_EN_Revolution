@@ -2,6 +2,9 @@
 <resources>
 
     <string name="app_name">授業管理ソリューション</string>
+
+    <string name="confirm_select_content">選択内容確認</string>
+
     <string name="chapter_attendance">出席管理</string>
     <string name="title_section1">着座状況</string>
     <string name="title_section2">出席者一覧</string>

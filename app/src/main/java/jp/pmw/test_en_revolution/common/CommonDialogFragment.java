@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class CommonDialogFragment extends DialogFragment {
 
-    public interface CommonDialogInterface {
+    /*public interface CommonDialogInterface {
         public interface onClickListener {
             void onDialogButtonClick(String tag, Dialog dialog, int which);
         }
@@ -28,7 +28,7 @@ public class CommonDialogFragment extends DialogFragment {
         public interface onItemClickListener {
             void onDialogItemClick(String tag, Dialog dialog, String title, int which);
         }
-    }
+    }*/
 
     public static final String FIELD_LAYOUT = "layout";
     public static final String FIELD_TITLE = "title";

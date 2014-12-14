@@ -20,7 +20,7 @@ public class JapaneseAlphabeticalOrderFragmentActivity extends Activity {
         setContentView(R.layout.activity_japanese_alphabetical_order_fragment);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new JapaneseAlphabeticalOrderFragment())
+                    .replace(android.R.id.content,  new JapaneseAlphabeticalOrderFragment())
                     .commit();
         }
     }
@@ -41,15 +41,19 @@ public class JapaneseAlphabeticalOrderFragmentActivity extends Activity {
     }
     /**
      * Created by scr on 2014/12/12.
+     * 最終更新日:2014/12/14
      * doChangeKanaIndexSelectAcitivtyメソッド
      * 50音順で選択された文字をキーにSelectAcitivtyに遷移する.
+     * @parm initial 教員苗字の頭文字
      */
-    public void doChangeKanaIndexSelectAcitivty(){
+    public void doChangeKanaIndexSelectAcitivty(int tapId){
         /*Intent intent = new Intent();
         intent.setClassName(Packcage.ONE_CUSHION, Packcage.SELECT_ACTIVITY);
         startActivity(intent);*/
         Intent intent = new Intent(this,KanaIndexSelectActivity.class);
+        intent.putExtra(KanaIndexSelectActivity.SELECT_INITIAL,tapId);
         startActivity(intent);
+
         // 疑似スタックに詰める
         //ActivityStack.stackHistory(this);
     }

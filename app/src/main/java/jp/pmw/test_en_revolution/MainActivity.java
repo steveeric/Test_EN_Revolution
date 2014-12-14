@@ -142,7 +142,7 @@ public void onNavigationDrawerItemSelected(int position) {
 
         CommonDialogFragment dialogFragment = new CommonDialogFragment();
         dialogFragment.setArguments(args);
-        dialogFragment.show(getSupportFragmentManager(), "dialog3");
+        dialogFragment.show(getSupportFragmentManager(), "openDialogShowCellInfo");
     }
 
     /*Timer timer;

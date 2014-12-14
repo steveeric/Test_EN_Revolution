@@ -7,16 +7,19 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Teacher {
-    @SerializedName("STAFF_ID")
-    private String id;
-    @SerializedName("STAFF_NAME")
-    private String name;
+    @SerializedName("staff_id")
+    private String staffId;
+    @SerializedName("staff_name")
+    private String staffName;
+    @SerializedName("staff_frigana_family_name")
+    private String staffFriganaFamilyname;
+    @SerializedName("staff_frigana_given_name")
+    private String staffFriganaGivenName;
 
     public String getId(){
-        return id;
+        return staffId;
     }
-
     public String getName(){
-        return this.name;
+        return this.staffName;
     }
 }
