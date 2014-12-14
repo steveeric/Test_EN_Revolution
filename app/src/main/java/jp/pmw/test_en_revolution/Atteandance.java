@@ -28,8 +28,11 @@ public class Atteandance {
     //教室ID
     @SerializedName("room_id")
     public String mRoomId;
+    //ESL忘れ申請時間
+    @SerializedName("forgt_esl_offer_time")
+    public String mForgotEslOfferTime;
     //出席確認時間(ACK応答時間)
     @SerializedName("attendance_confirmation_receive_time")
-    public String mAttendanceConfirmainReceiveTime  ;
+    public String mAttendanceConfirmainReceiveTime;
 
 }

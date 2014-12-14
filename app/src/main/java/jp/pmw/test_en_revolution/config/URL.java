@@ -13,5 +13,7 @@ public class URL {
     public static final String ROOM_MAP = BASE_URL+"/test/catalunya/public/api/room_map";
     //出欠席の情報を取得サイト
     public static final String ATTENDANCE_INFO = BASE_URL+"/test/catalunya/public/api/attendance";
+    //出席者の情報を取得サイト
+    public static final String ATTENDEE_LIST = BASE_URL+"/test/catalunya/public/api/attendee_list";
 
 }

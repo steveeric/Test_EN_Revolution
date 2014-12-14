@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import jp.pmw.test_en_revolution.attendee.AttendeeFragment;
 import jp.pmw.test_en_revolution.common.CommonDialogFragment;
 import jp.pmw.test_en_revolution.drawer.NavigationDrawerFragment;
@@ -94,7 +93,7 @@ public void onNavigationDrawerItemSelected(int position) {
         .commit();
         }else if(position == 2){
         fragmentManager.beginTransaction()
-        .replace(R.id.container, AttendeeFragment.newInstance("a", "b"))
+        .replace(R.id.container, AttendeeFragment.newInstance(position + 1))
         .commit();
         }else if(position == 3){
         fragmentManager.beginTransaction()
