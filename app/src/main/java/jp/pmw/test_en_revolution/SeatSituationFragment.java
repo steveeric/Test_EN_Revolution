@@ -89,6 +89,10 @@ public class SeatSituationFragment extends Fragment {
         loadRoomMapProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.seat_situation_load);
         /*教室マップを描くよう*/
         roomView = (RoomView)this.getActivity().findViewById(R.id.view);
+
+        //ドロワーの必要個所をオープンにする.
+        MainActivity activity = (MainActivity)this.getActivity();
+        activity.openNavigationDrawer();
     }
 
     @Override

@@ -6,6 +6,8 @@
     <color name="black">#000000</color>
     <!-- あお -->
     <color name="blue">#0000FF</color>
+    <!-- ネイビー -->
+    <color name="navy">#000080</color>
     <!-- あか -->
     <color name="red">#FF0000</color>
     <!-- きいろ -->
@@ -24,12 +26,17 @@
     <color name="gray">#BEBEBE</color>
     <!-- ダークグレー -->
     <color name="darkGray">#A9A9A9</color>
+    dimgray
+    <!-- ディミグレイ -->
+    <color name="dimgray">#696969</color>
     <!-- アイボリー -->
     <color name="ivory">#EEEEE0</color>
     <!-- オレンジ -->
     <color name="orange">#FF9900</color>
     <!-- 茶 -->
     <color name="brown">#CC9900</color>
+    <!-- ベージュ -->
+    <color name="beige">#F5F5DC</color>
     <!-- クリーム -->
     <color name="cream">#FFFFCC</color>
     <!-- フローラルホワイト -->

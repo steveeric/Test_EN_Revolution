@@ -1,4 +1,4 @@
-package jp.pmw.test_en_revolution.for_got_esl;
+package jp.pmw.test_en_revolution.version_check;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -14,12 +14,12 @@ import jp.pmw.test_en_revolution.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ForgotESLFragment.OnFragmentInteractionListener} interface
+ * {@link VervionCheckFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ForgotESLFragment#newInstance} factory method to
+ * Use the {@link VervionCheckFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ForgotESLFragment extends Fragment {
+public class VervionCheckFragment extends Fragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -30,23 +30,22 @@ public class ForgotESLFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static ForgotESLFragment newInstance(int sectionNumber) {
-        ForgotESLFragment fragment = new ForgotESLFragment();
+    public static VervionCheckFragment newInstance(int sectionNumber) {
+        VervionCheckFragment fragment = new VervionCheckFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public ForgotESLFragment() {
+    public VervionCheckFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_forgot_esl, container, false);
+        return inflater.inflate(R.layout.fragment_vervion_check, container, false);
     }
-
 
     @Override
     public void onAttach(Activity activity) {

@@ -1,0 +1,126 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jp.pmw.test_en_revolution.grouping.GroupingFragment">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <!-- TODO: Update blank fragment layout -->
+        <TextView android:layout_width="match_parent" android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="@dimen/textsize_xlarge"
+            android:text="どのようなグループ編成にしますか." android:gravity="center"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.13"
+            android:gravity="center"
+            android:layout_gravity="center|center">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal|top">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textsize_xlarge"
+                    android:text="グループ数"
+                    android:id="@+id/radioBuatton" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_horizontal|top">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1グループの人数"
+                    android:textSize="@dimen/textsize_xlarge"
+                    android:id="@+id/radioButton" />
+
+            </LinearLayout>
+        </LinearLayout>
+        <!---->
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:id="@+id/select_one_group_count_linearLayout"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="1グループの人数"
+                android:textSize="@dimen/textsize_large"
+                android:layout_gravity="center"
+                android:gravity="center" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="9"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:id="@+id/select_group_count_linearLayout"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="全グループ数"
+                android:textSize="@dimen/textsize_large"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/textView5" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="9"
+                android:id="@+id/listView2"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="実行"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/button3"
+            android:layout_gravity="bottom"
+            android:layout_weight="2" />
+    </LinearLayout>
+
+
+</RelativeLayout>

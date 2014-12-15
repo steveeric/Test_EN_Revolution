@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".one_cushion.select_teacher.JapaneseAlphabeticalOrderFragmentActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,14 +21,17 @@
 
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".one_cushion.select_teacher.AllSelectActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".one_cushion.select_teacher.KanaIndexSelectActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
     </application>

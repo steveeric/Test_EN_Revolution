@@ -1,28 +1,54 @@
 package jp.pmw.test_en_revolution.one_cushion.select_teacher;
 
-import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import jp.pmw.test_en_revolution.MyFragmentActivity;
 import jp.pmw.test_en_revolution.R;
+import jp.pmw.test_en_revolution.drawer.NavigationDrawerFragment;
 
-public class JapaneseAlphabeticalOrderFragmentActivity extends Activity {
+public class JapaneseAlphabeticalOrderFragmentActivity extends MyFragmentActivity
+{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_japanese_alphabetical_order_fragment);
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .replace(android.R.id.content,  new JapaneseAlphabeticalOrderFragment())
                     .commit();
+        }*/
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        if(mNavigationDrawerFragment!=null) {
+            // Set up the drawer.
+            mNavigationDrawerFragment.setUp(
+                    R.id.navigation_drawer,
+                    (DrawerLayout) findViewById(R.id.drawer_layout));
         }
+    }
+
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
+        // update the main content by replacing fragments
+        FragmentManager fragmentManager = getFragmentManager();
+        /*fragmentManager.beginTransaction()
+                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .commit();*/
+
+        // update the main content by replacing fragments
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new JapaneseAlphabeticalOrderFragment())
+                .commit();
     }
 
     /**
@@ -58,6 +84,10 @@ public class JapaneseAlphabeticalOrderFragmentActivity extends Activity {
         //ActivityStack.stackHistory(this);
     }
 
+    @Override
+    public void openNavigationDrawer(){
+       //個々ではドロワーに何も表示させなくていいので何もしない.
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

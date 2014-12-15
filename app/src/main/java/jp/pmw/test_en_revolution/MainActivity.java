@@ -5,37 +5,62 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
+
 import jp.pmw.test_en_revolution.attendee.AttendeeFragment;
+import jp.pmw.test_en_revolution.questionnaire.QuestionnaireFragment;
+import jp.pmw.test_en_revolution.questionnaire.QuestionnaireResultFragment;
 import jp.pmw.test_en_revolution.common.CommonDialogFragment;
 import jp.pmw.test_en_revolution.drawer.NavigationDrawerFragment;
-import jp.pmw.test_en_revolution.for_got_esl.ForgotESLFragment;
-import jp.pmw.test_en_revolution.re_call_the_roll.ReCallTheRollFragment;
+import jp.pmw.test_en_revolution.grouping.GroupingFragment;
 import jp.pmw.test_en_revolution.room.Cell;
 
-public class MainActivity extends FragmentActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-
-/**
- * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
- */
-private jp.pmw.test_en_revolution.drawer.NavigationDrawerFragment mNavigationDrawerFragment;
+public class MainActivity extends MyFragmentActivity{
 
 /**
  * Used to store the last screen title. For use in {@link #restoreActionBar()}.
  */
 private CharSequence mTitle;
 
+/*ナビゲーションドロワーのリスト項目*/
+private ListView mNavigationDrawerList;
+/*ナビゲーションドロワーの50音順に戻るボタン*/
+private Button mNavigationDrawerButton;
+
 /**
- * 教室IDを保持しておく
+ * 講義室IDをほじしておく
  * **/
 private String mRoomId="30605800000000";
+/**
+* 日付を保持しておく
+* **/
+public String mDate="2014年12月18日";
+/**
+* 何時限目かを保持する
+* **/
+public String mTimeTableName="2時限";
+/**
+* 教員名
+* **/
+public String mTeacherName="テスト太郎";
+/**
+* 科目名
+* **/
+public String mSubjectName="教育心理学（児教）";
+
+
+
+/**
+* 講義室名を保持しておく
+* **/
+public String mRoomName="241講義室";
 /**
 * 講義IDを保持しておく
 * **/
@@ -51,8 +76,7 @@ public String getRoomId(){
 * **/
 public String getClassPlanId(){
         return this.mClassPlanId;
-    }
-
+}
 
 @Override
 protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +99,22 @@ protected void onCreate(Bundle savedInstanceState) {
         int a = 0;
         a = 12;
     }
+    /**
+     * Created by scr on 2014/12/11.
+     * openNavigationDrawerメソッド
+     * ドロワーフラグメントの必要個所をオープンにする.
+     */
+    public void openNavigationDrawer(){
+        if(this.mNavigationDrawerList==null){
+            this.mNavigationDrawerList = (ListView)this.findViewById(R.id.navigation_drawer_list);
+            this.mNavigationDrawerList.setVisibility(View.VISIBLE);
+        }
+        if(this.mNavigationDrawerButton==null){
+            this.mNavigationDrawerButton = (Button)this.findViewById(R.id.fragment_navigation_drawer_return_top_button);
+           this.mNavigationDrawerButton.setVisibility(View.VISIBLE);
+        }
+    }
+
 
 @Override
 public void onNavigationDrawerItemSelected(int position) {
@@ -87,28 +127,63 @@ public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         //FragmentManager fragmentManager = getSupportFragmentManager();
         //FragmentManager fragmentManager = getSupportFragmentManager();
-        if(position == 1){
+        if(position == MainFragmentConfig.SEAT_SITUATION_FRAGMENT){
+            /*着座状況*/
         fragmentManager.beginTransaction()
-        .replace(R.id.container, SeatSituationFragment.newInstance(position + 1))
+        .replace(R.id.container, SeatSituationFragment.newInstance(position))
         .commit();
-        }else if(position == 2){
+        }else if(position == MainFragmentConfig.PARTICIPANTS_FRAGNEMT){
+            /*出席者一覧*/
         fragmentManager.beginTransaction()
-        .replace(R.id.container, AttendeeFragment.newInstance(position + 1))
+        .replace(R.id.container, AttendeeFragment.newInstance(position))
         .commit();
-        }else if(position == 3){
-        fragmentManager.beginTransaction()
-        .replace(R.id.container, ReCallTheRollFragment.newInstance(position + 1))
-        .commit();
-        }else if(position == 4){
-        fragmentManager.beginTransaction()
-        .replace(R.id.container, ForgotESLFragment.newInstance(position + 1))
-        .commit();
-        }else {
+        }else if(position == MainFragmentConfig.GROUPING_FRAGMENT){
+            /*グルーピング*/
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, GroupingFragment.newInstance(position))
+                    .commit();
+        }else if(position == MainFragmentConfig.QUESTIONNAIRE_FRAGMENT){
+            /*クリッカー*/
+            /*2014年12月15日に,
+            複数あるので関数化しました.*/
+            doClickerDistributeFragment(position,1);
+        }/*else if(position == 13){
+            //ヘルプ
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, HelpFragment.newInstance(position + 1))
+                    .commit();
+        }*/else{
         fragmentManager.beginTransaction()
         .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
         .commit();
         }
+        //ドロワーの必要個所をオープンにする.
+        //openNavigationDrawer();
     }
+
+    /**
+     * Created by Shota Ito on 2014/12/15.
+     * doClickerFragmentメソッド.
+     * クリッカーに関するフラグメント生成を振り分ける関数
+     * @param potision ドロワーフラグメントでタップされたポジション
+     * @param groundPosition アクションバー上のメニューに配置されたメニューボタン番号
+     */
+    public void doClickerDistributeFragment(int position,int groundPosition){
+        if(position == MainFragmentConfig.QUESTIONNAIRE_FRAGMENT && groundPosition == 1) {
+            //クリッカー調査フラグメント生成
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, QuestionnaireFragment.newInstance(position))
+                    .commit();
+        }else if(position == MainFragmentConfig.QUESTIONNAIRE_FRAGMENT && groundPosition == 2) {
+            //クリッカーの回答結果を表示するフラグメント生成
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, QuestionnaireResultFragment.newInstance(position))
+                    .commit();
+        }
+    }
+
 
     // title & message
     public void openDialogMessageType() {
@@ -131,13 +206,13 @@ public void onNavigationDrawerItemSelected(int position) {
     public void openDialogShowCellInfo(Cell cell) {
        // String str = cell.getSeat().getSeatId()+":"+cell.getSeat().getSeatRowNumber()+"-"+cell.getSeat().getSeatColumnNumber();
         Bundle args = new Bundle();
-        args.putInt(CommonDialogFragment.FIELD_TITLE, R.string.app_name);
+        args.putInt(CommonDialogFragment.FIELD_TITLE, R.string.infomation_sitter);
         // 定義されてる文字なら
         //args.putIntArray(CommonDialogFragment.FIELD_LIST_ITEMS, new int[] {R.string.item1, R.string.item2});
         // ソースで動的に文字列をつくるなら
         //args.putStringArray(CommonDialogFragment.FIELD_LIST_ITEMS_STRING, new String[] {"座席ID : "+cell.getSeat().getSeatId(), "セルの行 : "+cell.getSeat().getSeatRowNumber(),"セルの列 : "+cell.getSeat().getSeatColumnNumber()});
         args.putStringArray(CommonDialogFragment.FIELD_LIST_ITEMS_STRING, new String[] {"学籍番号 : "+cell.getAttendee().mStudentId, "氏  名 : "+cell.getAttendee().mFullName});
-        args.putInt(CommonDialogFragment.FIELD_LABEL_POSITIVE, android.R.string.ok);
+        args.putInt(CommonDialogFragment.FIELD_LABEL_POSITIVE, R.string.close);
 
         CommonDialogFragment dialogFragment = new CommonDialogFragment();
         dialogFragment.setArguments(args);
@@ -197,38 +272,21 @@ public void onNavigationDrawerItemSelected(int position) {
         }
     }*/
 
-
     public void onSectionAttached(int number) {
         switch (number) {
-            case 2:
-                mTitle = getString(R.string.title_section1);
+            case MainFragmentConfig.SEAT_SITUATION_FRAGMENT:
+                //mTitle = getString(R.string.title_section1);
+                //着座状況
+                mTitle = getString(R.string.title_section1)+" ("+this.mRoomName+")";
                 break;
-            case 3:
+            case MainFragmentConfig.PARTICIPANTS_FRAGNEMT:
                 mTitle = getString(R.string.title_section2);
                 break;
-            case 4:
-                mTitle = getString(R.string.title_section3);
-                break;
-            case 5:
-                mTitle = getString(R.string.title_section4);
-                break;
-            case 7:
+            case MainFragmentConfig.GROUPING_FRAGMENT:
                 mTitle = getString(R.string.title_section5);
                 break;
-            case 8:
+            case MainFragmentConfig.QUESTIONNAIRE_FRAGMENT:
                 mTitle = getString(R.string.title_section6);
-                break;
-            case 10:
-                mTitle = getString(R.string.title_section7);
-                break;
-            case 11:
-                mTitle = getString(R.string.title_section8);
-                break;
-            case 13:
-                mTitle = getString(R.string.title_section9);
-                break;
-            case 14:
-                mTitle = getString(R.string.title_section10);
                 break;
         }
     }
@@ -245,9 +303,18 @@ public void onNavigationDrawerItemSelected(int position) {
 public boolean onCreateOptionsMenu(Menu menu) {
     if (!mNavigationDrawerFragment.isDrawerOpen()) {
         // Only show items in the action bar relevant to this screen
-        // if the drawer is not showing. Otherwise, let the drawer
+        // if the drawer i  s not showing. Otherwise, let the drawer
         // decide what to show in the action bar.
-        getMenuInflater().inflate(R.menu.main, menu);
+
+        //getMenuInflater().inflate(R.menu.main, menu);
+        if(mNavigationDrawerFragment.getCurrentSelectedPosition() == 5){
+            /**
+             * クリッカー
+             * **/
+            getMenuInflater().inflate(R.menu.menu_questionnaire, menu);
+        }else{
+            getMenuInflater().inflate(R.menu.main, menu);
+        }
         restoreActionBar();
         return true;
     }
@@ -264,6 +331,14 @@ public boolean onOptionsItemSelected(MenuItem item) {
     //noinspection SimplifiableIfStatement
     if (id == R.id.action_settings) {
         return true;
+    }else if(id == R.id.menu_action_questionnaire_survey){
+        /*クリッカー調査実施画面へ*/
+        //Toast.makeText(this,"クリッカー問題送信画面", Toast.LENGTH_SHORT).show();
+        doClickerDistributeFragment(5,1);
+    }else if(id == R.id.menu_action_questionnaire_result){
+        /*クリッカーの回答結果を見る*/
+        //Toast.makeText(this,"クリッカーの回答結果を見る.", Toast.LENGTH_SHORT).show();
+        doClickerDistributeFragment(5, 2);
     }
     return super.onOptionsItemSelected(item);
 }

@@ -84,6 +84,9 @@ public class AttendeeFragment extends Fragment {
         this.attendeeStatusTextView = (TextView)this.getActivity().findViewById(R.id.attendee_status_message_textView);
         this.attendeeListView = (ListView)this.getActivity().findViewById(R.id.attendee_list);
         this.attendeeLoadProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.attendee_load_progressBar);
+        //ドロワーの必要個所をオープンにする.
+        MainActivity activity = (MainActivity)this.getActivity();
+        activity.openNavigationDrawer();
     }
 
     @Override

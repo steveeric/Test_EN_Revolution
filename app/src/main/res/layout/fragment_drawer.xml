@@ -47,10 +47,5 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginBottom="1dp"
-        android:layout_marginTop="1dp"
-        android:background="#999999"/>
+
 </jp.pmw.test_en_revolution.DrawerLayout>

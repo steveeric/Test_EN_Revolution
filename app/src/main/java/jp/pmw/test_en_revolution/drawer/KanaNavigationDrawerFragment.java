@@ -30,7 +30,7 @@ import jp.pmw.test_en_revolution.one_cushion.select_teacher.JapaneseAlphabetical
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class KanaNavigationDrawerFragment extends Fragment {
 
     /**
      * Remember the position of the selected item.
@@ -73,7 +73,7 @@ public class NavigationDrawerFragment extends Fragment {
         return this.mCurrentSelectedPosition;
     }
 
-    public NavigationDrawerFragment() {
+    public KanaNavigationDrawerFragment() {
     }
 
     @Override
@@ -127,7 +127,7 @@ public class NavigationDrawerFragment extends Fragment {
         }*/
 
         Drawer drawer = new Drawer();
-        List<DrawerBindData> items = drawer.getDrawerItem(this.getActivity());
+        List<DrawerBindData> items = drawer.getKanaDrawerItem(this.getActivity());
         mDrawerListView.setAdapter(new DrawerAdapter(getActionBar().getThemedContext(),R.layout.fragment_drawer_sector,items));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
@@ -158,30 +158,10 @@ public class NavigationDrawerFragment extends Fragment {
         //前のをクリアにする
         DrawerBindData data = (DrawerBindData)listView.getItemAtPosition(this.mCurrentSelectedPosition);
         data.unFocus();
-        //フラグメントのListViewを1行更新
-        updateRowLineListView(listView);
         data=null;
         data = (DrawerBindData)listView.getItemAtPosition(position);
         data.tap();
-        //リストビュー再描画
-        //タップされた個所が変わったので.
-        //this.mDrawerListView.invalidate();
-        //this.mDrawerListView.notifyAll();
     }
-
-    /**
-     * Created by scr on 2014/12/16.
-     * updateRowLineListViewメソッド
-     * NavigationDrawerFragment所のListViewの必要な1行の箇所を
-     * 更新するメソッドです.
-     */
-    public void updateRowLineListView(ListView listView){
-        // 更新対象のViewを取得
-        View targetView = listView.getChildAt(mCurrentSelectedPosition);
-        // getViewで対象のViewを更新
-        listView.getAdapter().getView(mCurrentSelectedPosition, targetView, listView);
-    }
-
 
 
    /* @Override
@@ -274,12 +254,9 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private void selectItem(int position) {
-        //選択したListViewのPositionをフィールド変数に持たせる.
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
-            //フラグメントのListViewを1行更新
-            updateRowLineListView(mDrawerListView);
         }
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);

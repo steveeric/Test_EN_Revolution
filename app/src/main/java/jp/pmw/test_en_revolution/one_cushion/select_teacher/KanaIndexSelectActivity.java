@@ -2,16 +2,18 @@ package jp.pmw.test_en_revolution.one_cushion.select_teacher;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,19 +24,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
-
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
-
 import jp.pmw.test_en_revolution.AppController;
 import jp.pmw.test_en_revolution.MainActivity;
+import jp.pmw.test_en_revolution.MyFragmentActivity;
 import jp.pmw.test_en_revolution.R;
 import jp.pmw.test_en_revolution.common.CommonDialogFragment;
 import jp.pmw.test_en_revolution.common.CommonDialogInterface;
 import jp.pmw.test_en_revolution.config.URL;
+import jp.pmw.test_en_revolution.drawer.NavigationDrawerFragment;
 
 /**
  *
@@ -45,15 +46,16 @@ import jp.pmw.test_en_revolution.config.URL;
  * @author Shota Ito
  * @version 1.0
  */
-public class KanaIndexSelectActivity extends FragmentActivity
-        implements CommonDialogInterface.onClickListener{
-
+public class KanaIndexSelectActivity extends MyFragmentActivity
+        implements CommonDialogInterface.onClickListener
+    {
     public static final String SELECT_INITIAL = "SELECT_INITIAL";
     private static final String CONFIRM_TAP_CONTENT_ALERT_DIALOG = "doConfirmTapContentAlertDialog";
 
+    private Button mDrawaNavigationButton;
+
     //JapaneseAlphabeticalOrderFragmentで選択された頭文字を保持する
     int mTapId=-1;
-
     //選択された頭文字を返す.
     public int getTapId(){return this.mTapId;}
 
@@ -65,14 +67,44 @@ public class KanaIndexSelectActivity extends FragmentActivity
         if(intent!=null){
             mTapId = intent.getIntExtra(SELECT_INITIAL, -1);
         }
-        if (savedInstanceState == null) {
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        if(mNavigationDrawerFragment!=null) {
+            // Set up the drawer.
+            mNavigationDrawerFragment.setUp(
+                    R.id.navigation_drawer,
+                    (DrawerLayout) findViewById(R.id.drawer_layout));
+        }
+        /*if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
+        }*/
+    }
+
+    @Override
+    public void openNavigationDrawer(){
+        if(mDrawaNavigationButton==null){
+            mDrawaNavigationButton = (Button)this.findViewById(R.id.fragment_navigation_drawer_return_top_button);
+            mDrawaNavigationButton.setVisibility(View.VISIBLE);
         }
     }
 
 
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
+        // update the main content by replacing fragments
+        FragmentManager fragmentManager = getFragmentManager();
+        /*fragmentManager.beginTransaction()
+                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .commit();*/
+
+        // update the main content by replacing fragments
+        getFragmentManager().beginTransaction()
+                .add(R.id.container, new PlaceholderFragment())
+                .commit();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -105,8 +137,8 @@ public class KanaIndexSelectActivity extends FragmentActivity
         Bundle args = new Bundle();
         args.putInt(CommonDialogFragment.FIELD_TITLE, R.string.confirm_select_content);
         args.putStringArray(CommonDialogFragment.FIELD_LIST_ITEMS_STRING, new String[]{"教員名 : " + item.getName()});
-        args.putInt(CommonDialogFragment.FIELD_LABEL_NEGATIVE, android.R.string.cancel);
-        args.putInt(CommonDialogFragment.FIELD_LABEL_POSITIVE, android.R.string.ok);
+        args.putInt(CommonDialogFragment.FIELD_LABEL_NEGATIVE, R.string.no);
+        args.putInt(CommonDialogFragment.FIELD_LABEL_POSITIVE, R.string.yes);
 
         CommonDialogFragment dialogFragment = new CommonDialogFragment();
         dialogFragment.setArguments(args);
@@ -167,6 +199,9 @@ public class KanaIndexSelectActivity extends FragmentActivity
             teacherFamilyNameNoRegisterTextView = (TextView)this.getActivity().findViewById(R.id.teacher_family_name_no_register_textView);
             teacherFamilyNameLoadProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.teacher_family_name_load_progressBar);
             teacherFamilyNameListListView = (ListView)this.getActivity().findViewById(R.id.teacher_family_name_initial_list_listView);
+
+            //ドロワーの必要個所をオープンにする.
+            openNavigationDrawer();
         }
 
         @Override

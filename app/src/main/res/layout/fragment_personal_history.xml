@@ -1,0 +1,33 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jp.pmw.test_en_revolution.personal_history.PersonalHistoryFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <!--<TextView android:layout_width="match_parent" android:layout_height="match_parent"
+        android:text="個人履歴" />-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="136dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="出席履歴を参照できます."
+        android:gravity="bottom"
+        android:layout_gravity="center_horizontal|top"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/editText2"
+        android:layout_gravity="center" />
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:text="検索"
+        android:id="@+id/button2"
+        android:layout_gravity="center_horizontal|bottom" />
+
+</FrameLayout>

@@ -13,7 +13,7 @@ import jp.pmw.test_en_revolution.R;
  */
 public class DrawerLayout extends LinearLayout {
     //
-    LinearLayout mDrawerLectureConfirmLayout;
+    //LinearLayout mDrawerLectureConfirmLayout;
     //章用のレイアウト
     LinearLayout mDrawerChapterLayout;
     //節用のレイアウト
@@ -33,7 +33,7 @@ public class DrawerLayout extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mDrawerLectureConfirmLayout = (LinearLayout) findViewById(R.id.drawer_lecture_confirm_layout);
+        //mDrawerLectureConfirmLayout = (LinearLayout) findViewById(R.id.drawer_lecture_confirm_layout);
         mDrawerChapterLayout = (LinearLayout) findViewById(R.id.drawer_chapger_layout);
         mDrawerSectionLayout = (LinearLayout) findViewById(R.id.drawer_section_layout);
         mChapterView = (TextView) findViewById(R.id.chapter_textView);
@@ -51,13 +51,13 @@ public class DrawerLayout extends LinearLayout {
         int select = item.mSelectState;
         if(chapgerFlag == 1 && sectionFlag == 0){
             //章用
-            mDrawerLectureConfirmLayout.setVisibility(View.GONE);
+            //mDrawerLectureConfirmLayout.setVisibility(View.GONE);
             mDrawerChapterLayout.setVisibility(View.VISIBLE);
             mDrawerSectionLayout.setVisibility(View.GONE);
             mChapterView.setText(item.mTitle);
         }else if(chapgerFlag == 0 && sectionFlag == 1){
             //節用(選択可能)
-            mDrawerLectureConfirmLayout.setVisibility(View.GONE);
+            //mDrawerLectureConfirmLayout.setVisibility(View.GONE);
             mDrawerChapterLayout.setVisibility(View.GONE);
             mDrawerSectionLayout.setVisibility(View.VISIBLE);
             mIconView.setImageResource(item.mIconRes);
@@ -68,7 +68,7 @@ public class DrawerLayout extends LinearLayout {
                 mDrawerSectionLayout.setBackgroundColor(this.getContext().getResources().getColor(R.color.whiteSmoke));
             }
         }else{
-            mDrawerLectureConfirmLayout.setVisibility(View.VISIBLE);
+            //mDrawerLectureConfirmLayout.setVisibility(View.VISIBLE);
             mDrawerChapterLayout.setVisibility(View.GONE);
             mDrawerSectionLayout.setVisibility(View.GONE);
         }
