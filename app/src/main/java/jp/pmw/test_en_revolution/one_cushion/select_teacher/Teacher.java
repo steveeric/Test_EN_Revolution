@@ -1,12 +1,13 @@
 package jp.pmw.test_en_revolution.one_cushion.select_teacher;
 
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
 /**
  * Created by scr on 2014/12/04.
  */
 
-public class Teacher {
+public class Teacher implements Serializable {
     @SerializedName("staff_id")
     private String staffId;
     @SerializedName("staff_name")

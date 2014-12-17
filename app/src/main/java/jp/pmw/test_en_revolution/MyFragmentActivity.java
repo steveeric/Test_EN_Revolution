@@ -11,8 +11,7 @@ import jp.pmw.test_en_revolution.drawer.NavigationDrawerFragment;
  * FragmentAcitvityのリターンキーを制御するクラスです.
  */
 abstract public class MyFragmentActivity extends FragmentActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks
-{
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -26,12 +25,13 @@ abstract public class MyFragmentActivity extends FragmentActivity
      */
     abstract public void openNavigationDrawer();
 
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent e) {
         // キーコード表示
         //tv01.setText("KeyCode:"+e.getKeyCode());
         // 戻るボタンが押されたとき
-        if(e.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+        if (e.getKeyCode() == KeyEvent.KEYCODE_BACK) {
             // ボタンが押されたとき
             if (e.getAction() == KeyEvent.ACTION_DOWN) {
                 Toast.makeText(this, "リターンキーは使用できません.", Toast.LENGTH_SHORT).show();
@@ -40,4 +40,11 @@ abstract public class MyFragmentActivity extends FragmentActivity
         }
         return super.dispatchKeyEvent(e);
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        finish();
+    }
+
 }

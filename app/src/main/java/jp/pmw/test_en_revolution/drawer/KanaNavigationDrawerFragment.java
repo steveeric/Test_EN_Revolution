@@ -104,6 +104,7 @@ public class KanaNavigationDrawerFragment extends Fragment {
         Intent intent = new Intent(this.getActivity(),JapaneseAlphabeticalOrderFragmentActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        this.getActivity().finish();
     }
 
     @Override

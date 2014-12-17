@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,10 +25,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
+
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
+
 import jp.pmw.test_en_revolution.AppController;
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.MyFragmentActivity;
@@ -35,6 +39,7 @@ import jp.pmw.test_en_revolution.R;
 import jp.pmw.test_en_revolution.common.CommonDialogFragment;
 import jp.pmw.test_en_revolution.common.CommonDialogInterface;
 import jp.pmw.test_en_revolution.config.URL;
+import jp.pmw.test_en_revolution.confirm_class_plan.ConfirmClassPlanActivity;
 import jp.pmw.test_en_revolution.drawer.NavigationDrawerFragment;
 
 /**
@@ -51,6 +56,7 @@ public class KanaIndexSelectActivity extends MyFragmentActivity
     {
     public static final String SELECT_INITIAL = "SELECT_INITIAL";
     private static final String CONFIRM_TAP_CONTENT_ALERT_DIALOG = "doConfirmTapContentAlertDialog";
+    private static final String SHOW_POPUP_CONFIRM_CLASS_PLAN  = "showPopupConfirmClassPlan";
 
     private Button mDrawaNavigationButton;
 
@@ -127,6 +133,17 @@ public class KanaIndexSelectActivity extends MyFragmentActivity
 
         return super.onOptionsItemSelected(item);
     }
+        /**
+         * Created by scr on 2014/12/17.
+         * doTeacherConfirmTapSelectContent
+         * タップした教員名で間違いがないかを画面上に表示するメソッド.
+         * @param  selectTeacher タップされた教員情報
+         */
+        public void doTeacherConfirmTapSelectContent(Teacher selectTeacher) {
+           //TODO:タップされた教員情報を画面上に出力する.
+
+        }
+
 
     /**
      * Created by scr on 2014/12/14.
@@ -144,6 +161,26 @@ public class KanaIndexSelectActivity extends MyFragmentActivity
         dialogFragment.setArguments(args);
         dialogFragment.show(getSupportFragmentManager(), CONFIRM_TAP_CONTENT_ALERT_DIALOG);
     }
+
+        /**
+         * Created by scr on 2014/12/16.
+         * showPopupConfirmClassPlanメソッド
+         * 選択された教員の最寄りの講義情報(いつどこでどの科目の講義を行うかを表示する).
+         * @param  teachr 教員ID,教員名,教員が開講する最寄りの講義情報をポップアップで表示する.
+         */
+        /*public void showPopupConfirmClassPlan(Teacher teachr) {
+            Bundle args = new Bundle();
+            args.putInt(CommonDialogFragment.FIELD_TITLE, R.string.confirm_select_content);
+            // 自分で定義したレイアウト
+            args.putInt(CommonDialogFragment.FIELD_LAYOUT, R.layout.dialog_prof);
+            //「はい」ボタン
+            args.putInt(CommonDialogFragment.FIELD_LABEL_POSITIVE, R.string.yes);
+            args.putInt(CommonDialogFragment.FIELD_LABEL_NEGATIVE, R.string.no);
+            //「いいえ」ボタン
+            CommonDialogFragment dialogFragment = new CommonDialogFragment();
+            dialogFragment.setArguments(args);
+            dialogFragment.show(getSupportFragmentManager(), SHOW_POPUP_CONFIRM_CLASS_PLAN);
+        }*/
 
 
     @Override
@@ -178,10 +215,28 @@ public class KanaIndexSelectActivity extends MyFragmentActivity
          * A placeholder fragment containing a simple view.
          */
     public class PlaceholderFragment extends Fragment {
+        private static final String STR1 = "教員名 : ";
+
+        //(かな)行を選択するものが詰め込まれているレイアウト.
+        private LinearLayout kanaIndexSelectBelongToTheInitialNameLinearLayout;
         private TextView teacherFamilyNameInitialTextView;
         private TextView teacherFamilyNameNoRegisterTextView;
         private ProgressBar teacherFamilyNameLoadProgressBar;
         private ListView teacherFamilyNameListListView;
+
+        //選択された教員情報を確認するレイアウト
+        private LinearLayout kanaIndexSelectSelectTeacherConfirmLinearLayout;
+        //選択された教員名を入れる.
+        private TextView kanaIndexSelectSelectTeacherNameTextView;
+        //いいえボタン(選択教員を間違えた)
+        private Button kanaIndexSelectConfirmNegativeButton;
+        //はいボタン(教員名が正しい.)
+        private Button kanaIndexSelectConfirmPositiveButton;
+
+        //選択された教員名
+        private Teacher selectTeacher;
+        public Teacher getTeacher(){return this.selectTeacher;}
+
 
         public PlaceholderFragment() {
         }
@@ -195,27 +250,74 @@ public class KanaIndexSelectActivity extends MyFragmentActivity
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
+            this.kanaIndexSelectBelongToTheInitialNameLinearLayout = (LinearLayout)this.getActivity().findViewById(R.id.kana_index_select_belong_to_the_initial_name_linearLayout);
             teacherFamilyNameInitialTextView = (TextView)this.getActivity().findViewById(R.id.teacher_family_name_initial_textView);
             teacherFamilyNameNoRegisterTextView = (TextView)this.getActivity().findViewById(R.id.teacher_family_name_no_register_textView);
             teacherFamilyNameLoadProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.teacher_family_name_load_progressBar);
             teacherFamilyNameListListView = (ListView)this.getActivity().findViewById(R.id.teacher_family_name_initial_list_listView);
 
+            this.kanaIndexSelectSelectTeacherConfirmLinearLayout = (LinearLayout)this.getActivity().findViewById(R.id.kana_index_select_select_teacher_confirm_linearLayout);
+            this.kanaIndexSelectSelectTeacherNameTextView = (TextView)this.getActivity().findViewById(R.id.kana_index_select_select_teacher_name_textView);
+            this.kanaIndexSelectConfirmNegativeButton = (Button)this.getActivity().findViewById(R.id.kana_index_select_select_negative_button);
+            this.kanaIndexSelectConfirmNegativeButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    //起動画面に戻る
+                    returnStartUpScreen();
+                }
+            });
+            this.kanaIndexSelectConfirmPositiveButton = (Button)this.getActivity().findViewById(R.id.kana_index_select_select_positive_button);
+            this.kanaIndexSelectConfirmPositiveButton.setOnClickListener((new View.OnClickListener() {
+                public void onClick(View v) {
+                    //講義内容確認画面へ行く.
+                    motoToActivityConfirmClassPlanActivity();
+                }
+            }));
             //ドロワーの必要個所をオープンにする.
             openNavigationDrawer();
+        }
+
+        /**
+         * Created by scr on 2014/12/17.
+         * returnStartUpScreenメソッド
+         * 起動画面に戻る.
+         */
+        public void returnStartUpScreen(){
+            mNavigationDrawerFragment.moveToTopActivity();
+        }
+        /**
+         * Created by scr on 2014/12/17
+         * motoToActivityConfirmClassPlanActivityメソッド
+         * 講義内容を確認する画面へ飛ぶ
+         */
+        public void motoToActivityConfirmClassPlanActivity(){
+            Intent intent = new Intent(this.getActivity(), ConfirmClassPlanActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(ConfirmClassPlanActivity.TEACHER, this.getTeacher());
+            intent.setAction(Intent.ACTION_VIEW);
+            //
+            startActivity(intent);
+            //
+            finish();
         }
 
         @Override
         public void onResume(){
             super.onResume();
             //JapaneseAlphabeticalOrderFragmentActivityより渡された値がNULLでなければ.
+
+            //必ず画面を教員を羅列するListViewに戻す.
+            mustReturnKanaIndexSelectFirstScreen();
+
             KanaIndexSelectActivity activity = (KanaIndexSelectActivity)this.getActivity();
             if(activity.getTapId() != -1){
+                processReload();
                 int tapId = activity.getTapId();
                 doNetWorkDBAccessSearchTeacherFamilyName(tapId);
                 String selectInitial = getSelectInitial(tapId);
                 teacherFamilyNameInitialTextView.setText(selectInitial+"行");
             }
         }
+
 
         /**
          * Created by scr on 2014/12/14.
@@ -288,7 +390,11 @@ public class KanaIndexSelectActivity extends MyFragmentActivity
                         // 選択アイテムを取得
                         ListView listView = (ListView)parent;
                         Teacher item = (Teacher)listView.getItemAtPosition(pos);
-                        doConfirmTapContentAlertDialog(item);
+
+                        //選択した教員情報をアラートダイヤログで確認.
+                        //doConfirmTapContentAlertDialog(item);
+                        //選択した教員情報を画面上で確認
+                        doSelectTeacherConfirmScreen(item);
                     }
                 });
                 //正常に完了
@@ -297,6 +403,47 @@ public class KanaIndexSelectActivity extends MyFragmentActivity
                 //正常に終えたが名前が一件もなかった.
                 processSucessNoName();
             }
+        }
+
+        /**
+         * Created by scr on 2014/12/17.
+         * mustReturnKanaIndexSelectFirstScreenメソッド
+         * 必ず、現在のActivity上のボトム画面に戻す.
+         * @parm id タップされたボタンのID
+         * @return tapInitialId タップされたボタンIDをひらがなに
+         */
+        private void mustReturnKanaIndexSelectFirstScreen(){
+            //(カナ)から教員選択レイアウト
+            kanaIndexSelectBelongToTheInitialNameLinearLayout.setVisibility(View.VISIBLE);
+            //選択された教員内容を確認するレイアウト
+            kanaIndexSelectSelectTeacherConfirmLinearLayout.setVisibility(View.GONE);
+        }
+        /**
+         * Created by scr on 2014/12/17.
+         * mustReturnKanaIndexSelectFirstScreenメソッド
+         * 選択された教員情報を画面上に出力する.
+         * @param  selectTeacher 選択された教員情報
+         */
+        private void doSelectTeacherConfirmScreen(Teacher selectTeacher){
+            this.selectTeacher = selectTeacher;
+            String teacherName = selectTeacher.getName();
+            //
+            this.kanaIndexSelectSelectTeacherNameTextView.setText(STR1+teacherName);
+
+            //(カナ)から教員選択レイアウト
+            kanaIndexSelectBelongToTheInitialNameLinearLayout.setVisibility(View.GONE);
+            //選択された教員内容を確認するレイアウト
+            kanaIndexSelectSelectTeacherConfirmLinearLayout.setVisibility(View.VISIBLE);
+        }
+
+        /**
+         * Created by scr on 2014/12/16.
+         * processReloadメソッド
+         * 処理再読み込み.
+         */
+        private void processReload(){
+            this.teacherFamilyNameLoadProgressBar.setVisibility(View.VISIBLE);
+            this.teacherFamilyNameListListView.setVisibility(View.GONE);
         }
         /**
          * Created by scr on 2014/12/14.

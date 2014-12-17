@@ -143,6 +143,7 @@ public class JapaneseAlphabeticalOrderFragment extends Fragment {
         //画面遷移をする
         JapaneseAlphabeticalOrderFragmentActivity activity = (JapaneseAlphabeticalOrderFragmentActivity)this.getActivity();
         activity.doChangeKanaIndexSelectAcitivty(id);
+
     }
 
 

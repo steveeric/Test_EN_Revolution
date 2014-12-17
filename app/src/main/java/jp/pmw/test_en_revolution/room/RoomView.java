@@ -296,7 +296,7 @@ public class RoomView extends View {
                     if(cell.getSeat().getPreAttendeeState()==1){
                         paint.setColor(r.getColor( R.color.green) );
                     }else if(cell.getSeat().getPreAttendeeState()==2){
-                        paint.setColor(r.getColor( R.color.red) );
+                        paint.setColor(r.getColor( R.color.dimgray) );
                     }
                     int space = 8;
                     canvas.drawRect((cell.getCx() - cell.getWidth())+cell.getWidth()/space , startResizeHeight+cell.getHeight()/space*2, cell.getCx() - cell.getWidth()/space/2, resizeHeight - cell.getHeight()/space, paint);

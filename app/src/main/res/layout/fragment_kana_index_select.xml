@@ -13,7 +13,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:id="@+id/kana_index_select_belong_to_the_initial_name_linearLayout">
 
         <TextView
             android:layout_width="match_parent"
@@ -29,6 +30,7 @@
         <ProgressBar
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            style="?android:attr/progressBarStyleSmall"
             android:id="@+id/teacher_family_name_load_progressBar"
             android:layout_weight="5" />
         <ListView
@@ -49,4 +51,67 @@
             android:text="名前が登録されていません."
             android:id="@+id/teacher_family_name_no_register_textView" />
     </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/kana_index_select_select_teacher_confirm_linearLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textSize="@dimen/textsize_xlarge"
+            android:layout_weight="1"
+            android:gravity="center|center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="間違いありませんか."/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center|top"
+            android:textSize="@dimen/textsize_xxlarge"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="(選択された教員名がはいります.)"
+            android:id="@+id/kana_index_select_select_teacher_name_textView"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/negative"
+                android:layout_weight="1"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:textSize="@dimen/textsize_xlarge"
+                android:id="@+id/kana_index_select_select_negative_button" />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:textSize="@dimen/textsize_xlarge"
+                android:text="@string/positive"
+                android:id="@+id/kana_index_select_select_positive_button" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </RelativeLayout>

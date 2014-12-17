@@ -1,0 +1,146 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="jp.pmw.test_en_revolution.confirm_class_plan.ConfirmClassPlanActivity$PlaceholderFragment">
+
+    <LinearLayout
+        android:id="@+id/confirm_class_plan_show_confirm_nearest_class_plan_linearLayout"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center|center"
+            android:textSize="@dimen/textsize_xlarge"
+            android:text="@string/confirm_nearest_class_plan_title_messge" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:gravity="center|top"
+            android:id="@+id/confirm_class_plan_show_confirm_nearest_class_plan_listView"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/negative"
+                android:layout_weight="1"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:textSize="@dimen/textsize_xlarge"
+                android:id="@+id/confirm_class_plan_show_confirm_nearest_class_plan_negative_button" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:textSize="@dimen/textsize_xlarge"
+                android:text="@string/positive"
+                android:id="@+id/confirm_class_plan_show_confirm_nearest_class_plan_positive_button" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--最寄りの講義が遠い.-->
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/confirm_class_plan_show_confirm_far_class_plan_linearLayout"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center|center"
+            android:textSize="@dimen/textsize_xlarge"
+            android:text="@string/confirm_for_class_plan_title_messge" />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:gravity="center|top"
+            android:id="@+id/confirm_class_plan_show_confirm_far_class_plan_listView"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="(アプリが落ちるまでの秒数が表示されます.)"
+            android:layout_gravity="center|center"
+            android:textSize="@dimen/textsize_xlarge"
+            android:gravity="center"
+            android:id="@+id/confirm_class_plan_show_confirm_far_class_plan_exitcounter_textView"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/confirm_class_plan_load_class_plan"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <!--最寄りの講義が登録されていない-->
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/confirm_class_plan_show_confirm_no_class_plan_linearLayout"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center|center"
+            android:gravity="center"
+            android:textSize="@dimen/textsize_xxlarge"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="最寄りの講義が登録されていません." />
+
+        <TextView
+            android:id="@+id/confirm_class_plan_show_confirm_no_class_plan_exitcounter_textView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center|center"
+            android:gravity="center"
+            android:textSize="@dimen/textsize_xlarge"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="" />
+    </LinearLayout>
+</RelativeLayout>

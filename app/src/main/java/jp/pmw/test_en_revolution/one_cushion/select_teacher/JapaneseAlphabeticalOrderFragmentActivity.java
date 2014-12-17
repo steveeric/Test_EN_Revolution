@@ -79,6 +79,8 @@ public class JapaneseAlphabeticalOrderFragmentActivity extends MyFragmentActivit
         Intent intent = new Intent(this,KanaIndexSelectActivity.class);
         intent.putExtra(KanaIndexSelectActivity.SELECT_INITIAL,tapId);
         startActivity(intent);
+        //
+        finish();
 
         // 疑似スタックに詰める
         //ActivityStack.stackHistory(this);
