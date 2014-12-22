@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-
 import jp.pmw.test_en_revolution.attendee.AttendeeFragment;
 import jp.pmw.test_en_revolution.questionnaire.QuestionnaireFragment;
 import jp.pmw.test_en_revolution.questionnaire.QuestionnaireResultFragment;
@@ -37,7 +36,7 @@ private Button mNavigationDrawerButton;
 /**
  * 講義室IDをほじしておく
  * **/
-private String mRoomId="30605800000000";
+private String mRoomId="30605800000";
 /**
 * 日付を保持しておく
 * **/
@@ -54,9 +53,6 @@ public String mTeacherName="テスト太郎";
 * 科目名
 * **/
 public String mSubjectName="教育心理学（児教）";
-
-
-
 /**
 * 講義室名を保持しておく
 * **/
@@ -64,7 +60,7 @@ public String mRoomName="241講義室";
 /**
 * 講義IDを保持しておく
 * **/
-private String mClassPlanId="141212013060581400000";
+private String mClassPlanId="306058001400116141219306058001405";
 /**
 * 教室IDのゲッター
 * **/
@@ -83,8 +79,10 @@ protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
-        getFragmentManager().findFragmentById(R.id.navigation_drawer);
+                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+
         //タイトルバー初期化
         mTitle = "";
         //mTitle = getTitle();
@@ -127,11 +125,15 @@ public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         //FragmentManager fragmentManager = getSupportFragmentManager();
         //FragmentManager fragmentManager = getSupportFragmentManager();
-        if(position == MainFragmentConfig.SEAT_SITUATION_FRAGMENT){
+        if(position == MainFragmentConfig.BOTTOM_FRAGMENT){
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, MainBottomFragment.newInstance(position))
+                    .commit();
+        }else if(position == MainFragmentConfig.SEAT_SITUATION_FRAGMENT){
             /*着座状況*/
-        fragmentManager.beginTransaction()
-        .replace(R.id.container, SeatSituationFragment.newInstance(position))
-        .commit();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, SeatSituationFragment.newInstance(position))
+                    .commit();
         }else if(position == MainFragmentConfig.PARTICIPANTS_FRAGNEMT){
             /*出席者一覧*/
         fragmentManager.beginTransaction()
@@ -274,6 +276,9 @@ public void onNavigationDrawerItemSelected(int position) {
 
     public void onSectionAttached(int number) {
         switch (number) {
+            case MainFragmentConfig.BOTTOM_FRAGMENT:
+                mTitle = getString(R.string.title_section0);
+                break;
             case MainFragmentConfig.SEAT_SITUATION_FRAGMENT:
                 //mTitle = getString(R.string.title_section1);
                 //着座状況

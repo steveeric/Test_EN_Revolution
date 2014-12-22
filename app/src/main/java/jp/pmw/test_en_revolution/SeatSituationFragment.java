@@ -98,13 +98,16 @@ public class SeatSituationFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+
         /*テスト確認用*/
         //roomView.setRoomMap();
         //showRoomMap();
         /*テスト確認用*/
 
+        /*本番用*/
         /*教室情報を取得しに行く*/
         getNetworkRoomInfomation();
+        /*本番用*/
 
     }
 

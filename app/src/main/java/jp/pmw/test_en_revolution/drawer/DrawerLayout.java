@@ -62,6 +62,7 @@ public class DrawerLayout extends LinearLayout {
             mDrawerSectionLayout.setVisibility(View.VISIBLE);
             mIconView.setImageResource(item.mIconRes);
             mTitleView.setText(item.mTitle);
+            /*選択されているか*/
             if(select == 1){
                 mDrawerSectionLayout.setBackgroundColor(this.getContext().getResources().getColor(R.color.gray));
             }else{

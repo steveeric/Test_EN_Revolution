@@ -7,6 +7,8 @@ package jp.pmw.test_en_revolution;
  * @version 1.0
  */
 public class MainFragmentConfig {
+    /*ボトムフラグメント*/
+    public static final int BOTTOM_FRAGMENT = 0;
     /*着座状況フラグメント*/
     public static final int SEAT_SITUATION_FRAGMENT = 1;
     /*受講者一覧フラグメント*/

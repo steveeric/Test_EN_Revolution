@@ -1,0 +1,12 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jp.pmw.test_en_revolution.MainBottomFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+        android:textSize="@dimen/textsize_xxlarge"
+        android:gravity="center|center"
+        android:text="ドロナビから選択して下さい." />
+
+</FrameLayout>

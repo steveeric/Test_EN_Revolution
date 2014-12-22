@@ -60,11 +60,11 @@ public class NavigationDrawerFragment extends Fragment {
     //トップのアクティビティーに戻る(50音順まで.)
     private Button returnTopActivityButton;
 
-    private int mCurrentSelectedPosition = 1;
+    private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    /**
+    /**mCurrentSelectedPosition
      * Created by scr on 2014/12/15.
      * getCurrentSelectedPositionメソッド
      * 選択されている個所を返す.
@@ -130,7 +130,8 @@ public class NavigationDrawerFragment extends Fragment {
         Drawer drawer = new Drawer();
         List<DrawerBindData> items = drawer.getDrawerItem(this.getActivity());
         mDrawerListView.setAdapter(new DrawerAdapter(getActionBar().getThemedContext(),R.layout.fragment_drawer_sector,items));
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+
+        //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
         //50音順に戻るボタン
         this.returnTopActivityButton = (Button)this.getActivity().findViewById(R.id.fragment_navigation_drawer_return_top_button);

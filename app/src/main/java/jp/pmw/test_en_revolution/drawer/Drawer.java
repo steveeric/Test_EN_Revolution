@@ -36,14 +36,16 @@ public class Drawer {
     public List<DrawerBindData> getDrawerItem(Context context){
         List<DrawerBindData> items = new ArrayList<DrawerBindData>();
         boolean[] tapflags = {false,true,true,false,true,true};
-        int[] select = {0,1,0,0,0,0};
+
+        //int[] select = {0,1,0,0,0,0};
+        int[] select = {0,0,0,0,0,0};
         int[] resoreses = {
                 0,
                 R.drawable.ic_chear,
                 R.drawable.ic_atend_list,
                 0,
-                R.drawable.ic_launcher, //
-                R.drawable.ic_launcher, //
+                R.drawable.ic_grouping, //
+                R.drawable.ic_questionnaire, //
                 };
         int[] chapters = {1,0,0,1,0,0};
         int[] sections = {0,1,1,0,1,1};

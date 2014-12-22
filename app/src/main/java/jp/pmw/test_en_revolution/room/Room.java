@@ -17,8 +17,8 @@ public class Room {
     private int cellRows;
     @SerializedName("cell_columns")
     private int  cellColumns;
-   /* @SerializedName("cell")
-    private RoomMap roomMap;*/
+    @SerializedName("cell")
+    private RoomMap roomMap;
     @SerializedName("seat")
     private List<Seat> seats;
 

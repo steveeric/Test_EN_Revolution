@@ -26,8 +26,8 @@ public class Atteandance {
     @SerializedName("seat_id")
     public String mSeatid;
     //教室ID
-    @SerializedName("room_id")
-    public String mRoomId;
+    /*@SerializedName("room_id")
+    public String mRoomId;*/
     //ESL忘れ申請時間
     @SerializedName("forgt_esl_offer_time")
     public String mForgotEslOfferTime;
