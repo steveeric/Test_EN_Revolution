@@ -28,7 +28,7 @@ public class MyTimerTask extends TimerTask implements Runnable{
             public void run() {
                 //現在のLapTime
                 --sec;
-                tv.setText(sec+"秒後に終了します.");
+                tv.setText(sec+"秒後にアプリが自動で終了します.");
                 if(sec == 0){
                     //終了!
                     ConfirmClassPlanActivity activity = (ConfirmClassPlanActivity)context;
