@@ -9,22 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 import java.util.Timer;
-
 import jp.pmw.test_en_revolution.config.URL;
 import jp.pmw.test_en_revolution.room.AccessConfig;
 import jp.pmw.test_en_revolution.room.AccessTimerTask;
@@ -40,7 +36,7 @@ import jp.pmw.test_en_revolution.room.RoomView;
  * Use the {@link SeatSituationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SeatSituationFragment extends Fragment {
+public class SeatSituationFragment extends MyMainFragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -91,8 +87,8 @@ public class SeatSituationFragment extends Fragment {
         roomView = (RoomView)this.getActivity().findViewById(R.id.view);
 
         //ドロワーの必要個所をオープンにする.
-        MainActivity activity = (MainActivity)this.getActivity();
-        activity.openNavigationDrawer();
+        /*MainActivity activity = (MainActivity)this.getActivity();
+        activity.openNavigationDrawer();*/
     }
 
     @Override
@@ -119,7 +115,8 @@ public class SeatSituationFragment extends Fragment {
     private void getNetworkRoomInfomation(){
         MainActivity activity = (MainActivity)this.getActivity();
         //教室情報を取得しに行く.
-        String url = URL.ROOM_MAP+"/"+activity.getRoomId();
+        //String url = URL.ROOM_MAP+"/"+activity.getRoomId();
+        String url = URL.ROOM_MAP+"/"+activity.mTeacher.getClassPlan().getPlace().getRoom().getRoomId();
                 JsonObjectRequest request = new JsonObjectRequest(
                 JsonObjectRequest.Method.GET,
                 url, null,
@@ -177,7 +174,8 @@ public class SeatSituationFragment extends Fragment {
     public void getNetworkAttendanceInfo(){
         MainActivity activity = (MainActivity)this.getActivity();
         //教室情報を取得しに行く.
-        String url = URL.ATTENDANCE_INFO+"/"+activity.getClassPlanId();
+        //String url = URL.ATTENDANCE_INFO+"/"+activity.getClassPlanId();
+        String url =  URL.ATTENDANCE_INFO+"/"+activity.mTeacher.getClassPlan();
         JsonArrayRequest request = new JsonArrayRequest(
                 url,
                 new Response.Listener<JSONArray>() {

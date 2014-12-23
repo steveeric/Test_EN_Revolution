@@ -62,6 +62,16 @@
             android:textSize="@dimen/textsize_xlarge"/>
         </LinearLayout>
 
+        <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textColor="@color/red"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:id="@+id/confirm_class_plan_show_confirm_nearest_class_plan_now_browsing_count"
+            android:text= " "
+            android:textSize="@dimen/textsize_large"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -73,7 +83,7 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="今は何もしない"
+                android:text="@string/donot"
                 android:layout_weight="1"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
@@ -91,7 +101,7 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="50dp"
                 android:textSize="@dimen/textsize_xlarge"
-                android:text="@string/positive"
+                android:text="@string/be"
                 android:id="@+id/confirm_class_plan_show_confirm_nearest_class_plan_positive_button" />
         </LinearLayout>
     </LinearLayout>
@@ -154,9 +164,19 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="(アプリが落ちるまでの秒数が表示されます.)"
+            android:text="(次回の授業日は...)"
             android:layout_gravity="center|center"
             android:textSize="@dimen/textsize_xlarge"
+            android:gravity="center"
+            android:id="@+id/confirm_class_plan_show_confirm_far_class_plan_next_class_plan_textView"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="自動でアプリが終了しますので、しばらくお待ち下さい."
+            android:layout_gravity="center|center"
+            android:textSize="@dimen/textsize_large"
             android:gravity="center"
             android:id="@+id/confirm_class_plan_show_confirm_far_class_plan_exitcounter_textView"
             android:layout_weight="1" />
@@ -221,9 +241,19 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/confirm_not_today_class_but_next_class_re_select"
+            android:text="(次回の授業日は...)"
             android:layout_gravity="center|center"
             android:textSize="@dimen/textsize_xlarge"
+            android:gravity="center"
+            android:id="@+id/confirm_class_plan_no_today_class_but_next_class_next_class_plan_textView"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/confirm_not_today_class_but_next_class_re_select"
+            android:layout_gravity="center|center"
+            android:textSize="@dimen/textsize_large"
             android:gravity="center"
             android:id="@+id/confirm_class_plan_no_today_class_but_next_class_exitcounter_textView"
             android:layout_weight="1" />
@@ -258,7 +288,7 @@
             android:gravity="center"
             android:textSize="@dimen/textsize_xxlarge"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="今期の講義は終了しました." />
+            android:text="今期の担当講義は終了しました." />
 
         <TextView
             android:id="@+id/confirm_class_plan_show_confirm_no_class_plan_exitcounter_textView"

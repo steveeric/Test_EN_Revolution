@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.R;
+import jp.pmw.test_en_revolution.one_cushion.select_teacher.Teacher;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,11 +62,12 @@ public class ClassPlanFragment extends Fragment {
     public void onResume(){
         super.onResume();
         MainActivity activity = (MainActivity)this.getActivity();
-        String date = activity.mDate;
-        String timetableName = activity.mTimeTableName;
-        String roomName = activity.mRoomName;
-        String teacherName = activity.mTeacherName;
-        String subjectName = activity.mSubjectName;
+        Teacher teacher = activity.mTeacher;
+        String date = teacher.getClassPlan().getWhen().getYear();
+        String timetableName = teacher.getClassPlan().getTimeZone().getTimeZoneName();
+        String roomName = teacher.getClassPlan().getPlace().getRoom().getRoomName();
+        String teacherName = teacher.getName();
+        String subjectName = teacher.getClassPlan().getSubject().getSubjectName();
         String[] members = { "日付 : " +date, "時限 : "+timetableName, "講義室名 : "+roomName, "教員名 : "+teacherName,"科目名 : "+subjectName};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
                 android.R.layout.simple_expandable_list_item_1, members);

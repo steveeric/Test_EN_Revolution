@@ -17,7 +17,7 @@ import android.view.ViewGroup;
  * Use the {@link MainBottomFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainBottomFragment extends Fragment {
+public class MainBottomFragment extends MyMainFragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -44,7 +44,6 @@ public class MainBottomFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main_bottom, container, false);
     }
-
 
     @Override
     public void onAttach(Activity activity) {

@@ -12,6 +12,8 @@
     <string name="year">年</string>
     <string name="month">月</string>
     <string name="day">日</string>
+    <string name="be">する</string>
+    <string name="donot">しない</string>
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
     <string name="positive">はい</string>
@@ -47,7 +49,8 @@
     <string name="title_activity_confirm_class_plan">ConfirmClassPlanActivity</string>
 
     <!--講義内容確認画面-->
-    <string name="confirm_nearest_class_plan_title_messge">次に進みますか？</string>
+    <string name="confirm_nearest_class_plan_title_messge">出席状況を確認しますか？</string>
+    <string name="confirm_nearest_class_plan_now_brosing">名が出席状況をすでに閲覧中です.</string>
     <string name="confirm_for_class_plan_title_messge">次回の講義案内</string>
     <string name="confirm_not_today_class_but_next_class_message">本日の授業はありません.\r\n次回の授業案内</string>
 
@@ -55,8 +58,9 @@
     <string name="confirm_for_class_plan_class_in_roomname">教室名 : </string>
     <string name="confirm_for_class_plan_class_subjectname">科目名 : </string>
 
-    <string name="confirm_for_class_plan_re_select">に再度選択し直して下さい.</string>
-    <string name="confirm_not_today_class_but_next_class_re_select">授業時間に再選択して下さい.</string>
+    <string name="confirm_for_class_plan_re_select_prelude">担当の授業開始時間前です.\r\n</string>
+    <string name="confirm_for_class_plan_re_select">に再度選択して下さい.</string>
+    <string name="confirm_not_today_class_but_next_class_re_select">自動でアプリが終了しますので、しばらくお待ち下さい.</string>
 
     <!--講義内容確認画面-->
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jp.pmw.test_en_revolution.MainActivity;
+import jp.pmw.test_en_revolution.MyMainFragment;
 import jp.pmw.test_en_revolution.R;
 
 /**
@@ -19,7 +20,7 @@ import jp.pmw.test_en_revolution.R;
  * Use the {@link GroupingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GroupingFragment extends Fragment {
+public class GroupingFragment extends MyMainFragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.

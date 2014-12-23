@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
@@ -13,12 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+
 import jp.pmw.test_en_revolution.attendee.AttendeeFragment;
-import jp.pmw.test_en_revolution.questionnaire.QuestionnaireFragment;
-import jp.pmw.test_en_revolution.questionnaire.QuestionnaireResultFragment;
 import jp.pmw.test_en_revolution.common.CommonDialogFragment;
+import jp.pmw.test_en_revolution.confirm_class_plan.ConfirmClassPlanActivity;
 import jp.pmw.test_en_revolution.drawer.NavigationDrawerFragment;
 import jp.pmw.test_en_revolution.grouping.GroupingFragment;
+import jp.pmw.test_en_revolution.one_cushion.select_teacher.Teacher;
+import jp.pmw.test_en_revolution.questionnaire.QuestionnaireFragment;
+import jp.pmw.test_en_revolution.questionnaire.QuestionnaireResultFragment;
 import jp.pmw.test_en_revolution.room.Cell;
 
 public class MainActivity extends MyFragmentActivity{
@@ -26,60 +30,25 @@ public class MainActivity extends MyFragmentActivity{
 /**
  * Used to store the last screen title. For use in {@link #restoreActionBar()}.
  */
-private CharSequence mTitle;
 
+private CharSequence mTitle;
+/*教員情報を保持する(授業情報も保持しています.)*/
+public Teacher mTeacher;
 /*ナビゲーションドロワーのリスト項目*/
 private ListView mNavigationDrawerList;
 /*ナビゲーションドロワーの50音順に戻るボタン*/
 private Button mNavigationDrawerButton;
-
-/**
- * 講義室IDをほじしておく
- * **/
-private String mRoomId="30605800000";
-/**
-* 日付を保持しておく
-* **/
-public String mDate="2014年12月18日";
-/**
-* 何時限目かを保持する
-* **/
-public String mTimeTableName="2時限";
-/**
-* 教員名
-* **/
-public String mTeacherName="テスト太郎";
-/**
-* 科目名
-* **/
-public String mSubjectName="教育心理学（児教）";
-/**
-* 講義室名を保持しておく
-* **/
-public String mRoomName="241講義室";
-/**
-* 講義IDを保持しておく
-* **/
-private String mClassPlanId="306058001400116141219306058001405";
-/**
-* 教室IDのゲッター
-* **/
-public String getRoomId(){
-    return this.mRoomId;
-}
-/**
-* 教室IDのゲッター
-* **/
-public String getClassPlanId(){
-        return this.mClassPlanId;
-}
 
 @Override
 protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+    if(this.getIntent()!=null){
+        Intent intent = this.getIntent();
+        Teacher data = (Teacher)intent.getSerializableExtra(ConfirmClassPlanActivity.TEACHER);
+        mTeacher = data;
+    }
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -282,7 +251,8 @@ public void onNavigationDrawerItemSelected(int position) {
             case MainFragmentConfig.SEAT_SITUATION_FRAGMENT:
                 //mTitle = getString(R.string.title_section1);
                 //着座状況
-                mTitle = getString(R.string.title_section1)+" ("+this.mRoomName+")";
+                String roomName = this.mTeacher.getClassPlan().getPlace().getRoom().getRoomName();
+                mTitle = getString(R.string.title_section1)+" ("+roomName+")";
                 break;
             case MainFragmentConfig.PARTICIPANTS_FRAGNEMT:
                 mTitle = getString(R.string.title_section2);

@@ -26,6 +26,7 @@ import java.util.List;
 
 import jp.pmw.test_en_revolution.AppController;
 import jp.pmw.test_en_revolution.MainActivity;
+import jp.pmw.test_en_revolution.MyMainFragment;
 import jp.pmw.test_en_revolution.R;
 import jp.pmw.test_en_revolution.config.URL;
 
@@ -37,7 +38,7 @@ import jp.pmw.test_en_revolution.config.URL;
  * Use the {@link AttendeeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AttendeeFragment extends Fragment {
+public class AttendeeFragment extends MyMainFragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -84,9 +85,6 @@ public class AttendeeFragment extends Fragment {
         this.attendeeStatusTextView = (TextView)this.getActivity().findViewById(R.id.attendee_status_message_textView);
         this.attendeeListView = (ListView)this.getActivity().findViewById(R.id.attendee_list);
         this.attendeeLoadProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.attendee_load_progressBar);
-        //ドロワーの必要個所をオープンにする.
-        MainActivity activity = (MainActivity)this.getActivity();
-        activity.openNavigationDrawer();
     }
 
     @Override
@@ -104,7 +102,8 @@ public class AttendeeFragment extends Fragment {
     public void getNetworkAttendanceInfo(){
         MainActivity activity = (MainActivity)this.getActivity();
         //教室情報を取得しに行く.
-        String url = URL.ATTENDEE_LIST+"/"+activity.getClassPlanId();
+        //String url = URL.ATTENDEE_LIST+"/"+activity.getClassPlanId();
+        String url = URL.ATTENDEE_LIST+"/"+activity.mTeacher.getClassPlan();
         JsonArrayRequest request = new JsonArrayRequest(
                 url,
                 new Response.Listener<JSONArray>() {
