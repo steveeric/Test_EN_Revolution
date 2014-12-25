@@ -283,7 +283,12 @@ public class AttendeeFragment extends MyMainFragment {
      */
     private void addRoster(Roster roster){
         List<Student> rosterList = roster.getRosterList();
-        RosterCustomAdapter adapter = new RosterCustomAdapter(this.getActivity(),0,rosterList);
+
+        /*領域右側に状態カラーバージョン*/
+        //RosterCustomAdapter adapter = new RosterCustomAdapter(this.getActivity(),0,rosterList);
+        /**/
+
+        RosterCustomAdapter_1 adapter = new RosterCustomAdapter_1(this.getActivity(),0,rosterList);
 
         this.attendeeGridView.setNumColumns(2);
         this.attendeeGridView.setAdapter(adapter);

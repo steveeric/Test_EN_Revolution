@@ -206,7 +206,7 @@ public class ConfirmClassPlanActivity extends MyActivity {
             if(classPlan.getNowBrowsingCount() > 0){
                 int browsingresorce = R.id.confirm_class_plan_show_confirm_nearest_class_plan_now_browsing_count;
                 TextView browingTextView = createInstanceTimerTextView(browsingresorce);
-                browingTextView.setText(classPlan.getNowBrowsingCount()+getString(R.string.confirm_nearest_class_plan_now_brosing));
+                browingTextView.setText(this.getActivity().getString(R.string.other)+classPlan.getNowBrowsingCount()+getString(R.string.confirm_nearest_class_plan_now_brosing));
                 //非表示になっているの表示する.
                 browingTextView.setVisibility(View.VISIBLE);
             }
