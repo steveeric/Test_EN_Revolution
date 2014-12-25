@@ -4,7 +4,7 @@
     <string name="app_version">version 0.0.0</string>
     <string name="app_name">授業管理ソリューション</string>
     <string name="confirm_select_content">選択内容に間違いありませんか.</string>
-    <string name="message_no_attendee">出席者がいません.</string>
+    <string name="message_no_attendee">受講者を取得できませんでした.</string>
     <string name="faile_process">処理に失敗しました.</string>
     <string name="infomation_sitter">着席情報</string>
     <string name="close">閉じる</string>

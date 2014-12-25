@@ -4,6 +4,8 @@
     <color name="white">#FFFFFF</color>
     <!-- くろ -->
     <color name="black">#000000</color>
+    <!-- スカイブルー -->
+    <color name="skyBlue">#90D7EC</color>
     <!-- あお -->
     <color name="blue">#0000FF</color>
     <!-- ネイビー -->
@@ -26,9 +28,8 @@
     <color name="gray">#BEBEBE</color>
     <!-- ダークグレー -->
     <color name="darkGray">#A9A9A9</color>
-    dimgray
     <!-- ディミグレイ -->
-    <color name="dimgray">#696969</color>
+    <color name="dimGray">#696969</color>
     <!-- アイボリー -->
     <color name="ivory">#EEEEE0</color>
     <!-- オレンジ -->

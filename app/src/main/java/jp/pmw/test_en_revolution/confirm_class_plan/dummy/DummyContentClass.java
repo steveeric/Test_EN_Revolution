@@ -51,8 +51,8 @@ public class DummyContentClass {
 
         //現在授業中の場合.
          /**/
-        when = new When("2014","12","23");
-        timeZone = new TimeZone("2時限目","10:40:00","12:10:00");
+        when = new When("2014","12","25");
+        timeZone = new TimeZone("1時限目","9:00:00","10:30:00");
         university = new MextUniversity("306058","園田学園女子大学");
         campus = new Campus("30605800","そのだキャンパス");
         building = new Building("30605800","1号館");
@@ -67,7 +67,7 @@ public class DummyContentClass {
 
         //この後じゅぎょうですよ!.
         /**/
-        when = new When("2014","12","23");
+        when = new When("2014","12","25");
         timeZone = new TimeZone("3時限目","13:00:00","14:30:00");
         university = new MextUniversity("306058","園田学園女子大学");
         campus = new Campus("30605800","そのだキャンパス");

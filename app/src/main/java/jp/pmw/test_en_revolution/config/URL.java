@@ -5,6 +5,7 @@ package jp.pmw.test_en_revolution.config;
  */
 public class URL {
     private static final String BASE_URL = "http://192.168.53.138";
+    //private static final String BASE_URL = "http://192.168.51.181";
     public static final String ALL_TEACHER = BASE_URL+"/test/catalunya/public/api/teacher";
 
     //選択した頭文字から教員名リストを取得するサイト

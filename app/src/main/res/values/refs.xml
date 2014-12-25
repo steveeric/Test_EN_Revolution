@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!--
@@ -7,6 +8,7 @@
     For more on layout aliases, see:
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
     -->
-    <item name="fragment_attendee_list" type="layout">@layout/fragment_attendee_list</item>
+    <!--<item name="fragment_attendee_list" type="layout">@layout/fragment_attendee_list</item>-->
+
 
 </resources>

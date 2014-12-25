@@ -4,16 +4,22 @@
     tools:context="jp.pmw.test_en_revolution.questionnaire.QuestionnaireFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="問題が登録されていません."
-        android:gravity="center"
-        android:textSize="@dimen/textsize_xlarge"
-        android:id="@+id/clicker_survey_no_question_textView"
-        android:layout_gravity="center|center" />
-
+        android:id="@+id/clicker_survey_no_question_linearLayout"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="問題が登録されていません."
+            android:gravity="center"
+            android:textSize="@dimen/textsize_xlarge"
+            android:id="@+id/clicker_survey_no_question_textView"
+            android:layout_gravity="center|center" />
+    </LinearLayout>>
     <LinearLayout
         android:visibility="gone"
         android:orientation="vertical"

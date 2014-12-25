@@ -63,8 +63,15 @@ protected void onCreate(Bundle savedInstanceState) {
 }
     public void onResume(){
         super.onResume();
-        int a = 0;
-        a = 12;
+        /**
+         * エラー処理を行う.
+         * **/
+        if(this.mTeacher == null){
+            //メモリから教員に関すること(授業情報、受講生など)が消えた.
+            //エラーなので初めからやり直すように促す.
+        }else{
+            //エラーではないので処理を始める
+        }
     }
     /**
      * Created by scr on 2014/12/11.

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,6 +30,9 @@ import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.MyMainFragment;
 import jp.pmw.test_en_revolution.R;
 import jp.pmw.test_en_revolution.config.URL;
+import jp.pmw.test_en_revolution.confirm_class_plan.Roster;
+import jp.pmw.test_en_revolution.confirm_class_plan.Student;
+import jp.pmw.test_en_revolution.dummy.DummyRosterContent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,6 +66,7 @@ public class AttendeeFragment extends MyMainFragment {
     private TextView attendeeStatusTextView;
     private ProgressBar attendeeLoadProgressBar;
     private ListView attendeeListView;
+    private GridView attendeeGridView;
 
     public AttendeeFragment() {
         // Required empty public constructor
@@ -85,13 +90,18 @@ public class AttendeeFragment extends MyMainFragment {
         this.attendeeStatusTextView = (TextView)this.getActivity().findViewById(R.id.attendee_status_message_textView);
         this.attendeeListView = (ListView)this.getActivity().findViewById(R.id.attendee_list);
         this.attendeeLoadProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.attendee_load_progressBar);
+        this.attendeeGridView = (GridView)this.getActivity().findViewById(R.id.attendee_gridView);
+
     }
 
     @Override
     public void onResume(){
         super.onResume();
+
+        testDummy();
+
         //出席者の方法をネットワークDBに取得しに行く
-        getNetworkAttendanceInfo();
+        //getNetworkAttendanceInfo();
     }
 
     /**
@@ -179,14 +189,39 @@ public class AttendeeFragment extends MyMainFragment {
 
     /**
      * Created by scr on 2014/12/14.
+     * successProcessメソッド
+     * 処理が正常に終了.
+     */
+    private void successProcessShowGridView(){
+        int nowSetCount = this.attendeeGridView.getAdapter().getCount();
+        if(nowSetCount > 0){
+            //一人以上学生の出席を確認できた.
+            this.attendeeLoadProgressBar.setVisibility(View.GONE);
+            this.attendeeGridView.setVisibility(View.VISIBLE);
+        }else{
+            //TODO:何時頃より出席調査を開始しますので,お待ちください.
+            /**
+             *
+             * **/
+
+            //TODO:出席者がいません.
+            this.attendeeLoadProgressBar.setVisibility(View.GONE);
+            //出席者がいませんをセットする.
+            this.attendeeStatusTextView.setText(R.string.message_no_attendee);
+            this.attendeeStatusTextView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * Created by scr on 2014/12/14.
      * faileProcessメソッド
      * 処理が処理に失敗した.
      */
     private void faileProcess(){
-       this.attendeeLoadProgressBar.setVisibility(View.GONE);
+        this.attendeeLoadProgressBar.setVisibility(View.GONE);
         //失敗しました.
-       this.attendeeStatusTextView.setText(R.string.faile_process);
-       this.attendeeStatusTextView.setVisibility(View.VISIBLE);
+        this.attendeeStatusTextView.setText(R.string.faile_process);
+        this.attendeeStatusTextView.setVisibility(View.VISIBLE);
     }
 
 
@@ -230,4 +265,35 @@ public class AttendeeFragment extends MyMainFragment {
         public void onFragmentInteraction(Uri uri);
     }
 
+    /**
+     * Created by scr on 2014/12/24.
+     * testDummyメソッド
+     * ダミーデータで開始する.
+     */
+    private void testDummy(){
+        //受講者一覧を取得
+        Roster roster = DummyRosterContent.getDummyRoster();
+        //受講者を渡す.
+        addRoster(roster);
+    }
+    /**
+     * Created by scr on 2014/12/24.
+     * addRosterメソッド
+     * 受講者ListViewに加える.
+     */
+    private void addRoster(Roster roster){
+        List<Student> rosterList = roster.getRosterList();
+        RosterCustomAdapter adapter = new RosterCustomAdapter(this.getActivity(),0,rosterList);
+
+        this.attendeeGridView.setNumColumns(2);
+        this.attendeeGridView.setAdapter(adapter);
+        successProcessShowGridView();
+
+        //ListViewにセットする.
+        //this.attendeeListView.setAdapter(adapter);
+        //ListViewの再描画
+        //this.attendeeListView.invalidate();
+        //ListViewを表示する.
+        //successProcess();
+    }
 }
