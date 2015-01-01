@@ -1,55 +1,132 @@
 package jp.pmw.test_en_revolution.one_cushion.select_teacher;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import jp.pmw.test_en_revolution.MyFragmentActivity;
+import com.activeandroid.query.Select;
+
+import java.util.List;
+import java.util.StringTokenizer;
+
+import jp.pmw.test_en_revolution.MyFirstActivity;
 import jp.pmw.test_en_revolution.R;
-import jp.pmw.test_en_revolution.drawer.NavigationDrawerFragment;
+import jp.pmw.test_en_revolution.one_cushion.select_teacher.dummy.CSVCtrl;
+import jp.pmw.test_en_revolution.one_cushion.select_teacher.dummy.DummyStaffsMst;
+import jp.pmw.test_en_revolution.one_cushion.select_teacher.dummy.StaffsMst;
 
-public class JapaneseAlphabeticalOrderFragmentActivity extends MyFragmentActivity
-{
-
+public class JapaneseAlphabeticalOrderFragmentActivity extends MyFirstActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_japanese_alphabetical_order_fragment);
-        /*if (savedInstanceState == null) {
+
+        /**
+         * android端末のローカルでテストを行う際に使用！
+         * **/
+        setDummyTestTeacherMst();
+
+
+
+        /*
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new PlaceholderFragment())
+                    .commit();
+        }
+        */
+
+        if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .replace(android.R.id.content,  new JapaneseAlphabeticalOrderFragment())
                     .commit();
-        }*/
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
+        }
+        /*mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         if(mNavigationDrawerFragment!=null) {
             // Set up the drawer.
             mNavigationDrawerFragment.setUp(
                     R.id.navigation_drawer,
                     (DrawerLayout) findViewById(R.id.drawer_layout));
+        }*/
+    }
+    /**
+     * Created by Shota Ito on 2015/1/1
+     * setDummyTestTeacherMstメソッド
+     * ダミーのテストデータをCSVから読み出し端末のローカルDBに格納します.
+     */
+    private void setDummyTestTeacherMst(){
+        //
+        String fileName = DummyStaffsMst.CSV_FILE_NAME_STAFFS_MST;
+        CSVCtrl csv = new CSVCtrl();
+        List<StringTokenizer> tokenizers =  csv.readCSV(this, fileName);
+
+        for(int i = 0; i < tokenizers.size(); i++){
+            StringTokenizer token = tokenizers.get(i);
+            int count = 0;
+            String[] items = new String[10];
+            while(token.hasMoreTokens()) {
+               String item = token.nextToken();
+               items[count] = item;
+               ++count;
+            }
+            StaffsMst mst = getItemByStaffId(items[0]);
+            if(mst == null){
+                //DBに登録されていないので登録する.
+                StaffsMst item = new StaffsMst();
+                item.staffId = items[0];
+                item.registrationStatus = items[1];
+                item.staffFamilyFriganaName = items[2];
+                item.staffGivenFriganaName = items[3];
+                item.staffName = items[4];
+                item.teacherOrStaff = items[5];
+                item.category = items[6];
+                item.campusId = items[7];
+                item.registerDateTime = items[8];
+                item.lastUpdateTime = items[9];
+
+                item.save();
+            }
         }
+
     }
 
+    /**
+     * Created by Shota Ito on 2015/1/1
+     * getItemByStaffIdメソッド
+     * 端末のローカルDB内に同じIDがあるかをチェックする.
+     */
+    public static StaffsMst getItemByStaffId(String staffId) {
+        return new Select()
+                .from(StaffsMst.class)
+                .where("STAFF_ID = ?", staffId)
+                .executeSingle();
+    }
+
+
     @Override
+    public void onResume(){
+        super.onResume();
+    }
+
+    /*@Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-        /*fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();*/
+        //fragmentManager.beginTransaction()
+        //        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+        //        .commit();
 
         // update the main content by replacing fragments
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new JapaneseAlphabeticalOrderFragment())
                 .commit();
-    }
+    }*/
 
     /**
      * Created by scr on 2014/12/12.
@@ -77,7 +154,7 @@ public class JapaneseAlphabeticalOrderFragmentActivity extends MyFragmentActivit
         intent.setClassName(Packcage.ONE_CUSHION, Packcage.SELECT_ACTIVITY);
         startActivity(intent);*/
         Intent intent = new Intent(this,KanaIndexSelectActivity.class);
-        intent.putExtra(KanaIndexSelectActivity.SELECT_INITIAL,tapId);
+        intent.putExtra(KanaIndexSelectActivity.SELECT_INITIAL, tapId);
         startActivity(intent);
         //
         finish();
@@ -86,10 +163,10 @@ public class JapaneseAlphabeticalOrderFragmentActivity extends MyFragmentActivit
         //ActivityStack.stackHistory(this);
     }
 
-    @Override
+    /*@Override
     public void openNavigationDrawer(){
        //個々ではドロワーに何も表示させなくていいので何もしない.
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
