@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="50音順から教員名を選択して下さい."
+        android:text="@string/fifty_index_table_page_title"
         android:textSize="@dimen/textsize_xlarge"
         android:id="@+id/textView3"
         android:layout_gravity="center_horizontal|top" />
@@ -15,14 +15,10 @@
     <GridLayout
         android:layout_width="fill_parent"
         android:layout_height="786dp"
-        android:layout_gravity="center"
+        android:layout_gravity="center|center_vertical"
         android:rowCount="5"
         android:columnCount="10"
         android:id="@+id/japanese_alphabetical_grid">
-
-        </GridLayout>
-
-
-
+    </GridLayout>
 
 </FrameLayout>

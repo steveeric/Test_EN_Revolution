@@ -27,7 +27,6 @@ import jp.pmw.test_en_revolution.room.AccessTimerTask;
 import jp.pmw.test_en_revolution.room.Room;
 import jp.pmw.test_en_revolution.room.RoomView;
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -96,13 +95,13 @@ public class SeatSituationFragment extends MyMainFragment {
         super.onResume();
 
         /*テスト確認用*/
-        //roomView.setRoomMap();
-        //showRoomMap();
+        roomView.setRoomMap();
+        showRoomMap();
         /*テスト確認用*/
 
         /*本番用*/
         /*教室情報を取得しに行く*/
-        getNetworkRoomInfomation();
+        //getNetworkRoomInfomation();
         /*本番用*/
 
     }
@@ -175,7 +174,7 @@ public class SeatSituationFragment extends MyMainFragment {
         MainActivity activity = (MainActivity)this.getActivity();
         //教室情報を取得しに行く.
         //String url = URL.ATTENDANCE_INFO+"/"+activity.getClassPlanId();
-        String url =  URL.ATTENDANCE_INFO+"/"+activity.mTeacher.getClassPlan();
+        String url =  URL.ATTENDANCE_INFO+"/"+activity.mTeacher.getClassPlan().getClassId();
         JsonArrayRequest request = new JsonArrayRequest(
                 url,
                 new Response.Listener<JSONArray>() {

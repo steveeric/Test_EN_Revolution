@@ -10,12 +10,22 @@
     <color name="blue">#0000FF</color>
     <!-- ネイビー -->
     <color name="navy">#000080</color>
+    <!-- ネイビー -->
+    <color name="semitransparenttranslucent_navy">#55000080</color>
     <!-- あか -->
     <color name="red">#FF0000</color>
+    <!-- 半透明赤 -->
+    <color name="semitransparenttranslucent_red">#55FF0000</color>
+    <!-- えんじ色 -->
+    <color name="darkRed">#B3424A</color>
+    <!-- 半透明赤 -->
+    <color name="semitransparenttranslucent_darkRed">#55B3424A</color>
     <!-- きいろ -->
     <color name="yellow">#FFFF00</color>
     <!-- みどり -->
     <color name="green">#00FF00</color>
+    <!-- みどり -->
+    <color name="semitransparenttranslucent_green">#5500FF00</color>
     <!-- みどり -->
     <color name="darkGreen">#00552e</color>
     <!-- むらさき -->
@@ -26,6 +36,8 @@
     <color name="pink">#FF00FF</color>
     <!-- グレー -->
     <color name="gray">#BEBEBE</color>
+    <!-- グレー -->
+    <color name="semitransparenttranslucent_gray">#55BEBEBE</color>
     <!-- ダークグレー -->
     <color name="darkGray">#A9A9A9</color>
     <!-- ディミグレイ -->
@@ -44,6 +56,18 @@
     <color name="floralWhite">#FFFAF0</color>
     <!-- ホワイトスモーク -->
     <color name="whiteSmoke">#F5F5F5</color>
+
+
+    <!-- 円グラフの一つ目の色(緑系の色) -->
+    <color name="firstPieGraph">#99CC00</color>
+    <!-- 円グラフの二つ目の色(黄色系の色) -->
+    <color name="secondPieGraph">#FFBB33</color>
+    <!-- 円グラフの三つ目の色(青色系の色) -->
+    <color name="thirdPieGraph">#0000FF</color>
+    <!-- 円グラフの四つ目の色(赤色系の色) -->
+    <color name="fourthPieGraph">#FF4500</color>
+    <!-- 円グラフの五つ目の色(赤色系の色) -->
+    <color name="fifthPieGraph">#800080</color>
 
 
 </resources>

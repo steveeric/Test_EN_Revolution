@@ -1,7 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="jp.pmw.test_en_revolution.questionnaire.QuestionnaireFragment">
+    tools:context="jp.pmw.test_en_revolution.questionnaire.garbage.QuestionnaireFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -19,7 +19,7 @@
             android:textSize="@dimen/textsize_xlarge"
             android:id="@+id/clicker_survey_no_question_textView"
             android:layout_gravity="center|center" />
-    </LinearLayout>>
+    </LinearLayout>
     <LinearLayout
         android:visibility="gone"
         android:orientation="vertical"
@@ -27,20 +27,33 @@
         android:layout_height="fill_parent"
         android:id="@+id/clicker_survey_do_question_linearLayout"
         android:layout_gravity="center">
-
         <TextView
             android:textSize="@dimen/textsize_xlarge"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="実施する問題を選択して下さい."
             android:id="@+id/clicker_survey_do_question_textView"
             android:layout_gravity="center_horizontal" />
-
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="4"
             android:id="@+id/clicker_survey_do_question_listView"
+            android:layout_gravity="center_horizontal" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="50sp"
+            android:layout_marginBottom="50sp"
+            android:layout_marginLeft="50sp"
+            android:layout_marginRight="50sp"
+            android:layout_weight="1"
+            android:textSize="@dimen/textsize_xlarge"
+            android:text="開始"
+            android:id="@+id/clicker_survey_do_question_start_button"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 

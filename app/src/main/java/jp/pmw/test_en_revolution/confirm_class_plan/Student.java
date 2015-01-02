@@ -1,10 +1,12 @@
 package jp.pmw.test_en_revolution.confirm_class_plan;
 
+import java.io.Serializable;
+
 /**
  * Created by scr on 2014/12/24.
  * 学生を表すオブジェクトです.
  */
-public class Student {
+public class Student implements Serializable {
     //大学独自の学籍番号
     private String originalstudentId;
     //システム内部で処理するための学生ID
@@ -23,14 +25,16 @@ public class Student {
     //private Seat sitPosition;
     private String nowSitSeatId;
     //出席状態
-    private Attendance attendance;
+    private TodayAttendance attendance;
+    //
+    private TotalAttendance totalAttendance;
     //メッセージ
     private Message message;
 
     public Student(String originalstudentId,String studentId,
                    String furiganaFamilyName,String furiganaGivenName,
                    String familyName,String givenName,
-                   String fullName,String nowSitSeatId,Attendance attendance,Message message/*Seat sitPosition*/){
+                   String fullName,String nowSitSeatId,TodayAttendance attendance,TotalAttendance totalAttendance,Message message/*Seat sitPosition*/){
         this.originalstudentId = originalstudentId;
         this.studentId = studentId;
         this.furiganaFamilyName = furiganaFamilyName;
@@ -41,6 +45,7 @@ public class Student {
         //this.sitPosition = sitPosition;
         this.nowSitSeatId = nowSitSeatId;
         this.attendance = attendance;
+        this.totalAttendance = totalAttendance;
         this.message = message;
     }
 
@@ -71,9 +76,10 @@ public class Student {
     public String getNowSitSeatId(){
         return this.nowSitSeatId;
     }
-    public Attendance getAttendance(){
+    public TodayAttendance getAttendance(){
         return this.attendance;
     }
+    public TotalAttendance getTotalAttendance(){return this.totalAttendance;}
     public Message getMessage(){return this.message;}
 
 }

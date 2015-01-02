@@ -6,16 +6,18 @@
 
     <application
         android:allowBackup="true"
+        android:name="com.activeandroid.app.Application"
         android:icon="@drawable/ic_attendance_book"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <meta-data android:name="AA_DB_NAME" android:value="catalunya.db" />
+        <meta-data android:name="AA_DB_VERSION" android:value="1" />
         <activity
             android:name=".one_cushion.select_teacher.JapaneseAlphabeticalOrderFragmentActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

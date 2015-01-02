@@ -21,6 +21,13 @@ public class Teacher implements Serializable {
     @SerializedName("staff_frigana_given_name")
     private String staffFriganaGivenName;
 
+    public Teacher(String staffId,String staffName,String staffFriganaFamilyname,String staffFriganaGivenName){
+        this.staffId = staffId;
+        this.staffName = staffName;
+        this.staffFriganaFamilyname = staffFriganaFamilyname;
+        this.staffFriganaGivenName = staffFriganaGivenName;
+    }
+
     //授業情報
     private ClassPlan classPlan;
     //受講者(オブジェクト)

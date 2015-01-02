@@ -49,7 +49,7 @@ public class Drawer {
                 };
         int[] chapters = {1,0,0,1,0,0};
         int[] sections = {0,1,1,0,1,1};
-        String[] titles = {"出席管理","着座状況","受講者一覧","アクティブラーニング","グルーピィング","アンケート"};
+        String[] titles = {"ハンズフリー出席管理","着座状況","受講者一覧","アクティブラーニング","グルーピィング","アンケート"};
         for(int i = 0; i < resoreses.length; i++){
             int chapter = chapters[i];
             int section = sections[i];

@@ -2,13 +2,19 @@
 <resources>
 
     <string name="app_version">version 0.0.0</string>
-    <string name="app_name">授業管理ソリューション</string>
+    <string name="app_name">授業運営管理ソリューション</string>
+    <string name="do_not_mistake">間違いありませんか?</string>
+    <string name="failed_to_get">取得に失敗しました.</string>
+    <string name="regain">再取得</string>
+    <string name="select_name">選択名</string>
     <string name="confirm_select_content">選択内容に間違いありませんか.</string>
     <string name="message_no_attendee">受講者を取得できませんでした.</string>
     <string name="faile_process">処理に失敗しました.</string>
     <string name="infomation_sitter">着席情報</string>
+    <string name="number_of_people">人</string>
+    <string name="percentage">%</string>
     <string name="other">他</string>
-    <string name="close">閉じる</string>
+    <string name="close">とじる</string>
     <string name="space"> </string>
     <string name="year">年</string>
     <string name="month">月</string>
@@ -19,7 +25,8 @@
     <string name="no">いいえ</string>
     <string name="positive">はい</string>
     <string name="negative">いいえ</string>
-    <string name="chapter_attendance">出席管理</string>
+    <string name="loading">読み込み中...</string>
+    <string name="chapter_attendance">ハンズフリー出席管理</string>
     <string name="title_section0">選択画面</string>
     <string name="title_section1">着座状況</string>
     <string name="title_section2">受講者一覧</string>
@@ -33,6 +40,7 @@
     <string name="title_section10">ヘルプ</string>
     <string name="title_section11">アプリケーション情報</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="colon">:</string>
     <string name="semicolon">;</string>
     <string name="comma">,</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -49,6 +57,11 @@
     <string name="message_help">ESLの表示が変わらない時は、ESLの故障が考えられます.学生課へ新しいESLを受け取りに行かせて下さい.</string>
     <string name="title_activity_confirm_class_plan">ConfirmClassPlanActivity</string>
 
+    <!---->
+        <string name="fifty_index_table_page_title">50音表から選択して下さい.</string>
+    <!--選択名確認画面-->
+    <string name="kana_index_select_select_name">選択名 : </string>
+
     <!--講義内容確認画面-->
     <string name="confirm_nearest_class_plan_title_messge">出席状況を確認しますか？</string>
     <string name="confirm_nearest_class_plan_now_brosing">名が出席状況をすでに閲覧中です.</string>
@@ -63,6 +76,20 @@
     <string name="confirm_for_class_plan_re_select">に再度選択して下さい.</string>
     <string name="confirm_not_today_class_but_next_class_re_select">自動でアプリが終了しますので、しばらくお待ち下さい.</string>
 
+    <!--メイン画面のドロワーナビゲーション-->
+    <string name="return_fifty_index_table_page">50音表へ</string>
+
+
     <!--講義内容確認画面-->
+    <string name="main_bottom_top_message">画面左側から右側に向かって\r\n指でスワイプして下さい.</string>
+
+    <!--アンケート-->
+    <string name="questionnaire_number">Q</string>
+
+    <!-- カスタムダイアログ -->
+    <string name="total_attendee">出席　</string>
+    <string name="total_absentee">欠席　</string>
+    <string name="total_no_absentee">欠席なし</string>
+
 
 </resources>

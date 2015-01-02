@@ -25,6 +25,14 @@
             android:text="伊藤翔太"
             android:id="@+id/roster_full_name_textView"
             android:textSize="@dimen/textsize_xlarge" />
+        <!--出席状態フィールド-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="-5dp"
+            android:text=" "
+            android:id="@+id/roster_attendance_state_color_textView"
+            android:textSize="@dimen/textsize_small" />
         </LinearLayout>
 
     <LinearLayout
@@ -38,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/textsize_medium"
-            android:text="メッセージ"
+            android:text="メッセージあり"
             android:id="@+id/roster_have_messge_textView" />
         <TextView
             android:visibility="invisible"

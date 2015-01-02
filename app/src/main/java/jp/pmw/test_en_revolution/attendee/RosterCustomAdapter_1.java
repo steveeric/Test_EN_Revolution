@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import jp.pmw.test_en_revolution.R;
-import jp.pmw.test_en_revolution.confirm_class_plan.Attendance;
+import jp.pmw.test_en_revolution.confirm_class_plan.TodayAttendance;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
 
 /**
@@ -41,7 +41,7 @@ public class RosterCustomAdapter_1 extends ArrayAdapter<Student> {
         }
         //出欠席者の情報
         Student student = _items.get(position);
-        Attendance attendance = student.getAttendance();
+        TodayAttendance attendance = student.getAttendance();
 
         /*出席に関して*/
         int attendanceState = attendance.getTempAttendanceState();
@@ -49,28 +49,29 @@ public class RosterCustomAdapter_1 extends ArrayAdapter<Student> {
         if(attendanceState == 0){
             if(attendance.getConfirmTime() != null){
                 //正常に出席完了
-                attendColor = this.getContext().getApplicationContext().getResources().getColor(R.color.green);
+                attendColor = this.getContext().getApplicationContext().getResources().getColor(R.color.semitransparenttranslucent_green);
+                 /*ESL忘れ*/
+                if(student.getAttendance().getRequestForgotESLTime()!=null){
+                    ((TextView) view.findViewById(R.id.roster_forgot_esl_textView)).setVisibility(View.VISIBLE);
+                }
             }else{
                 //ACK取れなかった
                 //欠席？
-                attendColor = this.getContext().getApplicationContext().getResources().getColor(R.color.red);
+                attendColor = this.getContext().getApplicationContext().getResources().getColor(R.color.semitransparenttranslucent_darkRed);
             }
         }else{
             //仮出席状態なので、グレー
-            attendColor = this.getContext().getApplicationContext().getResources().getColor(R.color.gray);
+            attendColor = this.getContext().getApplicationContext().getResources().getColor(R.color.semitransparenttranslucent_gray);
         }
         ((TextView) view.findViewById(R.id.roster_orijinal_student_id_textView)).setText(student.getOriginalstudentId());
         ((TextView) view.findViewById(R.id.roster_full_name_textView)).setText(student.getFullName());
-        ((TextView) view.findViewById(R.id.roster_orijinal_student_id_textView)).setTextColor(attendColor);
-        ((TextView) view.findViewById(R.id.roster_full_name_textView)).setTextColor(attendColor);
+        //((TextView) view.findViewById(R.id.roster_orijinal_student_id_textView)).setTextColor(attendColor);
+        //((TextView) view.findViewById(R.id.roster_full_name_textView)).setTextColor(attendColor);
+        ((TextView) view.findViewById(R.id.roster_attendance_state_color_textView)).setBackgroundColor(attendColor);
 
         /*メッセージあり*/
         if(student.getMessage()!=null){
             ((TextView) view.findViewById(R.id.roster_have_messge_textView)).setVisibility(View.VISIBLE);
-        }
-        /*ESL忘れ*/
-        if(student.getAttendance().getRequestForgotESLTime()!=null){
-            ((TextView) view.findViewById(R.id.roster_forgot_esl_textView)).setVisibility(View.VISIBLE);
         }
 
         return view;

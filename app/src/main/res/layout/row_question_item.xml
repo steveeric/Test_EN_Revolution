@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jp.pmw.test_en_revolution.questionnaire.QuestionLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="(主題がありません.)"
+        android:id="@+id/row_question_topic"
+        android:textSize="@dimen/textsize_xlarge"
+        android:layout_gravity="center_horizontal" />
+
+    <!--<TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/row_question_ask_tableLayout">
+        </TableLayout>-->
+    
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/row_question_questions_listView">
+    </ListView>
+    <!--<TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="(問)"
+        android:id="@+id/row_question_question_textView"
+        android:textSize="@dimen/textsize_xlarge"
+        android:layout_gravity="center_horizontal" />-->
+    
+
+</jp.pmw.test_en_revolution.questionnaire.QuestionLayout>

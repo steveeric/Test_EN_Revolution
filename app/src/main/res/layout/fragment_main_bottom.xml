@@ -4,9 +4,14 @@
     tools:context="jp.pmw.test_en_revolution.MainBottomFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+    <TextView
+        android:layout_marginLeft="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:textSize="@dimen/textsize_xxlarge"
-        android:gravity="center|center"
-        android:text="ドロナビから選択して下さい." />
+        android:layout_marginBottom="50dp"
+        android:layout_gravity="center"
+        android:gravity="left|center"
+        android:text="@string/main_bottom_top_message" />
 
 </FrameLayout>

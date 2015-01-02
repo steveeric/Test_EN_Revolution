@@ -1,9 +1,11 @@
 package jp.pmw.test_en_revolution.confirm_class_plan;
 
+import java.io.Serializable;
+
 /**
  * Created by scr on 2014/12/24.
  */
-public class Attendance {
+public class TodayAttendance implements Serializable {
     //仮出席状態かどうか
     private int tempAttendanceState;
     //ESL忘れ申請時間
@@ -11,9 +13,9 @@ public class Attendance {
     //出席確認した時間
     private String confirmTime;
 
-    public Attendance(int tempAttendanceState,
-                      String requestForgotESLTime,
-                      String confirmTime){
+    public TodayAttendance(int tempAttendanceState,
+                           String requestForgotESLTime,
+                           String confirmTime){
         this.tempAttendanceState = tempAttendanceState;
         this.requestForgotESLTime = requestForgotESLTime;
         this.confirmTime = confirmTime;

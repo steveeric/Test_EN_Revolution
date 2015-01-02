@@ -1,0 +1,170 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="jp.pmw.test_en_revolution.one_cushion.select_teacher.KanaIndexSelectActivity$PlaceholderFragment">
+
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/kana_index_select_belong_to_the_initial_name_linearLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="あ行"
+            android:background="@color/gray"
+            android:textSize="@dimen/textsize_xlarge"
+            android:gravity="center"
+            android:id="@+id/teacher_family_name_initial_textView" />
+
+        <!--<ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="?android:attr/progressBarStyleSmall"
+            android:id="@+id/teacher_family_name_load_progressBar"
+            android:layout_weight="5" />-->
+        <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/loading"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="@dimen/textsize_xxlarge"
+            android:id="@+id/teacher_family_name_load_textView"
+            android:layout_weight="5" />
+        <ListView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/teacher_family_name_initial_list_listView"
+            android:layout_weight="5" />
+
+        <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/textsize_xlarge"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="名前が登録されていません."
+            android:id="@+id/teacher_family_name_no_register_textView" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/kana_index_select_select_teacher_confirm_linearLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textSize="@dimen/textsize_xlarge"
+            android:layout_weight="1"
+            android:gravity="center|bottom"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/do_not_mistake" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:textSize="@dimen/textsize_xxlarge"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="(選択された教員名がはいります.)"
+            android:background="@drawable/text_border"
+            android:id="@+id/kana_index_select_select_teacher_name_textView"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/negative"
+                android:layout_weight="1"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:gravity="center"
+                android:background="@drawable/segmented_left_normal"
+                android:textSize="@dimen/textsize_xlarge"
+                android:id="@+id/kana_index_select_select_negative_button" />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:textSize="@dimen/textsize_xlarge"
+                android:background="@drawable/segmented_left_normal"
+                android:gravity="center"
+                android:text="@string/positive"
+                android:id="@+id/kana_index_select_select_positive_button" />
+        </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/kana_index_select_network_reaccess_linearLayout">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="@dimen/textsize_xlarge"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/failed_to_get" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="100dp"
+            android:background="@drawable/button_design"
+            android:textSize="@dimen/textsize_xxlarge"
+            android:text="@string/regain"
+            android:id="@+id/kana_index_select_regain_button" />
+    </LinearLayout>
+
+</RelativeLayout>

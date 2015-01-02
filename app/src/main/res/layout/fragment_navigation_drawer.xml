@@ -21,9 +21,10 @@
         <Button
             android:visibility="invisible"
             android:id="@+id/fragment_navigation_drawer_return_top_button"
-            android:text="50音順へ戻る"
+            android:text="@string/return_fifty_index_table_page"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_xlarge"
+            android:layout_height="100sp"
              />
         <TextView
             android:layout_width="match_parent"

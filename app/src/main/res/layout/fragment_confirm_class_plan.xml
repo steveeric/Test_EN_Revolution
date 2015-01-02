@@ -36,42 +36,28 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:gravity="top"
+        android:gravity="center"
         android:layout_marginLeft="100dp"
         android:layout_weight="1">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:id="@+id/confirm_class_plan_show_confirm_nearest_class_plan_datetime_textView"
             android:text=" "
             android:textSize="@dimen/textsize_xlarge"/>
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:id="@+id/confirm_class_plan_show_confirm_nearest_class_plan_in_room_textView"
             android:text=" "
             android:textSize="@dimen/textsize_xlarge"/>
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:id="@+id/confirm_class_plan_show_confirm_nearest_class_plan_subject_textView"
             android:text= " "
             android:textSize="@dimen/textsize_xlarge"/>
         </LinearLayout>
-
-        <TextView
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:textColor="@color/red"
-            android:layout_weight="0.5"
-            android:gravity="center"
-            android:id="@+id/confirm_class_plan_show_confirm_nearest_class_plan_now_browsing_count"
-            android:text= " "
-            android:textSize="@dimen/textsize_large"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -90,6 +76,7 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="50dp"
                 android:textSize="@dimen/textsize_xlarge"
+                android:background="@drawable/segmented_left_normal"
                 android:id="@+id/confirm_class_plan_show_confirm_nearest_class_plan_negative_button" />
 
             <Button
@@ -102,8 +89,20 @@
                 android:layout_marginBottom="50dp"
                 android:textSize="@dimen/textsize_xlarge"
                 android:text="@string/be"
+                android:background="@drawable/segmented_left_normal"
                 android:id="@+id/confirm_class_plan_show_confirm_nearest_class_plan_positive_button" />
         </LinearLayout>
+        <TextView
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textColor="@color/red"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:id="@+id/confirm_class_plan_show_confirm_nearest_class_plan_now_browsing_count"
+            android:text= " "
+            android:textSize="@dimen/textsize_large"/>
+
     </LinearLayout>
 
     <!--最寄りの講義が遠い.-->
@@ -140,22 +139,19 @@
             android:layout_weight="1">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:id="@+id/confirm_class_plan_show_confirm_far_class_plan_datetime_textView"
                 android:text=" "
                 android:textSize="@dimen/textsize_xlarge"/>
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:id="@+id/confirm_class_plan_show_confirm_far_class_plan_in_room_textView"
                 android:text=" "
                 android:textSize="@dimen/textsize_xlarge"/>
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:id="@+id/confirm_class_plan_show_confirm_far_class_plan_subject_textView"
                 android:text= " "
                 android:textSize="@dimen/textsize_xlarge"/>
@@ -217,22 +213,19 @@
             android:layout_weight="1">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:id="@+id/confirm_class_plan_no_today_class_but_next_class_date_textView"
                 android:text=" "
                 android:textSize="@dimen/textsize_xlarge"/>
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:id="@+id/confirm_class_plan_no_today_class_but_next_class_in_roomname_textView"
                 android:text=" "
                 android:textSize="@dimen/textsize_xlarge"/>
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:id="@+id/confirm_class_plan_no_today_class_but_next_class_subjectname_textView"
                 android:text= " "
                 android:textSize="@dimen/textsize_xlarge"/>

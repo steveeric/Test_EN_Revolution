@@ -39,6 +39,9 @@ private ListView mNavigationDrawerList;
 /*ナビゲーションドロワーの50音順に戻るボタン*/
 private Button mNavigationDrawerButton;
 
+
+    //アンケート画面で現在見ている問題トピック番号
+    public int mNowSeeQuestionTopic=0;
 @Override
 protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

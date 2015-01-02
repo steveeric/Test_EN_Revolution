@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -26,6 +27,7 @@ import java.util.Collection;
 import java.util.List;
 
 import jp.pmw.test_en_revolution.AppController;
+import jp.pmw.test_en_revolution.CustomDialogFragment;
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.MyMainFragment;
 import jp.pmw.test_en_revolution.R;
@@ -42,7 +44,7 @@ import jp.pmw.test_en_revolution.dummy.DummyRosterContent;
  * Use the {@link AttendeeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AttendeeFragment extends MyMainFragment {
+public class AttendeeFragment extends MyMainFragment{
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -91,7 +93,25 @@ public class AttendeeFragment extends MyMainFragment {
         this.attendeeListView = (ListView)this.getActivity().findViewById(R.id.attendee_list);
         this.attendeeLoadProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.attendee_load_progressBar);
         this.attendeeGridView = (GridView)this.getActivity().findViewById(R.id.attendee_gridView);
+        this.attendeeGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // 選択アイテムを取得
+                GridView gridView = (GridView)parent;
+                Student attendanceStudent = (Student)gridView.getItemAtPosition(position);
+                testShowCustomDialog(attendanceStudent);
+            }
+        });
 
+
+    }
+
+    public void testShowCustomDialog(Student student){
+        MainActivity activity = (MainActivity)this.getActivity();
+        CustomDialogFragment customDialog = CustomDialogFragment.newInstance();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(CustomDialogFragment.ATTENDANCE_STUDENT_INFO,student);
+        customDialog.setArguments(bundle);
+        customDialog.show(activity.getSupportFragmentManager(), "customDialog");
     }
 
     @Override

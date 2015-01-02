@@ -4,7 +4,9 @@ package jp.pmw.test_en_revolution.config;
  * Created by scr on 2014/12/07.
  */
 public class URL {
-    private static final String BASE_URL = "http://192.168.53.138";
+    private static final String BASE_URL = "http://192.168.11.6";
+
+    //private static final String BASE_URL = "http://192.168.53.138";
     //private static final String BASE_URL = "http://192.168.51.181";
     public static final String ALL_TEACHER = BASE_URL+"/test/catalunya/public/api/teacher";
 

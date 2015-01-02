@@ -41,9 +41,13 @@ public class JapaneseAlphabeticalOrderFragment extends Fragment {
      * **/
     private GridLayout mGridLayout;
 
+    //ボタンが全て敷き詰められているかを表すフラグ
+    private boolean mSetButtonFlag = false;
+
     private static final int FONT_SIZE = 30;
     /*50音順のボタンの高さ*/
-    private static final int INITIAL_BUTTON_HEIGHT = 155;
+    //private static final int INITIAL_BUTTON_HEIGHT = 155;
+    private static final int INITIAL_BUTTON_HEIGHT = 140;
     /*50音順のボタンの横幅*/
     private static final int INITIAL_BUTTON_WIDTH = 80;
 
@@ -76,41 +80,45 @@ public class JapaneseAlphabeticalOrderFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        //50音それぞれのボタンインデックス
-        int count = 0;
 
-         //グリッドビューの横幅
-        int gridWidthSize = this.mGridLayout.getWidth();
-        int widthCount = 0;
-        for(int i = 0; i < JapaneseAlphabeticalOrder.ALPHABET_BLOCK.length; i++){
-            widthCount = JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i].length;
-            for(int j = 0; j < JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i].length; j++) {
-                //５０音ボタン生成
-                Button b = new Button(this.getActivity());
-                b.setId(++count);
-                b.setOnClickListener(new OnClickListener() {
-                    public void onClick(View v) {
-                        //タップしたボタンのIDを確認する.
-                        //confirmTapButtonId(v);
+        if(this.mSetButtonFlag==false) {
+            //50音それぞれのボタンインデックス
+            int count = 0;
+            //グリッドビューの横幅
+            int gridWidthSize = this.mGridLayout.getWidth();
+            int widthCount = 0;
+            for (int i = 0; i < JapaneseAlphabeticalOrder.ALPHABET_BLOCK.length; i++) {
+                widthCount = JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i].length;
+                for (int j = 0; j < JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i].length; j++) {
+                    //５０音ボタン生成
+                    Button b = new Button(this.getActivity());
+                    b.setId(++count);
+                    b.setOnClickListener(new OnClickListener() {
+                        public void onClick(View v) {
+                            //タップしたボタンのIDを確認する.
+                            //confirmTapButtonId(v);
 
-                        //選択されたボタンIDを元にSelectActivityに画面遷移をする
-                        moveToActivity(v);
+                            //選択されたボタンIDを元にSelectActivityに画面遷移をする
+                            moveToActivity(v);
+                        }
+                    });
+                    //ボタン一つ一つに文字を入れる.
+                    String str = JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i][j];
+                    if (str.equals("")) {
+                        b.setVisibility(View.INVISIBLE);
+                    } else {
+                        b.setText(str);
+                        b.setTextSize(FONT_SIZE);
+                        //b.setText("::");
                     }
-                });
-                //ボタン一つ一つに文字を入れる.
-                String str = JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i][j];
-                if(str.equals("")){
-                    b.setVisibility(View.INVISIBLE);
-                }else{
-                    b.setText(str);
-                    b.setTextSize(FONT_SIZE);
-                    //b.setText("::");
+                    b.setHeight(this.INITIAL_BUTTON_HEIGHT);
+                    b.setWidth(this.INITIAL_BUTTON_WIDTH);
+                    b.setBackgroundResource(R.drawable.circle_oval_shape_gray_button_frame_border);
+                    b.setPadding(10,0,10,0);
+                    this.mGridLayout.addView(b);
                 }
-                b.setHeight(this.INITIAL_BUTTON_HEIGHT);
-                b.setWidth(this.INITIAL_BUTTON_WIDTH);
-                this.mGridLayout.addView(b);
-
             }
+            this.mSetButtonFlag = true;
         }
     }
 

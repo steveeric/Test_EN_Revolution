@@ -292,7 +292,7 @@ public class RoomView extends View {
                 canvas.drawRect(cell.getCx() - cell.getWidth(), startResizeHeight, cell.getCx(),resizeHeight , paint);
 
                 if(cell.getPreAttendee()==1){
-                    paint.setColor(r.getColor( R.color.darkPurple) );
+                    paint.setColor(r.getColor( R.color.red) );
                     if(cell.getSeat().getPreAttendeeState()==1){
                         paint.setColor(r.getColor( R.color.green) );
                     }else if(cell.getSeat().getPreAttendeeState()==2){
