@@ -1,7 +1,7 @@
 package jp.pmw.test_en_revolution.questionnaire;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,13 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
-
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieGraph.OnSliceClickedListener;
 import com.echo.holographlibrary.PieSlice;
-
 import java.util.List;
-
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.MyMainFragment;
 import jp.pmw.test_en_revolution.R;

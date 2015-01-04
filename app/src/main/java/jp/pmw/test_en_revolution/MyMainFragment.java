@@ -1,6 +1,6 @@
 package jp.pmw.test_en_revolution;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 /**
  * Created by scr on 2014/12/23.

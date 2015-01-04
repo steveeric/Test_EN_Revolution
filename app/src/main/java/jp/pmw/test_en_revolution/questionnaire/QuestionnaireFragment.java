@@ -1,7 +1,6 @@
 package jp.pmw.test_en_revolution.questionnaire;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,9 +9,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-
+import android.support.v4.app.Fragment;
 import java.util.List;
-
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.R;
 import jp.pmw.test_en_revolution.questionnaire.dummy.DummyQuestionContent;

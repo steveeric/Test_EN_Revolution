@@ -23,10 +23,12 @@ public class Student implements Serializable {
     private String fullName;
     //着席位置
     //private Seat sitPosition;
-    private String nowSitSeatId;
+    //private String nowSitSeatId;
     //出席状態
-    private TodayAttendance attendance;
-    //
+    //private AttendanceState attendance;
+    //この授業での状態を管理するクラス
+    private ThisClassTime thisClassTime;
+
     private TotalAttendance totalAttendance;
     //メッセージ
     private Message message;
@@ -34,7 +36,7 @@ public class Student implements Serializable {
     public Student(String originalstudentId,String studentId,
                    String furiganaFamilyName,String furiganaGivenName,
                    String familyName,String givenName,
-                   String fullName,String nowSitSeatId,TodayAttendance attendance,TotalAttendance totalAttendance,Message message/*Seat sitPosition*/){
+                   String fullName,/*String nowSitSeatId,*/ThisClassTime thisClassTime,TotalAttendance totalAttendance,Message message/*Seat sitPosition*/){
         this.originalstudentId = originalstudentId;
         this.studentId = studentId;
         this.furiganaFamilyName = furiganaFamilyName;
@@ -43,8 +45,9 @@ public class Student implements Serializable {
         this.givenName = givenName;
         this.fullName = fullName;
         //this.sitPosition = sitPosition;
-        this.nowSitSeatId = nowSitSeatId;
-        this.attendance = attendance;
+        //this.nowSitSeatId = nowSitSeatId;
+        //this.attendance = attendance;
+        this.thisClassTime = thisClassTime;
         this.totalAttendance = totalAttendance;
         this.message = message;
     }
@@ -73,11 +76,14 @@ public class Student implements Serializable {
     /*public Seat getSitPosition(){
         return this.sitPosition;
     }*/
-    public String getNowSitSeatId(){
+    /*public String getNowSitSeatId(){
         return this.nowSitSeatId;
-    }
-    public TodayAttendance getAttendance(){
+    }*/
+    /*public AttendanceState getAttendance(){
         return this.attendance;
+    }*/
+    public ThisClassTime getThisClassTime(){
+        return this.thisClassTime;
     }
     public TotalAttendance getTotalAttendance(){return this.totalAttendance;}
     public Message getMessage(){return this.message;}

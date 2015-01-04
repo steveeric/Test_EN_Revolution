@@ -1,12 +1,12 @@
 package jp.pmw.test_en_revolution;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -25,6 +25,13 @@ import jp.pmw.test_en_revolution.confirm_class_plan.TotalAttendance;
 public class CustomDialogFragment extends DialogFragment{
     public static final String ATTENDANCE_STUDENT_INFO = "attendance_student_info";
 
+    //ESL忘れ申請ボタン
+    private Button releaseBtn;
+    //ESL忘れ解除ボタン
+    private Button requestBtn;
+    //とじるボタン
+    private Button closeBtn;
+
     //タップされた出席者の情報
     private static Student attendanceStudent;
 
@@ -34,6 +41,23 @@ public class CustomDialogFragment extends DialogFragment{
     public static CustomDialogFragment newInstance(/*String title, String message, int type*/){
         CustomDialogFragment instance = new CustomDialogFragment();
        return instance;
+    }
+
+    /**
+    * コールバック用のリスナー
+    * **/
+    private OnOkClickListener mListener;
+    public interface OnOkClickListener {
+        public void onOkClicked(Bundle args);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mListener = (OnOkClickListener) getTargetFragment();
+        if (mListener instanceof OnOkClickListener == false) {
+            throw new ClassCastException("実装エラー");
+        }
     }
 
     public void onCreate(Bundle savedInstanceState){
@@ -62,9 +86,17 @@ public class CustomDialogFragment extends DialogFragment{
         TextView fullNameTextview = (TextView)dialog.findViewById(R.id.title_full_name_textView);
         fullNameTextview.setText(this.attendanceStudent.getFullName());
 
+        //とじるボタン
+        closeBtn = (Button)dialog.findViewById(R.id.positive_button);
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
         //出欠カラーを取得
         int mainFrameResorceColor = getFrameColorResorce();
-
         //フレーム全体の色を選択
         setFrameBackgoundColor(dialog,mainFrameResorceColor);
         //着座していセット
@@ -77,16 +109,6 @@ public class CustomDialogFragment extends DialogFragment{
         setForgotESL(dialog);
         //出席確認時間セット
         //setConfirmTodayAttendanceTime(dialog);
-
-        // 閉じるボタン ボタンのリスナ
-        Button closeBtn = (Button)dialog.findViewById(R.id.positive_button);
-        closeBtn.setBackgroundColor(mainFrameResorceColor);
-        closeBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
         return dialog;
     }
     /**
@@ -107,18 +129,38 @@ public class CustomDialogFragment extends DialogFragment{
     private int getFrameColorResorce(){
         int resorce = this.getResources().getColor(R.color.gray);
         AttendanceState todayAtt = getAttendanceState();
-        if(todayAtt.getTempAttendanceState() == 1){
+        /*if(todayAtt.getTempAttendanceState() == 1){
             //グレー
+            //まだ出席未確認
         }else{
             //緑か赤
-            if(todayAtt.getConfirmTime() != null){
+            if(todayAtt.getConfirmTime() != null || todayAtt.getRequestForgotESLTime() != null){
                 //出席者
                 resorce = this.getResources().getColor(R.color.yellowGreen);
             }else{
                 //欠席者
                 resorce = this.getResources().getColor(R.color.darkRed);
             }
+        }*/
+
+        if(todayAtt.getTempAttendanceState() == 1
+                &&todayAtt.getConfirmTime() == null
+                && todayAtt.getRequestForgotESLTime() == null){
+            //未確認
+            resorce = this.getResources().getColor(R.color.gray);
+        }else{
+           if(todayAtt.getTempAttendanceState() == 0
+                   &&todayAtt.getConfirmTime() == null
+                   && todayAtt.getRequestForgotESLTime() == null){
+               //欠席
+               resorce = this.getResources().getColor(R.color.darkRed);
+           }else{
+               //出席
+               resorce = this.getResources().getColor(R.color.yellowGreen);
+           }
         }
+
+
         return resorce;
     }
     /**
@@ -143,7 +185,7 @@ public class CustomDialogFragment extends DialogFragment{
     }
 
     /**
-     * Created by scr on 2015/1/3.
+     * Created by scr on 2015/1/3～2015/1/4.
      * setFrameBackgoundColorメソッド
      * 本日の出席状態カラーを取得します.
      * @param d ダイアログ
@@ -154,6 +196,9 @@ public class CustomDialogFragment extends DialogFragment{
         LinearLayout titleLayout = getLinearLayout(d,R.id.title_linearLayout);
         //outerFrameLayout.setBackgroundColor(resorce);
         titleLayout.setBackgroundColor(resorce);
+
+        // 閉じるボタンのカラーをセットする.
+        closeBtn.setBackgroundColor(resorce);
     }
 
     private void setTodaySeatPosition(Dialog d){
@@ -233,9 +278,11 @@ public class CustomDialogFragment extends DialogFragment{
         }else{
             //ESL忘れレイアウト
             layout.setVisibility(View.VISIBLE);
-            Button releaseBtn = getButton(d,R.id.dialog_custom_forgot_esl_release_button);
-            Button requestBtn = getButton(d,R.id.dialog_custom_forgot_esl_button);
-            
+            releaseBtn = getButton(d,R.id.dialog_custom_forgot_esl_release_button);
+            releaseBtn.setOnClickListener(forgotESLBtnListener);
+            requestBtn = getButton(d,R.id.dialog_custom_forgot_esl_button);
+            requestBtn.setOnClickListener(forgotESLBtnListener);
+
             if(attState.getRequestForgotESLTime() != null){
                 //ESL忘れ申請をすでに行っているので
                 //解除ボタンを出す.
@@ -248,6 +295,78 @@ public class CustomDialogFragment extends DialogFragment{
             }
         }
     }
+    /**
+     * Created by scr on 2015/1/4.
+     * View.OnClickListenerメソッド
+     * ESL忘れ関係ボタンのリスナーです.
+     */
+    private View.OnClickListener forgotESLBtnListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            switch(v.getId()) {
+                case R.id.dialog_custom_forgot_esl_release_button:
+                    //ESL忘れ解除
+                    forgotESLRelease();
+                    break;
+                case R.id.dialog_custom_forgot_esl_button:
+                    //ESL忘れ登録
+                    forgotESLRequest();
+                    break;
+            }
+        }
+    };
+    /**
+     * Created by scr on 2015/1/4.
+     * forgotESLReleaseメソッド
+     * ESL忘れ解除手続きをこちらでおこいます.
+     */
+    private void forgotESLRelease(){
+        AttendanceState state = this.attendanceStudent.getThisClassTime().getThisClassAttendanceState();
+        //出席回数調整...
+        this.attendanceStudent.getTotalAttendance().setForGotESLRelease(state);
+
+        this.attendanceStudent.getThisClassTime().getThisClassAttendanceState().forgotESLRelease();
+        //解除非表示
+        this.releaseBtn.setVisibility(View.INVISIBLE);
+        //申請表示
+        this.requestBtn.setVisibility(View.VISIBLE);
+        callBack();
+    }
+
+    private void callBack(){
+        //出欠カラーを取得
+        int mainFrameResorceColor = getFrameColorResorce();
+        Dialog dialog = super.getDialog();
+        //フレーム全体の色を選択
+        setFrameBackgoundColor(dialog,mainFrameResorceColor);
+        Bundle arg = new Bundle();
+        // MyFragmentのonOkClickedをコール
+        mListener.onOkClicked(arg);
+
+        //総出席回数変更
+        setTotalAttendanceSituation(dialog);
+    }
+
+
+    /**
+     * Created by scr on 2015/1/4.
+     * forgotESLReleaseメソッド
+     * ESL忘れ登録手続きをこちらでおこいます.
+     */
+    private void forgotESLRequest(){
+        AttendanceState state = this.attendanceStudent.getThisClassTime().getThisClassAttendanceState();
+        //出席回数調整...
+        this.attendanceStudent.getTotalAttendance().setForGotESLRequest(state);
+        this.attendanceStudent.getThisClassTime().getThisClassAttendanceState().forgotESLRequest();
+        //解除非表示
+        this.releaseBtn.setVisibility(View.VISIBLE);
+        //申請表示
+        this.requestBtn.setVisibility(View.INVISIBLE);
+        callBack();
+    }
+
+
+
+
     /**
      * Created by scr on 2015/1/2.
      * setConfirmTodayAttendanceTimeメソッド

@@ -17,10 +17,10 @@ public class Timertask implements Runnable{
             for(int j = 0; j< this.cells[i].length; j++){
                 if(cells[i][j].getPreAttendee() == 1){
                     if(cells[i][j].getPreAttendee()==1){
-                        if(cells[i][j].getSeat().getPreAttendeeState()==0){
+                        /*if(cells[i][j].getSeat().getPreAttendeeState()==0){
                             cells[i][j].getSeat().setPreAttendeeState(1);
                             break;
-                        }
+                        }*/
                     }
                 }
             }

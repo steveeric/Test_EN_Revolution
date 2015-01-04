@@ -88,7 +88,7 @@ public class RoomView extends View {
      * ネットワークのデータベースにから取得した出席者の情報をRoomMapに保持させる
      */
     public void setAttendance(List<Atteandance> attendance){
-        for(int i = 0; i < this.mRoom.getRows(); i++){
+        /*for(int i = 0; i < this.mRoom.getRows(); i++){
             for(int j = 0; j < this.mRoom.getColumns(); j++){
                 if( this.mRoom.getCells()[i][j].getSeat() != null) {
                     String seatId = this.mRoom.getCells()[i][j].getSeat().getSeatId();
@@ -117,7 +117,7 @@ public class RoomView extends View {
             }
         }
         //再描画をする.
-        invalidate();
+        invalidate();*/
     }
 
 
@@ -293,11 +293,11 @@ public class RoomView extends View {
 
                 if(cell.getPreAttendee()==1){
                     paint.setColor(r.getColor( R.color.red) );
-                    if(cell.getSeat().getPreAttendeeState()==1){
+                    /*if(cell.getSeat().getPreAttendeeState()==1){
                         paint.setColor(r.getColor( R.color.green) );
                     }else if(cell.getSeat().getPreAttendeeState()==2){
                         paint.setColor(r.getColor( R.color.dimGray) );
-                    }
+                    }*/
                     int space = 8;
                     canvas.drawRect((cell.getCx() - cell.getWidth())+cell.getWidth()/space , startResizeHeight+cell.getHeight()/space*2, cell.getCx() - cell.getWidth()/space/2, resizeHeight - cell.getHeight()/space, paint);
                 }

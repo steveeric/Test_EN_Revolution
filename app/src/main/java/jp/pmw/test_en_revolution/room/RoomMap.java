@@ -102,7 +102,7 @@ public class RoomMap {
         String seatId = getDummyNextNumberAndRoomId()+row+column;
 
         //return new Seat(seatId,cellRow,cellColumn);
-        return new Seat();
+        return new Seat("",1,1);
     }
 
 

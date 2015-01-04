@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import jp.pmw.test_en_revolution.R;
-import jp.pmw.test_en_revolution.confirm_class_plan.TodayAttendance;
+import jp.pmw.test_en_revolution.confirm_class_plan.AttendanceState;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
 
 /**
@@ -41,7 +41,7 @@ public class RosterCustomAdapter extends ArrayAdapter<Student> {
         }
         //出欠席者の情報
         Student student = _items.get(position);
-        TodayAttendance attendance = student.getAttendance();
+        AttendanceState attendance = student.getThisClassTime().getThisClassAttendanceState();
 
         /*出席に関して*/
         int attendanceState = attendance.getTempAttendanceState();

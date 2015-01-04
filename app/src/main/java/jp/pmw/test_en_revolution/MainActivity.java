@@ -2,8 +2,6 @@ package jp.pmw.test_en_revolution;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -14,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import jp.pmw.test_en_revolution.attendee.AttendeeFragment;
 import jp.pmw.test_en_revolution.common.CommonDialogFragment;
 import jp.pmw.test_en_revolution.confirm_class_plan.ConfirmClassPlanActivity;
@@ -96,7 +96,8 @@ protected void onCreate(Bundle savedInstanceState) {
 @Override
 public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getFragmentManager();
+        //FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         /*fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();*/
@@ -150,15 +151,16 @@ public void onNavigationDrawerItemSelected(int position) {
      * @param groundPosition アクションバー上のメニューに配置されたメニューボタン番号
      */
     public void doClickerDistributeFragment(int position,int groundPosition){
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
         if(position == MainFragmentConfig.QUESTIONNAIRE_FRAGMENT && groundPosition == 1) {
             //クリッカー調査フラグメント生成
-            FragmentManager fragmentManager = getFragmentManager();
+            //FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, QuestionnaireFragment.newInstance(position))
                     .commit();
         }else if(position == MainFragmentConfig.QUESTIONNAIRE_FRAGMENT && groundPosition == 2) {
             //クリッカーの回答結果を表示するフラグメント生成
-            FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, QuestionnaireResultFragment.newInstance(position))
                     .commit();

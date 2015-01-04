@@ -13,7 +13,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -44,7 +43,7 @@ import jp.pmw.test_en_revolution.dummy.DummyRosterContent;
  * Use the {@link AttendeeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AttendeeFragment extends MyMainFragment{
+public class AttendeeFragment extends MyMainFragment implements CustomDialogFragment.OnOkClickListener{
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -69,6 +68,8 @@ public class AttendeeFragment extends MyMainFragment{
     private ProgressBar attendeeLoadProgressBar;
     private ListView attendeeListView;
     private GridView attendeeGridView;
+
+    private RosterCustomAdapter_1 adapter;
 
     public AttendeeFragment() {
         // Required empty public constructor
@@ -101,13 +102,12 @@ public class AttendeeFragment extends MyMainFragment{
                 testShowCustomDialog(attendanceStudent);
             }
         });
-
-
     }
 
     public void testShowCustomDialog(Student student){
         MainActivity activity = (MainActivity)this.getActivity();
         CustomDialogFragment customDialog = CustomDialogFragment.newInstance();
+        customDialog.setTargetFragment(AttendeeFragment.this,0);
         Bundle bundle = new Bundle();
         bundle.putSerializable(CustomDialogFragment.ATTENDANCE_STUDENT_INFO,student);
         customDialog.setArguments(bundle);
@@ -308,7 +308,7 @@ public class AttendeeFragment extends MyMainFragment{
         //RosterCustomAdapter adapter = new RosterCustomAdapter(this.getActivity(),0,rosterList);
         /**/
 
-        RosterCustomAdapter_1 adapter = new RosterCustomAdapter_1(this.getActivity(),0,rosterList);
+        adapter = new RosterCustomAdapter_1(this.getActivity(),0,rosterList);
 
         this.attendeeGridView.setNumColumns(2);
         this.attendeeGridView.setAdapter(adapter);
@@ -321,4 +321,20 @@ public class AttendeeFragment extends MyMainFragment{
         //ListViewを表示する.
         //successProcess();
     }
+    /**
+     * Created by scr on 2015/1/4.
+     * onOkClickedメソッド
+     * CustomDialogFramentからのコールバックで使用します.
+     */
+    @Override
+    public void onOkClicked(Bundle args) {
+        //int selectedId = args.getInt("KEY_MYDIALOG");
+        //String text = "none";
+        //
+        //this.attendeeGridView.getAdapter().notify();
+        this.adapter.notifyDataSetChanged();
+        this.attendeeGridView.invalidate();
+
+    }
+
 }
