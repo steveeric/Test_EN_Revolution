@@ -1,24 +1,27 @@
 package jp.pmw.test_en_revolution.questionnaire;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieGraph.OnSliceClickedListener;
 import com.echo.holographlibrary.PieSlice;
+
 import java.util.List;
+
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.MyMainFragment;
 import jp.pmw.test_en_revolution.R;
-import jp.pmw.test_en_revolution.questionnaire.dummy.DummyQuestionContent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +56,11 @@ public class QuestionnaireResultFragment extends MyMainFragment {
     private int nowSeePage=0;
     private int nowSeeTopic=0;
 
+    //アンケートがまだ開始されていないレイアウト
+    private LinearLayout donotStartQuestionLinearLayout;
+    //過去に一度でもアンケートをすでに実施しているレイアウト
+    private LinearLayout startQuestionLinearlayout;
+
     //問題のページ送り
     private Button returnQuestionButton,nextQuestionButton;
     //問題番号テキストビュー
@@ -76,6 +84,10 @@ public class QuestionnaireResultFragment extends MyMainFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        this.donotStartQuestionLinearLayout = (LinearLayout)this.getActivity().findViewById(R.id.fragment_clicker_result_donot_start_questionnaire_linearLayout);
+        this.startQuestionLinearlayout = (LinearLayout)this.getActivity().findViewById(R.id.fragment_clicker_result_start_questionnaire_linearLayout);
+
         this.returnQuestionButton = (Button)this.getActivity().findViewById(R.id.fragment_clicker_result_return_question_button);
         this.returnQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,9 +120,10 @@ public class QuestionnaireResultFragment extends MyMainFragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         //テストなのでダミーデータを入れる.
-        this.questions = DummyQuestionContent.ITEMS;
-        //初期位置に戻す.
-        nowSeePage=0;
+        //this.questions = DummyQuestionContent.ITEMS;
+        MainActivity activity = (MainActivity)this.getActivity();
+        this.questions = activity.mTeacher.getQuestionnaire().getQuestions();
+
     }
 
     @Override
@@ -119,21 +132,41 @@ public class QuestionnaireResultFragment extends MyMainFragment {
 
         //トピック番号を取得する.
         MainActivity activity = (MainActivity)this.getActivity();
-        nowSeeTopic = activity.mNowSeeQuestionTopic;
+        Questionnaire questionnaire = activity.mTeacher.getQuestionnaire();
 
-        //ボタン表示状態
-        nextQuestionButtonShowState();
+        if(questionnaire.getLastSeeQuestionId() == null){
+            //まだ一度もアンケートを実施していない
+            this.donotStartQuestionLinearLayout.setVisibility(View.VISIBLE);
+            this.startQuestionLinearlayout.setVisibility(View.GONE);
+        }else{
+            //初期位置に戻す.
+            nowSeePage=0;
 
-        //問題が計難問あるかをチェックする.
-        //その問題数におおじて戻るボタンと進むボタンをどう表示するかを決める.
+            String lastSeeQuestionId = questionnaire.getLastSeeQuestionId();
+            for(int i = 0; i < this.questions.size(); i++){
+                String questionId = this.questions.get(i).getQuestionId();
+                if(lastSeeQuestionId.equals(questionId)){
+                    this.nowSeeTopic = i;
+                }
+            }
 
-        //ダミーデータた
-        setTestItems();
+            //ボタン表示状態
+            nextQuestionButtonShowState();
 
-        //ドーナツのように真ん中を空ける
-        pieGraph.setInnerCircleRatio(80);
-        //間にパディングをいれる
-        pieGraph.setPadding(1);
+            //問題が計難問あるかをチェックする.
+            //その問題数におおじて戻るボタンと進むボタンをどう表示するかを決める.
+
+            //ダミーデータた
+            setTestItems();
+
+            //ドーナツのように真ん中を空ける
+            pieGraph.setInnerCircleRatio(80);
+            //間にパディングをいれる
+            pieGraph.setPadding(1);
+
+            this.donotStartQuestionLinearLayout.setVisibility(View.GONE);
+            this.startQuestionLinearlayout.setVisibility(View.VISIBLE);
+        }
     }
 
     /**

@@ -4,7 +4,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.List;
 
 import jp.pmw.test_en_revolution.R;
 
@@ -14,7 +17,9 @@ import jp.pmw.test_en_revolution.R;
 
 public class QuestionLayout extends LinearLayout {
     private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
+    private TextView questionNumberTextView;
     private TextView themeTextView;
+    private ListView askListView;
     /*private TableLayout askTableLayout;
     private TextView questionTextView;
     private ListView questionsListView;*/
@@ -26,7 +31,9 @@ public class QuestionLayout extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        questionNumberTextView = (TextView) findViewById(R.id.row_question_question_index_textView);
         themeTextView = (TextView) findViewById(R.id.row_question_topic);
+        //askListView = (ListView) findViewById(R.id.row_question_asks_listView);
         //askTableLayout = (TableLayout) findViewById(R.id.row_question_ask_tableLayout);
         //questionTextView = (TextView) findViewById(R.id.row_question_question_textView);
         //questionsListView = (ListView) findViewById(R.id.row_question_questions_listView);
@@ -35,22 +42,32 @@ public class QuestionLayout extends LinearLayout {
     /***
      *
      ***/
-    public void bindView(Question question) {
-        String str = "";
-        str = question.getQuestionTitle();
-        str = str + "\n";
-        for(int i = 0; i < question.getAsks().size(); i++){
-            //問
-            //String s = question.getAsks().get(i).getAskNumber()+":"+question.getAsks().get(i).getAskContent();
-            String s = this.getContext().getResources().getString(R.string.questionnaire_number)+question.getAsks().get(i).getAskNumber()+" "+question.getAsks().get(i).getAskContent();
-            str = str + s + "\n";
-            /*TextView tv = new TextView(this.getContext());
-            tv.setTextColor(this.getContext().getResources().getColor(R.color.black));
-            tv.setText(str);
-            addView(tv);*/
-        }
+    public void bindView(int index,Question question) {
 
+        //アンケート番号
+        this.questionNumberTextView.setText(this.getContext().getResources().getString(R.string.question_index_number) + index);
+
+        String str = question.getQuestionTitle();
         //テーマ
         this.themeTextView.setText(str);
+        //尋ねる内容
+        List<Ask> asks = question.getAsks();
+        /*MainActivity activity = (MainActivity)this.getContext();
+        QuestionAskAdapter adapter = new QuestionAskAdapter(activity,R.layout.row_ask_item,asks);
+        this.askListView.setAdapter(adapter);*/
+        for(int i = 0; i < asks.size();i++){
+            TextView tv = new TextView(this.getContext());
+            //Q.(問題内容)
+            String content = "　"
+                    +this.getContext().getResources().getString(R.string.ask_number)
+                    +asks.get(i).getAskNumber()
+                    +this.getContext().getResources().getString(R.string.ask_dot)
+                    +asks.get(i).getAskContent();
+            tv.setText(content);
+            //問題の門とサイズ
+            float fontSize = this.getContext().getResources().getDimension(R.dimen.textsize_medium);
+            tv.setTextSize(fontSize);
+            this.addView(tv);
+        }
     }
 }

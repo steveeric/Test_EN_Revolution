@@ -1,12 +1,13 @@
 package jp.pmw.test_en_revolution.questionnaire;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by scr on 2014/12/25.
  * アンケートで尋ねる内容を管理するクラスです.
  */
-public class Ask {
+public class Ask implements Serializable {
     //尋ねる問番号
     private String askNumber;
     //尋ねる内容

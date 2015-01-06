@@ -9,14 +9,14 @@ import android.widget.ArrayAdapter;
 import java.util.List;
 
 /**
- * Created by scr on 2014/12/25.
+ * Created by scr on 2015/01/05.
  */
-public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
+public class QuestionAskAdapter extends ArrayAdapter<Ask> {
 
     private LayoutInflater mFactory;
     private int mItemLayoutResource;
 
-    public QuestionnaireCustomAdapter(Context context, int resource, List<Question> objects) {
+    public QuestionAskAdapter(Context context, int resource, List<Ask> objects) {
         super(context, resource, objects);
         mFactory = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mItemLayoutResource = resource;
@@ -24,27 +24,25 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final QuestionLayout view;
-
+        final AskLayout view;
         if (convertView == null) {
             // Viewがなかったら生成
-            view = (QuestionLayout) mFactory.inflate(mItemLayoutResource, null);
+            view = (AskLayout) mFactory.inflate(mItemLayoutResource, null);
         } else {
-            view = (QuestionLayout) convertView;
+            view = (AskLayout) convertView;
         }
 
-        //str = question.getQuestionTitle();
-        Question question = getItem(position);
-        int index = position + 1;
-        view.bindView(index,question);
+        Ask ask = this.getItem(position);
+        view.bindView(ask);
 
         return view;
     }
+
     //以下2つをfalseで返すと選択が行えなくなる
     public boolean areAllItemsEnabled() {
-        return true;
+        return false;
     }
     public boolean isEnabled(int position) {
-        return true;
+        return false;
     }
 }

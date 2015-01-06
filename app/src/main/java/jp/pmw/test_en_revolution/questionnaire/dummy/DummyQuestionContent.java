@@ -66,8 +66,8 @@ public class DummyQuestionContent {
         ITEMS.add(item);
     }
 
-  public List<Question> getQuestions(){
-      return this.ITEMS;
+  public static List<Question> getQuestions(){
+      return ITEMS;
   }
 
 

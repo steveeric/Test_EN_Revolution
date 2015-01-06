@@ -1,10 +1,12 @@
 package jp.pmw.test_en_revolution.questionnaire;
 
+import java.io.Serializable;
+
 /**
  * Created by scr on 2014/12/30.
  * 回答者を保持するクラス.
  */
-public class Answer {
+public class Answer implements Serializable {
     private String answerIndexColor;
     private String answerContent;
     //回答者数

@@ -3,17 +3,18 @@ package jp.pmw.test_en_revolution.questionnaire;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.support.v4.app.Fragment;
+
 import java.util.List;
+
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.R;
-import jp.pmw.test_en_revolution.questionnaire.dummy.DummyQuestionContent;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -62,12 +63,27 @@ public class QuestionnaireFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent,
                                     View view, int pos, long id) {
                 // 選択アイテムを取得
-                //ListView listView = (ListView)parent;
-                //Question item = (Question)listView.getItemAtPosition(pos);
+                ListView listView = (ListView)parent;
+                Question item = (Question)listView.getItemAtPosition(pos);
+                showQuestionnaireDialogFragment(item);
                 checkTapList(pos);
             }
         });
     }
+    /**
+     * Created by scr on 2015/1/5.
+     * showQuestionnaireDialogFragmentメソッド
+     */
+    private void showQuestionnaireDialogFragment(Question question){
+        MainActivity activity = (MainActivity)this.getActivity();
+        QuestionnaireDialogFragment customDialog = QuestionnaireDialogFragment.newInstance();
+        customDialog.setTargetFragment(QuestionnaireFragment.this,0);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(QuestionnaireDialogFragment.QUESTION_NAIRE,question);
+        customDialog.setArguments(bundle);
+        customDialog.show(activity.getSupportFragmentManager(), QuestionnaireDialogFragment.QUESTION_NAIRE_DIALOG_FRAGMENT);
+    }
+
     /**
      * Created by scr on 2014/12/31.
      * checkTapListメソッド
@@ -77,7 +93,6 @@ public class QuestionnaireFragment extends Fragment {
         MainActivity activity = (MainActivity)this.getActivity();
         activity.mNowSeeQuestionTopic = tapPosition;
     }
-
 
     @Override
     public void onResume(){
@@ -109,7 +124,9 @@ public class QuestionnaireFragment extends Fragment {
      */
     private void dummyTestStart() {
 //質問アイテムを取得
-        List<Question> questions = DummyQuestionContent.ITEMS;
+        //List<Question> questions = DummyQuestionContent.ITEMS;
+        MainActivity activity = (MainActivity)this.getActivity();
+        List<Question> questions = activity.mTeacher.getQuestionnaire().getQuestions();
         if(questions.size() == 0){
 //アンケートがない.
             showNoQuestionLayout();
