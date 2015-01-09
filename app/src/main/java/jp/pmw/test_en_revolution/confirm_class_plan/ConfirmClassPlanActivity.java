@@ -203,13 +203,13 @@ public class ConfirmClassPlanActivity extends MyActivity {
         private void nowInClass(ClassPlan classPlan){
 
             //現在の授業を他の誰かが閲覧していた場合に、何人が閲覧中なのかを表示する.
-            if(classPlan.getNowBrowsingCount() > 0){
+            /*if(classPlan.getNowBrowsingCount() > 0){
                 int browsingresorce = R.id.confirm_class_plan_show_confirm_nearest_class_plan_now_browsing_count;
                 TextView browingTextView = createInstanceTimerTextView(browsingresorce);
                 browingTextView.setText(this.getActivity().getString(R.string.other)+classPlan.getNowBrowsingCount()+getString(R.string.confirm_nearest_class_plan_now_brosing));
                 //非表示になっているの表示する.
                 browingTextView.setVisibility(View.VISIBLE);
-            }
+            }*/
 
 
             //授業日
