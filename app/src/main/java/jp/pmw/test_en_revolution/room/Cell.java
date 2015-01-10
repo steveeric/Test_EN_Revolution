@@ -1,6 +1,6 @@
 package jp.pmw.test_en_revolution.room;
 
-import jp.pmw.test_en_revolution.Student;
+import jp.pmw.test_en_revolution.confirm_class_plan.Student;
 
 /**
  * Created by scr on 2014/11/27.
@@ -22,6 +22,9 @@ public class Cell {
     Cell(String item){
         this.item = item;
     }
+
+
+
     /**
      * 座席情報のセッター
      * **/
@@ -35,7 +38,7 @@ public class Cell {
     /**
      * 出席者のセッター
      * **/
-    public void setAttendee(Student student){
+    public void setAttendance(Student student){
         this.student = student;
     }
     /**
@@ -89,8 +92,6 @@ public class Cell {
     public int getLeft() {
         return left;
     }
-
-
     public float getCx(){
         //return (float) ((float)this.left + (float)this.width/2.0);
         return (float) ((float)this.left + width);

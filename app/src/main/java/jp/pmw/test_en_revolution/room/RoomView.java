@@ -15,6 +15,11 @@ import java.util.List;
 import jp.pmw.test_en_revolution.Atteandance;
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.R;
+import jp.pmw.test_en_revolution.SeatSituationFragment;
+import jp.pmw.test_en_revolution.confirm_class_plan.Roster;
+import jp.pmw.test_en_revolution.confirm_class_plan.Student;
+import jp.pmw.test_en_revolution.confirm_class_plan.ThisClassTime;
+import jp.pmw.test_en_revolution.grouping.GroupingManagement;
 import jp.pmw.test_en_revolution.room.dummy.DummyRoomMapContent;
 
 /**
@@ -25,6 +30,13 @@ import jp.pmw.test_en_revolution.room.dummy.DummyRoomMapContent;
  * @version 1.0
  */
 public class RoomView extends View {
+
+    private static final int SITTER_VERTICAL_SPACE = 8;
+    private static final int SITTER_HORIZONTAL_SPACE = 24;
+    //
+    MainActivity activity;
+    //座席フラグメント
+    private SeatSituationFragment fragment;
     /*教室情報を保持するインスタンス*/
     private RoomMap mRoom;
     /*描くインスタンス*/
@@ -49,12 +61,15 @@ public class RoomView extends View {
         init();
     }
 
+    public void setSeatSituationFragment(SeatSituationFragment fragment){
+        this.fragment = fragment;
+    }
+
     private void init(){
+        activity = (MainActivity)this.getContext();
         setFocusable(true);
         paint = new Paint();
     }
-
-
 
     /**
      * setRoomMapメソッド
@@ -62,21 +77,88 @@ public class RoomView extends View {
      * テスト用に使用するためです
      */
     public void setRoomMap(){
-        this.mRoom = new RoomMap(DummyRoomMapContent.ROWS,DummyRoomMapContent.COLUMN);
+        this.mRoom = new RoomMap(DummyRoomMapContent.DISABLE_ROWS,DummyRoomMapContent.ENABLE_ROWS,
+                DummyRoomMapContent.ROWS,DummyRoomMapContent.COLUMN);
         this.mRoom.setRoomMap(DummyRoomMapContent.ITEM);
         //this.mRoom.setTes.tPreAttendee();
-        this.mRoom.setTestOnePreAttendee();
+        //this.mRoom.setTestOnePreAttendee();
     }
+    /**
+     * Created by scr on 2015/1/6.
+     * setDummyGroupingメソッド
+     * ダミーグルーピングをセット
+     */
+    public void setDummyGrouping(){
+        GroupingManagement gpManagement = activity.mTeacher.getGroupingManagement();
+        setDummySitGrouping(gpManagement.getGroupings());
+    }
+    /**
+     * Created by scr on 2015/1/6.
+     * setDummySitGroupingメソッド
+     * ダミーグルーピングデータを座席にセット
+     */
+    private void setDummySitGrouping(List<Student> grouping) {
+       for(int k = 0; k < grouping.size(); k++) {
+           for (int i = 0; i < this.mRoom.getRows(); i++) {
+               for (int j = 0; j < this.mRoom.getColumns(); j++) {
+                   if (this.mRoom.getCells()[i][j].getSeat() != null) {
+                       String seatId = this.mRoom.getCells()[i][j].getSeat().getSeatId();
+                       //出席者一人一人が保持しているSeatId
+                       String groupingSitSeatId = grouping.get(k).getThisClassTime().getThisClassSittingPosition().getSeatId();
+                       if (seatId.equals(groupingSitSeatId)) {
+                           //着席者あり.
+                           this.mRoom.getCells()[i][j].setAttendance(grouping.get(k));
+                           break;
+                       }
+                   }
+               }
+           }
+       }
+        invalidate(); //画面を再描画
+    }
+
+    /**
+     * Created by scr on 2015/1/4.
+     * setDummyAttendanceメソッド
+     * 端末内のローカル内にあるダミー出席データをセットする
+     */
+    public void setDummyAttendance(){
+        Roster roster = activity.mTeacher.getRoster();
+        setDummySitInAttendance(roster);
+    }
+    private void setDummySitInAttendance(Roster roster) {
+        for (int k = 0; k < roster.getRosterList().size(); k++) {
+            for (int i = 0; i < this.mRoom.getRows(); i++) {
+                for (int j = 0; j < this.mRoom.getColumns(); j++) {
+                    if (this.mRoom.getCells()[i][j].getSeat() != null) {
+                        String seatId = this.mRoom.getCells()[i][j].getSeat().getSeatId();
+                        //出席者一人一人が保持しているSeatId
+                        String rosterInSeatId = roster.getRosterList().get(k).getThisClassTime().getThesClassSittingPositionId();
+                        if (seatId.equals(rosterInSeatId)) {
+                            //着席者あり.
+                            this.mRoom.getCells()[i][j].setAttendance(roster.getRosterList().get(k));
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        invalidate(); //画面を再描画
+    }
+
     /**
      * setRoomMapメソッド
      * 教室方法を保持するクラスにダミーデータを保持させる.
      */
     public void setRoomMap(Room room){
+        int desableRows = room.getDisabledRows();
+        int enableRows = room.getEnableRows();
         int rows = room.getCellRows();
         int columns = room.getCellColumns();
-        this.mRoom = new RoomMap(rows,columns);
+        this.mRoom = new RoomMap(desableRows,enableRows,rows,columns);
         this.mRoom.setRoomMap(room.getRoomMaping(),room.getSeats());
-        onDraw(canvas);
+        //onDraw(canvas);
+        this.invalidate();
     }
 
     public RoomMap getRoomMap(){
@@ -120,9 +202,6 @@ public class RoomView extends View {
         invalidate();*/
     }
 
-
-
-
     /**
      * onDrawメソッド
      * RoomViewクラスに絵を描く
@@ -132,8 +211,15 @@ public class RoomView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if(mRoom != null) {
+            //画面サイズをセットする.
             mRoom.setSize(getWidth(), getHeight());
+            //部屋の有効行(着席又は主用な行通路)、無効行に応じて
+            //cell一つ一つのサイズを割り出す.
+
             drawRoom(canvas);
+            if(activity.mTeacher.getEndAttendanceFlag() == false) {
+                invalidate();
+            }
         }
     }
 
@@ -147,7 +233,7 @@ public class RoomView extends View {
         float y = event.getY();
 
         switch (event.getAction()) {
-            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_DOWN:
                 int r = (int)(y / mRoom.getCellHeidht());
                 int c = (int)(x / mRoom.getCellWidth());
                 //System.out.println("NOW X:"+x+",Y:"+y);
@@ -162,23 +248,21 @@ public class RoomView extends View {
                                 float sy = cell.getCy() - cell.getHeight();
                                 float ey = cell.getCy();
                                 if( (sx < x && x < ex) && (sy < y && y < ey)){
-                                    if(cell.getItem().equals(MapConfig.SEAT) && cell.getPreAttendee()==1){
+                                    if(cell.getItem().equals(MapConfig.SEAT) && cell.getAttendee() != null){
                                         //出席者の情報を表示する
-                                        MainActivity activity = (MainActivity)this.getContext();
+                                        //MainActivity activity = (MainActivity)this.getContext();
+                                        //SeatSituationFragment fragment = SeatSituationFragment.getSeatSituationFragmentInstance();
                                         /*タップ出来るかを確認*/
                                         /*
                                             activity.openDialogMessageType();
                                         */
 
                                         /*セル情報を確認する*/
-                                        activity.openDialogShowCellInfo(cell);
+                                        //activity.openDialogShowCellInfo(cell);
+                                        Student student = cell.getAttendee();
+                                        fragment.openDialogFragmentShowCellInfo(student);
                                         break;
-                                    }/*else{
-                                        //座席のテスト用
-                                        MainActivity activity = (MainActivity)this.getContext();
-                                        activity.openDialogShowCellInfo(cell);
-                                        break;
-                                    }*/
+                                    }
                                 }
                              }
                         }
@@ -196,49 +280,28 @@ public class RoomView extends View {
 
 
     private void drawRoom(Canvas canvas){
-        int bw = mRoom.getWidth();
-        int bh = mRoom.getHeight();
-        float cw = mRoom.getCellWidth();
-        float ch = mRoom.getCellHeidht();
-
         if (mRoom.getWidth() <=0 ) return;
 
-        //Paint paint = new Paint(); //本当はここでnewするのはパフォーマンス上良くない。後で直そう。
-        /*画面全面*/
-        /*paint.setColor(Color.rgb(255, 255, 0));
-        canvas.drawRect( 0, 0, bw, bh, paint);
-        */
-        //paint.setColor(Color.rgb(40, 40, 40)); //罫線の色
+        //リソース
+        Resources r = ((Activity) this.getContext()).getResources();
 
-        //縦線
-        for (int i = 0; i < mRoom.getColumns(); i++) {
-            canvas.drawLine(cw * (i+1), 0, cw * (i+1), bh, paint);
-        }
-        //横線
-        for (int i = 0; i < mRoom.getRows(); i++) {
-            canvas.drawLine(0, ch * (i+1), bw, ch * (i+1), paint);
-        }
+        //教室すべての床を塗りつぶす
+        paint.setColor(r.getColor(R.color.brown));
+        canvas.drawRect(0, 0, getWidth(), getHeight(),paint);
+
 
         //円を描く前にアンチエイリアスを指定。これをしないと円がギザギザになる。
         //paint.setAntiAlias(true);
 
-        //教室の最大行数
-        int maxCellRow = mRoom.getRows();
-        //教室の最大列数
-        int maxCellColumn = mRoom.getColumns();
-
         Cell[][] cells = mRoom.getCells();
         String[] lineConf = mRoom.getLineConfigs();
-
-        Resources r = ((Activity) this.getContext()).getResources();
-        //席の前後間隔
-        float move = mRoom.getCellHeidht() / 1.2f;
 
         for(int i = 0; i < mRoom.getRows(); i++){
             String conf = lineConf[i];
             for(int j = 0; j < mRoom.getColumns(); j++){
                 Cell cell =cells[i][j];
                 String item = cell.getItem();
+
                 if(item.equals(MapConfig.FLOOR0)){
                     paint.setColor(r.getColor(R.color.brown));
                 }else if(item.equals(MapConfig.SEAT)){
@@ -247,63 +310,64 @@ public class RoomView extends View {
                     paint.setColor(r.getColor( R.color.darkGreen) );
                 }
 
-                /*if(item.equals(MapConfig.FLOOR0)){
-                    paint.setColor(r.getColor(R.color.brown));
-                }else if(item.equals(MapConfig.FLOOR1)){
-                    paint.setColor(r.getColor(R.color.brown));
-                }else if(item.equals(MapConfig.FLOOR2)){
-                    paint.setColor(r.getColor(R.color.brown));
-                }else if(item.equals(MapConfig.SEAT)){
-                    paint.setColor(r.getColor(R.color.white) );
-                }else if(item.equals(MapConfig.WEST_EXIT)){
-                    paint.setColor(r.getColor(R.color.black) );
-                }else if(item.equals(MapConfig.EAST_EXIT)){
-                    paint.setColor(r.getColor(R.color.black) );
-                }else if(item.equals(MapConfig.BLACK_BORD)){
-                    paint.setColor(r.getColor( R.color.darkGreen) );
-                }*/
+               /*セル内を描く*/
+               canvas.drawRect(cell.getCx() - cell.getWidth(), cell.getCy() - cell.getHeight(), cell.getCx(), cell.getCy(), paint);
+
+                //着席者描く
+                if(cell.getAttendee() != null){
+                    paint.setColor(r.getColor(R.color.darkRed));
+                    if(ThisClassTime.UNCONFIRMED_ATTENDANCE_STATE == cell.getAttendee().getThisClassTime().getAttendanceState()){
+                        //未確認
+                        paint.setColor(r.getColor( R.color.dimGray) );
+                    }else if(ThisClassTime.ABSENTEE_ATTENDANCE_STATE == cell.getAttendee().getThisClassTime().getAttendanceState()){
+                        //欠席
+                        paint.setColor(r.getColor(R.color.darkRed));
+                    }else if(ThisClassTime.ATTENDEE_ATTENDANCE_STATE == cell.getAttendee().getThisClassTime().getAttendanceState()){
+                        //出席
+                        paint.setColor(r.getColor( R.color.green) );
+                    }else{
+                        //不明
+                        paint.setColor(r.getColor( R.color.dimGray) );
+                    }
+
+                    float sitterVerticalSpace = (cell.getWidth() / this.SITTER_VERTICAL_SPACE);
+                    float sitterHorizontalSpace = (cell.getHeight() / this.SITTER_HORIZONTAL_SPACE);
+                    canvas.drawRect(cell.getCx() - cell.getWidth() + sitterVerticalSpace
+                            ,cell.getCy() - cell.getHeight() + sitterHorizontalSpace
+                            ,cell.getCx() - sitterVerticalSpace
+                            ,cell.getCy() - sitterHorizontalSpace
+                            ,paint);
+                }
+
+
+                GroupingManagement gpManagement = activity.mTeacher.getGroupingManagement();
+                //グルーピングモードがONで出席者がいた場合
+                if(gpManagement.getDoGroupingFlag() == true
+                        && cell.getAttendee()!=null) {
+                    //modeGrouping(r,cell);
+                    int herfSpace = 2;
+                    //グループ名を取得
+                    String groupName = cell.getAttendee().getThisClassTime().getThisClassGroup().getGroupName();
+                    paint.setColor(r.getColor( R.color.black) );
+                    //フォントサイズ
+                    float fontSize = activity.getResources().getDimension(R.dimen.textsize_large);
+                    paint.setTextSize (fontSize);
+                    canvas.drawText( groupName, cell.getCx() - cell.getWidth() + (cell.getWidth()/(herfSpace*herfSpace) ), cell.getCy() -(cell.getHeight()/(herfSpace*herfSpace)), paint);
+                }
 
                 /*セルアイテム番号確認*/
+                //paint.setColor(r.getColor(R.color.black));
                 //canvas.drawText( cell.getItem()+":"+i+"-"+j, cell.getCx() - cell.getWidth(), cell.getCy(), paint);
-                /*セルアイテム番号リバース番号*/
-                /*
-                int riverceCellRow = (maxCellRow -1) - i;
-                int riverceCellColumn = (maxCellColumn -1) - j;
-                canvas.drawText( cell.getItem()+":"+riverceCellRow+"-"+riverceCellColumn, cell.getCx() - cell.getWidth(), cell.getCy(), paint);
-                */
-                /*if(cell.getItem().equals("1")) {
-                    canvas.drawText(cell.getSeat().getSeatId() + ":" + cell.getSeat().getSeatRowNumber() + "-" + cell.getSeat().getSeatColumnNumber(), cell.getCx() - cell.getWidth(), cell.getCy(), paint);
-                }*/
 
-               /*セル内を描く*/
-               //canvas.drawRect(cell.getCx() - cell.getWidth(), cell.getCy() - cell.getHeight(), cell.getCx(), cell.getCy(), paint);
-
-                float resizeHeight;
-                float startResizeHeight;
-
-                if(conf.equals("0")){
-                    startResizeHeight =  cell.getCy() - cell.getHeight();
-                    //高さを半分にする
-                    resizeHeight = cell.getCy() - move;
-                }else{
-                    startResizeHeight   =  cell.getCy() - cell.getHeight() - move;
-                    resizeHeight = cell.getCy();
-                }
-                canvas.drawRect(cell.getCx() - cell.getWidth(), startResizeHeight, cell.getCx(),resizeHeight , paint);
-
-                if(cell.getPreAttendee()==1){
-                    paint.setColor(r.getColor( R.color.red) );
-                    /*if(cell.getSeat().getPreAttendeeState()==1){
-                        paint.setColor(r.getColor( R.color.green) );
-                    }else if(cell.getSeat().getPreAttendeeState()==2){
-                        paint.setColor(r.getColor( R.color.dimGray) );
-                    }*/
-                    int space = 8;
-                    canvas.drawRect((cell.getCx() - cell.getWidth())+cell.getWidth()/space , startResizeHeight+cell.getHeight()/space*2, cell.getCx() - cell.getWidth()/space/2, resizeHeight - cell.getHeight()/space, paint);
-                }
             }
         }
+    }
 
+    private void modeGrouping(Resources r,Cell cell){
+         /*グループ番号を描く*/
+        /*MainActivity activity = (MainActivity)this.getContext();
+        if(activity.mTeacher.getGroupingManagement().getDoGroupingFlag() == true){
+          }*/
     }
     /**
      * checkBeforeAndAfterSeatIntervalメソッド

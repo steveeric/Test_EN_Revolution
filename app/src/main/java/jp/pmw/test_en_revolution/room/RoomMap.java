@@ -9,17 +9,34 @@ import jp.pmw.test_en_revolution.room.dummy.DummyRoomMapContent;
  * Created by scr on 2014/11/27.
  */
 public class RoomMap {
+    //有効行は2倍に
+    private static final float ROW_HEIGHT_MAGNIFICAT = 5.0f;
+
+    private static final String ROW_LINE_ENABLE_ITEM = "1";
+    private static final String ROW_LINE_DiSENABLE_ITEM = "0";
+
     /*public static final int COLS = 21;
     public static final int ROWS = 34;*/
+    //有効行数
+    private int enableRowLineCount;
+    //無効行数
+    private int disableRowLineCount;
     private int rows;
     private int columns;
     private int width;
-    private int height;
+    private float height;
     private int top;
     private int left;
     private Cell cells[][];
     private String lineConfig[];
-    RoomMap(int rows, int columns){
+
+    /**
+     * @param enableRowLineCount 有効行数
+     * @param desableLineCount 無効行数
+     * **/
+    RoomMap(int desableLineCount,int enableRowLineCount,int rows, int columns){
+        this.enableRowLineCount = enableRowLineCount;
+        this.disableRowLineCount = desableLineCount;
         this.rows=rows;
         this.columns=columns;
         cells = new Cell[rows][columns];
@@ -86,6 +103,8 @@ public class RoomMap {
             }
         }
     }
+
+
     /**
      * Created by Shota Ito on 2014/12/11～2014/12/11.
      * setSeatInfoメソッド
@@ -99,10 +118,13 @@ public class RoomMap {
         String column = doDoubleDigit(cellColumn);
 
         /*現在はダミーデータですよ!*/
-        String seatId = getDummyNextNumberAndRoomId()+row+column;
+        //String seatId = getDummyNextNumberAndRoomId()+row+column;
+
+        //ダミーキャンパスID
+        String seatId = DummyRoomMapContent.CAMPUS_ID + DummyRoomMapContent.ROOM_241 + row + column;
 
         //return new Seat(seatId,cellRow,cellColumn);
-        return new Seat("",1,1);
+        return new Seat(seatId,cellRow,cellColumn);
     }
 
 
@@ -115,7 +137,7 @@ public class RoomMap {
      */
     private String doDoubleDigit(int value){
         String str = "";
-        if(value < 9){
+        if(value < 10){
             str = "0"+value;
         }else{
             str = ""+value;
@@ -133,7 +155,6 @@ public class RoomMap {
     private String getDummyNextNumberAndRoomId(){
         return DummyRoomMapContent.MEXT_NUMBER+DummyRoomMapContent.ROOM_ID;
     }
-
 
     public void setTestOnePreAttendee(){
         boolean b = false;
@@ -179,8 +200,10 @@ public class RoomMap {
         setWidth(width);
         setHeight(height);
     }
+
     public void setWidth(int width) {
-        this.width = (int) (width / columns) * columns; //列数で割り切れない場合は余りを捨てる。
+        //this.width = (int) (width / columns) * columns; //列数で割り切れない場合は余りを捨てる。
+        this.width = width;
         float cellW = this.getCellWidth();
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.columns; j++) {
@@ -192,7 +215,7 @@ public class RoomMap {
     public int getWidth() {
         return width;
     }
-    public void setHeight(int height) {
+    /*public void setHeight(int height) {
         this.height = (int)(height / rows) * rows; //行数で割り切れない場合は余りを捨てる。
         float cellH = this.getCellHeidht();
         for (int i = 0; i < this.rows; i++) {
@@ -201,8 +224,121 @@ public class RoomMap {
                 cells[i][j].setTop((int)(i * cellH));
             }
         }
+    }*/
+
+    /**
+     * Created by Shota Ito on 2015/1/10
+     * aerialTotalRowLineCountメソッド
+     * 架空の行数を返す
+     * @return 架空の行数
+     */
+    private int aerialTotalRowLineCount(){
+        return this.disableRowLineCount + (this.enableRowLineCount*(int)this.ROW_HEIGHT_MAGNIFICAT);
     }
-    public int getHeight() {
+
+    /**
+     * Created by Shota Ito on 2015/1/10
+     * checkOverScreenHeightSizeメソッド
+     * 作成したCELLの高さをトータルして画面の高さを超えていないかを、
+     * チェックします.
+     * @return false 超えていない
+     * @return true 超えている
+     */
+    private boolean checkOverScreenHeightSize(float totalHeightSize){
+        boolean b = false;
+
+        if(this.height < totalHeightSize){
+            //端末の縦サイズを超えている.
+            b = true;
+        }
+
+        return b;
+    }
+
+
+    /**
+     * Created by Shota Ito on 2015/1/10
+     * calculateEnableAndDisableLineHeightメソッド
+     * 着席可能な場所と、そうでない場所のCELL高を割り出す.
+     */
+    private float[] calculateEnableAndDisableLineHeight(int aerialTotalRows){
+        float[] linesHeight = new float[2];
+        float disableCellH = (float)(this.height / aerialTotalRows);
+        //float enableCellH = disableCellH * ROW_HEIGHT_MAGNIFICAT;
+
+        float enableZoneH = this.height - (disableCellH * this.disableRowLineCount);
+        float enableCellH = enableZoneH / this.enableRowLineCount;
+        /*
+        BigDecimal bigDecimal = new BigDecimal(String.valueOf(enableCell));
+        //==== 小数第2位で切り捨て ====//
+        float enableCellH = bigDecimal.setScale(1,  RoundingMode.FLOOR).floatValue();
+        */
+
+        float totalHeightSize = (disableCellH * this.disableRowLineCount) + (enableZoneH);
+
+        /*boolean checkerFlag = true;
+        int counter = 1;
+        while(checkerFlag){
+            checkerFlag = checkOverScreenHeightSize(totalHeightSize);
+            if(checkerFlag == true) {
+                if (counter % 2 != 0) {
+                    //
+                    --disableCellH;
+                } else {
+                    --enableCellH;
+                }
+                //やり直す
+                totalHeightSize = (disableCellH * this.disableRowLineCount) + (enableZoneH);
+            }
+            ++counter;
+        }*/
+        int disable = Integer.valueOf(ROW_LINE_DiSENABLE_ITEM);
+        int enable = Integer.valueOf(ROW_LINE_ENABLE_ITEM);
+
+        linesHeight[disable] = disableCellH;
+        linesHeight[enable] = enableCellH;
+        return linesHeight;
+   }
+
+    public void setHeight(int height) {
+        //this.height = (int)(height / rows) * rows; //行数で割り切れない場合は余りを捨てる。
+        int aerialRows = aerialTotalRowLineCount();
+        this.height = height;
+        //this.height = (height / aerialRows) * aerialRows;
+
+        float[] lineHeight = calculateEnableAndDisableLineHeight(aerialRows);
+        float beforCellTop = 0.0f;
+         for (int i = 0; i < this.rows; i++) {
+            String line = lineConfig[i];
+            float cellH = 0.0f;
+             if(line.equals(ROW_LINE_DiSENABLE_ITEM)){
+                //無効行
+                 cellH = lineHeight[0];
+             }else{
+                //有効行
+                 cellH = lineHeight[1];
+             }
+            for (int j = 0; j < this.columns; j++) {
+                cells[i][j].setHeight(cellH);
+                int top = (int)(beforCellTop);
+                cells[i][j].setTop(top);
+            }
+             beforCellTop = beforCellTop + cellH;
+        }
+    }
+
+    /*public void setHeight(int height) {
+        this.height = (int)(height / rows) * rows; //行数で割り切れない場合は余りを捨てる。
+        float cellH = this.getCellHeidht();
+        for (int i = 0; i < this.rows; i++) {
+            String line = lineConfig[i];
+            for (int j = 0; j < this.columns; j++) {
+                cells[i][j].setHeight(cellH);
+                cells[i][j].setTop((int)(i * cellH));
+            }
+        }
+    }*/
+    public float getHeight() {
         return height;
     }
     public void setTop(int top) {

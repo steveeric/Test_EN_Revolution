@@ -13,6 +13,10 @@ import java.util.List;
 public class Room {
     @SerializedName("map")
     private String map;
+    @SerializedName("enable_rows")
+    private int enableRows;
+    @SerializedName("disabled_rows")
+    private int  disabledRows;
     @SerializedName("cell_rows")
     private int cellRows;
     @SerializedName("cell_columns")
@@ -26,7 +30,8 @@ public class Room {
     public String getRoomMaping(){
         return this.map;
     }
-
+    public int getEnableRows(){return this.enableRows;}
+    public int getDisabledRows(){return this.disabledRows;}
     public int getCellRows(){
         return this.cellRows;
     }
