@@ -40,6 +40,7 @@ public class QuestionnaireFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+    private LinearLayout duaringAttendanceLayout;
     //アンケートが登録されていない場合のレイアウト
     private LinearLayout noQuestionLayout;
     //アンケートが登録されている場合のレイアウト
@@ -56,6 +57,7 @@ public class QuestionnaireFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        this.duaringAttendanceLayout = (LinearLayout)this.getActivity().findViewById(R.id.clicker_survey_duaring_attendance_linearLayout);
         this.noQuestionLayout = (LinearLayout)this.getActivity().findViewById(R.id.clicker_survey_no_question_linearLayout);
         this.doQuestionlayout = (LinearLayout)this.getActivity().findViewById(R.id.clicker_survey_do_question_linearLayout);
         this.questionListView = (ListView)this.getActivity().findViewById(R.id.clicker_survey_do_question_listView);
@@ -97,7 +99,12 @@ public class QuestionnaireFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        dummyTestStart();
+        MainActivity activity = (MainActivity)this.getActivity();
+        if(activity.mTeacher.getEndAttendanceFlag()==false){
+            duaringAttendanceLayout.setVisibility(View.VISIBLE);
+        }else{
+            dummyTestStart();
+        }
     }
     /**
      * Created by scr on 2014/12/25.

@@ -137,6 +137,8 @@ public class QuestionnaireDialogFragment extends DialogFragment{
                 case R.id.dialog_custom_questionnaire_start_positive_button:
                     //はい
                     startQuestionnaire();
+                    //回答結果確認画面へ
+                    moveToResultFragment();
                     dismiss();
                     break;
             }

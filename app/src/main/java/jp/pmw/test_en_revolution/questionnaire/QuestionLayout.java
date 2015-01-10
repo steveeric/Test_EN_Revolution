@@ -18,7 +18,7 @@ import jp.pmw.test_en_revolution.R;
 public class QuestionLayout extends LinearLayout {
     private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
     private TextView questionNumberTextView;
-    private TextView themeTextView;
+    //private TextView themeTextView;
     private ListView askListView;
     /*private TableLayout askTableLayout;
     private TextView questionTextView;
@@ -32,7 +32,7 @@ public class QuestionLayout extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         questionNumberTextView = (TextView) findViewById(R.id.row_question_question_index_textView);
-        themeTextView = (TextView) findViewById(R.id.row_question_topic);
+        //themeTextView = (TextView) findViewById(R.id.row_question_topic);
         //askListView = (ListView) findViewById(R.id.row_question_asks_listView);
         //askTableLayout = (TableLayout) findViewById(R.id.row_question_ask_tableLayout);
         //questionTextView = (TextView) findViewById(R.id.row_question_question_textView);
@@ -45,11 +45,11 @@ public class QuestionLayout extends LinearLayout {
     public void bindView(int index,Question question) {
 
         //アンケート番号
-        this.questionNumberTextView.setText(this.getContext().getResources().getString(R.string.question_index_number) + index);
-
+        //this.questionNumberTextView.setText(this.getContext().getResources().getString(R.string.question_index_number) + index);
         String str = question.getQuestionTitle();
+        this.questionNumberTextView.setText(str);
         //テーマ
-        this.themeTextView.setText(str);
+        //this.themeTextView.setText(str);
         //尋ねる内容
         List<Ask> asks = question.getAsks();
         /*MainActivity activity = (MainActivity)this.getContext();
@@ -65,9 +65,20 @@ public class QuestionLayout extends LinearLayout {
                     +asks.get(i).getAskContent();
             tv.setText(content);
             //問題の門とサイズ
-            float fontSize = this.getContext().getResources().getDimension(R.dimen.textsize_medium);
+            float fontSize = this.getContext().getResources().getDimension(R.dimen.textsize_large);
             tv.setTextSize(fontSize);
             this.addView(tv);
+            for(int j = 0; j < asks.get(i).getAnswer().size(); j++){
+                TextView anstv = new TextView(this.getContext());
+                String asnContent = "　　"
+                        + asks.get(i).getAnswer().get(j).getAnswerIndexNumber()
+                        + "　"
+                        + asks.get(i).getAnswer().get(j).getAnswerContent();
+                anstv.setText(asnContent);
+                float ansSize = this.getContext().getResources().getDimension(R.dimen.textsize_medium);
+                anstv.setTextSize(ansSize);
+                this.addView(anstv);
+            }
         }
     }
 }

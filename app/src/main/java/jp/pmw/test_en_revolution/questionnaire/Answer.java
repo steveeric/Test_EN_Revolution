@@ -7,18 +7,21 @@ import java.io.Serializable;
  * 回答者を保持するクラス.
  */
 public class Answer implements Serializable {
+    private String answerIndexNumber;
     private String answerIndexColor;
     private String answerContent;
     //回答者数
     private int answerCount;
     private int percentage;
 
-    public Answer(String answerIndexColor,String answerContent,int answerCount,int percentage){
+    public Answer(String answerIndexNumber,String answerIndexColor,String answerContent,int answerCount,int percentage){
+        this.answerIndexNumber = answerIndexNumber;
         this.answerIndexColor = answerIndexColor;
         this.answerContent = answerContent;
         this.answerCount = answerCount;
         this.percentage = percentage;
     }
+    public String getAnswerIndexNumber(){return this.answerIndexNumber;}
     public String getanswerIndexColor(){return this.answerIndexColor;}
     public String getAnswerContent(){return this.answerContent;}
     public int getAnswerCount(){
