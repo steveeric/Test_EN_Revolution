@@ -23,6 +23,11 @@ import jp.pmw.test_en_revolution.confirm_class_plan.When;
  */
 public class DummyContentClass {
 
+    public static final String ROOM_ID_241 = "306058000000";
+    public static final String ROOM_ID_135 = "306058000001";
+    public static final String ROOM_ID_1317 = "306058000002";
+
+
     /**
      * An array of sample (dummy) items.
      */
@@ -56,11 +61,40 @@ public class DummyContentClass {
         university = new MextUniversity("306058","園田学園女子大学");
         campus = new Campus("30605800","そのだキャンパス");
         building = new Building("30605800","1号館");
-        room = new Room("30605800000","241教室",244);
+        room = new Room(ROOM_ID_241,"241教室",244);
         place = new Place(university,campus,building,room);
         subject = new Subject("306058001400116","情報数学I");
         browsingClass = new BrowsingClass("");
-        classPlan = new ClassPlan("306058001400116141219306058001405",when,timeZone,place,11,0,1,room,subject,browsingClass);
+        classPlan = new ClassPlan("306058001400116141219306058001405",when,timeZone,place,11,0,0,room,subject,browsingClass);
+        /**/
+        teaching = new Teaching(1,classPlan,0);
+        addItem(teaching);
+
+        /*衣井先生*/
+        when = new When("2014","12","26");
+        timeZone = new TimeZone("4時限目","14:30:00","16:10:00");
+        university = new MextUniversity("306058","園田学園女子大学");
+        campus = new Campus("30605800","そのだキャンパス");
+        building = new Building("30605800","1号館");
+        room = new Room(ROOM_ID_135,"135教室",144);
+        place = new Place(university,campus,building,room);
+        subject = new Subject("306058001400280","スポーツ栄養学");
+        browsingClass = new BrowsingClass("");
+        classPlan = new ClassPlan("306058001400280141219306058001405",when,timeZone,place,11,0,0,room,subject,browsingClass);
+        teaching = new Teaching(1,classPlan,0);
+        addItem(teaching);
+
+        /*稲葉先生*/
+        when = new When("2014","12","26");
+        timeZone = new TimeZone("4時限目","14:30:00","16:10:00");
+        university = new MextUniversity("306058","園田学園女子大学");
+        campus = new Campus("30605800","そのだキャンパス");
+        building = new Building("30605800","1号館");
+        room = new Room(ROOM_ID_1317, "1317教室" ,180);
+        place = new Place(university,campus,building,room);
+        subject = new Subject("306058001400220","スポーツ社会学");
+        browsingClass = new BrowsingClass("");
+        classPlan = new ClassPlan("306058001400220141219306058001405",when,timeZone,place,11,0,1,room,subject,browsingClass);
         /**/
         teaching = new Teaching(1,classPlan,0);
         addItem(teaching);
@@ -72,9 +106,9 @@ public class DummyContentClass {
         university = new MextUniversity("306058","園田学園女子大学");
         campus = new Campus("30605800","そのだキャンパス");
         building = new Building("30605800","1号館");
-        room = new Room("30605800000","1351教室",244);
+        room = new Room("30605800000","135教室",244);
         place = new Place(university,campus,building,room);
-        subject = new Subject("306058001400116","人口知能");
+        subject = new Subject("306058001400116","人工知能");
         browsingClass = new BrowsingClass("");
         classPlan = new ClassPlan("306058001400116141219306058001405",when,timeZone,place,11,0,0,room,subject,browsingClass);
         /**/
@@ -90,7 +124,7 @@ public class DummyContentClass {
         building = new Building("30605800","1号館");
         room = new Room("30605800000","501教室",244);
         place = new Place(university,campus,building,room);
-        subject = new Subject("306058001400116","人口知能");
+        subject = new Subject("306058001400116","人工知能");
         browsingClass = new BrowsingClass("");
         classPlan = new ClassPlan("306058001400116141219306058001405",when,timeZone,place,11,0,0,room,subject,browsingClass);
         /**/
@@ -120,15 +154,18 @@ public class DummyContentClass {
             teaching = ITEMS.get(0);
         }else if(staffId.equals("30605800140019")){
             //石垣短
-            teaching = ITEMS.get(1);
+            teaching = ITEMS.get(3);
         }else if(staffId.equals("30605800140016")){
             //磯だ総研
-            teaching = ITEMS.get(2);
+            teaching = ITEMS.get(4);
         }else if(staffId.equals("30605800140020")){
             //稲葉総研
-            teaching = ITEMS.get(3);
+            teaching = ITEMS.get(2);
+        }else if(staffId.equals("30605800140056")){
+            //衣井健生
+            teaching = ITEMS.get(1);
         }else{
-            teaching = ITEMS.get(3);
+            teaching = ITEMS.get(5);
         }
         return teaching;
     }
