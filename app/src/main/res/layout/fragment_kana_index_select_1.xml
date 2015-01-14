@@ -89,7 +89,6 @@
             android:textSize="@dimen/textsize_xxlarge"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="(選択された教員名がはいります.)"
-            android:background="@drawable/text_border"
             android:id="@+id/kana_index_select_select_teacher_name_textView"
             android:layout_weight="1" />
 
