@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/bg_shape_dialog">
+
+    <!--<SearchView
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/activity_vertical_large_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_midium_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_large_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_large_margin"
+        android:id="@+id/dialog_custom_search_history_student_searchView" />-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/activity_vertical_large_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_midium_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_large_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_large_margin"
+        android:textSize="@dimen/textsize_xlarge"
+        android:text="@string/serch_history_dialog_fragment_title"/>
+
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:layout_marginTop="@dimen/activity_vertical_midium_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_midium_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_large_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_large_margin"
+        android:id="@+id/dialog_custom_search_history_student_gridView" />
+
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/activity_vertical_midium_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_large_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_large_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_large_margin"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:background="@drawable/bt_dialog_orange_positive"
+        android:textSize="@dimen/textsize_xlarge"
+        android:text="@string/close"
+        android:id="@+id/dialog_custom_search_history_close_button"/>
+</LinearLayout>

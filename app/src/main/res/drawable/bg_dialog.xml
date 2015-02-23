@@ -4,7 +4,7 @@
     <corners android:radius="5dp"/>
 
     <!--<stroke android:width="2dp" android:color="#9acd32"/>-->
-    <stroke android:width="@dimen/activity_horizontal_xxxxsmall_margin" android:color="@color/darkRed"/>
+    <stroke android:width="@dimen/activity_horizontal_xxxxsmall_margin" android:color="@color/gray"/>
 
     <gradient android:startColor="#ffffff" android:endColor="#dcdcdc" android:angle="90"/>
 

@@ -49,7 +49,7 @@ import jp.pmw.test_en_revolution.one_cushion.select_teacher.dummy.StaffsMst;
  * @version 1.0
  */
 public class KanaIndexSelectActivity extends MyActivity
-    {
+{
     public static final String SELECT_INITIAL = "SELECT_INITIAL";
     private static final String CONFIRM_TAP_CONTENT_ALERT_DIALOG = "doConfirmTapContentAlertDialog";
     private static final String SHOW_POPUP_CONFIRM_CLASS_PLAN  = "showPopupConfirmClassPlan";
@@ -131,16 +131,16 @@ public class KanaIndexSelectActivity extends MyActivity
 
         return super.onOptionsItemSelected(item);
     }
-        /**
-         * Created by scr on 2014/12/17.
-         * doTeacherConfirmTapSelectContent
-         * タップした教員名で間違いがないかを画面上に表示するメソッド.
-         * @param  selectTeacher タップされた教員情報
-         */
-        public void doTeacherConfirmTapSelectContent(Teacher selectTeacher) {
-           //TODO:タップされた教員情報を画面上に出力する.
+    /**
+     * Created by scr on 2014/12/17.
+     * doTeacherConfirmTapSelectContent
+     * タップした教員名で間違いがないかを画面上に表示するメソッド.
+     * @param  selectTeacher タップされた教員情報
+     */
+    public void doTeacherConfirmTapSelectContent(Teacher selectTeacher) {
+        //TODO:タップされた教員情報を画面上に出力する.
 
-        }
+    }
 
 
     /**
@@ -160,12 +160,12 @@ public class KanaIndexSelectActivity extends MyActivity
         dialogFragment.show(getSupportFragmentManager(), CONFIRM_TAP_CONTENT_ALERT_DIALOG);
     }*/
 
-        /**
-         * Created by scr on 2014/12/16.
-         * showPopupConfirmClassPlanメソッド
-         * 選択された教員の最寄りの講義情報(いつどこでどの科目の講義を行うかを表示する).
-         * @param  teachr 教員ID,教員名,教員が開講する最寄りの講義情報をポップアップで表示する.
-         */
+    /**
+     * Created by scr on 2014/12/16.
+     * showPopupConfirmClassPlanメソッド
+     * 選択された教員の最寄りの講義情報(いつどこでどの科目の講義を行うかを表示する).
+     * @param  teachr 教員ID,教員名,教員が開講する最寄りの講義情報をポップアップで表示する.
+     */
         /*public void showPopupConfirmClassPlan(Teacher teachr) {
             Bundle args = new Bundle();
             args.putInt(CommonDialogFragment.FIELD_TITLE, R.string.confirm_select_content);
@@ -210,9 +210,9 @@ public class KanaIndexSelectActivity extends MyActivity
     }
 
     /**
-         * A placeholder fragment containing a simple view.
-         */
-    public class PlaceholderFragment extends Fragment {
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
         //private static final String STR1 = "選択名 : ";
 
         //(かな)行を選択するものが詰め込まれているレイアウト.
@@ -338,7 +338,7 @@ public class KanaIndexSelectActivity extends MyActivity
             //
             startActivity(intent);
             //
-            finish();
+            getActivity().finish();
         }
 
         @Override

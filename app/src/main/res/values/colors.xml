@@ -6,6 +6,8 @@
     <color name="black">#000000</color>
     <!-- スカイブルー -->
     <color name="skyBlue">#90D7EC</color>
+    <!-- スカイブルー -->
+    <color name="semitransparenttranslucent_skyBlue">#5590D7EC</color>
     <!-- あお -->
     <color name="blue">#0000FF</color>
     <!-- ネイビー -->
@@ -22,10 +24,16 @@
     <color name="semitransparenttranslucent_darkRed">#55B3424A</color>
     <!-- きいろ -->
     <color name="yellow">#FFFF00</color>
+    <!-- きみどり -->
+    <color name="yellowGreen">#9acd32</color>
     <!-- みどり -->
     <color name="green">#00FF00</color>
     <!-- みどり -->
     <color name="semitransparenttranslucent_green">#5500FF00</color>
+    <!--らいむ-->
+    <color name="limeGreen">#32CD32</color>
+    <!-- もりいろ -->
+    <color name="forestGreen">#228B22</color>
     <!-- みどり -->
     <color name="darkGreen">#00552e</color>
     <!-- むらさき -->
@@ -42,6 +50,13 @@
     <color name="darkGray">#A9A9A9</color>
     <!-- ディミグレイ -->
     <color name="dimGray">#696969</color>
+    <!-- シルバー -->
+    <color name="silver">#C0C0C0</color>
+    <!-- シアン -->
+    <color name="cyan">#00FFFF</color>
+    <!-- ライトシアン -->
+    <color name="lightCyan">#E0FFFF</color>
+
     <!-- アイボリー -->
     <color name="ivory">#EEEEE0</color>
     <!-- オレンジ -->
@@ -68,6 +83,24 @@
     <color name="fourthPieGraph">#FF4500</color>
     <!-- 円グラフの五つ目の色(赤色系の色) -->
     <color name="fifthPieGraph">#800080</color>
+
+
+    <!-- ドロワーナビゲーションの文字タイトルの色 -->
+    <color name="dronaviTitle">#EAEAEA</color>
+    <!-- ハンズフリー出席管理タイトルカラー -->
+    <!--<color name="handsFreeAttendanceTitleBackGround">#00ACE6</color>-->
+    <color name="handsFreeAttendanceTitleBackGround">#00678a</color>
+    <!-- ハンズフリー出席管理コンテンツカラー -->
+    <!--<color name="handsFreeAttendanceContentBackGround">#98CAED</color>-->
+    <color name="handsFreeAttendanceContentBackGround">#009acf</color>
+    <!-- アクティブラーニングタイトルカラー -->
+    <!--<color name="activeLearningTitleBackGround">#DDA03F</color>-->
+    <color name="activeLearningTitleBackGround">#9a702c</color>
+    <!-- ハンズフリー出席管理コンテンツカラー -->
+    <!--<color name="activeLearningContentBackGround">#F6B246</color>-->
+    <color name="activeLearningContentBackGround">#c69038</color>
+    <!-- ドロワーナビゲーションフラグメントコンテンツ選択カラー -->
+    <color name="dronaviContentSelect">#EAEAEA</color>
 
 
 </resources>

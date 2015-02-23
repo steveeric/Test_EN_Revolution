@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 import jp.pmw.test_en_revolution.confirm_class_plan.ClassPlan;
 import jp.pmw.test_en_revolution.confirm_class_plan.Roster;
+import jp.pmw.test_en_revolution.grouping.GroupingManagement;
+import jp.pmw.test_en_revolution.questionnaire.Questionnaire;
 
 /**
  * Created by scr on 2014/12/04.
@@ -32,6 +34,13 @@ public class Teacher implements Serializable {
     private ClassPlan classPlan;
     //受講者(オブジェクト)
     private Roster roster;
+    //アンケート
+    private Questionnaire questionnaire;
+    //グルーピング管理クラス
+    private GroupingManagement groupingManagement;
+    //出席調査を終えたかどうか
+    private boolean endAttendanceFlag = true;
+
 
     //授業情報セッター
     public void setClassPlan(ClassPlan classPlan){
@@ -40,6 +49,17 @@ public class Teacher implements Serializable {
     //受講者セッター
     public void setRoster(Roster roster){
         this.roster = roster;
+    }
+    //グルーピングセッター
+    public void setGroupingManagement(GroupingManagement groupingManagement){
+        this.groupingManagement = groupingManagement;
+    }
+    //アンケートセッター
+    public void setQuestionnaire(Questionnaire questionnaire){
+        this.questionnaire = questionnaire;
+    }
+    public void setEndAttendanceFlag(boolean flag){
+        this.endAttendanceFlag = flag;
     }
 
     public String getId(){
@@ -52,4 +72,10 @@ public class Teacher implements Serializable {
     public ClassPlan getClassPlan(){return this.classPlan;}
     //受講者ゲッター
     public Roster getRoster(){return this.roster;}
+    //グルーピングマネージメントゲッター
+    public GroupingManagement getGroupingManagement(){return this.groupingManagement;}
+    //アンケートゲッター
+    public Questionnaire getQuestionnaire(){return this.questionnaire;}
+    //
+    public boolean getEndAttendanceFlag(){return this.endAttendanceFlag;}
 }

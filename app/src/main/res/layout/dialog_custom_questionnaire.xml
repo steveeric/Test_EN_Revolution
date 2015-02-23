@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- コンテンツ -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:paddingBottom="20dp"
+        android:background="@drawable/bg_blue_dialog"
+        android:gravity="center_horizontal">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/title_linearLayout"
+            android:background="@drawable/bg_blue_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/dialog_custom_questionnaire_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
+                android:text="アンケートタイトル取得中..."
+                android:textSize="@dimen/textsize_xlarge"
+                android:textColor="@android:color/white"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_xlarge"
+            android:text="..."
+            android:id="@+id/dialog_custom_questionnaire_action_textView" />
+
+        <LinearLayout
+            android:id="@+id/dialog_custom_questionnaire_start_linearlayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/dialog_custom_questionnaire_dontstart_negative_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_large_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_large_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_large_margin"
+                android:background="@drawable/bt_dialog_blue_close"
+                android:text="@string/no"
+                android:textSize="@dimen/textsize_xlarge"
+                android:textColor="@android:color/white"
+                />
+            <Button
+                android:id="@+id/dialog_custom_questionnaire_start_positive_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_large_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_large_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_large_margin"
+                android:background="@drawable/bt_dialog_orange_positive"
+                android:text="@string/yes"
+                android:textSize="@dimen/textsize_xlarge"
+                android:textColor="@android:color/white"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dialog_custom_questionnaire_result_linearlayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/dialog_custom_questionnaire_reslut_negative_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_large_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_large_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_large_margin"
+                android:background="@drawable/bt_dialog_blue_close"
+                android:text="@string/no"
+                android:textSize="@dimen/textsize_xlarge"
+                android:textColor="@android:color/white"
+                />
+            <Button
+                android:id="@+id/dialog_custom_questionnaire_reslut_positive_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_large_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_large_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_large_margin"
+                android:background="@drawable/bt_dialog_orange_positive"
+                android:text="@string/yes"
+                android:textSize="@dimen/textsize_xlarge"
+                android:textColor="@android:color/white"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

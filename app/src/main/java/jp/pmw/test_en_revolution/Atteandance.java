@@ -17,7 +17,7 @@ public class Atteandance {
     /*@SerializedName("student_id")
     public String mStudentId;*/
     @SerializedName("student")
-    public Student mStudent;
+    public PreStudent mStudent;
 
     //仮出席
     @SerializedName("temp_attendance")

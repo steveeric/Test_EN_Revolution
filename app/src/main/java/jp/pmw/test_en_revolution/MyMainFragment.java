@@ -6,6 +6,11 @@ import android.support.v4.app.Fragment;
  * Created by scr on 2014/12/23.
  */
 public class MyMainFragment extends Fragment {
+
+    public MainActivity getMainActivity(){
+        return (MainActivity)this.getActivity();
+    }
+
     @Override
     public void onResume(){
         super.onResume();

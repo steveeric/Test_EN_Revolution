@@ -27,7 +27,7 @@ public class Drawer {
             int section = sections[i];
             int res = resoreses[i];
             String title = titles[i];
-            items.add(new DrawerBindData(tapflags[i],select[i],chapter,section,res,title));
+            //items.add(new DrawerBindData(tapflags[i],select[i],chapter,section,res,title));
         }
         return items;
     }
@@ -49,13 +49,15 @@ public class Drawer {
                 };
         int[] chapters = {1,0,0,1,0,0};
         int[] sections = {0,1,1,0,1,1};
-        String[] titles = {"ハンズフリー出席管理","着座状況","受講者一覧","アクティブラーニング","グルーピィング","アンケート"};
+        int[] category = {DrawerLayout.HANDS_FREE_ATTENDANCE,DrawerLayout.HANDS_FREE_ATTENDANCE,DrawerLayout.HANDS_FREE_ATTENDANCE
+                ,DrawerLayout.ACTIVE_LEARNING,DrawerLayout.ACTIVE_LEARNING,DrawerLayout.ACTIVE_LEARNING};
+        String[] titles = {"ハンズフリー出席管理","着席状況","受講者一覧","アクティブラーニング","グルーピング","アンケート"};
         for(int i = 0; i < resoreses.length; i++){
             int chapter = chapters[i];
             int section = sections[i];
             int res = resoreses[i];
             String title = titles[i];
-            items.add(new DrawerBindData(tapflags[i],select[i],chapter,section,res,title));
+            items.add(new DrawerBindData(category[i],tapflags[i],select[i],chapter,section,res,title));
         }
         return items;
     }

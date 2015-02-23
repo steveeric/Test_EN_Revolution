@@ -13,6 +13,7 @@
     <string name="infomation_sitter">着席情報</string>
     <string name="number_of_people">人</string>
     <string name="percentage">%</string>
+    <string name="seat_number_separetar"> - </string>
     <string name="other">他</string>
     <string name="close">とじる</string>
     <string name="space"> </string>
@@ -28,7 +29,7 @@
     <string name="loading">読み込み中...</string>
     <string name="chapter_attendance">ハンズフリー出席管理</string>
     <string name="title_section0">選択画面</string>
-    <string name="title_section1">着座状況</string>
+    <string name="title_section1">着席状況</string>
     <string name="title_section2">受講者一覧</string>
     <string name="title_section3">再調査</string>
     <string name="title_section4">ESL忘れ</string>
@@ -46,6 +47,13 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
+    <string name="menu_hands_free_attendance_student_history">個人履歴</string>
+    <string name="menu_hands_free_attendance_re_call_the_roll">再出席調査</string>
+
+    <string name="re_call_the_roll_alert_dialog_title">再出席調査中...</string>
+    <string name="re_call_the_roll_alert_dialog_message">出席調査中です.しばらくお待ちください.</string>
+    <string name="re_call_the_roll_end_alert_dialog_title">再調査終了</string>
+    <string name="re_call_the_roll_end_alert_dialog_message">出席調査が終了しました.</string>
     <string name="menu_action_questionnaire_servey">アンケート調査</string>
     <string name="menu_action_questionnaire_result">回答結果</string>
     <string name="action_attendance_list">出席者一覧</string>
@@ -83,13 +91,56 @@
     <!--講義内容確認画面-->
     <string name="main_bottom_top_message">画面左側から右側に向かって\r\n指でスワイプして下さい.</string>
 
+    <!---->
+    <string name="grouping_group_duaring_attendance">出席調査が終わるまでグルーピングを行うことはできません.</string>
+    <string name="grouping_group_title">何に基づいてグループを編成しますか？</string>
+    <string name="grouping_group_group_number">グループ数に基づいて</string>
+    <string name="grouping_group_select_group_number">編成グループ総数を入力して下さい.</string>
+    <string name="grouping_group_menber_number">メンバー数に基づいて</string>
+    <string name="grouping_group_select_group_assist">グループ</string>
+    <string name="grouping_group_select_menber_number">１つのグループ何人編成にするか入力して下さい.</string>
+    <string name="grouping_group_select_menber_assist_front">１グループ</string>
+    <string name="grouping_group_select_menber_assist">人</string>
+    <string name="grouping_group_enter">を入力して下さい.</string>
+    <string name="grouping_group_request_for_input">入力のお願い</string>
+    <string name="grouping_group_please_enter_in_number">数字を入力して下さい.</string>
+    <string name="grouping_group_confirm">確認</string>
+    <string name="grouping_group_attendee_is_not_enough">出席者が足りません.</string>
+    <string name="grouping_group_end_message">グルーピングを行いました.</string>
+    <string name="grouping_group_end_group_cnfirm">着席状況を確認</string>
+
     <!--アンケート-->
+    <string name="question_duaring_attendance">出席調査が終わるまでアンケートを行うことはできません.</string>
+    <string name="question_index_number">アンケート</string>
+    <string name="questionnaire_topic">A</string>
     <string name="questionnaire_number">Q</string>
+    <string name="ask_number">Q</string>
+    <string name="ask_dot">.</string>
+    <!-- アンケートカスタムダイアログ -->
+    <string name="questionnaire_custom_dialog_start">実施しますか?</string>
+    <string name="questionnaire_custom_dialog_result">回答結果を確認しますか?</string>
 
     <!-- カスタムダイアログ -->
-    <string name="total_attendee">出席　</string>
-    <string name="total_absentee">欠席　</string>
+    <string name="number_of_times">回</string>
+    <string name="total_attendee">出席</string>
+    <string name="total_absentee">欠席</string>
     <string name="total_no_absentee">欠席なし</string>
+
+    <!-- 個人履歴検索ダイアログフラグメント -->
+    <string name="serch_history_dialog_fragment_title">参照したい学生を選んでください.</string>
+
+    <!-- 個人履歴ダイアログフラグメント -->
+    <string name="history_dialog_frament_class_room_count">回目</string>
+    <string name="history_dialog_frament_attendee_state">〇</string>
+    <string name="history_dialog_frament_absentee_state">×</string>
+    <string name="history_dialog_frament_forgot_esl">ESL忘れ</string>
+
+    <string name="alert_title_message_unimplemented">未実装</string>
+    <string name="alert_message_unimplemented">まだ使用することが出来ません.</string>
+
+    <string name="alert_title_message">メッセージ</string>
+    <string name="alert_message_donot_re_call_the_roll">まだ全員の出席が確認できていないので使用することが出来ません.</string>
+    <string name="alert_message_cannot_accept_input_value">入力された値ではグルーピングを行うことができません.</string>
 
 
 </resources>

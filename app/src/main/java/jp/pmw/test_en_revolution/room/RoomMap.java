@@ -45,7 +45,7 @@ public class RoomMap {
         cells = new Cell[rows][columns];
     }*/
 
-    public void setRoomMap(String map){
+    public void setRoomMap(String roomId,String map){
         int riverceCellRow = 0;
         int riverceCellColumn = 0;
         String[] line = doSplite(";",map);
@@ -64,7 +64,7 @@ public class RoomMap {
                 //端末上からを下からの番号に変更
                 riverceCellColumn = (this.columns -1) - j;
                 //座席クラスを取得する
-                Seat seat = getSeatInfo(riverceCellRow,riverceCellColumn);
+                Seat seat = getSeatInfo(roomId,riverceCellRow,riverceCellColumn);
                 //座席クラスをセットする
                 cells[i][j].setSeat(seat);
             }
@@ -113,7 +113,7 @@ public class RoomMap {
      * @param cellColumn 現在のセル行数
      * @return 座席を管理するクラスを返す.
      */
-    private Seat getSeatInfo(int cellRow,int cellColumn){
+    private Seat getSeatInfo(String roomId,int cellRow,int cellColumn){
         String row = doDoubleDigit(cellRow);
         String column = doDoubleDigit(cellColumn);
 
@@ -121,7 +121,7 @@ public class RoomMap {
         //String seatId = getDummyNextNumberAndRoomId()+row+column;
 
         //ダミーキャンパスID
-        String seatId = DummyRoomMapContent.CAMPUS_ID + DummyRoomMapContent.ROOM_241 + row + column;
+        String seatId = roomId + row + column;
 
         //return new Seat(seatId,cellRow,cellColumn);
         return new Seat(seatId,cellRow,cellColumn);

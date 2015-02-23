@@ -73,6 +73,8 @@ public class NavigationDrawerFragment extends Fragment {
         return this.mCurrentSelectedPosition;
     }
 
+    public ListView getDrawerListView(){return this.mDrawerListView;}
+
     public NavigationDrawerFragment() {
     }
 
@@ -275,7 +277,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private void selectItem(int position) {
+    public void selectItem(int position) {
         //選択したListViewのPositionをフィールド変数に持たせる.
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {

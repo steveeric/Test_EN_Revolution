@@ -2,27 +2,30 @@
 <jp.pmw.test_en_revolution.questionnaire.QuestionLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/gray_border">
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:text="アンケートトピック"
+        android:id="@+id/row_question_question_index_textView"
+        android:textSize="@dimen/textsize_xlarge"
+        android:background="@color/limeGreen"
+        android:textColor="@color/whiteSmoke" />
+    <!--<TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="(主題がありません.)"
         android:id="@+id/row_question_topic"
-        android:textSize="@dimen/textsize_xlarge"
-        android:layout_gravity="center_horizontal" />
+        android:textSize="@dimen/textsize_xlarge"/>-->
 
-    <!--<TableLayout
+    <!--<ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/row_question_ask_tableLayout">
-        </TableLayout>-->
-    
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/row_question_questions_listView">
-    </ListView>
+        android:layout_height="match_parent"
+        android:id="@+id/row_question_asks_listView">
+    </ListView>-->
     <!--<TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

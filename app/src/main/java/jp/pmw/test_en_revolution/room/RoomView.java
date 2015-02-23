@@ -72,16 +72,28 @@ public class RoomView extends View {
     }
 
     /**
-     * setRoomMapメソッド
+     * setDummyDataRoomMapメソッド
      * 教室方法を保持するクラスにダミーデータを保持させる.
      * テスト用に使用するためです
      */
-    public void setRoomMap(){
-        this.mRoom = new RoomMap(DummyRoomMapContent.DISABLE_ROWS,DummyRoomMapContent.ENABLE_ROWS,
-                DummyRoomMapContent.ROWS,DummyRoomMapContent.COLUMN);
-        this.mRoom.setRoomMap(DummyRoomMapContent.ITEM);
-        //this.mRoom.setTes.tPreAttendee();
-        //this.mRoom.setTestOnePreAttendee();
+    public void setDummyDataRoomMap(){
+        String dummyroomId = this.activity.mTeacher.getClassPlan().getPlace().getRoom().getRoomId();
+        if(dummyroomId.equals(DummyRoomMapContent.ROOM_135_ID)){
+            //135教室
+            this.mRoom = new RoomMap(DummyRoomMapContent.DISABLE_135_ROWS,DummyRoomMapContent.ENABLE_135_ROWS,
+                    DummyRoomMapContent.ROWS_135,DummyRoomMapContent.COLUMN_135);
+            this.mRoom.setRoomMap(DummyRoomMapContent.ROOM_135_ID,DummyRoomMapContent.CELL_ITEM_135);
+        }else if(dummyroomId.equals(DummyRoomMapContent.ROOM_1317_ID)){
+            //1317教室
+            this.mRoom = new RoomMap(DummyRoomMapContent.DISABLE_1317_ROWS,DummyRoomMapContent.ENABLE_1317_ROWS,
+                    DummyRoomMapContent.ROWS_1317,DummyRoomMapContent.COLUMN_1317);
+            this.mRoom.setRoomMap(DummyRoomMapContent.ROOM_1317_ID,DummyRoomMapContent.CELL_ITEM_1317);
+        }else{
+            //241教室
+            this.mRoom = new RoomMap(DummyRoomMapContent.DISABLE_241_ROWS,DummyRoomMapContent.ENABLE_241_ROWS,
+                    DummyRoomMapContent.ROWS_241,DummyRoomMapContent.COLUMN_241);
+            this.mRoom.setRoomMap(DummyRoomMapContent.ROOM_241_ID,DummyRoomMapContent.CELL_ITEM_241);
+        }
     }
     /**
      * Created by scr on 2015/1/6.
@@ -296,6 +308,7 @@ public class RoomView extends View {
         Cell[][] cells = mRoom.getCells();
         String[] lineConf = mRoom.getLineConfigs();
 
+        int deskRowCount = 0;
         for(int i = 0; i < mRoom.getRows(); i++){
             String conf = lineConf[i];
             for(int j = 0; j < mRoom.getColumns(); j++){
@@ -309,9 +322,15 @@ public class RoomView extends View {
                 }else if(item.equals(MapConfig.BLACK_BORD)){
                     paint.setColor(r.getColor( R.color.darkGreen) );
                 }
-
                /*セル内を描く*/
                canvas.drawRect(cell.getCx() - cell.getWidth(), cell.getCy() - cell.getHeight(), cell.getCx(), cell.getCy(), paint);
+
+                /*座席の境目を表示する*/
+                //2015年1月13日
+                /*if((cell.getSeat().getSeatRowNumber()-1)%10 == 0 && cell.getSeat().getSeatRowNumber()-1 != 0){
+                    paint.setColor(r.getColor( R.color.navy) );
+                    canvas.drawRect(cell.getCx() - cell.getWidth(), cell.getCy() - cell.getHeight() + cell.getHeight() / 3, cell.getCx(), cell.getCy()  - cell.getHeight() / 3, paint);
+                }*/
 
                 //着席者描く
                 if(cell.getAttendee() != null){
@@ -337,6 +356,15 @@ public class RoomView extends View {
                             ,cell.getCx() - sitterVerticalSpace
                             ,cell.getCy() - sitterHorizontalSpace
                             ,paint);
+                    /*
+                    paint.setColor(r.getColor( R.color.white) );
+                    //出席デバッグ用
+                    canvas.drawText(""+cell.getAttendee().getThisClassTime().getAttendanceState()
+                            ,cell.getCx() - cell.getWidth() + sitterVerticalSpace
+                            ,cell.getCy() - cell.getHeight() + sitterHorizontalSpace
+                            ,paint);
+                            */
+
                 }
 
 

@@ -18,4 +18,8 @@ public class MainFragmentConfig {
     /*アンケートフラグメント*/
     public static final int QUESTIONNAIRE_FRAGMENT = 5;
 
+    public static final int QUESTIONNAIRE_FRAGMENT_SURVEY = 1;
+
+    public static final int QUESTIONNAIRE_FRAGMENT_RESULT = 2;
+
 }

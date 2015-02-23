@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jp.pmw.test_en_revolution.questionnaire.AskLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Q1"
+            android:gravity="center"
+            android:textSize="@dimen/textsize_large"
+            android:id="@+id/row_ask_number_textView" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:textSize="@dimen/textsize_large"
+            android:text="dfjsiafjdosifjiosjdfiosjdifoja"
+            android:gravity="left"
+            android:id="@+id/row_ask_theme_textView" />
+        </LinearLayout>
+
+
+</jp.pmw.test_en_revolution.questionnaire.AskLayout>

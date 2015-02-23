@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -20,15 +21,25 @@ public class RosterCustomAdapter_1 extends ArrayAdapter<Student> {
 
     private Context _context;
     private int _textViewResourceId;
-    private List<Student> _items;
     private LayoutInflater _inflater;
 
-    public RosterCustomAdapter_1(Context context, int resourceId, List<Student> items) {
+    public static final int ALL_LAYOUT = 0;
+    public static final int ONLY_STUDENT_NAME_LAYOUT = 1;
+
+    /**
+     * RosterCustomAdapter_1は、2か所のフラグメントが使用します.
+     * requestNumberが
+     * 0 : ESL忘れやメッセージレイアウトあり
+     * 1 : 学籍番号と名前だけレイアウト
+     * **/
+    private int _requestNumber;
+
+    public RosterCustomAdapter_1(Context context, int resourceId, List<Student> items,int requestNumber) {
         super(context, resourceId, items);
         _context = context;
         _textViewResourceId = resourceId;
-        _items = items;
         _inflater = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        _requestNumber = requestNumber;
     }
 
 
@@ -45,7 +56,7 @@ public class RosterCustomAdapter_1 extends ArrayAdapter<Student> {
             holder = (ViewHolder) view.getTag();
         }
         //出欠席者の情報
-        Student student = _items.get(position);
+        Student student = getItem(position);
         AttendanceState attendance = student.getThisClassTime().getThisClassAttendanceState();
 
         /*出席に関して*/
@@ -75,7 +86,7 @@ public class RosterCustomAdapter_1 extends ArrayAdapter<Student> {
             attendColor = this.getContext().getApplicationContext().getResources().getColor(R.color.semitransparenttranslucent_gray);
         }else{
             if(attendance.getTempAttendanceState() == 0
-                    &&attendance.getConfirmTime() == null
+                    && attendance.getConfirmTime() == null
                     && attendance.getRequestForgotESLTime() == null){
                 //ACK取れなかった
                 //欠席？
@@ -92,20 +103,28 @@ public class RosterCustomAdapter_1 extends ArrayAdapter<Student> {
         //((TextView) view.findViewById(R.id.roster_full_name_textView)).setTextColor(attendColor);
         holder.attendanceStateColorTextView.setBackgroundColor(attendColor);
 
-
+        if(this._requestNumber == ALL_LAYOUT) {
+            //副コンテンツレイアウトを表示する.
+            holder.subContentLinearLayout.setVisibility(View.VISIBLE);
         /*ESL忘れ*/
-        if(student.getThisClassTime().getThisClassAttendanceState().getRequestForgotESLTime() != null){
-            holder.forgotESLTextView.setVisibility(View.VISIBLE);
-        }else{
-            //忘れてない
-            holder.forgotESLTextView.setVisibility(View.INVISIBLE);
-        }
+            if (student.getThisClassTime().getThisClassAttendanceState().getRequestForgotESLTime() != null) {
+                holder.forgotESLTextView.setVisibility(View.VISIBLE);
+            } else {
+                //忘れてない
+                holder.forgotESLTextView.setVisibility(View.INVISIBLE);
+            }
 
         /*メッセージあり*/
-        if(student.getMessage()!=null){
-            holder.messageTextView.setVisibility(View.VISIBLE);
-        }else{
-            holder.messageTextView.setVisibility(View.INVISIBLE);
+            if (student.getMessage() != null) {
+                holder.messageTextView.setVisibility(View.VISIBLE);
+            } else {
+                holder.messageTextView.setVisibility(View.INVISIBLE);
+            }
+        }else if(_requestNumber == ONLY_STUDENT_NAME_LAYOUT){
+            //副コンテンツレイアウトを消す
+            holder.subContentLinearLayout.setVisibility(View.GONE);
+            holder.forgotESLTextView.setVisibility(View.GONE);
+            holder.messageTextView.setVisibility(View.GONE);
         }
 
         return view;
@@ -115,12 +134,14 @@ public class RosterCustomAdapter_1 extends ArrayAdapter<Student> {
         TextView orijinalStudentIdTextView;
         TextView fullNameTextView;
         TextView attendanceStateColorTextView;
+        LinearLayout subContentLinearLayout;
         TextView forgotESLTextView;
         TextView messageTextView;
         public ViewHolder(View view) {
             this.orijinalStudentIdTextView = (TextView) view.findViewById(R.id.roster_orijinal_student_id_textView);
             this.fullNameTextView = (TextView) view.findViewById(R.id.roster_full_name_textView);
             this.attendanceStateColorTextView = (TextView) view.findViewById(R.id.roster_attendance_state_color_textView);
+            this.subContentLinearLayout = (LinearLayout) view.findViewById(R.id.roster_attendance_sub_content_linearLayout);
             this.forgotESLTextView = (TextView) view.findViewById(R.id.roster_forgot_esl_textView);
             this.messageTextView = (TextView) view.findViewById(R.id.roster_have_messge_textView);
         }

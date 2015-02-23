@@ -20,6 +20,17 @@ import jp.pmw.test_en_revolution.one_cushion.select_teacher.dummy.CSVCtrl;
 import jp.pmw.test_en_revolution.one_cushion.select_teacher.dummy.DummyStaffsMst;
 import jp.pmw.test_en_revolution.one_cushion.select_teacher.dummy.StaffsMst;
 
+/*わ  ら  や  ま  は  な  た  さ  か  あ
+1   2   3   4   5   6   7   8   9   10
+　　り　　　み　ひ　に　ち　し　き　い
+　　12      14  15  16  17  18  19  20
+　　る　ゆ　む　ふ　ぬ　つ　す　く　う
+    22　23  24  25  26  27  28  29  30
+　　れ　　　め　へ　ね　て　せ　け　え
+    32      34  35  36  37  38  39  40
+　　ろ　よ　も　ほ　の　と　そ　こ　お
+    42  43  44  45  46  47  48  49  50
+*/
 public class JapaneseAlphabeticalOrderFragmentActivity extends MyFirstActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){

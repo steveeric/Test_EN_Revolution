@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_action_questionnaire_survey"
-        android:title="@string/menu_action_questionnaire_servey"
+        android:icon="@drawable/ic_menu_questionnire"
         android:showAsAction="withText|ifRoom" />
     <item android:id="@+id/menu_action_questionnaire_result"
-        android:title="@string/menu_action_questionnaire_result"
+        android:icon="@drawable/ic_menu_question_result"
         android:showAsAction="withText|ifRoom" />
 </menu>

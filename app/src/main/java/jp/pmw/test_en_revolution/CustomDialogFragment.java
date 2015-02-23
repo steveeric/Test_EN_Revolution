@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,13 +19,16 @@ import jp.pmw.test_en_revolution.confirm_class_plan.Message;
 import jp.pmw.test_en_revolution.confirm_class_plan.Seat;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
 import jp.pmw.test_en_revolution.confirm_class_plan.TotalAttendance;
+import jp.pmw.test_en_revolution.grouping.Group;
+import jp.pmw.test_en_revolution.history.HistoryDialogFragment;
 
 /**
  * Created by scr on 2015/01/02.
  */
 public class CustomDialogFragment extends DialogFragment{
     public static final String ATTENDANCE_STUDENT_INFO = "attendance_student_info";
-
+    //個人履歴を確認するボタン
+    private ImageButton historyImageBtn;
     //ESL忘れ申請ボタン
     private Button releaseBtn;
     //ESL忘れ解除ボタン
@@ -33,7 +37,7 @@ public class CustomDialogFragment extends DialogFragment{
     private Button closeBtn;
 
     //タップされた出席者の情報
-    private static Student attendanceStudent;
+    private Student attendanceStudent;
 
     /**
      * ファクトリーメソッド
@@ -55,9 +59,9 @@ public class CustomDialogFragment extends DialogFragment{
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mListener = (OnOkClickListener) getTargetFragment();
-        if (mListener instanceof OnOkClickListener == false) {
+        /*if (mListener instanceof OnOkClickListener == false) {
             throw new ClassCastException("実装エラー");
-        }
+        }*/
     }
 
     public void onCreate(Bundle savedInstanceState){
@@ -86,6 +90,10 @@ public class CustomDialogFragment extends DialogFragment{
         TextView fullNameTextview = (TextView)dialog.findViewById(R.id.title_full_name_textView);
         fullNameTextview.setText(this.attendanceStudent.getFullName());
 
+        //個人履歴を確認するボタン
+        this.historyImageBtn = (ImageButton)dialog.findViewById(R.id.dialog_custom_history_confirm_button);
+        this.historyImageBtn.setOnClickListener(historyConfirmBtnListener);
+
         //とじるボタン
         closeBtn = (Button)dialog.findViewById(R.id.positive_button);
         closeBtn.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +107,8 @@ public class CustomDialogFragment extends DialogFragment{
         int mainFrameResorceColor = getFrameColorResorce();
         //フレーム全体の色を選択
         setFrameBackgoundColor(dialog,mainFrameResorceColor);
+        //グループ情報
+        setThisClassGroupInfo(dialog);
         //着座していセット
         setThisClassTimeSittingPosition(dialog);
         //総出席状況セット
@@ -164,6 +174,27 @@ public class CustomDialogFragment extends DialogFragment{
         return resorce;
     }
     /**
+     * Created by scr on 2015/1/6.
+     * setThisClassGroupInfoメソッド
+     * グループ番号を表示します.
+     * @param d ダイアログ
+     */
+    private void setThisClassGroupInfo(Dialog d){
+        LinearLayout groupInfoLayout = getLinearLayout(d,R.id.today_group_info_linearLayout);
+        Group group = this.attendanceStudent.getThisClassTime().getThisClassGroup();
+        if(group == null){
+            //グループ情報を表示しない.
+            groupInfoLayout.setVisibility(View.GONE);
+        }else{
+            TextView gpnumberTV = getTextView(d,R.id.today_group_info_textView);
+            gpnumberTV.setText(group.getGroupName());
+            //
+            groupInfoLayout.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    /**
      * Created by scr on 2015/1/3.
      * setThisClassTimeSittingPositionメソッド
      * 本日の着席位置を表示します..
@@ -227,13 +258,14 @@ public class CustomDialogFragment extends DialogFragment{
             TextView absenteeTV = getTextView(d,R.id.total_attendance_absentee_situation_textView);
 
             String str = "";
-            //出席
-            str = this.getString(R.string.total_attendee)+total.getTotalAttenteeCount();
+            //出席回数
+            str = this.getString(R.string.total_attendee) + total.getTotalAttenteeCount() + this.getString(R.string.number_of_times);
             attendeeTV.setText(str);
-            //欠席
+            str = "";
+            //欠席回数
             if(total.getTotalAbsenteeCount()!=0){
                 //一回でも欠席をしたことがある.
-                str = this.getString(R.string.total_absentee)+total.getTotalAbsenteeCount();
+                str = this.getString(R.string.total_absentee) + total.getTotalAbsenteeCount() + this.getString(R.string.number_of_times);
             }else{
                 //一回も欠席をしたことがない.
                 str = this.getString(R.string.total_no_absentee);
@@ -295,6 +327,35 @@ public class CustomDialogFragment extends DialogFragment{
             }
         }
     }
+    /**
+     * Created by scr on 2015/1/7.
+     * View.OnClickListenerメソッド
+     * 個人履歴確認リスナー.
+     */
+    private View.OnClickListener historyConfirmBtnListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            switch(v.getId()) {
+                case R.id.dialog_custom_history_confirm_button:
+                    //個人履歴確認画面へ
+                    moveToHistoryCustomDialogFragment();
+                    break;
+            }
+        }
+    };
+    /**
+     * Created by scr on 2015/1/4.
+     * moveToHistoryCustomDialogFragmentメソッド
+     * 個人履歴確認フラグメントへ移動する.
+     */
+    private void moveToHistoryCustomDialogFragment(){
+        HistoryDialogFragment customDialog = HistoryDialogFragment.newInstance();
+        customDialog.setTargetFragment(CustomDialogFragment.this,0);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ATTENDANCE_STUDENT_INFO,attendanceStudent);
+        customDialog.setArguments(bundle);
+        customDialog.show(this.getActivity().getSupportFragmentManager(), HistoryDialogFragment.HISTORY_DIALO_FRAGMENT);
+    }
+
     /**
      * Created by scr on 2015/1/4.
      * View.OnClickListenerメソッド

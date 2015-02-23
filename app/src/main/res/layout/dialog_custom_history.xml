@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_shape_dialog">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:textSize="@dimen/textsize_large"
+            android:text="J07011"
+            android:id="@+id/dialog_custom_history_orijinal_studentid_textView"
+            android:layout_gravity="center_horizontal" />
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:textSize="@dimen/textsize_xlarge"
+        android:text="伊藤翔太"
+        android:id="@+id/dialog_custom_history_full_name_textView"
+        android:layout_gravity="center_horizontal" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:layout_marginLeft="@dimen/activity_horizontal_large_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_large_margin"
+            android:id="@+id/dialog_custom_history_listView" />
+
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/bt_dialog_orange_positive"
+            android:textSize="@dimen/textsize_xlarge"
+            android:text="@string/close"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="50dp"
+            android:id="@+id/dialog_custom_history_close_button"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

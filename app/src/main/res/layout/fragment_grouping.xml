@@ -3,8 +3,24 @@
     android:layout_height="match_parent"
     tools:context="jp.pmw.test_en_revolution.grouping.GroupingFragment">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:id="@+id/fragment_grouping_during_attendance_linearLayout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_xlarge"
+            android:text="@string/grouping_group_duaring_attendance"
+            android:layout_marginBottom="@dimen/activity_vertical_large_margin"/>
+
+    </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/fragment_grouping_start_linearLayout"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -12,55 +28,49 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
         <!-- TODO: Update blank fragment layout -->
-        <TextView android:layout_width="match_parent" android:layout_height="0dp"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:textSize="@dimen/textsize_xlarge"
-            android:text="どのようなグループ編成にしますか." android:gravity="center"/>
+            android:text="@string/grouping_group_title"
+            android:gravity="center"/>
 
         <LinearLayout
+            android:id="@+id/fragment_grouping_input_linearLayout"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.13"
             android:gravity="center"
             android:layout_gravity="center|center">
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal|top">
 
+            <RadioGroup
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/fragment_grouping_grouping_radioGroup">
                 <RadioButton
+                    android:id="@+id/fragment_grouping_group_number_radioButton"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="@dimen/activity_vertical_midium_margin"
+                    android:textSize="@dimen/textsize_xlarge"
+                    android:text="@string/grouping_group_group_number">
+                </RadioButton>
+                <RadioButton
+                    android:id="@+id/fragment_grouping_member_number_radioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/textsize_xlarge"
-                    android:text="グループ数"
-                    android:id="@+id/radioBuatton" />
-
-
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="fill_parent"
-                android:layout_marginRight="10dp"
-                android:layout_gravity="center_horizontal|top">
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1グループの人数"
-                    android:textSize="@dimen/textsize_xlarge"
-                    android:id="@+id/radioButton" />
-
-            </LinearLayout>
+                    android:text="@string/grouping_group_menber_number">
+                </RadioButton>
+            </RadioGroup>
         </LinearLayout>
         <!---->
 
         <LinearLayout
+            android:visibility="invisible"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -69,19 +79,67 @@
             android:layout_gravity="center_horizontal">
 
             <TextView
+                android:id="@+id/select_content_message_textView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="1グループの人数"
-                android:textSize="@dimen/textsize_large"
+                android:text="グループ総数..."
+                android:textSize="@dimen/textsize_xlarge"
                 android:layout_gravity="center"
                 android:gravity="center" />
 
-            <ListView
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:layout_marginTop="-100dp"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/textsize_xlarge"
+                    android:text="@string/grouping_group_select_menber_assist_front"
+                    android:id="@+id/fragment_grouping_number_input_assist1_textView"/>
+                <EditText
+                    android:id="@+id/fragment_grouping_number_input_editText"
+                    android:layout_width="250dp"
+                    android:layout_height="150dp" android:textColor="#000000"
+                    android:background="@drawable/rounded_corner"
+                    android:paddingLeft="28.0dip" android:paddingTop="5.0dip"
+                    android:paddingRight="28.0dip" android:paddingBottom="5.0dip"
+                    android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip"
+                    android:layout_marginLeft="5.0dip" android:layout_marginRight="5.0dip"
+                    android:singleLine="true"
+                    android:inputType="number"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="@dimen/textsize_xxlarge"
+                    android:ems="3" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:gravity="bottom"
+                    android:textSize="@dimen/textsize_xlarge"
+                    android:text="グループ"
+                    android:id="@+id/fragment_grouping_number_input_assist_textView"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="アシスト"
+                android:textSize="@dimen/textsize_large"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/fragment_grouping_number_assist_message_textView" />
+            <!--<ListView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="9"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal" />-->
         </LinearLayout>
         <LinearLayout
             android:visibility="gone"
@@ -102,25 +160,50 @@
                 android:gravity="center"
                 android:id="@+id/textView5" />
 
-            <ListView
+            <!--<ListView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="9"
                 android:id="@+id/listView2"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal" />-->
         </LinearLayout>
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:visibility="invisible"
+            android:id="@+id/fragment_grouping_run_button"
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="100dp"
             android:text="実行"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/button3"
-            android:layout_gravity="bottom"
-            android:layout_weight="2" />
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/textsize_xlarge"
+            android:background="@drawable/button_design" />
     </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:id="@+id/fragment_grouping_end_linearLayout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_xxlarge"
+            android:text="@string/grouping_group_end_message"
+            android:layout_marginBottom="@dimen/activity_vertical_large_margin"/>
+
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:textSize="@dimen/textsize_xlarge"
+            android:text="@string/grouping_group_end_group_cnfirm"
+            android:background="@drawable/button_design"
+            android:id="@+id/fragment_grouping_end_group_confirm_button" />
+    </LinearLayout>
+
 
 
 </RelativeLayout>

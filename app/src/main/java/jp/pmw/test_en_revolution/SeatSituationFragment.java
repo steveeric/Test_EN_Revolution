@@ -22,6 +22,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Timer;
 import jp.pmw.test_en_revolution.config.URL;
+import jp.pmw.test_en_revolution.confirm_class_plan.Student;
+import jp.pmw.test_en_revolution.grouping.GroupingManagement;
 import jp.pmw.test_en_revolution.room.AccessConfig;
 import jp.pmw.test_en_revolution.room.AccessTimerTask;
 import jp.pmw.test_en_revolution.room.Room;
@@ -35,7 +37,7 @@ import jp.pmw.test_en_revolution.room.RoomView;
  * Use the {@link SeatSituationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SeatSituationFragment extends MyMainFragment {
+public class SeatSituationFragment extends MyMainFragment implements CustomDialogFragment.OnOkClickListener{
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -53,7 +55,6 @@ public class SeatSituationFragment extends MyMainFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
     /*教室情報を呼ぶのに必要*/
     private ProgressBar loadRoomMapProgressBar;
     /*教室用のView*/
@@ -69,6 +70,8 @@ public class SeatSituationFragment extends MyMainFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_seat_situation, container, false);
 
+
+
         /*RoomView rv = new RoomView(getActivity());
         rv.setRoomMap();*/
         /*テスト用*/
@@ -80,7 +83,7 @@ public class SeatSituationFragment extends MyMainFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        /*ロード用*/
+         /*ロード用*/
         loadRoomMapProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.seat_situation_load);
         /*教室マップを描くよう*/
         roomView = (RoomView)this.getActivity().findViewById(R.id.view);
@@ -89,13 +92,34 @@ public class SeatSituationFragment extends MyMainFragment {
         /*MainActivity activity = (MainActivity)this.getActivity();
         activity.openNavigationDrawer();*/
     }
+    /**
+     * コールバック用のリスナー
+     * **/
+    private OnOkClickListener mListener;
+    public interface OnOkClickListener {
+        public void onOkClicked(Student student);
+    }
 
     @Override
     public void onResume(){
         super.onResume();
 
+        //コールバック用に
+        roomView.setSeatSituationFragment(this);
+
         /*テスト確認用*/
-        roomView.setRoomMap();
+        roomView.setDummyDataRoomMap();
+
+        MainActivity activity = (MainActivity)this.getActivity();
+        GroupingManagement gpManagement = activity.mTeacher.getGroupingManagement();
+        if(gpManagement.getDoGroupingFlag() == true){
+            //グルーピングモード
+            roomView.setDummyGrouping();
+        }else {
+            //通常着席モード
+            roomView.setDummyAttendance();
+        }
+
         showRoomMap();
         /*テスト確認用*/
 
@@ -221,8 +245,10 @@ public class SeatSituationFragment extends MyMainFragment {
     @Override
     public void onStop(){
         super.onStop();
-        //タイマーキャンセル
-        this.mTimer.cancel();
+        if(this.mTimer != null) {
+            //タイマーキャンセル
+            this.mTimer.cancel();
+        }
     }
 
     @Override
@@ -234,5 +260,36 @@ public class SeatSituationFragment extends MyMainFragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+    /**
+     * Created by Shota Ito on 2015/1/4
+     * openDialogFragmentShowCellInfoメソッド
+     * RoomViewをユーザーがタップした場合にアラートが立ち上がる.
+     * タップしたセル位置の情報をアラートダイアログに出力する.
+     * @param student 学生クラス
+     */
+    public void openDialogFragmentShowCellInfo(Student student){
+        MainActivity activity = (MainActivity)this.getActivity();
+        CustomDialogFragment customDialog = CustomDialogFragment.newInstance();
+        customDialog.setTargetFragment(SeatSituationFragment.this,1);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(CustomDialogFragment.ATTENDANCE_STUDENT_INFO,student);
+        customDialog.setArguments(bundle);
+        customDialog.show(activity.getSupportFragmentManager(), "customDialog");
+    }
+
+    @Override
+    public void onOkClicked(Bundle args) {
+        //座席再描画
+        this.roomView.invalidate();
+    }
+
+    public void demo(List<Student> attendance){
+       Timer mainTimer = new Timer();
+        MainActivity activity = (MainActivity)this.getActivity();
+        activity.setTimer(mainTimer);
+        DemoReCollTheRollTimer reTimer  = new DemoReCollTheRollTimer(activity,DemoReCollTheRollTimer.MODE_SEATSITUATION_FRAGMENT,attendance);
+        mainTimer.schedule(reTimer, 6000,1000);
+        this.onResume();
     }
 }

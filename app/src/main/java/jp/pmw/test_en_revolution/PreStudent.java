@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by scr on 2014/12/08.
  */
-public class Student{
+public class PreStudent {
     //大学独自の学籍番ID
     @SerializedName("orijinal_student_id")
     public String mOrijinalStudentId;

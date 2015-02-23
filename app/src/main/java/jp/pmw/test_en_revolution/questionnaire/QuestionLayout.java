@@ -17,6 +17,7 @@ import jp.pmw.test_en_revolution.R;
 
 public class QuestionLayout extends LinearLayout {
     private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
+    private final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
     private TextView questionNumberTextView;
     //private TextView themeTextView;
     private ListView askListView;
@@ -46,7 +47,7 @@ public class QuestionLayout extends LinearLayout {
 
         //アンケート番号
         //this.questionNumberTextView.setText(this.getContext().getResources().getString(R.string.question_index_number) + index);
-        String str = question.getQuestionTitle();
+        String str = this.getResources().getString(R.string.questionnaire_topic) + index + " " +question.getQuestionTitle();
         this.questionNumberTextView.setText(str);
         //テーマ
         //this.themeTextView.setText(str);
@@ -56,8 +57,33 @@ public class QuestionLayout extends LinearLayout {
         QuestionAskAdapter adapter = new QuestionAskAdapter(activity,R.layout.row_ask_item,asks);
         this.askListView.setAdapter(adapter);*/
         for(int i = 0; i < asks.size();i++){
+            //Q.〇×■◀のレイアウト
+            LinearLayout layout = new LinearLayout(this.getContext());
+            layout.setOrientation(LinearLayout.HORIZONTAL);
+            layout.setBackgroundColor(this.getResources().getColor(R.color.lightCyan));
+
+            float fontSize = this.getContext().getResources().getDimension(R.dimen.textsize_large);
+            //Q.のテキストビュー
+            TextView questionIndexTv = new TextView(this.getContext());
+            setBackGroundColor(questionIndexTv);
+            String quecon = "　"
+                    +this.getContext().getResources().getString(R.string.ask_number)
+                    +asks.get(i).getAskNumber();
+            questionIndexTv.setText(quecon);
+            questionIndexTv.setTextSize(fontSize);
+            layout.addView(questionIndexTv);
+
+            //〇×■◀のテキストビュー
             TextView tv = new TextView(this.getContext());
-            //Q.(問題内容)
+            setBackGroundColor(tv);
+            String content =this.getContext().getResources().getString(R.string.ask_dot)
+                    +asks.get(i).getAskContent();
+            tv.setText(content);
+            tv.setTextSize(fontSize);
+            layout.addView(tv);
+            this.addView(layout, new LinearLayout.LayoutParams(MP, MP));
+            /*TextView tv = new TextView(this.getContext());
+            setBackGroundColor(tv);
             String content = "　"
                     +this.getContext().getResources().getString(R.string.ask_number)
                     +asks.get(i).getAskNumber()
@@ -68,8 +94,10 @@ public class QuestionLayout extends LinearLayout {
             float fontSize = this.getContext().getResources().getDimension(R.dimen.textsize_large);
             tv.setTextSize(fontSize);
             this.addView(tv);
+            */
             for(int j = 0; j < asks.get(i).getAnswer().size(); j++){
                 TextView anstv = new TextView(this.getContext());
+                setBackGroundColor(anstv);
                 String asnContent = "　　"
                         + asks.get(i).getAnswer().get(j).getAnswerIndexNumber()
                         + "　"
@@ -80,5 +108,10 @@ public class QuestionLayout extends LinearLayout {
                 this.addView(anstv);
             }
         }
+    }
+
+    private void setBackGroundColor(TextView tv){
+        tv.setBackgroundColor(this.getResources().getColor(R.color.lightCyan));
+        //tv.setBackgroundColor(this.getResources().getDrawable(R.drawable.row_question_item));
     }
 }

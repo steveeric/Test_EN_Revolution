@@ -20,6 +20,14 @@ public class AttendanceState implements Serializable {
         this.requestForgotESLTime = requestForgotESLTime;
         this.confirmTime = confirmTime;
     }
+
+    public void setTempAttendanceState(int state){
+        this.tempAttendanceState = state;
+    }
+    public void setConfirmTime(String time){
+        this.confirmTime = time;
+    }
+
     /**
      * ESL忘れ申請
      * **/

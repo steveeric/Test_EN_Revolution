@@ -1,9 +1,10 @@
-package jp.pmw.test_en_revolution.attendee;
+package jp.pmw.test_en_revolution;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -24,16 +26,14 @@ import org.json.JSONArray;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
+import java.util.Timer;
 
-import jp.pmw.test_en_revolution.AppController;
-import jp.pmw.test_en_revolution.CustomDialogFragment;
-import jp.pmw.test_en_revolution.MainActivity;
-import jp.pmw.test_en_revolution.MyMainFragment;
-import jp.pmw.test_en_revolution.R;
+import jp.pmw.test_en_revolution.attendee.Attendee;
+import jp.pmw.test_en_revolution.attendee.CustomAdapter;
+import jp.pmw.test_en_revolution.attendee.RosterCustomAdapter_1;
 import jp.pmw.test_en_revolution.config.URL;
 import jp.pmw.test_en_revolution.confirm_class_plan.Roster;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
-import jp.pmw.test_en_revolution.dummy.DummyRosterContent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -292,7 +292,9 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
      */
     private void testDummy(){
         //受講者一覧を取得
-        Roster roster = DummyRosterContent.getDummyRoster();
+        //Roster roster = DummyRosterContent.getDummyRoster();
+        MainActivity activity = super.getMainActivity();
+        Roster roster = activity.mTeacher.getRoster();
         //受講者を渡す.
         addRoster(roster);
     }
@@ -308,7 +310,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         //RosterCustomAdapter adapter = new RosterCustomAdapter(this.getActivity(),0,rosterList);
         /**/
 
-        adapter = new RosterCustomAdapter_1(this.getActivity(),0,rosterList);
+        adapter = new RosterCustomAdapter_1(this.getActivity(),0,rosterList,RosterCustomAdapter_1.ALL_LAYOUT);
 
         this.attendeeGridView.setNumColumns(2);
         this.attendeeGridView.setAdapter(adapter);
@@ -334,7 +336,17 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         //this.attendeeGridView.getAdapter().notify();
         this.adapter.notifyDataSetChanged();
         this.attendeeGridView.invalidate();
-
     }
 
+    private Handler handler = new Handler();
+
+
+    public void demo(List<Student> attendance){
+        Timer mainTimer = new Timer();
+        MainActivity activity = (MainActivity)this.getActivity();
+        activity.setTimer(mainTimer);
+        DemoReCollTheRollTimer reTimer  = new DemoReCollTheRollTimer(activity,DemoReCollTheRollTimer.MODE_ATTENDEE_FRAGMENT,attendance);
+        reTimer.setAttendeeFragment(handler,this.attendeeGridView,this.adapter);
+        mainTimer.schedule(reTimer, 6000,1000);
+    }
 }

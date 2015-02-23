@@ -7,10 +7,11 @@
     <!--<TextView android:textSize="@dimen/textsize_xlarge" android:layout_width="match_parent" android:layout_height="match_parent"
         android:text="円グラフを描く" android:gravity="center" android:layout_gravity="center|center_horizontal"/>-->
     <LinearLayout
+        android:id="@+id/fragment_clicker_result_start_questionnaire_linearLayout"
+        android:visibility="visible"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <LinearLayout
             android:orientation="horizontal"
@@ -56,10 +57,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:gravity="left"
         android:textSize="@dimen/textsize_xlarge"
         android:text="タイトル"
-        android:layout_marginTop="-20dp"
         android:id="@+id/fragment_clicker_result_title_textView"
         android:layout_gravity="center|center_horizontal"/>
 
@@ -67,20 +69,38 @@
         android:id="@+id/holo_graph_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="4"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp" />
 
         <GridView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:numColumns="2"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:id="@+id/fragment_clicker_result_answer_contents_gridView"
             android:layout_gravity="center_horizontal|bottom" />
 
 </LinearLayout>
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/fragment_clicker_result_donot_start_questionnaire_linearLayout"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/textsize_xlarge"
+            android:text="アンケートが実施されていません." />
+    </LinearLayout>
 
 
 </FrameLayout>

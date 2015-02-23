@@ -4,6 +4,7 @@ package jp.pmw.test_en_revolution.drawer;
  * Created by scr on 2014/12/08.
  */
 public class DrawerBindData {
+    public int mContentCategory;
     public boolean mTapFlag;
     public int mSelectState;
     public int mChapter;
@@ -11,7 +12,8 @@ public class DrawerBindData {
     public String mChapterStr;
     public int mIconRes;
     public String mTitle;
-    DrawerBindData(boolean tapflag, int mSelectState, int chapter, int section, int iconRes, String title){
+    DrawerBindData(int contentCategory,boolean tapflag, int mSelectState, int chapter, int section, int iconRes, String title){
+        this.mContentCategory = contentCategory;
         this.mTapFlag = tapflag;
         this.mSelectState = mSelectState;
         this.mChapter = chapter;
