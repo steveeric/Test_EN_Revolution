@@ -1,6 +1,5 @@
 package jp.pmw.test_en_revolution.confirm_class_plan;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,12 +13,25 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
+
 import java.util.Timer;
+
+import jp.pmw.test_en_revolution.AppController;
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.MyActivity;
 import jp.pmw.test_en_revolution.R;
+import jp.pmw.test_en_revolution.config.Config;
+import jp.pmw.test_en_revolution.config.URL;
 import jp.pmw.test_en_revolution.confirm_class_plan.dummy.DummyContentClass;
-import jp.pmw.test_en_revolution.one_cushion.select_teacher.Teacher;
+import jp.pmw.test_en_revolution.one_cushion.select_teacher.Faculty;
 
 public class ConfirmClassPlanActivity extends MyActivity {
     public static final String TEACHER = "teacher";
@@ -32,7 +44,7 @@ public class ConfirmClassPlanActivity extends MyActivity {
     //現在のActivityをfinishするまでの時間
     private static final int FNISH_SECONDE = 5;
     //前画面で選択された教員オブジェクトを保持する.
-    public Teacher mTeacher;
+    public Faculty mTeacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +52,7 @@ public class ConfirmClassPlanActivity extends MyActivity {
         setContentView(R.layout.activity_confirm_class_plan);
         if(this.getIntent() != null){
             Intent intent = this.getIntent();
-            Teacher data = (Teacher)intent.getSerializableExtra(TEACHER);
+            Faculty data = (Faculty)intent.getSerializableExtra(TEACHER);
             mTeacher = data;
         }
         if (savedInstanceState == null) {
@@ -142,9 +154,82 @@ public class ConfirmClassPlanActivity extends MyActivity {
             super.onResume();
             //レイアウトを初期状態に戻す.
             initLayout();
+            ConfirmClassPlanActivity activity = (ConfirmClassPlanActivity)this.getActivity();
+            Faculty faculty = activity.mTeacher;
+            //授業情報をネットワークDBから取得する.s
+            getClassInfoFromNetworkDB(faculty.getFacultyId());
+
             //ローカルのダミーデータでスタート
-            dummyStart();
+            //dummyStart();
         }
+
+        /**
+         * Created by scr on 2015/2/24.
+         * getClassInfoFromNetworkDBメソッド
+         * ネットワークから授業情報を取得する.
+         * @param  facultyId 教員ID
+         */
+        private void getClassInfoFromNetworkDB(String facultyId){
+           String url = URL.getClassAbstructInfo(facultyId);
+            JsonObjectRequest request = new JsonObjectRequest(url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //授業概要のJSONを取得
+                            Teaching teaching = jsonClassAbstructInfoParser(response);
+                            if(teaching != null){
+                                adjustScreen(teaching);
+                            }else{
+                                //取得に失敗したのでもう一度を表示すること!
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getActivity(), "Unable to fetch data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            AppController.getInstance(this.getActivity()).getRequestQueue().add(request);
+        }
+        /**
+         * Created by scr on 2015/2/24.
+         * jsonClassAbstructInfoParserメソッド
+         * ネットワークから授業情報を取得する.
+         * @param object Jsonオブジェクト
+         * @return Teaching 教える内容クラス
+         *
+         */
+        private Teaching jsonClassAbstructInfoParser(JSONObject jsonObject){
+            Gson gson = new Gson();
+            return gson.fromJson(jsonObject.toString(),Teaching.class);
+        }
+        /**
+         * Created by scr on 2015/2/24.
+         * adjustScreenメソッド
+         * ネットワークから画面状態を整えて表示する.
+         * @param Teaching 授業状態クラス
+         */
+        private void adjustScreen(Teaching teaching){
+            int classJudge = teaching.getClassJudge();
+            ClassPlan classPlan = teaching.getClassPlan();
+            if(classJudge == Config.TODAY_NOW_CLASS_MODE){
+                //今授業
+                nowClassPlan = classPlan;
+                nowInClass(nowClassPlan);
+            }else if(classJudge == Config.TODAY_NEXT_CLASS_MODE){
+                //本日だけどこれ以降に授業です.
+                //今の時限以降に授業
+                todayNextInClass(classPlan);
+            }/*else if(classJudge == Config.TOMMOROW_NEXT_CLASS_MODE){
+                //明日以降に授業あり
+                notTodayInClassShowNextClass(classPlan);
+            }else{
+                noClassInSameSemester();
+            }*/else{
+                //本日授業がありません.
+                noClassInSameSemester();
+            }
+        }
+
         /**
          * Created by scr on 2014/12/22.
          * dummyStartメッソド
@@ -161,8 +246,8 @@ public class ConfirmClassPlanActivity extends MyActivity {
            */
             /*教員ID指定でダミーデータからデータを取り出す.*/
             ConfirmClassPlanActivity activity = (ConfirmClassPlanActivity)this.getActivity();
-            Teacher teacher = activity.mTeacher;
-            Teaching teaching = DummyContentClass.getDummyTeaching(teacher.getId());
+            Faculty teacher = activity.mTeacher;
+            Teaching teaching = DummyContentClass.getDummyTeaching(teacher.getFacultyId());
             //本日授業があるか
             int today = teaching.getToday();
             //今又は次の授業は何か
@@ -263,7 +348,8 @@ public class ConfirmClassPlanActivity extends MyActivity {
 
             //教室名
             str = this.getString(R.string.confirm_for_class_plan_class_in_roomname);
-            contents = classPlan.getPlace().getBuilding().getBuildingName()+classPlan.getPlace().getRoom().getRoomName();
+            //contents = classPlan.getPlace().getBuilding().getBuildingName()+classPlan.getPlace().getRoom().getRoomName();
+            contents = classPlan.getPlace().getBuildingName()+classPlan.getPlace().getRoomName();
             doClassInRoomTextView.setText(str+space+contents);
 
             //科目名
@@ -367,6 +453,20 @@ public class ConfirmClassPlanActivity extends MyActivity {
            tv.setText(getString(R.string.confirm_not_today_class_but_next_class_re_select));
            autoAppFinish(tv,TIMER_START_INTERVAL);
         }
+
+        /**
+         * Created by scr on 2015/02/24
+         * noClassInSameSemesterメソッド
+         * 今期の授業はもう無いですよレイアウトを表示します.
+         */
+        private void noClassInSameSemester(){
+            TextView guideTextView = (TextView)this.getActivity().findViewById(R.id.confirm_class_plan_show_confirm_no_class_plan_guide_textView);
+            int timerResoce = R.id.confirm_class_plan_show_confirm_no_class_plan_exitcounter_textView;
+            TextView tv = createInstanceTimerTextView(timerResoce);
+            autoAppFinish(tv,TIMER_START_SECONDE_INTERVAL);
+            noClassPlanLayout();
+        }
+
 
         /**
          * !まだ製作中ですよ!

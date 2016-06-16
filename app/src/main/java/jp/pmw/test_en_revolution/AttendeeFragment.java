@@ -5,11 +5,15 @@ import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,9 +35,13 @@ import java.util.Timer;
 import jp.pmw.test_en_revolution.attendee.Attendee;
 import jp.pmw.test_en_revolution.attendee.CustomAdapter;
 import jp.pmw.test_en_revolution.attendee.RosterCustomAdapter_1;
+import jp.pmw.test_en_revolution.attendee.RosterCustomAdapter_2;
+import jp.pmw.test_en_revolution.config.Config;
+import jp.pmw.test_en_revolution.config.TimerConfig;
 import jp.pmw.test_en_revolution.config.URL;
 import jp.pmw.test_en_revolution.confirm_class_plan.Roster;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
+import jp.pmw.test_en_revolution.dialog.StudentInfoDialogFragnemt;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,12 +72,22 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
 
     private OnFragmentInteractionListener mListener;
 
-    private TextView attendeeStatusTextView;
-    private ProgressBar attendeeLoadProgressBar;
-    private ListView attendeeListView;
-    private GridView attendeeGridView;
+    //  出席者確定前のレイアウト(GridViewの上段)
+    private LinearLayout beforeAttendanceStatusLinearLayout;
+    //  出席者確定後のレイアウト(GridViewの上段)
+    private LinearLayout afterAttendanceStatusLinearLayout;
 
-    private RosterCustomAdapter_1 adapter;
+    private TextView attendanceStatusTextView;
+    private TextView absentStatusTextView;
+    private TextView attendeeStatusTextView;
+    //private ProgressBar attendeeLoadProgressBar;
+    private ListView attendeeListView;
+    public GridView attendeeGridView;
+
+    public RosterCustomAdapter_2 adapter;
+    //  出席者取得タイマー
+    private AttendeeFragmentTimeTask transmitStateTimerTask;
+
 
     public AttendeeFragment() {
         // Required empty public constructor
@@ -78,7 +96,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getMainActivity().getClassObject().setStudentObject(null);
     }
 
     @Override
@@ -90,38 +108,301 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        //
+        super.initFragment();
+        //  出席確定前LinearLayout
+        this.beforeAttendanceStatusLinearLayout     = (LinearLayout)this.getActivity().findViewById(R.id.before_attendance_status_linearLayout);
+
+        //  出席確定後LinearLayout
+        this.afterAttendanceStatusLinearLayout      = (LinearLayout)this.getActivity().findViewById(R.id.after_attendance_status_linearLayout);
+
+        this.attendanceStatusTextView   = (TextView)this.getActivity().findViewById(R.id.attendee_total_status_textView);
+        this.absentStatusTextView       = (TextView)this.getActivity().findViewById(R.id.absent_total_status_textView);
         this.attendeeStatusTextView = (TextView)this.getActivity().findViewById(R.id.attendee_status_message_textView);
         this.attendeeListView = (ListView)this.getActivity().findViewById(R.id.attendee_list);
-        this.attendeeLoadProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.attendee_load_progressBar);
+        //this.attendeeLoadProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.attendee_load_progressBar);
         this.attendeeGridView = (GridView)this.getActivity().findViewById(R.id.attendee_gridView);
         this.attendeeGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 選択アイテムを取得
-                GridView gridView = (GridView)parent;
-                Student attendanceStudent = (Student)gridView.getItemAtPosition(position);
-                testShowCustomDialog(attendanceStudent);
+                GridView gridView = (GridView) parent;
+                //Student attendanceStudent = (Student) gridView.getItemAtPosition(position);
+                //testShowCustomDialog(attendanceStudent);
+                StudentObject so = (StudentObject) gridView.getItemAtPosition(position);
+                //testShowCustomDialog(so);
+                showStudentInfoCustomDialog(so);
             }
         });
+        /*
+        MainActivity acitivty = (MainActivity)this.getActivity();
+        AttendeeFragmentTimeTask transmitStateTimerTask = new AttendeeFragmentTimeTask(acitivty, this, attendeeGridView);   //タイマータスククラスのインスタンス
+        java.util.Timer timer = new java.util.Timer();                                      //タイマークラスのインスタンス
+        timer.schedule(transmitStateTimerTask, 0, TimerConfig.TIMER_INTERVAL_TIME_ATTENDANCE);                                    //起動時0秒後から10秒間隔で起動
+        */
+
+        //  学生データ読み込み
+        this.getMainActivity().getClassHttpRequest().getChkAttendance();
+
     }
 
-    public void testShowCustomDialog(Student student){
+    /*public void testShowCustomDialog(Student student){
         MainActivity activity = (MainActivity)this.getActivity();
+        TransmitStateObject tso = activity.mTeacher.getClassPlan().getTransmitStateObject();
         CustomDialogFragment customDialog = CustomDialogFragment.newInstance();
-        customDialog.setTargetFragment(AttendeeFragment.this,0);
+        customDialog.setTargetFragment(AttendeeFragment.this, 0);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(CustomDialogFragment.ATTENDANCE_STUDENT_INFO,student);
+        bundle.putSerializable(CustomDialogFragment.ATTENDANCE_STUDENT_INFO, student);
+        bundle.putSerializable(CustomDialogFragment.TRANSMIT_STATE_INFO, tso);
         customDialog.setArguments(bundle);
+        customDialog.setAttendeeFragment(this);
         customDialog.show(activity.getSupportFragmentManager(), "customDialog");
+    }*/
+    public void testShowCustomDialog(StudentObject student){
+        /*MainActivity activity = (MainActivity)this.getActivity();
+        TransmitStateObject tso = activity.getClassObject().getTransmitStateObject();
+        CustomDialogFragment customDialog = CustomDialogFragment.newInstance();
+        customDialog.setTargetFragment(AttendeeFragment.this, 0);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(CustomDialogFragment.ATTENDANCE_STUDENT_INFO, student);
+        bundle.putSerializable(CustomDialogFragment.TRANSMIT_STATE_INFO, tso);
+        customDialog.setArguments(bundle);
+        customDialog.setAttendeeFragment(this);
+        customDialog.show(activity.getSupportFragmentManager(), "customDialog");*/
     }
+
+    //  学生の個別情報を出力
+    public void showStudentInfoCustomDialog(StudentObject so){
+
+        studentInfoDialogFragnemt = new StudentInfoCustomDialog();
+        studentInfoDialogFragnemt.showForAttendeeFragment(this, so);
+
+        /*MainActivity activity = (MainActivity)this.getActivity();
+        String sameClassNumber  =   activity.getClassObject().getSameClassNumber();
+        TransmitStateObject tso = activity.getClassObject().getTransmitStateObject();
+        StudentInfoDialogFragnemt dialogFragment = StudentInfoDialogFragnemt.newInstance();
+        if(dialogFragment != null){
+            dialogFragment.setTargetFragment(AttendeeFragment.this, 0);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(StudentInfoDialogFragnemt.SAME_CLASS_NUMBER, sameClassNumber);
+            bundle.putSerializable(StudentInfoDialogFragnemt.STUDENT_INFO, so);
+            bundle.putSerializable(StudentInfoDialogFragnemt.TRANMIST_STAT_IFNO, tso);
+            dialogFragment.setArguments(bundle);
+            dialogFragment.setAttendeeFragment(this);
+            dialogFragment.show(activity.getSupportFragmentManager(), StudentInfoDialogFragnemt.STUDENT_INFO_DIALOG_FRAGMENT);
+        }*/
+    }
+
 
     @Override
     public void onResume(){
         super.onResume();
 
-        testDummy();
+        //  タイマータスク
+        if(transmitStateTimerTask == null){
+            MainActivity acitivty = (MainActivity)this.getActivity();
+            transmitStateTimerTask = new AttendeeFragmentTimeTask(acitivty, this, attendeeGridView);   //タイマータスククラスのインスタンス
+            java.util.Timer timer = new java.util.Timer();                                      //タイマークラスのインスタンス
+            timer.schedule(transmitStateTimerTask, 0, TimerConfig.TIMER_INTERVAL_TIME_ATTENDANCE);                                    //起動時0秒後から10秒間隔で起動
+        }
 
-        //出席者の方法をネットワークDBに取得しに行く
-        //getNetworkAttendanceInfo();
+
+        showWaitFragment();
+
+        //受講者クラス
+        /*Roster roster = activity.mTeacher.getRoster();
+        //出席者の人数を文字列でセットする.
+        setAttendanceStatusTextView(roster);
+        if(roster != null){
+            //受講生一覧表示
+            addRoster(roster);
+        }else{
+            //リロード
+            super.loadFragment();
+        }*/
+    }
+
+    //  学生が表示されているGridViewの情報を更新するHandlerThreadメソッドです.
+    public void displayRedrawGridViewHandlerThread(){
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                redrawGridView();
+            }
+        });
+    }
+
+    public void redrawGridView(){
+        if(adapter != null){
+            //  グリッドビュー再描画
+            //attendeeGridView.invalidateViews();
+            //Toast.makeText(getMainActivity(), "ERROR:", Toast.LENGTH_SHORT).show();
+            this.adapter.notifyDataSetChanged();
+        }
+        if(attendeeListView != null){
+            this.attendeeListView.invalidate();
+        }
+    }
+
+
+    //  欠席数、出席数に応じて順番を入れ替える際に使用するメソッドです.
+    public void displayToastThroughHandlerThread() {
+        ((MainActivity) this.getActivity()).getClassObject().setStudentObject(null);
+        this.getMainActivity().getClassHttpRequest().getChkAttendance();
+        final HandlerThread ht = new HandlerThread("TestThread#3");
+        ht.start();
+
+        Handler h = new Handler(ht.getLooper());
+        h.post(new Runnable() {
+            @Override
+            public void run() {
+                //showToast();
+
+                showWaitFragment();
+            }
+        });
+
+        // 別スレッドを停止
+        //ht.quit();
+    }
+
+    public void showWaitFragment(){
+        MainActivity activity = (MainActivity)this.getActivity();
+        StudentObject[] sos = activity.getClassObject().getStudentObject();
+        if(sos != null){
+            //  再描画キャンセル
+            cancelTimer();
+            addNewRoster(sos);
+            //  出席者数セット
+            setAttendanceStatusTextView(sos);
+            //  出席状態レイアウトセット
+            setAttendanceStatusLayout();
+            //  コンテンツ画面表示
+            switchContentScreen();
+        } else{
+
+            if(this.reGetStudentFlag){
+                //  再度出席状況を一から取り直す
+                this.getMainActivity().getClassHttpRequest().getChkAttendance();
+                this.reGetStudentFlag = false;
+            }
+
+            //  数秒待機して再読み込み...
+            super.loadFragment();
+        }
+
+    }
+    /**
+     * setReAttendanceStatusTextViewメソッド
+     * 出席と欠席の人数をTextViewに再描画しセットします.
+     * **/
+    public void setReAttendanceStatusTextView(){
+        MainActivity activity = (MainActivity)this.getActivity();
+        setAttendanceStatusTextView(activity.getClassObject().getStudentObject());
+    }
+
+    /**
+     * setAttendanceStatusTextViewメソッド
+     * 出席と欠席の人数をTextViewにセットします.
+     * **/
+    /*private void setAttendanceStatusTextView(Roster roster){
+        int[] count = getAttendanceCount(roster);
+        int attendCount = count[0];
+        int absentCount = count[1];
+        int forgotCount = count[2];
+        int totalAttendCount = attendCount + forgotCount;
+        //出席
+        String strAtt = getString(R.string.total_attendee);
+        //欠席
+        String strAbs = getString(R.string.total_absentee);
+        //人
+        String strPer = getString(R.string.number_of_people);
+        //this.attendanceStatusTextView.setText(strAtt + " " + totalAttendCount +  strPer + "("+forgotCount+")" + "   " + strAbs+" "+absentCount+strPer);
+        //  出席者数セット
+        if(forgotCount == 0){
+            //this.attendanceStatusTextView.setText(strAtt + " " + totalAttendCount +  strPer + "   " + strAbs+" "+absentCount+strPer);
+            this.attendanceStatusTextView.setText(strAtt + " " + attendCount);
+        }else{
+            //this.attendanceStatusTextView.setText(strAtt + " " + totalAttendCount + strPer + "(" + forgotCount + ")" + "   " + strAbs + " " + absentCount + strPer);
+            this.attendanceStatusTextView.setText(strAtt + " " + attendCount + " + " +forgotCount);
+        }
+        //  欠席者数セット
+        this.absentStatusTextView.setText(strAbs+" "+absentCount);
+    }*/
+    private void setAttendanceStatusTextView(StudentObject[] sos){
+        int[] count = getAttendanceCount(sos);
+        int attendCount = count[0];
+        int absentCount = count[1];
+        int forgotCount = count[2];
+        int totalAttendCount = attendCount + forgotCount;
+        //出席
+        String strAtt = getString(R.string.total_attendee);
+        //欠席
+        String strAbs = getString(R.string.total_absentee);
+        //人
+        String strPer = getString(R.string.number_of_people);
+        //this.attendanceStatusTextView.setText(strAtt + " " + totalAttendCount +  strPer + "("+forgotCount+")" + "   " + strAbs+" "+absentCount+strPer);
+        //  出席者数セット
+        if(forgotCount == 0){
+            //this.attendanceStatusTextView.setText(strAtt + " " + totalAttendCount +  strPer + "   " + strAbs+" "+absentCount+strPer);
+            this.attendanceStatusTextView.setText(strAtt + " " + attendCount);
+        }else{
+            //this.attendanceStatusTextView.setText(strAtt + " " + totalAttendCount + strPer + "(" + forgotCount + ")" + "   " + strAbs + " " + absentCount + strPer);
+            this.attendanceStatusTextView.setText(strAtt + " " + attendCount + " + " +forgotCount);
+        }
+        //  欠席者数セット
+        this.absentStatusTextView.setText(strAbs+" "+absentCount);
+    }
+    /**
+     * getAttendanceCountメソッド
+     * 出席と欠席の人数を取得します.
+     * **/
+    /*private int[] getAttendanceCount(Roster roster){
+        int attendCount = 0;
+        int forgotCount = 0;
+        int absentCount = 0;
+        int[] count = new int[3];
+        for(int i = 0; i < roster.getRosterList().size(); i++){
+            Student st = roster.getRosterList().get(i);
+            //if(st.getAttendance().getTime() != null && st.getAttendance().getFogotApplytTime() == null){
+            if(st.getAttendance().getStatus() == Config.ALREADY_ATTENDANCE){
+                ++attendCount;
+            //}else if(st.getAttendance().getTime() != null && st.getAttendance().getFogotApplytTime() != null){
+            }else if(st.getAttendance().getStatus() == Config.FOGOT_ESL_APPLY){
+                ++forgotCount;
+            }else{
+                ++absentCount;
+            }
+        }
+        count[0] = attendCount;
+        count[1] = absentCount;
+        count[2] = forgotCount;
+        return count;
+    }*/
+    private int[] getAttendanceCount(StudentObject[] sos){
+        int attendCount = 0;
+        int forgotCount = 0;
+        int absentCount = 0;
+        int[] count = new int[3];
+        for(int i = 0; i < sos.length; i++){
+            StudentObject so = sos[i];
+            AttendanceObject ao = so.getAttendanceObject();
+            //Student st = roster.getRosterList().get(i);
+            //if(st.getAttendance().getTime() != null && st.getAttendance().getFogotApplytTime() == null){
+            if(ao.getAttendanceTime() != null && ao.getForgotApplyTime() == null){
+                ++attendCount;
+                //}else if(st.getAttendance().getTime() != null && st.getAttendance().getFogotApplytTime() != null){
+            }else if(ao.getAttendanceTime() != null && ao.getForgotApplyTime() != null){
+                ++forgotCount;
+            }else{
+                ++absentCount;
+            }
+        }
+        count[0] = attendCount;
+        count[1] = absentCount;
+        count[2] = forgotCount;
+        return count;
     }
 
     /**
@@ -129,7 +410,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
      * getNetworkAttendanceInfoメソッド
      * ネットワークのデータベースに出席者の情報を取得しにいく.
      */
-    public void getNetworkAttendanceInfo(){
+    /*public void getNetworkAttendanceInfo(){
         MainActivity activity = (MainActivity)this.getActivity();
         //教室情報を取得しに行く.
         //String url = URL.ATTENDEE_LIST+"/"+activity.getClassPlanId();
@@ -150,7 +431,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
                     }
                 });
         AppController.getInstance(this.getActivity()).getRequestQueue().add(request);
-    }
+    }*/
 
     /**
      * Created by scr on 2014/12/14.
@@ -182,16 +463,17 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         //処理を無事に終えたのでListViewを表示する.
         successProcess();
     }
+
     /**
      * Created by scr on 2014/12/14.
      * successProcessメソッド
      * 処理が正常に終了.
      */
-    private void successProcess(){
+    public void successProcess(){
         int nowSetCount = this.attendeeListView.getAdapter().getCount();
         if(nowSetCount > 0){
             //一人以上学生の出席を確認できた.
-            this.attendeeLoadProgressBar.setVisibility(View.GONE);
+            //this.attendeeLoadProgressBar.setVisibility(View.GONE);
             this.attendeeListView.setVisibility(View.VISIBLE);
         }else{
             //TODO:何時頃より出席調査を開始しますので,お待ちください.
@@ -200,7 +482,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
              * **/
 
             //TODO:出席者がいません.
-            this.attendeeLoadProgressBar.setVisibility(View.GONE);
+            //this.attendeeLoadProgressBar.setVisibility(View.GONE);
             //出席者がいませんをセットする.
             this.attendeeStatusTextView.setText(R.string.message_no_attendee);
             this.attendeeStatusTextView.setVisibility(View.VISIBLE);
@@ -216,7 +498,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         int nowSetCount = this.attendeeGridView.getAdapter().getCount();
         if(nowSetCount > 0){
             //一人以上学生の出席を確認できた.
-            this.attendeeLoadProgressBar.setVisibility(View.GONE);
+            //this.attendeeLoadProgressBar.setVisibility(View.GONE);
             this.attendeeGridView.setVisibility(View.VISIBLE);
         }else{
             //TODO:何時頃より出席調査を開始しますので,お待ちください.
@@ -225,7 +507,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
              * **/
 
             //TODO:出席者がいません.
-            this.attendeeLoadProgressBar.setVisibility(View.GONE);
+            //this.attendeeLoadProgressBar.setVisibility(View.GONE);
             //出席者がいませんをセットする.
             this.attendeeStatusTextView.setText(R.string.message_no_attendee);
             this.attendeeStatusTextView.setVisibility(View.VISIBLE);
@@ -238,7 +520,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
      * 処理が処理に失敗した.
      */
     private void faileProcess(){
-        this.attendeeLoadProgressBar.setVisibility(View.GONE);
+        //this.attendeeLoadProgressBar.setVisibility(View.GONE);
         //失敗しました.
         this.attendeeStatusTextView.setText(R.string.faile_process);
         this.attendeeStatusTextView.setVisibility(View.VISIBLE);
@@ -263,6 +545,15 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
     }
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(this.transmitStateTimerTask != null){
+            this.transmitStateTimerTask.cancel();
+            this.transmitStateTimerTask = null;
+        }
+    }
+
 
     @Override
     public void onDetach() {
@@ -299,6 +590,45 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         addRoster(roster);
     }
     /**
+     * Created by scr on 2016/2/1.
+     * setAttendanceStatusLayoutメソッド
+     * ・出席確定前   GridViewの上段に「教室にいる学生を調査中です...」を表示
+     * ・出席確定後   GridViewの上段に「出席 ○○  欠席  ○○」を表示
+     */
+    public void setAttendanceStatusLayout(){
+        MainActivity activity = (MainActivity)getActivity();
+        TransmitStateObject tso = activity.getClassObject().getTransmitStateObject();
+
+        if(tso == null){
+            //  送信状態がNULLの場合
+            return ;
+        }
+
+        if(tso.getAttendanceTranmitEndTime() == null){
+            //  出席確定前
+            this.beforeAttendanceStatusLinearLayout.setVisibility(View.VISIBLE);
+            this.afterAttendanceStatusLinearLayout.setVisibility(View.GONE);
+        }else{
+            //  出席確定後
+            this.beforeAttendanceStatusLinearLayout.setVisibility(View.GONE);
+            this.afterAttendanceStatusLinearLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //  受講者Add
+    private void addNewRoster(StudentObject[] sos){
+        //adapter = new RosterCustomAdapter_1(this.getActivity(),0,rosterList,RosterCustomAdapter_1.ALL_LAYOUT);
+        TransmitStateObject tso = super.getMainActivity().getClassObject().getTransmitStateObject();
+        adapter = new RosterCustomAdapter_2(this.getActivity(),0,tso,sos,RosterCustomAdapter_2.ALL_LAYOUT);
+
+        this.attendeeGridView.setNumColumns(2);
+        this.attendeeGridView.setAdapter(adapter);
+        this.attendeeGridView.invalidateViews();
+        successProcessShowGridView();
+    }
+
+
+    /**
      * Created by scr on 2014/12/24.
      * addRosterメソッド
      * 受講者ListViewに加える.
@@ -310,7 +640,8 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         //RosterCustomAdapter adapter = new RosterCustomAdapter(this.getActivity(),0,rosterList);
         /**/
 
-        adapter = new RosterCustomAdapter_1(this.getActivity(),0,rosterList,RosterCustomAdapter_1.ALL_LAYOUT);
+        //adapter = new RosterCustomAdapter_1(this.getActivity(),0,rosterList,RosterCustomAdapter_1.ALL_LAYOUT);
+        //adapter = new RosterCustomAdapter_1(this.getActivity(),0,rosterList,RosterCustomAdapter_1.ALL_LAYOUT);
 
         this.attendeeGridView.setNumColumns(2);
         this.attendeeGridView.setAdapter(adapter);
@@ -341,12 +672,12 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
     private Handler handler = new Handler();
 
 
-    public void demo(List<Student> attendance){
+    /*public void demo(List<Student> attendance){
         Timer mainTimer = new Timer();
         MainActivity activity = (MainActivity)this.getActivity();
         activity.setTimer(mainTimer);
         DemoReCollTheRollTimer reTimer  = new DemoReCollTheRollTimer(activity,DemoReCollTheRollTimer.MODE_ATTENDEE_FRAGMENT,attendance);
         reTimer.setAttendeeFragment(handler,this.attendeeGridView,this.adapter);
         mainTimer.schedule(reTimer, 6000,1000);
-    }
+    }*/
 }

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import jp.pmw.test_en_revolution.R;
-import jp.pmw.test_en_revolution.confirm_class_plan.AttendanceState;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
 
 /**
@@ -41,10 +40,10 @@ public class RosterCustomAdapter extends ArrayAdapter<Student> {
         }
         //出欠席者の情報
         Student student = _items.get(position);
-        AttendanceState attendance = student.getThisClassTime().getThisClassAttendanceState();
+        //AttendanceState attendance = student.getThisClassTime().getThisClassAttendanceState();
 
         /*出席に関して*/
-        int attendanceState = attendance.getTempAttendanceState();
+        /*int attendanceState = attendance.getTempAttendanceState();
         if(attendanceState == 0){
             if(attendance.getConfirmTime() != null){
                 //正常に出席完了
@@ -61,7 +60,7 @@ public class RosterCustomAdapter extends ArrayAdapter<Student> {
         }else{
             //仮出席状態なので、グレー
             (view.findViewById(R.id.roster_attendance_state_color)).setBackgroundColor(this.getContext().getResources().getColor(R.color.gray));
-        }
+        }*/
 
         /*メッセージに関して*/
         if(student.getMessage()!=null){

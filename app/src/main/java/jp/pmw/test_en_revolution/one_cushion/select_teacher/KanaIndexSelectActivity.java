@@ -48,8 +48,7 @@ import jp.pmw.test_en_revolution.one_cushion.select_teacher.dummy.StaffsMst;
  * @author Shota Ito
  * @version 1.0
  */
-public class KanaIndexSelectActivity extends MyActivity
-{
+public class KanaIndexSelectActivity extends MyActivity {
     public static final String SELECT_INITIAL = "SELECT_INITIAL";
     private static final String CONFIRM_TAP_CONTENT_ALERT_DIALOG = "doConfirmTapContentAlertDialog";
     private static final String SHOW_POPUP_CONFIRM_CLASS_PLAN  = "showPopupConfirmClassPlan";
@@ -137,7 +136,7 @@ public class KanaIndexSelectActivity extends MyActivity
      * タップした教員名で間違いがないかを画面上に表示するメソッド.
      * @param  selectTeacher タップされた教員情報
      */
-    public void doTeacherConfirmTapSelectContent(Teacher selectTeacher) {
+    public void doTeacherConfirmTapSelectContent(Faculty selectTeacher) {
         //TODO:タップされた教員情報を画面上に出力する.
 
     }
@@ -238,8 +237,8 @@ public class KanaIndexSelectActivity extends MyActivity
         private Button regainButton;
 
         //選択された教員名
-        private Teacher selectTeacher;
-        public Teacher getTeacher(){return this.selectTeacher;}
+        private Faculty selectTeacher;
+        public Faculty getTeacher(){return this.selectTeacher;}
 
 
         public PlaceholderFragment() {
@@ -270,7 +269,7 @@ public class KanaIndexSelectActivity extends MyActivity
                                         View view, int pos, long id) {
                     // 選択アイテムを取得
                     ListView listView = (ListView)parent;
-                    Teacher item = (Teacher)listView.getItemAtPosition(pos);
+                    Faculty item = (Faculty)listView.getItemAtPosition(pos);
 
                     //選択した教員情報をアラートダイヤログで確認.
                     //doConfirmTapContentAlertDialog(item);
@@ -327,6 +326,7 @@ public class KanaIndexSelectActivity extends MyActivity
         }
         /**
          * Created by scr on 2014/12/17
+         * Created by scr on 2014/12/17
          * motoToActivityConfirmClassPlanActivityメソッド
          * 講義内容を確認する画面へ飛ぶ
          */
@@ -351,12 +351,12 @@ public class KanaIndexSelectActivity extends MyActivity
 
             /**
              * ネットワークから教員名を取得する.(本番ではこちらを使用!)**/
-            //getNetWorkDBAccessSearchTeacherFamilyName();
+            getNetWorkDBAccessSearchTeacherFamilyName();
 
             /**
              * ローカルDBから取得する.(テストではこちらを使用!)
              * */
-            dummyDataGetLocalDBSearchTeacherFamilyName();
+            //dummyDataGetLocalDBSearchTeacherFamilyName();
 
         }
 
@@ -377,9 +377,9 @@ public class KanaIndexSelectActivity extends MyActivity
                 List<StaffsMst> msts = getAllQualifiedPerson(selectInitial);
                 //登録教員がいた場合
                 if (msts.size() > 0) {
-                    List<Teacher> teachers = new ArrayList<Teacher>();
+                    List<Faculty> teachers = new ArrayList<Faculty>();
                     for (StaffsMst i : msts) {
-                        teachers.add(new Teacher(i.staffId, i.staffName, i.staffFamilyFriganaName, i.staffGivenFriganaName));
+                        teachers.add(new Faculty(i.staffId, i.staffName));
                     }
                     CustomAdapter adapter = new CustomAdapter(this.getActivity(), 0, teachers);
                     teacherFamilyNameListListView.setAdapter(adapter);
@@ -451,7 +451,8 @@ public class KanaIndexSelectActivity extends MyActivity
          */
         private void doNetWorkDBAccessSearchTeacherFamilyName(int tapId){
             //
-            String url = URL.TEACHER_FAMILY_NAME_INITIAL+"/"+(tapId - 1);
+            //String url = URL.TEACHER_FAMILY_NAME_INITIAL+"/"+(tapId - 1);
+            String url = URL.getTeacherFamilyNameInitial(tapId);
             JsonArrayRequest request = new JsonArrayRequest(
                     url,
                     new Response.Listener<JSONArray>() {
@@ -479,10 +480,10 @@ public class KanaIndexSelectActivity extends MyActivity
         public void jsonArrayParser(JSONArray response){
             Gson mygson = new Gson();
             //List<Teacher> teachers = new ArrayList<Teacher>();
-            Type collectionType = new TypeToken<Collection<Teacher>>(){}.getType();
-            List<Teacher> teachers = mygson.fromJson(response.toString(),collectionType);
-            if(teachers.size() > 0){
-                CustomAdapter adapter = new CustomAdapter(this.getActivity(),0,teachers);
+            Type collectionType = new TypeToken<Collection<Faculty>>(){}.getType();
+            List<Faculty> faculties = mygson.fromJson(response.toString(),collectionType);
+            if(faculties.size() > 0){
+                CustomAdapter adapter = new CustomAdapter(this.getActivity(),0,faculties);
                 teacherFamilyNameListListView.setAdapter(adapter);
                 /*teacherFamilyNameListListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent,
@@ -524,9 +525,9 @@ public class KanaIndexSelectActivity extends MyActivity
          * 選択された教員情報を画面上に出力する.
          * @param  selectTeacher 選択された教員情報
          */
-        private void doSelectTeacherConfirmScreen(Teacher selectTeacher){
+        private void doSelectTeacherConfirmScreen(Faculty selectTeacher){
             this.selectTeacher = selectTeacher;
-            String teacherName = selectTeacher.getName();
+            String teacherName = selectTeacher.getFullName();
             //
             KanaIndexSelectActivity activity = (KanaIndexSelectActivity)this.getActivity();
 

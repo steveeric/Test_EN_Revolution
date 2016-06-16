@@ -1,42 +1,100 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="jp.pmw.test_en_revolution.AttendeeFragment">
 
-    <ListView
-        android:layout_width="wrap_content"
+
+    <!-- 読み込み中...レイアウト -->
+    <include layout="@layout/fragment_loading" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/attendee_list"
-        android:layout_gravity="center|top" />
-    <ListView
-        android:visibility="gone"
-        android:id="@android:id/list"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        />
-    <GridView
-        android:id="@+id/attendee_gridView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:id="@+id/content_layout">
+
+
+        <ListView
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/attendee_list"
+            android:layout_gravity="center|top" />
+
+        <!---出席状況確定前のレイアウト-->
+        <LinearLayout
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/before_attendance_status_linearLayout">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:gravity="center"
+                android:text="@string/before_attendance_status"
+                android:textSize="@dimen/textsize_xlarge"
+                android:id="@+id/before_attendance_status_textView"/>
+        </LinearLayout>
+        <!---全体の出席状況を文字列でセットします-->
+        <LinearLayout
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/after_attendance_status_linearLayout">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:gravity="center"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/textsize_xlarge"
+                android:id="@+id/attendee_total_status_textView"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:gravity="center"
+                android:textColor="@color/red"
+                android:textSize="@dimen/textsize_xlarge"
+                android:id="@+id/absent_total_status_textView"/>
+
+        </LinearLayout>
+
+        <GridView
+            android:visibility="gone"
+            android:id="@+id/attendee_gridView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
         </GridView>
 
-    <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/attendee_load_progressBar"
-        android:layout_gravity="center|center" />
+        <!--<ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="357dp"
+            android:layout_height="357dp"
+            android:id="@+id/attendee_load_progressBar"
+            android:layout_gravity="center"
+            android:indeterminate="false" />-->
 
-    <TextView
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="@dimen/textsize_xlarge"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text=""
-        android:id="@+id/attendee_status_message_textView"
-        android:layout_gravity="center|center" />
+        <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/textsize_xlarge"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text=""
+            android:id="@+id/attendee_status_message_textView"
+            android:layout_gravity="center|center" />
 
 
+    </LinearLayout>
 
 
-</FrameLayout>
+</LinearLayout>

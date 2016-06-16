@@ -1,0 +1,83 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/activity_vertical_midium_margin"
+    android:layout_marginRight="@dimen/activity_vertical_midium_margin"
+    android:layout_marginLeft="@dimen/activity_vertical_midium_margin"
+    tools:context="jp.pmw.test_en_revolution.grouping.GroupingFragment_1">
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:id="@+id/fragment_grouping_1_first_linearLayout">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="@dimen/textsize_xlarge"
+            android:text="@string/grouping_group_select_menber_number_guidance"
+            android:gravity="center"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_gravity="center">
+            <ListView
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:id="@+id/fragment_grouping_1_listView"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_midium_margin"
+                android:text=""
+                android:textSize="@dimen/textsize_large"
+                android:id="@+id/fragment_grouping_1_assist_textView"/>
+
+        </LinearLayout>
+
+        <Button
+            android:visibility="invisible"
+            android:layout_marginBottom="@dimen/activity_vertical_large_margin"
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:id="@+id/fragment_grouping_1_run_button"
+            android:text="実行"
+            android:layout_gravity="top|center"
+            android:textSize="@dimen/textsize_xlarge"
+            android:background="@drawable/button_design" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/fragment_grouping_1_end_linearLayout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/textsize_xlarge"
+            android:layout_marginBottom="@dimen/activity_vertical_large_margin"
+            android:text="@string/grouping_group_end_message"/>
+
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:textSize="@dimen/textsize_xlarge"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/activity_vertical_large_margin"
+            android:text="@string/grouping_group_end_group_cnfirm"
+            android:background="@drawable/button_design"
+            android:id="@+id/fragment_grouping_1_end_group_confirm_button" />
+        </LinearLayout>
+
+</FrameLayout>

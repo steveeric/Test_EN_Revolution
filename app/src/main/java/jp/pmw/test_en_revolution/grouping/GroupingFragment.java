@@ -20,7 +20,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import jp.pmw.test_en_revolution.MainActivity;
@@ -28,9 +27,6 @@ import jp.pmw.test_en_revolution.MyMainFragment;
 import jp.pmw.test_en_revolution.R;
 import jp.pmw.test_en_revolution.common.CommonDialogFragment;
 import jp.pmw.test_en_revolution.confirm_class_plan.Seat;
-import jp.pmw.test_en_revolution.confirm_class_plan.Student;
-import jp.pmw.test_en_revolution.confirm_class_plan.dummy.DummyContentClass;
-import jp.pmw.test_en_revolution.one_cushion.select_teacher.Teacher;
 import jp.pmw.test_en_revolution.room.dummy.DummyRoomMapContent;
 
 /**
@@ -117,7 +113,7 @@ public class GroupingFragment extends MyMainFragment {
         inputMethodManager = (InputMethodManager)this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         this.runBtn = (Button)this.getActivity().findViewById(R.id.fragment_grouping_run_button);
-        this.runBtn.setOnClickListener(runListener);
+        //this.runBtn.setOnClickListener(runListener);
         // 指定した ID の RadioButton を選択
         int checkResorce = R.id.fragment_grouping_group_number_radioButton;
         //this.groupButton.check(checkResorce);
@@ -138,7 +134,10 @@ public class GroupingFragment extends MyMainFragment {
     public void onResume(){
         super.onResume();
         MainActivity activity = (MainActivity)this.getActivity();
-        if(activity.mTeacher.getEndAttendanceFlag() == true){
+        this.duaringAttendance.setVisibility(View.GONE);
+        this.startLinearLayout.setVisibility(View.VISIBLE);
+        this.endLinearLayout.setVisibility(View.GONE);
+        /*if(activity.mTeacher.getEndAttendanceFlag() == true){
             GroupingManagement gpManagement = activity.mTeacher.getGroupingManagement();
             if(gpManagement.getDoGroupingFlag() == true){
                 //
@@ -155,7 +154,7 @@ public class GroupingFragment extends MyMainFragment {
             this.duaringAttendance.setVisibility(View.VISIBLE);
             this.startLinearLayout.setVisibility(View.GONE);
             this.endLinearLayout.setVisibility(View.GONE);
-        }
+        }*/
 
     }
 
@@ -165,7 +164,7 @@ public class GroupingFragment extends MyMainFragment {
      * 選択されたグループボタンの内容に応じて何内を変えます.
      */
     int[] assistList = {2,3,4};
-    private void setSelectContentTextView(int checkResorce) {
+   /* private void setSelectContentTextView(int checkResorce) {
         MainActivity activity = (MainActivity)this.getActivity();
         String str = "";
         String assist = "";
@@ -190,7 +189,7 @@ public class GroupingFragment extends MyMainFragment {
                 }
             }
             */
-            oneGroupAssistCount.clear();
+           /* oneGroupAssistCount.clear();
             String roomId = activity.mTeacher.getClassPlan().getPlace().getRoom().getRoomId();
             if(roomId.equals(DummyRoomMapContent.ROOM_135_ID)){
                 oneGroupAssistCount.add(1);
@@ -245,7 +244,7 @@ public class GroupingFragment extends MyMainFragment {
 
         this.selectContentTextView.setText(str);
         this.assistTextView.setText(assist);
-    }
+    }*/
 
     private List<Integer> oneGroupAssistCount = new ArrayList<Integer>();
 
@@ -258,7 +257,7 @@ public class GroupingFragment extends MyMainFragment {
     private void selectRadio(RadioGroup group,int checkedId){
         _chekedId = checkedId;
         RadioButton radioButton = (RadioButton)this.getActivity().findViewById(checkedId);
-        setSelectContentTextView(checkedId);
+        //setSelectContentTextView(checkedId);
        // this.selectContentTextView.setText(radioButton.getText() + this.getResources().getString(R.string.grouping_group_enter));
         //入力画面出現
         this.selectOneGroupCountLinearLayout.setVisibility(View.VISIBLE);
@@ -268,7 +267,7 @@ public class GroupingFragment extends MyMainFragment {
      * Created by scr on 2015/1/6.
      * 実行ボタン用のリスナー
      */
-    private View.OnClickListener runListener = new View.OnClickListener() {
+    /*private View.OnClickListener runListener = new View.OnClickListener() {
         public void onClick(View v) {
             switch(v.getId()) {
                 case R.id.fragment_grouping_run_button:
@@ -276,7 +275,7 @@ public class GroupingFragment extends MyMainFragment {
                     break;
             }
         }
-    };
+    };*/
     /**
      * Created by scr on 2015/1/6.
      * 着席状況確認用のリスナー
@@ -430,19 +429,19 @@ public class GroupingFragment extends MyMainFragment {
         }
     }*/
 
-    private void setTestDummySelectTotalGroupCount(MainActivity activity,int requestCount){
-        Teacher teacher = activity.mTeacher;
+   /* private void setTestDummySelectTotalGroupCount(MainActivity activity,int requestCount){
+        Faculty teacher = activity.mTeacher;
         GroupingManagement groupingManagement = teacher.getGroupingManagement();
 
         //本日の出席者
-        List<Student> attendee = activity.mTeacher.getRoster().getTodayAttendee();
+        //List<Student> attendee = activity.mTeacher.getRoster().getTodayAttendee();
         //本日の出席者数
-        int attendeeCount = attendee.size();
+        //int attendeeCount = attendee.size();
 
         //4グループ
         //int requestCount = 3;
 
-        int[] membersCount = groupingManagement.setRequestGroupingMode(0, requestCount,attendeeCount);
+        //int[] membersCount = groupingManagement.setRequestGroupingMode(0, requestCount,attendeeCount);
 
         //新たな着席位置を取得する.
 
@@ -452,7 +451,7 @@ public class GroupingFragment extends MyMainFragment {
         //List<Seat> verticalSeats = activity.readDummySeatMst();
         //横用シート
         //List<Seat> horizontalSeats = activity.readDummySeatMst();
-
+        /*
         String roomId = teacher.getClassPlan().getPlace().getRoom().getRoomId();
         String fileName = this.getGroupingSeatMst(roomId);
         //列用シート
@@ -584,9 +583,9 @@ public class GroupingFragment extends MyMainFragment {
 
         //グルーピング終わり.
         groupingManagement.setDoGroupingFlag();
-    }
-    private void setTestDummyGroupingDate(MainActivity activity){
-        Teacher teacher = activity.mTeacher;
+    }*/
+    /*private void setTestDummyGroupingDate(MainActivity activity){
+        Faculty teacher = activity.mTeacher;
         GroupingManagement groupingManagement = teacher.getGroupingManagement();
 
         //11人出席していて,
@@ -694,13 +693,13 @@ public class GroupingFragment extends MyMainFragment {
                     }
                 }
             }
-        }
+        }*/
 
         /*for(int i = 0; i < attendee.size(); i++){
             attendee.get(i).getThisClassTime().setThisClassSittingPosition(seats.get(i));
             attendee.get(i).getThisClassTime().setThisClassGroup(group);
         }*/
-
+/*
         int firstRaundCount = attendeeCount / members[0];
         int firstToCount = members[0] * firstRaundCount;
 
@@ -733,7 +732,7 @@ public class GroupingFragment extends MyMainFragment {
     }
 
     private void setTestDummyGripingSeat(MainActivity activity){
-        Teacher teacher = activity.mTeacher;
+        Faculty teacher = activity.mTeacher;
         GroupingManagement groupingManagement = teacher.getGroupingManagement();
 
         //本日の出席者
@@ -744,7 +743,7 @@ public class GroupingFragment extends MyMainFragment {
         //int[] membersCount = groupingManagement.setRequestGroupingMode(0, requestCount,attendeeCount);
         int a = 0;
         a = 12;
-    }
+    }*/
 
 
     /**
@@ -752,7 +751,7 @@ public class GroupingFragment extends MyMainFragment {
      * checkRunGoupingメソッド
      * 実行ボタンが押された際の処理を記述します.
      */
-    private void checkRunGouping(){
+    /*private void checkRunGouping(){
 
 
         String inputValue = this.inputEditText.getText().toString();
@@ -772,7 +771,7 @@ public class GroupingFragment extends MyMainFragment {
                         Toast.LENGTH_SHORT).show();*/
                 //チェンジレイアウト
                 //グルーピング完了フラグをONにする.
-                activity.mTeacher.getGroupingManagement().setDoGroupingFlag();
+                /*activity.mTeacher.getGroupingManagement().setDoGroupingFlag();
                 startLinearLayout.setVisibility(View.GONE);
                 endLinearLayout.setVisibility(View.VISIBLE);
 
@@ -791,9 +790,9 @@ public class GroupingFragment extends MyMainFragment {
 
             }
         }
-    }
+    }*/
 
-    private void selectGroup(int oneGroupMemberCount,List<Student> attendee){
+    /*private void selectGroup(int oneGroupMemberCount,List<Student> attendee){
         MainActivity activity = (MainActivity)this.getActivity();
 
         int attendeeCount = attendee.size();
@@ -877,25 +876,15 @@ public class GroupingFragment extends MyMainFragment {
             }
         }*/
         //学生のグルーピング情報をセット
-        activity.mTeacher.getGroupingManagement().setGroupings(attendee);
+        /*activity.mTeacher.getGroupingManagement().setGroupings(attendee);
 
         //グルーピング終わり.
         activity.mTeacher.getGroupingManagement().setDoGroupingFlag();
-    }
+    }*/
 
-    private String getGroupingSeatMst(String roomId){
-        String fileName = "";
-       if(roomId.equals(DummyRoomMapContent.ROOM_1317_ID)){
-           fileName = MainActivity.CSV_FILE_NAME_SEATS_MST_1317;
-       }else if(roomId.equals(DummyRoomMapContent.ROOM_135_ID)){
-           fileName = MainActivity.CSV_FILE_NAME_SEATS_MST_135;
-       }else if(roomId.equals(DummyRoomMapContent.ROOM_241_ID)){
-           fileName = MainActivity.CSV_FILE_NAME_SEATS_MST_241;
-       }
-        return fileName;
-    }
 
-    private void notAmariSelectMemberCount(MainActivity activity,int oneGroupMemberCount,List<Student> attendee){
+
+    /*private void notAmariSelectMemberCount(MainActivity activity,int oneGroupMemberCount,List<Student> attendee){
 
         String fileName = "";
 
@@ -940,7 +929,7 @@ public class GroupingFragment extends MyMainFragment {
             }
         }
 
-    }
+    }*/
 
 
 

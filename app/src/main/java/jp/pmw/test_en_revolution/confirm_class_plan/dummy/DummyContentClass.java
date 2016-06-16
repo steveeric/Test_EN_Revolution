@@ -14,7 +14,7 @@ import jp.pmw.test_en_revolution.confirm_class_plan.Place;
 import jp.pmw.test_en_revolution.confirm_class_plan.Room;
 import jp.pmw.test_en_revolution.confirm_class_plan.Subject;
 import jp.pmw.test_en_revolution.confirm_class_plan.Teaching;
-import jp.pmw.test_en_revolution.confirm_class_plan.TimeZone;
+import jp.pmw.test_en_revolution.confirm_class_plan.Timetable;
 import jp.pmw.test_en_revolution.confirm_class_plan.When;
 
 /**
@@ -46,7 +46,7 @@ public class DummyContentClass {
         Building building = null;
         Room room = null;
         When when = null;
-        TimeZone timeZone = null;
+        Timetable timeZone = null;
         Place place = null;
         Subject subject = null;
         BrowsingClass browsingClass = null;
@@ -57,7 +57,7 @@ public class DummyContentClass {
         //現在授業中の場合.
          /**/
         when = new When("2014","12","26");
-        timeZone = new TimeZone("4時限目","14:30:00","16:10:00");
+        timeZone = new Timetable("4時限目","14:30:00","16:10:00");
         university = new MextUniversity("306058","園田学園女子大学");
         campus = new Campus("30605800","そのだキャンパス");
         building = new Building("30605800","1号館");
@@ -72,7 +72,7 @@ public class DummyContentClass {
 
         /*衣井先生*/
         when = new When("2014","12","26");
-        timeZone = new TimeZone("4時限目","14:30:00","16:10:00");
+        timeZone = new Timetable("4時限目","14:30:00","16:10:00");
         university = new MextUniversity("306058","園田学園女子大学");
         campus = new Campus("30605800","そのだキャンパス");
         building = new Building("30605800","1号館");
@@ -86,7 +86,7 @@ public class DummyContentClass {
 
         /*稲葉先生*/
         when = new When("2014","12","26");
-        timeZone = new TimeZone("4時限目","14:30:00","16:10:00");
+        timeZone = new Timetable("4時限目","14:30:00","16:10:00");
         university = new MextUniversity("306058","園田学園女子大学");
         campus = new Campus("30605800","そのだキャンパス");
         building = new Building("30605800","1号館");
@@ -102,7 +102,7 @@ public class DummyContentClass {
         //この後じゅぎょうですよ!.
         /**/
         when = new When("2014","12","26");
-        timeZone = new TimeZone("5時限目","16:20:00","18:00:00");
+        timeZone = new Timetable("5時限目","16:20:00","18:00:00");
         university = new MextUniversity("306058","園田学園女子大学");
         campus = new Campus("30605800","そのだキャンパス");
         building = new Building("30605800","1号館");
@@ -118,7 +118,7 @@ public class DummyContentClass {
         //今日は授業がないけど、今期(後期)(ex明日)まだ授業あるよ
         /**/
         when = new When("2014","12","29");
-        timeZone = new TimeZone("4時限目","14:30:00","14:00:00");
+        timeZone = new Timetable("4時限目","14:30:00","14:00:00");
         university = new MextUniversity("306058","園田学園女子大学");
         campus = new Campus("30605800","そのだキャンパス");
         building = new Building("30605800","1号館");

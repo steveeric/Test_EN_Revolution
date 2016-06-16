@@ -13,7 +13,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="　"
         android:layout_gravity="center"
-        android:textSize="@dimen/textsize_xlarge"
+        android:textSize="@dimen/textsize_large"
         android:gravity="center"
         android:id="@+id/row_questionnaire_answer_result_index_color_textView" />
 
@@ -25,22 +25,31 @@
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="はい"
-        android:textSize="@dimen/textsize_xlarge"
+        android:textSize="@dimen/textsize_xxlarge"
         android:gravity="center"
         android:id="@+id/row_questionnaire_answer_result_choice_textView" />
 
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="○○人"
+        android:textSize="@dimen/textsize_xxlarge"
+        android:gravity="right"
+        android:id="@+id/row_questionnaire_answer_result_answer_count_textView" />
 
-    <LinearLayout
+    <!--<LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="center"
         android:layout_height="wrap_content">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="70人"
+            android:text="○○人"
             android:textSize="@dimen/textsize_xlarge"
             android:id="@+id/row_questionnaire_answer_result_answer_count_textView" />
         <TextView
@@ -48,8 +57,17 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/textsize_xlarge"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="(80%)"
+            android:text="(○○%)"
             android:id="@+id/row_questionnaire_answer_result_answer_percentage_textView" />
-
-    </LinearLayout>
+    </LinearLayout>-->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textsize_xxlarge"
+        android:gravity="right"
+        android:layout_marginRight="10dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="○○%"
+        android:id="@+id/row_questionnaire_answer_result_answer_percentage_textView" />
 </jp.pmw.test_en_revolution.questionnaire.AnswerLayout>

@@ -2,10 +2,16 @@ package jp.pmw.test_en_revolution;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,239 +20,215 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+import java.io.Serializable;
+//import com.android.volley.Response;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import org.json.JSONObject;
 import java.util.Timer;
-
 import jp.pmw.test_en_revolution.common.CommonDialogFragment;
+import jp.pmw.test_en_revolution.config.TimerConfig;
+import jp.pmw.test_en_revolution.config.TransmitTypeConfig;
+import jp.pmw.test_en_revolution.config.URL;
 import jp.pmw.test_en_revolution.confirm_class_plan.ConfirmClassPlanActivity;
 import jp.pmw.test_en_revolution.confirm_class_plan.Roster;
-import jp.pmw.test_en_revolution.confirm_class_plan.Seat;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
-import jp.pmw.test_en_revolution.confirm_class_plan.dummy.DummyContentClass;
+import jp.pmw.test_en_revolution.confirm_class_plan.TmpClassInfo;
 import jp.pmw.test_en_revolution.drawer.NavigationDrawerFragment;
-import jp.pmw.test_en_revolution.dummy.DummyRosterContent;
-import jp.pmw.test_en_revolution.grouping.GroupingFragment;
-import jp.pmw.test_en_revolution.grouping.GroupingManagement;
+import jp.pmw.test_en_revolution.grouping.GroupingFragment_1;
+import jp.pmw.test_en_revolution.help.HelpSignalDialogFragnemt;
 import jp.pmw.test_en_revolution.history.SearchHistoryDialogFragment;
-import jp.pmw.test_en_revolution.one_cushion.select_teacher.Teacher;
-import jp.pmw.test_en_revolution.one_cushion.select_teacher.dummy.CSVCtrl;
-import jp.pmw.test_en_revolution.questionnaire.Question;
+import jp.pmw.test_en_revolution.one_cushion.select_teacher.Faculty;
 import jp.pmw.test_en_revolution.questionnaire.Questionnaire;
+import jp.pmw.test_en_revolution.questionnaire.QuestionnaireDialogFragment;
 import jp.pmw.test_en_revolution.questionnaire.QuestionnaireFragment;
 import jp.pmw.test_en_revolution.questionnaire.QuestionnaireResultFragment;
-import jp.pmw.test_en_revolution.questionnaire.dummy.DummyQuestionContent;
+import okhttp3.OkHttpClient;
 
 public class MainActivity extends MyFragmentActivity {
 
-/**
- * Used to store the last screen title. For use in {@link #restoreActionBar()}.
- */
-
-    public static final String CSV_FILE_NAME_SEATS_MST_241 = "SEATS_MST_241.csv";
-    public static final String CSV_FILE_NAME_SEATS_MST_1317 = "SEATS_MST_1317.csv";
-    public static final String CSV_FILE_NAME_SEATS_MST_135 = "SEATS_MST_135.csv";
-
-    public static final String CSV_FILE_NAME_SEATS_ID_241 = "SEAT_ID_241.csv";
-    public static final String CSV_FILE_NAME_SEATS_ID_1317 = "SEAT_ID_1317.csv";
-    public static final String CSV_FILE_NAME_SEATS_ID_135 = "SEAT_ID_135.csv";
-
-    //10分後にアプリが落ちるようにセットする.
-    private static final long END_MANUAL_CLASS_ROOM_TIME = 600000;
-    private static final long ONE_MINUTE_INTERVALS = 60000;
-private CharSequence mTitle;
-/*教員情報を保持する(授業情報も保持しています.)*/
-public Teacher mTeacher;
-/*ナビゲーションドロワーのリスト項目*/
-private ListView mNavigationDrawerList;
-/*ナビゲーションドロワーの50音順に戻るボタン*/
-private Button mNavigationDrawerButton;
-//アンケート画面で現在見ている問題トピック番号
-public int mNowSeeQuestionTopic=0;
+    private static final long END_CLASS_TIMER_WAKE_UP_INTERVAL = 60000;
+    private CharSequence mTitle;
+    /*教員情報を保持する(授業情報も保持しています.)*/
+    public Faculty mTeacher;
+    /*ナビゲーションドロワーのリスト項目*/
+    private ListView mNavigationDrawerList;
+    /*ナビゲーションドロワーの50音順に戻るボタン*/
+    private Button mNavigationDrawerButton;
+    //アンケート画面で現在見ている問題トピック番号
+    public int mNowSeeQuestionTopic=0;
     //ドロワーフラグメントListViewのどの項目を選択しているかを保持する.
     public int mNavigationDrawerItemSelected = 0;
-@Override
-protected void onCreate(Bundle savedInstanceState) {
+
+    //  授業画面コントローラ
+    private ClassAcitvityContoller caController;
+    public ClassAcitvityContoller getClassActivityController(){return this.caController;}
+
+    //  授業オブジェクト
+    private ClassObject classObject;
+    public ClassObject getClassObject(){return this.classObject;}
+
+    //  送信状態管理タイマー
+    private TransmitStateTimerTask transmitStateTimerTask;
+    public TransmitStateTimerTask getTransmitStateTimerTask(){return this.transmitStateTimerTask;}
+
+    //  授業オブジェクトデータ取得Http管理クラス
+    private ClassHttpRequest classHttpRequest;
+    public ClassHttpRequest getClassHttpRequest(){return this.classHttpRequest;}
+
+    private OkHttpClient client = new OkHttpClient();
+    public OkHttpClient getOkHttpClient(){return this.client;}
+
+
+    //
+    /*private ChkAttendanceHttpRequest chkAttendanceHttpRequest;
+    public ChkAttendanceHttpRequest getChkAttendanceHttpRequest(){return this.chkAttendanceHttpRequest;}*/
+
+
+    //  出席関係取得中フラグ(false:取得中でない, true:取得中)
+    public boolean chkAttendanceRelationshipInfoRetrieving = false;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-    //授業終了タイマー
-    this.endClassRoomTimer = new Timer();
-    //デモバージョンは終了時間を自分で決める.
-    //onCreateしてから5分後に落ちるように設定!
-    long endTime = System.currentTimeMillis() + END_MANUAL_CLASS_ROOM_TIME;
-    this.endClassRoomTimer.schedule(new FinishTimer(this,endTime), 0,ONE_MINUTE_INTERVALS);
+        init();
 
-    if(this.getIntent()!=null){
-        Intent intent = this.getIntent();
-        Teacher data = (Teacher)intent.getSerializableExtra(ConfirmClassPlanActivity.TEACHER);
-        /*ダミーの受講者を代入*/
-        setDummyAttendance(data);
-        /*ダミーのアンケートを代入*/
-        setDummyQuestionnaire(data);
-        mTeacher = data;
+        createNavigationDrawer();
+
+
+
+         /*
+         mNavigationDrawerFragment = (NavigationDrawerFragment)
+                    getFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+            //タイトルバー初期化
+            mTitle = "";
+
+            // Set up the drawer.
+            mNavigationDrawerFragment.setUp(
+                    R.id.navigation_drawer,
+                    (DrawerLayout) findViewById(R.id.drawer_layout));
+        */
     }
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+    /**
+     * Created by scr on 2016/1/29.
+     * initメソッド
+     * 初期起動群
+     */
+    private void init(){
+        //  授業オブジェクト生成
+        this.classObject            = new ClassObject();
 
-        //タイトルバー初期化
-        mTitle = "";
-        //mTitle = getTitle();
+        if(this.getIntent()!=null){
+            Intent intent = this.getIntent();
+            Faculty data = (Faculty)intent.getSerializableExtra(ConfirmClassPlanActivity.TEACHER);
+            //mTeacher = data;
+            String sameClassNumber = data.getClassPlan().getSameClassNumber();
+            this.classObject.setFacultyObject(data);
+            this.classObject.setSameClassNumber(sameClassNumber);
+        }
 
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-        R.id.navigation_drawer,
-        (DrawerLayout) findViewById(R.id.drawer_layout));
-}
+
+        //
+        //  TODO:全画面からintentされた教員データを格納すること!!
+        //  授業画面コントローラ
+        this.caController           = new ClassAcitvityContoller(this);
+        //
+        this.classHttpRequest       = new ClassHttpRequest(this);
+
+        //chkTrxTranmitState();
+
+    }
+    /**
+     * Created by scr on 2016/1/29.
+     * showErrorToast
+     * エラートーストを表示します.
+     * @param errorMsg エラーメッセージ
+     */
+    public void showErrorToast(String errorMsg){
+        Toast.makeText(this, "ERROR:"+errorMsg, Toast.LENGTH_SHORT).show();
+    }
+    public void showToast(){
+        Toast.makeText(this, "showToast", Toast.LENGTH_SHORT).show();
+    }
+
+    /*public void displayToastThroughHandlerThread() {
+        final HandlerThread ht = new HandlerThread("TestThread#3");
+        ht.start();
+
+        Handler h = new Handler(ht.getLooper());
+        h.post(new Runnable() {
+            @Override
+            public void run() {
+                showToast();
+                //moveToAttendeeFragment();
+            }
+        });
+
+        // 別スレッドを停止
+        //ht.quit();
+    }*/
+    /**
+     * Created by scr on 2016/2/1.
+     * showAnotherErrorToast
+     * 別スレッドからのトースト
+     * @param errorMsg エラーメッセージ
+     */
+    public void showAnotherErrorToast(final String errorMsg){
+        /*final Handler handler = new Handler();
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "ERROR:"+errorMsg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).start();*/
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, "ERROR:"+errorMsg, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+
+
     /**
      * Created by scr on 2015/1/5.
      * setDummyQuestionnaireメソッド
      * 通常はネットワークDBから取得するアンケートに関するデータを
      * ローカル端末内設置されたダミーデータから読み取る
      */
-    private void setDummyQuestionnaire(Teacher teacher){
-        /*グルーピング*/
+    /*private void setDummyQuestionnaire(Faculty teacher){
+        //グルーピング
         GroupingManagement groupingManagement = new GroupingManagement();
         teacher.setGroupingManagement(groupingManagement);
-        /*アンケート*/
+        //アンケート//
         List<Question> questions = DummyQuestionContent.getQuestions();
         Questionnaire que = new Questionnaire(questions);
         teacher.setQuestionnaire(que);
-    }
-    /**
-     * Created by scr on 2015/1/5.
-     * setLastSeeQuestionIdメソッド
-     * 最後に開始したQuestionidを保持させる.     */
-    public void setLastSeeQuestionId(String questionId){
-        this.mTeacher.getQuestionnaire().setLastQuestionId(questionId);
-    }
-
-    /**
-     * Created by scr on 2015/1/4.
-     * setDummyAttendanceメソッド
-     * 通常はネットワークDBから取得する出席者に関するデータを
-     * ローカル端末内に設置されたCSVファイルから読み込む
-     */
-    private void setDummyAttendance(Teacher teacher){
-        Roster roster = DummyRosterContent.getDummyRoster();
-        teacher.setRoster(roster);
-
-        String roomId = teacher.getClassPlan().getPlace().getRoom().getRoomId();
-        String seatIdFileName = "";
-        String fileName = "";
-        if(roomId.equals(DummyContentClass.ROOM_ID_135)){
-            fileName =  this.CSV_FILE_NAME_SEATS_MST_135;
-            seatIdFileName = this.CSV_FILE_NAME_SEATS_ID_135;
-        }else if(roomId.equals(DummyContentClass.ROOM_ID_1317)){
-            fileName =  this.CSV_FILE_NAME_SEATS_MST_1317;
-            seatIdFileName = this.CSV_FILE_NAME_SEATS_ID_1317;
-        }else{
-            fileName =  this.CSV_FILE_NAME_SEATS_MST_241;
-            seatIdFileName = this.CSV_FILE_NAME_SEATS_ID_241;
-        }
-
-        /*ダミー座席位置を読み込み*/
-        List<Seat> seats = readDummySeatMst(fileName);
-        List<String>seatIds = readDummySeatId(seatIdFileName);
-
-        //ダミーの座席IDをセットする.
-        for(int i = 0;i < roster.getRosterList().size(); i++){
-            roster.getRosterList().get(i).getThisClassTime().setThisClassSittingPositionId(seatIds.get(i));
-        }
-
-
-        /**/
-
-        /*ダミー座席位置をセット*/
-        for(int i = 0; i < roster.getRosterList().size(); i++){
-            String sitSeatId = roster.getRosterList().get(i).getThisClassTime().getThesClassSittingPositionId();
-            for(int j=0; j<seats.size();j++){
-                String seatId = seats.get(j).getSeatId();
-                if(seatId.equals(sitSeatId)){
-                    Seat seat =  seats.get(j);
-                    roster.getRosterList().get(i).getThisClassTime().setThisClassSittingPosition(seat);
-                    break;
-                }
-            }
-        }
-    }
-    /**
-     * Created by scr on 2015/1/4.
-     * readDummySeatMstメソッド
-     * 通常はネットワークDBから取得するSEAT_MSTを
-     * ローカル端末内にあるCSVファイルから読み込む.
-     */
-    public List<Seat> readDummySeatMst(){
-        List<Seat> seats = new ArrayList<Seat>();
-        String fileName = CSV_FILE_NAME_SEATS_MST_241;
-        CSVCtrl csv = new CSVCtrl();
-        List<StringTokenizer> tokenizers =  csv.readCSV(this, fileName);
-        for(int i = 0; i < tokenizers.size(); i++){
-            StringTokenizer token = tokenizers.get(i);
-            int count = 0;
-            String[] items = new String[5];
-            while(token.hasMoreTokens()) {
-                String item = token.nextToken();
-                items[count] = item;
-                ++count;
-            }
-            String seatId = items[0];
-            int row = Integer.valueOf(items[3]);
-            int column = Integer.valueOf(items[4]);
-            Seat seat = new Seat(seatId,row,column);
-            seats.add(seat);
-        }
-        return seats;
-    }
-    public List<Seat> readDummySeatMst(String fileName){
-        List<Seat> seats = new ArrayList<Seat>();
-        CSVCtrl csv = new CSVCtrl();
-        List<StringTokenizer> tokenizers =  csv.readCSV(this, fileName);
-        for(int i = 0; i < tokenizers.size(); i++){
-            StringTokenizer token = tokenizers.get(i);
-            int count = 0;
-            String[] items = new String[5];
-            while(token.hasMoreTokens()) {
-                String item = token.nextToken();
-                items[count] = item;
-                ++count;
-            }
-            String seatId = items[0];
-            int row = Integer.valueOf(items[3]);
-            int column = Integer.valueOf(items[4]);
-            Seat seat = new Seat(seatId,row,column);
-            seats.add(seat);
-        }
-        return seats;
-    }
-
-    public List<String> readDummySeatId(String fileName){
-            List<String> seats = new ArrayList<String>();
-            CSVCtrl csv = new CSVCtrl();
-            List<StringTokenizer> tokenizers =  csv.readCSV(this, fileName);
-            for(int i = 0; i < tokenizers.size(); i++){
-                StringTokenizer token = tokenizers.get(i);
-                int count = 0;
-                String[] items = new String[1];
-                while(token.hasMoreTokens()) {
-                    String item = token.nextToken();
-                    items[count] = item;
-                    ++count;
-                }
-                String seatId = items[0];
-                seats.add(seatId);
-            }
-            return seats;
-        }
-    public void setTimer(Timer timer){
+    }*/
+    /*public void setTimer(Timer timer){
         demoCallTheRollTimer = timer;
-    }
+    }*/
     //出席調査タイマー
-    private Timer demoCallTheRollTimer;
+   // private Timer demoCallTheRollTimer;
     //授業終了タイマー
-    private Timer endClassRoomTimer;
+    public Timer endClassRoomTimer;
 
     /**
      * Created by scr on 2015/1/14.
@@ -262,63 +244,456 @@ protected void onCreate(Bundle savedInstanceState) {
     }
 
     public void demoCallTheRollCancel(){
-        if(demoCallTheRollTimer!=null){
+        /*if(demoCallTheRollTimer!=null){
             demoCallTheRollTimer.cancel();
-        }
+        }*/
         showEndCallTheRollAlertDialog();
     }
     public void onResume(){
         super.onResume();
-        /**
-         * エラー処理を行う.
-         * **/
-        if(this.mTeacher == null){
+        //  onResume時に初期化
+        initOnResume();
+
+        //
+
+        //  起動時
+        this.caController.startUp();
+        String roomId       =   this.getClassObject().getFacultyObject().getClassPlan().getPlace().getRoomId();
+        //  教室情報取得
+        this.classHttpRequest.getRoomFloaMapInfo(roomId);
+        //  アンケート取得
+        this.classHttpRequest.getQuestionnaire();
+
+
+
+        //this.getClassHttpRequest().doOkHttp(ClassHttpRequest.DO_TYPE_CLASS_REAMING_TIME,);
+
+        //String sameClassNumber = this.getClassObject().getSameClassNumber();
+        //String url = URL.getUrlChkAttendance(sameClassNumber);
+        //doVolley1(url);
+        //doOkHttp3(url);
+        //  読み込み中画面を出力
+        //showLoadingFragment();
+        //  授業残り時間を調べる
+        //getClassReamingTimeFromNetWrokDB();
+        /*if(this.mTeacher == null){
             //メモリから教員に関すること(授業情報、受講生など)が消えた.
             //エラーなので初めからやり直すように促す.
         }else{
             //エラーではないので処理を始める
-            if(this.mTeacher.getEndAttendanceFlag() == false){
-                demoCallTheRollTimer = new Timer();
-                DemoReCollTheRollTimer reTimer
-                        = new DemoReCollTheRollTimer(this,DemoReCollTheRollTimer.MODE_MAINACTIVITY,this.mTeacher.getRoster().getRosterList());
-                this.demoCallTheRollTimer.schedule(reTimer, 10000,1000);
+            getClassReamingTimeFromNetWrokDB();
+        }*/
+    }
+    /**
+     * Created by si on 2016/01/31.
+     * createNavigationDrawerメソッド
+     * ナビゲーションドロワーを作成する.
+     * **/
+    public void createNavigationDrawer(){
+        if(mNavigationDrawerFragment == null){
+            mNavigationDrawerFragment = (NavigationDrawerFragment)
+                    getFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+            //タイトルバー初期化
+            mTitle = "";
+
+            // Set up the drawer.
+            mNavigationDrawerFragment.setUp(
+                    R.id.navigation_drawer,
+                    (DrawerLayout) findViewById(R.id.drawer_layout));
+        }
+    }
+
+    /*public void doVolley(String url){
+        JsonObjectRequest request = new JsonObjectRequest(url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        jsonObjectParser(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override public void onErrorResponse(VolleyError error) {
+               showErrorToast(error.getMessage());
+            }
+        });
+        AppController.getInstance(this).getRequestQueue().add(request);
+    }*/
+    public void jsonObjectParser(JSONObject jsonObject){
+        Gson gson  = new Gson();
+        ClassReamingTime crTime =  gson.fromJson(jsonObject.toString(), ClassReamingTime.class);
+        setClassReamingTime(crTime);
+    }
+    /**
+     * Created by si on 2016/01/29.
+     * setClassReamingTimeメソッド
+     * 授業残り時間をセットします.
+     *  @param crTime       授業残り時間オブジェクト
+     * **/
+    private void setClassReamingTime(ClassReamingTime crTime){
+        this.getClassObject().setClassTimeReaming(crTime.reamingTime);
+        //  授業残り時間[msec]
+        long classReamingTime = this.getClassObject().getClassTimeReaming();
+
+        if(this.endClassRoomTimer == null){
+            //授業終了タイマー
+            this.endClassRoomTimer = new Timer();
+        }else{
+            this.endClassRoomTimer.cancel();
+            this.endClassRoomTimer = null;
+            this.endClassRoomTimer = new Timer();
+        }
+        //授業終了タイマー
+        this.endClassRoomTimer.schedule(new FinishTimer(this), classReamingTime);
+        if(classReamingTime > 0){
+            //  まだ授業中であれば
+            //  授業データを取得する.
+            this.getClassActivityController().getClassData();
+
+            //activity.chkTrxTranmitState();
+        }
+    }
+
+    /*public void doVolley1(String url){
+        JsonObjectRequest request = new JsonObjectRequest(url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        jsonObjectParser1(response);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        showErrorToast(error.getMessage());
+                }
+        });
+        AppController.getInstance(this).getRequestQueue().add(request);
+        AppController.getInstance(this).getRequestQueue().start();
+    }*/
+
+    /*public void doOkHttp3(final String url){
+        new MyAsyncTask() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String res = null;
+                try {
+                    String result = run(url);
+                    JSONObject resJson = new JSONObject(result);
+                    jsonObjectParser1(resJson);
+                } catch(IOException e) {
+                    e.printStackTrace();
+                } catch(JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return res;
+            }
+        }.execute();
+    }*/
+
+    // OKHttpを使った通信処理
+    /*public String run(String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        return response.body().string();
+    }*/
+
+    public void jsonObjectParser1(JSONObject jsonObject){
+        Gson gson = new Gson();
+        RegistrationObject ro =  gson.fromJson(jsonObject.toString(), RegistrationObject.class);
+        doChkAttendance(ro.sos);
+    }
+    /**
+     * Created by si on 2016/01/29.
+     * doChkAttendanceメソッド
+     * 授業参加学生群を授業オブジェクトにセットします.
+     *  @param students       学生群
+     * **/
+    public void doChkAttendance(StudentObject[] sos){
+        this.getClassObject().setStudentObject(sos);
+    }
+    /*
+    * 学生情報と出欠データ取得で使用クラス
+    * */
+    class RegistrationObject{
+        //
+        @SerializedName("students")
+        public StudentObject[] sos;
+    }
+
+    /**
+     * Created by scr on 2016/01/29.
+     * initOnResumeメソッド
+     * onResume時に授業オブジェクトの初期化を行う.
+     */
+    public void initOnResume(){
+        //  送信状態確認オブジェクト
+        chkTrxTranmitState();
+
+        //  送信状態オブジェクト初期化
+        //this.getClassObject().setTransmitStateObject(null);
+        getFragmentManager().invalidateOptionsMenu();
+        //getMenuInflater().inflate(R.menu.main, menu);
+        //  強制的に戻す
+        mNavigationDrawerItemSelected = 0;
+        ListView lv = mNavigationDrawerFragment.getDrawerListView();
+        mNavigationDrawerFragment.changeTap(lv, mNavigationDrawerItemSelected);
+        mNavigationDrawerFragment.selectItem(mNavigationDrawerItemSelected);
+        showBottomFragment();
+    }
+
+
+    /**
+     * Created by scr on 2016/01/29.
+     * showLoadingFragmentメソッド
+     * 読み込み中...フラグメントを表示する
+     */
+    /*public void showLoadingFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, LoadingFragment.newInstance(0))
+                .commit();
+    }*/
+    /**
+     * Created by scr on 2016/01/31.
+     * showBottomFragmentメソッド
+     * ナビゲーションドロワーを使ってね!
+     * フラグメントを表示する
+     */
+    public void showBottomFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, MainBottomFragment.newInstance(0))
+                .commit();
+    }
+
+    /**
+     * Created by scr on 2016/01/29.
+     * getDateメソッド
+     * データベースから授業に関する
+     */
+    public void getDate(){
+
+    }
+
+
+    /**
+     * Created by scr on 2015/3/12.
+     * getClassReamingTimeFromNetWrokDBメソッド
+     * 授業の残り時間をサバ―からミリ秒単位で取得する.
+     */
+    /*public void getClassReamingTimeFromNetWrokDB(){
+        //String sameClassNumber = mTeacher.getClassPlan().getSameClassNumber();
+        String sameClassNumber = this.classObject.getSameClassNumber();
+        String url = URL.getClassReaminingTime(sameClassNumber);
+        JsonObjectRequest request = new JsonObjectRequest(url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        setClassReamingTime(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override public void onErrorResponse(VolleyError error) {
+                showErrorToast(error.getMessage());
+            }
+        });
+        AppController.getInstance(this).getRequestQueue().add(request);
+    }*/
+    /**
+     * Created by scr on 2015/3/12.
+     * setClassReamingTimeメソッド
+     * 授業終了時間をClassObjectのclassTimeReamingにセットします.
+     */
+    /*private void setClassReamingTime(JSONObject response){
+        Gson gson = new Gson();
+        ClassReamingTime crTime =  gson.fromJson(response.toString(), ClassReamingTime.class);
+        this.classObject.setClassTimeReaming(crTime.reamingTime);
+        //  授業残り時間[msec]
+        long classReamingTime = this.classObject.getClassTimeReaming();
+
+        if(this.endClassRoomTimer == null){
+            //授業終了タイマー
+            this.endClassRoomTimer = new Timer();
+        }else{
+            this.endClassRoomTimer.cancel();
+            this.endClassRoomTimer = null;
+            this.endClassRoomTimer = new Timer();
+        }
+        //授業終了タイマー
+        this.endClassRoomTimer.schedule(new FinishTimer(this), classReamingTime);
+
+
+
+        //  赤外線送信状態を取得する
+        //chkTrxTranmitState();
+
+        //まだ授業ちゅうであれば.
+        /*if(classReamingTime != 0){
+            getRoomInfoAndRosterFromNetWrokDB();
+            getQuestionnaireInfoFromNetWrokDB();
+        }*/
+    //}
+
+    /**
+     * Created by scr on 2016/1/28.
+     * chkTrxTranmitState
+     * 赤外線の送信状態をDBへ確認します.
+     */
+    public void chkTrxTranmitState(){
+        if(this.transmitStateTimerTask == null){
+            //  送信状態タイマークラス
+            this.transmitStateTimerTask = new TransmitStateTimerTask(this);
+            java.util.Timer timer = new java.util.Timer();          //  タイマークラスのインスタンス
+            timer.schedule(transmitStateTimerTask,
+                    TimerConfig.TIMER_START_TRANSMIT_STATE,
+                    TimerConfig.TIMER_INTERVAL_TRANSMIT_STATE);     //  起動時0秒後から10秒間隔で起動
+        }
+    }
+
+    /**
+     * Created by scr on 2015/2/24.
+     * getRoomInfoAndRosterFromNetWrokDBメソッド
+     * ネットワーク上のDBより、
+     * ・教室の情報
+     * ・履修者の情報
+     * を取得する.
+     */
+    /*public void getRoomInfoAndRosterFromNetWrokDB(){
+        //授業ID
+        //String classId = mTeacher.getClassPlan().getClassId();
+        String sameClassNumber = mTeacher.getClassPlan().getSameClassNumber();
+        String url = URL.getClassInfo(sameClassNumber);
+        JsonObjectRequest request = new JsonObjectRequest(url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        TmpClassInfo tmpInfo = jsonParserClassInfo(response);
+                        setTmpClassInfo(tmpInfo);
+                    }
+                }, new Response.ErrorListener() {
+            @Override public void onErrorResponse(VolleyError error) {
+                int a =0;
+                a = 12;
+                //Toast.makeText(getActivity(), "Unable to fetch data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+         });
+    AppController.getInstance(this).getRequestQueue().add(request);
+    }*/
+    /**
+     * Created by scr on 2015/2/24.
+     * jsonParserClassInfoメソッド
+     * 取得した授業情報のJSONを解析する.
+     */
+    private TmpClassInfo jsonParserClassInfo(JSONObject response){
+        Gson gson = new Gson();
+       return gson.fromJson(response.toString(), TmpClassInfo.class);
+    }
+    /**
+     * Created by scr on 2015/2/24.
+     * setTmpClassInfoメソッド
+     * 取得した授業情報のメモリに保持する.
+     */
+    public boolean reDrawAttendFlag = false;
+    private void setTmpClassInfo(TmpClassInfo tmp){
+        mTeacher.setLastGroupingTime(tmp.lastGroupingTime);
+
+        reDrawAttendFlag = false;
+        if(mTeacher.getRoster() != null){
+           //  受講者一覧再描画が必要
+            if(this.mNavigationDrawerItemSelected == MainFragmentConfig.PARTICIPANTS_FRAGNEMT){
+                reDrawAttendFlag = true;
             }
         }
+        Roster r = new Roster(tmp.rosterList);
+        mTeacher.setRoster(r);
+        mTeacher.setTmpRoomInfo(tmp.tmpRoomInfo);
+
+    }
+
+
+    /**
+     * Created by scr on 2015/3/4.
+     * getQuestionnaireInfoFromNetWrokDBメソッド
+     * ネットワークDBよりアンケート情報を取得する.
+     */
+    /*private void getQuestionnaireInfoFromNetWrokDB(){
+        //授業ID
+        //String classId = mTeacher.getClassPlan().getClassId();
+        String sameClassNumber = mTeacher.getClassPlan().getSameClassNumber();
+        String url = URL.getQuestionnaireInfo(sameClassNumber);
+        JsonObjectRequest request = new JsonObjectRequest(url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        setQuestionnaire(response);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                int a =0;
+                a = 12;
+                //Toast.makeText(getActivity(), "Unable to fetch data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        AppController.getInstance(this).getRequestQueue().add(request);
+    }*/
+
+    /**
+     * Created by scr on 2015/3/4.
+     * jsonParserQuestionnaireInfoメソッド
+     * 取得したアンケート情報のJSONを解析する.
+     */
+    private Questionnaire jsonParserQuestionnaireInfo(JSONObject response){
+        Gson gson = new Gson();
+        Questionnaire que = gson.fromJson(response.toString(), Questionnaire.class);
+        return que;
+    }
+    /**
+     * Created by scr on 2015/3/4.
+     * setQuestionnaireメソッド
+     * アンケート情報をセットする.
+     */
+    private void setQuestionnaire(JSONObject response){
+        Questionnaire questionnaire = jsonParserQuestionnaireInfo(response);
+        this.mTeacher.setQuestionnaire(questionnaire);
     }
 
     public void onStop(){
         super.onStop();
-        if(this.demoCallTheRollTimer!=null){
-            demoCallTheRollTimer.cancel();
+        //  送信状態タイマータスク
+        if(this.transmitStateTimerTask != null){
+            //  送信状態タイマータスクキャンセル
+            this.transmitStateTimerTask.cancel();
+            this.transmitStateTimerTask = null;
+
         }
     }
     public void onDestroy(){
         super.onDestroy();
-        if(this.mTeacher!=null){
+        /*if(this.mTeacher!=null){
             //グループ情報初期化
-            initializeGrouping();
+            //initializeGrouping();
             initializeStudent();
             this.mTeacher = null;
         }
         //授業終了タイマー初期化
         if(endClassRoomTimer != null){
             this.mTeacher = null;
-        }
+        }*/
     }
-
     private void initializeStudent(){
         for(int i=0;i<this.mTeacher.getRoster().getRosterList().size();i++){
             Student student = this.mTeacher.getRoster().getRosterList().get(i);
             student = null;
         }
     }
-
-
-    private void initializeGrouping(){
+    /*private void initializeGrouping(){
         for(int i=0;i<this.mTeacher.getRoster().getRosterList().size();i++){
             this.mTeacher.getRoster().getRosterList().get(i).getThisClassTime().setThisClassGroup(null);
         }
-    }
+    }*/
 
     /**
      * Created by scr on 2014/12/11.
@@ -352,6 +727,10 @@ protected void onCreate(Bundle savedInstanceState) {
                 .replace(R.id.container, SeatSituationFragment.newInstance(position))
                 .commit();
     }
+
+    public void moveToAttendeeFragment(){
+
+    }
 @Override
 public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
@@ -379,28 +758,36 @@ public void onNavigationDrawerItemSelected(int position) {
                     .commit();
         }else if(position == MainFragmentConfig.PARTICIPANTS_FRAGNEMT){
             /*出席者一覧*/
-        fragmentManager.beginTransaction()
-        .replace(R.id.container, AttendeeFragment.newInstance(position))
-        .commit();
-        }else if(position == MainFragmentConfig.GROUPING_FRAGMENT){
-            /*グルーピング*/
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, GroupingFragment.newInstance(position))
+                    .replace(R.id.container, AttendeeFragment.newInstance(position))
                     .commit();
-        }else if(position == MainFragmentConfig.QUESTIONNAIRE_FRAGMENT){
+        }/*else if(position == MainFragmentConfig.GROUPING_FRAGMENT){
+            //  グルーピング
+            //fragmentManager.beginTransaction()
+            //        .replace(R.id.container, GroupingFragment.newInstance(position))
+            //        .commit();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, GroupingFragment_1.newInstance(position))
+                    .commit();
+        }*/else if(position == MainFragmentConfig.QUESTIONNAIRE_FRAGMENT){
             /*クリッカー*/
             /*2014年12月15日に,
             複数あるので関数化しました.*/
             doClickerDistributeFragment(position,1);
+        }else if(position == MainFragmentConfig.GROUP_READJUSTMENT){
+            //  グループ調整画面
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, GroupReAdjustmentFragment.newInstance(position))
+                    .commit();
         }/*else if(position == 13){
             //ヘルプ
             fragmentManager.beginTransaction()
                     .replace(R.id.container, HelpFragment.newInstance(position + 1))
                     .commit();
         }*/else{
-        fragmentManager.beginTransaction()
-        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-        .commit();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                    .commit();
         }
         //ドロワーの必要個所をオープンにする.
         //openNavigationDrawer();
@@ -418,13 +805,14 @@ public void onNavigationDrawerItemSelected(int position) {
         if(position == MainFragmentConfig.QUESTIONNAIRE_FRAGMENT && groundPosition == 1) {
             //クリッカー調査フラグメント生成
             //FragmentManager fragmentManager = getFragmentManager();
+            String shelfLabels = getResources().getString(R.string.shelf_labels);
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, QuestionnaireFragment.newInstance(position))
+                    .replace(R.id.container, QuestionnaireFragment.newInstance(position,shelfLabels))
                     .commit();
         }else if(position == MainFragmentConfig.QUESTIONNAIRE_FRAGMENT && groundPosition == 2) {
             //クリッカーの回答結果を表示するフラグメント生成
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, QuestionnaireResultFragment.newInstance(position))
+                    .replace(R.id.container, QuestionnaireResultFragment.newInstance(MainFragmentConfig.QUESTIONNAIRE_RESULT_FRAGMENT))
                     .commit();
         }
     }
@@ -443,6 +831,24 @@ public void onNavigationDrawerItemSelected(int position) {
         Bundle args = new Bundle();
         args.putInt(CommonDialogFragment.FIELD_TITLE, R.string.alert_title_message_unimplemented);
         args.putInt(CommonDialogFragment.FIELD_MESSAGE, R.string.alert_message_unimplemented);
+        args.putInt(CommonDialogFragment.FIELD_LABEL_POSITIVE, android.R.string.ok);
+        CommonDialogFragment dialogFragment = new CommonDialogFragment();
+        dialogFragment.setArguments(args);
+        dialogFragment.show(getSupportFragmentManager(), "dialog1");
+    }
+    public void openAlertDialogSitllGetRegistration() {
+        Bundle args = new Bundle();
+        args.putInt(CommonDialogFragment.FIELD_TITLE, R.string.alert_title_message_still_get_roster);
+        args.putInt(CommonDialogFragment.FIELD_MESSAGE, R.string.alert_message_still_get_roster);
+        args.putInt(CommonDialogFragment.FIELD_LABEL_POSITIVE, android.R.string.ok);
+        CommonDialogFragment dialogFragment = new CommonDialogFragment();
+        dialogFragment.setArguments(args);
+        dialogFragment.show(getSupportFragmentManager(), "dialog1");
+    }
+    public void openAlertDialogNoUse() {
+        Bundle args = new Bundle();
+        args.putInt(CommonDialogFragment.FIELD_TITLE, R.string.alert_title_message_nouse);
+        args.putInt(CommonDialogFragment.FIELD_MESSAGE, R.string.alert_message_nouse);
         args.putInt(CommonDialogFragment.FIELD_LABEL_POSITIVE, android.R.string.ok);
         CommonDialogFragment dialogFragment = new CommonDialogFragment();
         dialogFragment.setArguments(args);
@@ -552,14 +958,19 @@ public void onNavigationDrawerItemSelected(int position) {
             case MainFragmentConfig.SEAT_SITUATION_FRAGMENT:
                 //mTitle = getString(R.string.title_section1);
                 //着座状況
-                String roomName = this.mTeacher.getClassPlan().getPlace().getRoom().getRoomName();
+                //String roomName = this.mTeacher.getClassPlan().getPlace().getRoom().getRoomName();
+                String roomName = this.getClassObject().getFacultyObject().getClassPlan().getPlace().getRoomName();
                 mTitle = getString(R.string.title_section1)+" ("+roomName+")";
                 break;
             case MainFragmentConfig.PARTICIPANTS_FRAGNEMT:
                 mTitle = getString(R.string.title_section2);
                 break;
-            case MainFragmentConfig.GROUPING_FRAGMENT:
+            /*case MainFragmentConfig.GROUPING_FRAGMENT:
                 mTitle = getString(R.string.title_section5);
+                break;*/
+            case MainFragmentConfig.GROUP_READJUSTMENT:
+                //  グループ再調整
+                mTitle = getString(R.string.title_section12);
                 break;
             case MainFragmentConfig.QUESTIONNAIRE_FRAGMENT:
                 mTitle = getString(R.string.title_section6);
@@ -591,10 +1002,8 @@ public boolean onCreateOptionsMenu(Menu menu) {
         }else if(mNavigationDrawerFragment.getCurrentSelectedPosition() ==  MainFragmentConfig.PARTICIPANTS_FRAGNEMT){
             //受講者一覧の場合.
             getMenuInflater().inflate(R.menu.menu_roster, menu);
-        }else if(mNavigationDrawerFragment.getCurrentSelectedPosition() == 5){
-            /**
-             * クリッカー
-             * **/
+        }else if(mNavigationDrawerFragment.getCurrentSelectedPosition() == MainFragmentConfig.QUESTIONNAIRE_FRAGMENT){
+            //  クリッカー
             getMenuInflater().inflate(R.menu.menu_questionnaire, menu);
         }else{
             getMenuInflater().inflate(R.menu.main, menu);
@@ -635,68 +1044,112 @@ public boolean onOptionsItemSelected(MenuItem item) {
     //noinspection SimplifiableIfStatement
     if (id == R.id.action_settings) {
         return true;
-    }else if(id == R.id.menu_hands_free_attendance_student_history){
+    } /*else if (id == R.id.menu_hands_free_attendance_student_history) {
         //未実装
         //openAlertDialogUnimplemented();
-       //学生個人履歴フラグメント
-        SearchHistoryDialogFragment customDialog = SearchHistoryDialogFragment.newInstance();
-        customDialog.setTargetFragment(null,0);
-        Bundle bundle = new Bundle();
+
         //受講生一覧
         Roster roster = this.mTeacher.getRoster();
-        bundle.putSerializable(SearchHistoryDialogFragment.ROSTER,roster);
-        customDialog.setArguments(bundle);
-        customDialog.show(getSupportFragmentManager(), SearchHistoryDialogFragment.SEARCH_HISTORY_DIALOG_FRAGMENT);
+        if (roster != null) {
+            //学生個人履歴フラグメント
+            SearchHistoryDialogFragment customDialog = SearchHistoryDialogFragment.newInstance();
+            customDialog.setTargetFragment(null, 0);
+            Bundle bundle = new Bundle();
 
-    }else if(id == R.id.menu_hands_free_attendance_re_call_the_roll){
-        //
-        //openAlertDialog("まだ全員の出席が確認できていないので使用することが出来ません.");
-        //openAlertDialogDontReCallTheRoll();
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        /*SeatSituationFragment fragment = SeatSituationFragment.newInstance(MainFragmentConfig.SEAT_SITUATION_FRAGMENT);
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit();*/
-
-        if(this.mTeacher.getEndAttendanceFlag() == true) {
-            this.mTeacher.setEndAttendanceFlag(false);
-
-            List<Student> attendance = this.mTeacher.getRoster().getRosterList();
-            //初期化
-            for (int i = 0; i < attendance.size(); i++) {
-                Student st = attendance.get(i);
-                //if(st.getThisClassTime().getThisClassAttendanceState().getRequestForgotESLTime() != null){
-                st.getThisClassTime().getThisClassAttendanceState().setTempAttendanceState(1);
-                st.getThisClassTime().getThisClassAttendanceState().setConfirmTime(null);
-                //}
-            }
-            //fragment.onResume();
-            //送信中になる...
-            if(mNavigationDrawerItemSelected == MainFragmentConfig.SEAT_SITUATION_FRAGMENT) {
-                SeatSituationFragment fragment = (SeatSituationFragment) fragmentManager.findFragmentById(R.id.container);
-                fragment.demo(attendance);
-            }else if(mNavigationDrawerItemSelected == MainFragmentConfig.PARTICIPANTS_FRAGNEMT){
-                AttendeeFragment fragment = (AttendeeFragment) fragmentManager.findFragmentById(R.id.container);
-                fragment.demo(attendance);
-            }
-        }else{
-            //現在再出席調査中です...
-            showAlertDialogSendState();
+            bundle.putSerializable(SearchHistoryDialogFragment.ROSTER, roster);
+            customDialog.setArguments(bundle);
+            customDialog.show(getSupportFragmentManager(), SearchHistoryDialogFragment.SEARCH_HISTORY_DIALOG_FRAGMENT);
+        } else {
+            //履修者一覧が取得できてないからちょっと待ってね...
+            openAlertDialogSitllGetRegistration();
         }
-    }else if(id == R.id.menu_action_questionnaire_survey){
+    }*/else if(id == R.id.menu_hands_free_help_signal){
+        showHelpSignalFragment();
+    }else if (id == R.id.menu_hands_free_attendance_re_call_the_roll) {
+        //現在のバージョンでは使うことが出来ません.
+        //openAlertDialogNoUse();
+        confirmReAttendance();
+    } else if (id == R.id.menu_action_questionnaire_survey) {
         /*クリッカー調査実施画面へ*/
         //Toast.makeText(this,"クリッカー問題送信画面", Toast.LENGTH_SHORT).show();
-        doClickerDistributeFragment(5,1);
-    }else if(id == R.id.menu_action_questionnaire_result){
-        /*クリッカーの回答結果を見る*/
+        doClickerDistributeFragment(MainFragmentConfig.QUESTIONNAIRE_FRAGMENT, 1);
+    }/*else if(id == R.id.menu_action_questionnaire_result){
+        //クリッカーの回答結果を見る
         //Toast.makeText(this,"クリッカーの回答結果を見る.", Toast.LENGTH_SHORT).show();
         doClickerDistributeFragment(5, 2);
-    }
+    }*/
     return super.onOptionsItemSelected(item);
 }
+    /**
+     * Created by scr on 2016/02/04.
+     * showHelpSignalFragmentメソッド
+     * ACKシグナルのマニュアルフラグメント表示
+     */
+    private void showHelpSignalFragment(){
+        HelpSignalDialogFragnemt hsDf = HelpSignalDialogFragnemt.newInstance();
+        //Bundle bundle = new Bundle();
+        //hsDf.setArguments(bundle);
+        hsDf.show(this.getSupportFragmentManager(), HelpSignalDialogFragnemt.HELP_SIGNAL_DIALOG_FRAGMENT);
+    }
 
-/**
+    /**
+     * Created by scr on 2016/02/20.
+     * confirmReAttendance
+     * 再出席調査を行いますか？の確認ダイアログ
+     */
+    private void confirmReAttendance(){
+
+        boolean transmitPossible = chkTransmitReAttPossible();
+        if(!transmitPossible){
+            //   在室確認をおこなうことができない
+            return;
+        }
+        new AlertDialog.Builder(this)
+                .setTitle("再出席調査")
+                .setMessage("再出席調査をおこないますか？")
+                .setPositiveButton("はい", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        doReAttendance();
+                    }
+                })
+                .setNegativeButton("いいえ", null)
+                .show();
+    }
+
+    /**
+     * Created by scr on 2016/02/04.
+     * doReAttendanceメソッド
+     * 在室確認を行う
+     */
+    private void doReAttendance(){
+        requestReAttendance();
+    }
+    /**
+     * Created by scr on 2016/02/04.
+     * requestReAttendanceメソッド
+     * 在室確認要請をDBにリクエストする.
+     */
+    private void requestReAttendance(){
+        //  サーバからのレスポンスがくるまでの時差を埋めるためにメモリ上は送信状態にする.
+        this.getClassObject().getTransmitStateObject().setBmpTransmitId(TransmitTypeConfig.TRANSMIT_TYPE_RE_ATTENDAN);
+        this.classHttpRequest.getReAttendanceStart();
+    }
+
+    /**
+     * Created by scr on 2016/02/04.
+     * chkTransmitReAttPossibleメソッド
+     * @return false    :   送信中のため、送信NG
+     *          true    :   送信していないので、送信OK
+     * **/
+    private boolean chkTransmitReAttPossible(){
+        return new TransmitReAttChecker(this).chkTransmitPossible();
+    }
+
+
+
+
+    /**
  * A placeholder fragment containing a simple view.
  */
 public static class PlaceholderFragment extends Fragment {

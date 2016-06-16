@@ -3,6 +3,7 @@ package jp.pmw.test_en_revolution.room;
 import java.util.List;
 import java.util.Random;
 
+import jp.pmw.test_en_revolution.confirm_class_plan.Seat;
 import jp.pmw.test_en_revolution.room.dummy.DummyRoomMapContent;
 
 /**
@@ -21,6 +22,7 @@ public class RoomMap {
     private int enableRowLineCount;
     //無効行数
     private int disableRowLineCount;
+
     private int rows;
     private int columns;
     private int width;
@@ -45,7 +47,7 @@ public class RoomMap {
         cells = new Cell[rows][columns];
     }*/
 
-    public void setRoomMap(String roomId,String map){
+    /*public void setRoomMap(String roomId,String map){
         int riverceCellRow = 0;
         int riverceCellColumn = 0;
         String[] line = doSplite(";",map);
@@ -64,12 +66,12 @@ public class RoomMap {
                 //端末上からを下からの番号に変更
                 riverceCellColumn = (this.columns -1) - j;
                 //座席クラスを取得する
-                Seat seat = getSeatInfo(roomId,riverceCellRow,riverceCellColumn);
+                Seat_1 seat = getSeatInfo(roomId,riverceCellRow,riverceCellColumn);
                 //座席クラスをセットする
                 cells[i][j].setSeat(seat);
             }
         }
-    }
+    }*/
     public void setRoomMap(String map,List<Seat> seats){
         int riverceCellRow = 0;
         int riverceCellColumn = 0;
@@ -86,14 +88,16 @@ public class RoomMap {
                 cells[i][j] = new Cell(cs[j]);
                 //端末左からを右からの番号に変更
                 riverceCellRow = (this.rows -1) - i;
+                //riverceCellRow = (this.rows) - i;
                 //端末上からを下からの番号に変更
-                riverceCellColumn = (this.columns -1) - j;
+                //riverceCellColumn = (this.columns -1) - j;
+                riverceCellColumn = (this.columns - 1) - j;
                 //座席クラスを取得する
                 //Seat seat = getSeatInfo(riverceCellRow,riverceCellColumn);
                 Seat seat = null;
                 for(int k = 0;k < seats.size(); k++){
-                    if(seats.get(k).getSeatRowNumber() == riverceCellRow &&
-                            seats.get(k).getSeatColumnNumber() == riverceCellColumn){
+                    if(seats.get(k).getCellSeatRow() == riverceCellRow &&
+                            seats.get(k).getCellSeatColumn() == riverceCellColumn){
                         seat = seats.get(k);
                         break;
                     }
@@ -113,7 +117,7 @@ public class RoomMap {
      * @param cellColumn 現在のセル行数
      * @return 座席を管理するクラスを返す.
      */
-    private Seat getSeatInfo(String roomId,int cellRow,int cellColumn){
+    private Seat_1 getSeatInfo(String roomId,int cellRow,int cellColumn){
         String row = doDoubleDigit(cellRow);
         String column = doDoubleDigit(cellColumn);
 
@@ -124,7 +128,7 @@ public class RoomMap {
         String seatId = roomId + row + column;
 
         //return new Seat(seatId,cellRow,cellColumn);
-        return new Seat(seatId,cellRow,cellColumn);
+        return new Seat_1(seatId,cellRow,cellColumn);
     }
 
 

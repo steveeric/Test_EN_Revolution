@@ -3,11 +3,13 @@ package jp.pmw.test_en_revolution.one_cushion.select_teacher;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.activeandroid.query.Select;
 
@@ -37,34 +39,13 @@ public class JapaneseAlphabeticalOrderFragmentActivity extends MyFirstActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_japanese_alphabetical_order_fragment);
 
-        /**
-         * android端末のローカルでテストを行う際に使用！
-         * **/
-        setDummyTestTeacherMst();
-
-
-
-        /*
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
-        */
-
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .replace(android.R.id.content,  new JapaneseAlphabeticalOrderFragment())
                     .commit();
         }
-        /*mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        if(mNavigationDrawerFragment!=null) {
-            // Set up the drawer.
-            mNavigationDrawerFragment.setUp(
-                    R.id.navigation_drawer,
-                    (DrawerLayout) findViewById(R.id.drawer_layout));
-        }*/
+        //レシーバをセットする.
+        super.setReciver();
     }
     /**
      * Created by Shota Ito on 2015/1/1
@@ -155,7 +136,7 @@ public class JapaneseAlphabeticalOrderFragmentActivity extends MyFirstActivity {
     }
     /**
      * Created by scr on 2014/12/12.
-     * 最終更新日:2014/12/14
+     * 最終更新日:2014/12/　　
      * doChangeKanaIndexSelectAcitivtyメソッド
      * 50音順で選択された文字をキーにSelectAcitivtyに遷移する.
      * @parm initial 教員苗字の頭文字

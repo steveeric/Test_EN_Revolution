@@ -94,16 +94,16 @@ public class AllSelectActivity extends Activity {
         private LinearLayout loadingLayout,sucessLayuot;
         private ListView listview;
         private Button button;
-        private Teacher selectTeacher=null;
+        private Faculty selectTeacher=null;
         private final PlaceholderFragment self = this;
         private boolean loading;
         public PlaceholderFragment() {
         }
 
-        public void setSelectTeacher(Teacher teacher){
+        public void setSelectTeacher(Faculty teacher){
             this.selectTeacher=teacher;
         }
-        public Teacher getSelectTeacher(){
+        public Faculty getSelectTeacher(){
             return this.selectTeacher;
         }
 
@@ -128,7 +128,7 @@ public class AllSelectActivity extends Activity {
                 public void onItemClick(AdapterView<?> parent,
                                         View view, int pos, long id) {
                     ListView listView = (ListView) parent;
-                    Teacher item = (Teacher) listView.getItemAtPosition(pos);
+                    Faculty item = (Faculty) listView.getItemAtPosition(pos);
                     setSelectTeacher(item);
                 }
             });
@@ -140,7 +140,7 @@ public class AllSelectActivity extends Activity {
 
                     //マップの情報を取得する
                     SparseBooleanArray checked = listview.getCheckedItemPositions();
-                    Teacher teacher = getSelectTeacher();
+                    Faculty teacher = getSelectTeacher();
                     doCheckAlertDialog(teacher);
                 }
             });
@@ -151,10 +151,10 @@ public class AllSelectActivity extends Activity {
             selectTeacher = null;
         }
 
-        public void doCheckAlertDialog(Teacher teacher){
+        public void doCheckAlertDialog(Faculty teacher){
             String str = "教員名:";
             if(teacher!=null){
-                str = str + teacher.getName();
+                str = str + teacher.getFullName();
             }else{
                 str = "選択されていません.";
             }
@@ -210,11 +210,11 @@ public class AllSelectActivity extends Activity {
         @Override
         public void onStart(){
             super.onStart();
-            fetch();
+            //fetch();
         }
 
 
-        private void fetch() {
+        /*private void fetch() {
             JsonArrayRequest request = new JsonArrayRequest(
                     URL.ALL_TEACHER,
                     new Response.Listener<JSONArray>() {
@@ -230,12 +230,12 @@ public class AllSelectActivity extends Activity {
                         }
                     });
             AppController.getInstance(this.getActivity()).getRequestQueue().add(request);
-        }
+        }*/
         private void JsonParser(JSONArray jsonarray){
             Gson mygson = new Gson();
             //List<Teacher> teachers = new ArrayList<Teacher>();
-            Type collectionType = new TypeToken<Collection<Teacher>>(){}.getType();
-            List<Teacher> teachers = mygson.fromJson(jsonarray.toString(),collectionType);
+            Type collectionType = new TypeToken<Collection<Faculty>>(){}.getType();
+            List<Faculty> teachers = mygson.fromJson(jsonarray.toString(),collectionType);
             CustomAdapter adapter = new CustomAdapter(this.getActivity(),0,teachers);
             listview.setAdapter(adapter);
             showTeacherSelect();

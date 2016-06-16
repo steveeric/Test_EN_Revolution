@@ -28,12 +28,4 @@ public class PreStudent {
     @SerializedName("full_name")
     public String mFullName;
 
-    /*private String id;
-    Student(String id,String fullName){
-        super(fullName);
-        this.id=id;
-    }
-    public String getStudentId(){
-        return this.id;
-    }*/
 }

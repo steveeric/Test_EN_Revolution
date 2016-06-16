@@ -1,5 +1,7 @@
 package jp.pmw.test_en_revolution.room;
 
+import jp.pmw.test_en_revolution.StudentObject;
+import jp.pmw.test_en_revolution.confirm_class_plan.Seat;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
 
 /**
@@ -17,7 +19,7 @@ public class Cell {
     private int left;
 
     private Seat seat;
-    private Student student;
+    private StudentObject student;
 
     Cell(String item){
         this.item = item;
@@ -38,13 +40,13 @@ public class Cell {
     /**
      * 出席者のセッター
      * **/
-    public void setAttendance(Student student){
+    public void setAttendance(StudentObject student){
         this.student = student;
     }
     /**
      * 出席者のゲッター
      * **/
-    public Student getAttendee(){return this.student;}
+    public StudentObject getAttendee(){return this.student;}
 
     /**
      * 座る予定の人がいるかいないか

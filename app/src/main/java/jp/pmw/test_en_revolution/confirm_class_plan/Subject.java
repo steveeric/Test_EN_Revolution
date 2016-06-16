@@ -1,5 +1,7 @@
 package jp.pmw.test_en_revolution.confirm_class_plan;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -7,8 +9,10 @@ import java.io.Serializable;
  */
 public class Subject implements Serializable {
     //科目ID
+    @SerializedName("subject_id")
     private String subjectId;
     //科目名
+    @SerializedName("subject_name")
     private String subjectName;
 
     public Subject(String subjectId,String subjectName){

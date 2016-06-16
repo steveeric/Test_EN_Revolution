@@ -24,7 +24,7 @@ public class Room {
     @SerializedName("cell")
     private RoomMap roomMap;
     @SerializedName("seat")
-    private List<Seat> seats;
+    private List<Seat_1> seats;
 
 
     public String getRoomMaping(){
@@ -43,7 +43,7 @@ public class Room {
         return this.roomMap;
     }*/
 
-    public List<Seat> getSeats(){
+    public List<Seat_1> getSeats(){
         return this.seats;
     }
 }

@@ -7,6 +7,7 @@ package jp.pmw.test_en_revolution;
  * @version 1.0
  */
 public class MainFragmentConfig {
+    
     /*ボトムフラグメント*/
     public static final int BOTTOM_FRAGMENT = 0;
     /*着座状況フラグメント*/
@@ -14,9 +15,13 @@ public class MainFragmentConfig {
     /*受講者一覧フラグメント*/
     public static final int PARTICIPANTS_FRAGNEMT = 2;
     /*グルーピングフラグメント*/
-    public static final int GROUPING_FRAGMENT = 4;
+    //public static final int GROUPING_FRAGMENT = 4;
+    /*グループ調整フラグメント*/
+    public static final int GROUP_READJUSTMENT = 5;
     /*アンケートフラグメント*/
-    public static final int QUESTIONNAIRE_FRAGMENT = 5;
+    public static final int QUESTIONNAIRE_FRAGMENT = 4;
+    /*アンケート結果フラグメント*/
+    public static final int QUESTIONNAIRE_RESULT_FRAGMENT = 5;
 
     public static final int QUESTIONNAIRE_FRAGMENT_SURVEY = 1;
 

@@ -2,6 +2,8 @@ package jp.pmw.test_en_revolution;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -13,7 +15,34 @@ import jp.pmw.test_en_revolution.one_cushion.select_teacher.JapaneseAlphabetical
  * DrowerFragmentActivityがない画面のBaseとなるActivityです.
  * 主にリターンキーを制御しています.
  */
-abstract public class MyActivity extends Activity {
+abstract public class MyActivity extends Activity implements ConnectionReceiver.Observer{
+    private ConnectionReceiver mConnectionReceiver;
+
+    public void setReciver(){
+        IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        mConnectionReceiver = new ConnectionReceiver(this);
+        registerReceiver(mConnectionReceiver, filter);
+    }
+
+    @Override
+    public void onConnect() {
+        //ネットワーク接続検出
+        //Toast.makeText(getApplicationContext(), "onConnect", Toast.LENGTH_LONG).show();
+    }
+    @Override
+    public void onDisconnect() {
+        //ネットワーク切断検出
+        //Toast.makeText(getApplicationContext(), "onDisconnect", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this,DisconectActivity.class);
+        startActivity(intent);
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //ネットワークレシーバー
+        setReciver();
+    }
+
 
     @Override
     public void onResume(){
@@ -48,6 +77,7 @@ abstract public class MyActivity extends Activity {
     @Override
     public void onDestroy(){
         super.onDestroy();
+        unregisterReceiver(mConnectionReceiver);
         finish();
     }
 }

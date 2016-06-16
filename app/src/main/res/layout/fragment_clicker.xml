@@ -3,6 +3,14 @@
     android:layout_height="match_parent"
     tools:context="jp.pmw.test_en_revolution.questionnaire.garbage.QuestionnaireFragment">
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="357dp"
+        android:layout_height="357dp"
+        android:id="@+id/clicker_survey_do_question_progressBar"
+        android:layout_gravity="center"
+        android:indeterminate="false" />
+
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:visibility="gone"
@@ -38,7 +46,7 @@
             android:layout_gravity="center|center" />
     </LinearLayout>
     <LinearLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -47,32 +55,46 @@
         <TextView
             android:textSize="@dimen/textsize_xlarge"
             android:layout_width="wrap_content"
-            android:layout_marginTop="20sp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="実施する問題を選択して下さい."
-            android:id="@+id/clicker_survey_do_question_textView"
-            android:layout_gravity="center_horizontal" />
+            android:text=""
+            android:layout_gravity="center"
+            android:id="@+id/clicker_survey_do_question_textView"/>
+
+        <TextView
+            android:textSize="@dimen/textsize_xlarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text=""
+            android:layout_gravity="center"
+            android:id="@+id/clicker_survey_do_question_transmit_result_textView" />
+
+        <TextView
+            android:textSize="@dimen/textsize_xlarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="10sp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text=""
+            android:id="@+id/clicker_survey_do_question_transmit_next_action_textView" />
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="800dp"
+            android:layout_marginTop="10sp"
             android:layout_marginRight="@dimen/activity_vertical_margin"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:dividerHeight="@dimen/activity_horizontal_xxsmall_margin"
+            android:dividerHeight="@dimen/activity_horizontal_small_margin"
             android:id="@+id/clicker_survey_do_question_listView"
             android:layout_gravity="center_horizontal" />
-        <!--<Button
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="50sp"
-            android:layout_marginBottom="50sp"
-            android:layout_marginLeft="50sp"
-            android:layout_marginRight="50sp"
-            android:layout_weight="1"
-            android:textSize="@dimen/textsize_xlarge"
-            android:text="開始"
-            android:id="@+id/clicker_survey_do_question_start_button"
-            android:layout_gravity="center_horizontal" />-->
+
+
+
+
+
     </LinearLayout>
 
 </FrameLayout>

@@ -5,11 +5,12 @@
     android:background="@drawable/sector_grid"
     android:orientation="horizontal">
     <!---->
+    <!--android:layout_marginLeft="30dp"
+        -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_weight="2"
-        android:layout_marginLeft="30dp"
         android:layout_height="match_parent">
         <!--大学独自の学籍番号フィールド-->
         <TextView
@@ -18,21 +19,30 @@
             android:text="J07011"
             android:id="@+id/roster_orijinal_student_id_textView"
             android:textSize="@dimen/textsize_medium" />
-        <!--学生名フィールド-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="伊藤翔太"
-            android:id="@+id/roster_full_name_textView"
-            android:textSize="@dimen/textsize_xlarge" />
+
         <!--出席状態フィールド-->
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="5dp"
             android:layout_marginTop="-5dp"
             android:text=" "
             android:id="@+id/roster_attendance_state_color_textView"
             android:textSize="@dimen/textsize_small" />
+        <!--学生名フィールド-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" "
+            android:id="@+id/roster_full_name_textView"
+            android:textSize="@dimen/textsize_xlarge" />
+        <!--出席状態フィールド-->
+        <!--<TextView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="-5dp"
+            android:text=" "
+            android:id="@+id/roster_attendance_state_color_textView"
+            android:textSize="@dimen/textsize_small" />-->
         </LinearLayout>
 
     <LinearLayout

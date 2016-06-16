@@ -12,13 +12,25 @@
         android:id="@+id/textView3"
         android:layout_gravity="center_horizontal|top" />
 
-    <GridLayout
-        android:layout_width="fill_parent"
-        android:layout_height="786dp"
-        android:layout_gravity="center|center_vertical"
+    <!--<GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="800dp"
         android:rowCount="5"
         android:columnCount="10"
+        android:layout_gravity="center"
         android:id="@+id/japanese_alphabetical_grid">
-    </GridLayout>
-
+    </GridLayout>-->
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center"
+        android:id="@+id/japanese_alphabetical_grid">
+    </GridView>
+    <TextView
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:textAppearance="?android:attr/textAppearanceSmall"
+     android:layout_gravity="bottom|left"
+     android:text="@string/app_version" />
 </FrameLayout>

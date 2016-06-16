@@ -26,10 +26,10 @@
             android:textSize="@dimen/textsize_xlarge"
             android:layout_height="100sp"
              />
-        <TextView
+        <!--<TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/app_version" />
+            android:text="@string/app_version" />-->
     </LinearLayout>
 </RelativeLayout>

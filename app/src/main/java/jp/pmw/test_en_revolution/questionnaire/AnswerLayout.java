@@ -35,10 +35,10 @@ public class AnswerLayout extends LinearLayout {
     /***
      *
      ***/
-    public void bindView(Answer answer) {
-        this.indexColorTextView.setBackgroundColor(Color.parseColor(answer.getanswerIndexColor()));
-        this.choiceTextView.setText(answer.getAnswerContent());
-        this.answerCountTextView.setText(""+answer.getAnswerCount()+this.getContext().getResources().getString(R.string.number_of_people));
-        this.answerPercentageTextView.setText("("+answer.getPercentage()+this.getContext().getResources().getString(R.string.percentage)+")");
+    public void bindView(Choice answer) {
+        this.indexColorTextView.setBackgroundColor(Color.parseColor(answer.getChoiceIndexColor()));
+        this.choiceTextView.setText(answer.getChoice());
+        this.answerCountTextView.setText(answer.getQuestionResult().getAnswerCount()+"人");
+        this.answerPercentageTextView.setText(""+answer.getQuestionResult().getPercentage()+"%");
     }
 }

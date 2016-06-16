@@ -8,8 +8,9 @@ import jp.pmw.test_en_revolution.grouping.Group;
  */
 public class ThisClassTime {
     public static final int UNCONFIRMED_ATTENDANCE_STATE = 0;
-    public static final int ABSENTEE_ATTENDANCE_STATE = 1;
-    public static final int ATTENDEE_ATTENDANCE_STATE = 2;
+    public static final int ABSENTEE_ATTENDANCE_STATE = 3;
+    public static final int ATTENDEE_ATTENDANCE_STATE = 1;
+    public static final int FORGOT_APPLY_STATE = 2;
 
     private String thisClassSittingPositionId;
     private AttendanceState thisClassAttendanceState;

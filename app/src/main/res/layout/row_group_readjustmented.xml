@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@drawable/gray_border">
+        <!-- 1行目 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:textSize="@dimen/textsize_xlarge"
+            android:id="@+id/row_group_readjustmented_line1"/>
+        <!-- 2行目 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:textSize="@dimen/textsize_xlarge"
+            android:id="@+id/row_group_readjustmented_line2"/>
+        <!-- 3行目 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="@dimen/textsize_xlarge"
+            android:id="@+id/row_group_readjustmented_line3"/>
+        <!-- 4行目 -->
+        <!--<TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="@dimen/textsize_xlarge"
+            android:id="@+id/row_group_readjustmented_line4"/>-->
+
+    </LinearLayout>
+</LinearLayout>

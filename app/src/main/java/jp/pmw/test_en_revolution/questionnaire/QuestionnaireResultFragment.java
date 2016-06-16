@@ -5,23 +5,40 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieGraph.OnSliceClickedListener;
 import com.echo.holographlibrary.PieSlice;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import jp.pmw.test_en_revolution.AppController;
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.MyMainFragment;
 import jp.pmw.test_en_revolution.R;
+import jp.pmw.test_en_revolution.config.URL;
+import jp.pmw.test_en_revolution.one_cushion.select_teacher.Faculty;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,12 +67,16 @@ public class QuestionnaireResultFragment extends MyMainFragment {
         return fragment;
     }
 
+    private MainActivity activity;
+
     //アンケート問題や回答結果が格納されている変数
     private List<Question> questions;
     //現在見ている問題番号
     private int nowSeePage=0;
     private int nowSeeTopic=0;
 
+    //
+    private ProgressBar questionResultLoadProgressBar;
     //アンケートがまだ開始されていないレイアウト
     private LinearLayout donotStartQuestionLinearLayout;
     //過去に一度でもアンケートをすでに実施しているレイアウト
@@ -84,7 +105,7 @@ public class QuestionnaireResultFragment extends MyMainFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        this.questionResultLoadProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.fragment_clicker_result_progressBar);
         this.donotStartQuestionLinearLayout = (LinearLayout)this.getActivity().findViewById(R.id.fragment_clicker_result_donot_start_questionnaire_linearLayout);
         this.startQuestionLinearlayout = (LinearLayout)this.getActivity().findViewById(R.id.fragment_clicker_result_start_questionnaire_linearLayout);
 
@@ -121,53 +142,206 @@ public class QuestionnaireResultFragment extends MyMainFragment {
         super.onCreate(savedInstanceState);
         //テストなのでダミーデータを入れる.
         //this.questions = DummyQuestionContent.ITEMS;
-        MainActivity activity = (MainActivity)this.getActivity();
-        this.questions = activity.mTeacher.getQuestionnaire().getQuestions();
-
+        activity = (MainActivity)this.getActivity();
+        //this.questions = activity.mTeacher.getQuestionnaire().getQuestions();
+        this.questions = activity.getClassObject().getQuestionnaire().getQuestions();
     }
 
     @Override
     public void onResume(){
         super.onResume();
-
         //トピック番号を取得する.
-        MainActivity activity = (MainActivity)this.getActivity();
-        Questionnaire questionnaire = activity.mTeacher.getQuestionnaire();
+        //MainActivity activity = (MainActivity)this.getActivity();
+        //回答結果をネットワークDBに取得に行く
+        //getQuestionResultInfoFromNetWrokDB(activity.mTeacher);
+        //getQuestionResultFromNetWrokDB(activity.mTeacher);
 
-        if(questionnaire.getLastSeeQuestionId() == null){
-            //まだ一度もアンケートを実施していない
-            this.donotStartQuestionLinearLayout.setVisibility(View.VISIBLE);
-            this.startQuestionLinearlayout.setVisibility(View.GONE);
+        //  再度フラグメント表示のバグに対応
+
+        getQuestionResultFromNetWrokDB();
+    }
+    @Override
+    public void onStop(){
+        super.onStop();
+        //  ボトムフラグメント画面に戻すために行う.
+        activity.getClassObject().getQuestionnaire().setLastSeeQuestionTitleNumber(null);
+    }
+
+
+    //  アンケート結果を一問づつ取得する
+    private void getQuestionResultFromNetWrokDB(){
+       // final MainActivity activity = (MainActivity)this.getActivity();
+        String sameClassNumber = activity.getClassObject().getSameClassNumber();
+        String url = URL.getQuestionnaireInfo(sameClassNumber);
+        JsonObjectRequest request = new JsonObjectRequest(url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        setAnswerResults(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                int a =0;
+                a = 12;
+                //activity.showAnotherErrorToast(error.getMessage());
+                //Toast.makeText(getActivity(), "Unable to fetch data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        AppController.getInstance(getActivity()).getRequestQueue().add(request);
+    }
+
+    void setAnswerResults(JSONObject response){
+        Gson gson = new Gson();
+        Questionnaire que = gson.fromJson(response.toString(), Questionnaire.class);
+        List<Question> qList = que.getQuestions();
+        for(int i = 0; i < qList.size(); i++){
+            String questionId   = qList.get(i).getQuestionId();
+            int yes             = qList.get(i).getResult().getYesCount();
+            int no              = qList.get(i).getResult().getNoCount();
+            float yesRatio      = qList.get(i).getResult().getYesRatio();
+            float noRatio       = qList.get(i).getResult().getNoRatio();
+            if(yes != -1 && no != -1){
+                setAnswerResult(questionId,yes,no,yesRatio,noRatio);
+            }
+        }
+        processStart();
+    }
+    //  問題に回答結果を保持させる
+    void setAnswerResult(String targetQuestionId,int yesCount,int noCount,float yesRatio,float noRatio){
+
+        this.questions = activity.getClassObject().getQuestionnaire().getQuestions();
+        for(int i = 0; i < questions.size(); i++){
+            String questionId = questions.get(i).getQuestionId();
+            //
+            if(questionId.equals(targetQuestionId)){
+                questions.get(i).getResult().setNoCount(noCount);
+                questions.get(i).getResult().setYesCount(yesCount);
+            }
+            //  ①はい、②いいえ (棚札のみのため2択)2016-01-27
+            List<Ask> askList = questions.get(i).getAsks();
+            for(int j = 0; j < askList.size(); j++){
+                List<Choice> choiceList = askList.get(j).getChoices();
+                for(int k = 0; k < choiceList.size(); k++){
+                    if(k == 0){
+                        QuestionResult qr = new QuestionResult();
+                        //  回答(ACK)数
+                        qr.setAnswerCount("" + yesCount);
+                        qr.setRatio(yesRatio);
+                        choiceList.get(k).setQuestionResult(qr);
+                    }else{
+                        QuestionResult qr = new QuestionResult();
+                        //  回答(NACK)数
+                        qr.setAnswerCount("" + noCount);
+                        qr.setRatio(noRatio);
+                        choiceList.get(k).setQuestionResult(qr);
+                    }
+                }
+            }
+        }
+    }
+
+    /*private void getQuestionResultInfoFromNetWrokDB(Faculty f){
+        //授業ID
+        //String classId = f.getClassPlan().getClassId();
+        String sameClassNumber = f.getClassPlan().getSameClassNumber();
+
+        String url = URL.getQuestionResult(sameClassNumber,);
+        JsonArrayRequest request = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        jsonArrayQuestionResult(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                int a = 0;
+                a = 12;
+            }
+        });
+
+        AppController.getInstance(this.getMainActivity()).getRequestQueue().add(request);
+    }*/
+
+    private void jsonArrayQuestionResult(JSONArray jsonArray){
+        // JSON to Java
+        Gson gson = new Gson();
+        Type collectionType = new TypeToken<Collection<QuestionResult>>(){}.getType();
+        //List<QuestionResult> questionResults = gson.fromJson(jsonArray.toString(),collectionType);
+
+        /*MainActivity activity = (MainActivity)this.getActivity();
+        Questionnaire q = activity.mTeacher.getQuestionnaire();
+        for(int i = 0;i<q.getQuestions().size();i++){
+           List<Ask> as = q.getQuestions().get(i).getAsks();
+            for(int j=0;j<as.size();j++){
+                List<Choice> cs = as.get(j).getChoices();
+                for(int k=0;k<cs.size();k++){
+                    for(int m=0;m<questionResults.size();m++){
+                        int orijinalChoiceId = cs.get(k).getChoiceId();
+                        int choiceId = questionResults.get(m).getChoiceId();
+                        if(orijinalChoiceId == choiceId){
+                            cs.get(k).setQuestionResult(questionResults.get(m));
+                        }
+                    }
+                }
+            }
+        }*/
+        processStart();
+    }
+
+    private void processStart(){
+        //Questionnaire questionnaire = activity.mTeacher.getQuestionnaire();
+        Questionnaire questionnaire = activity.getClassObject().getQuestionnaire();
+        if(questionnaire == null){
+            super.loadFragment();
         }else{
-            //初期位置に戻す.
-            nowSeePage=0;
+            //ロード画面を非表示に
+            this.questionResultLoadProgressBar.setVisibility(View.GONE);
+            if(questionnaire.getLastSeeQuestionTitleNumber() == null){
+                //まだ一度もアンケートを実施していない
+                this.donotStartQuestionLinearLayout.setVisibility(View.VISIBLE);
+                this.startQuestionLinearlayout.setVisibility(View.GONE);
+            }else{
+                //初期位置に戻す.
+                nowSeePage=0;
 
-            String lastSeeQuestionId = questionnaire.getLastSeeQuestionId();
-            for(int i = 0; i < this.questions.size(); i++){
+                String lastSeeQuestionId = questionnaire.getLastSeeQuestionTitleNumber();
+            /*for(int i = 0; i < this.questions.size(); i++){
                 String questionId = this.questions.get(i).getQuestionId();
                 if(lastSeeQuestionId.equals(questionId)){
                     this.nowSeeTopic = i;
                 }
+            }*/
+                for(int i = 0; i < this.questions.size(); i++){
+                    String quetionTitleNumber = this.questions.get(i).getQuestionNumber();
+                    if(lastSeeQuestionId.equals(quetionTitleNumber)){
+                        this.nowSeeTopic = i;
+                    }
+                }
+
+                //ボタン表示状態
+                nextQuestionButtonShowState();
+
+                //問題が計難問あるかをチェックする.
+                //その問題数におおじて戻るボタンと進むボタンをどう表示するかを決める.
+
+                //ダミーデータた
+                setTestItems();
+
+                //ドーナツのように真ん中を空ける
+                pieGraph.setInnerCircleRatio(80);
+                //間にパディングをいれる
+                pieGraph.setPadding(1);
+
+                this.donotStartQuestionLinearLayout.setVisibility(View.GONE);
+                this.startQuestionLinearlayout.setVisibility(View.VISIBLE);
             }
-
-            //ボタン表示状態
-            nextQuestionButtonShowState();
-
-            //問題が計難問あるかをチェックする.
-            //その問題数におおじて戻るボタンと進むボタンをどう表示するかを決める.
-
-            //ダミーデータた
-            setTestItems();
-
-            //ドーナツのように真ん中を空ける
-            pieGraph.setInnerCircleRatio(80);
-            //間にパディングをいれる
-            pieGraph.setPadding(1);
-
-            this.donotStartQuestionLinearLayout.setVisibility(View.GONE);
-            this.startQuestionLinearlayout.setVisibility(View.VISIBLE);
         }
     }
+
+
+
 
     /**
      * Created by scr on 2014/12/31.
@@ -315,8 +489,8 @@ public class QuestionnaireResultFragment extends MyMainFragment {
         //String number = this.questions.get(nowSeeQuestionTopic).getQuestionNumber();
         String number = this.questions.get(nowSeeTopic).getAsks().get(nowSeePage).getAskNumber();
         String content = this.questions.get(nowSeeTopic).getAsks().get(nowSeePage).getAskContent();
-        List<Answer> answers =  this.questions.get(nowSeeTopic).getAsks().get(nowSeePage).getAnswer();
-
+        List<Choice> choice =  this.questions.get(nowSeeTopic).getAsks().get(nowSeePage).getChoices();
+        Result answerReuslt = this.questions.get(nowSeeTopic).getResult();
         //「Q」番号
         this.setQuestionNumber(number);
         //タイトルセット
@@ -324,23 +498,37 @@ public class QuestionnaireResultFragment extends MyMainFragment {
 
         //int[] pieColorResorce = PieColor.getInstance().pieColors(this.getActivity());
 
-        for(int i = 0; i < answers.size(); i++){
+        int yesCount = answerReuslt.getYesCount();
+        int noCount  = answerReuslt.getNoCount();
+
+        for(int i = 0; i < choice.size(); i++){
             PieSlice pieSlice = new PieSlice();
             //回答タイトル
-            String title = answers.get(i).getAnswerContent();
+            String title = choice.get(i).getChoice();
             //回答パーセント
-            float percent = answers.get(i).getAnswerCount();
+            //float percent = choice.get(i).getQuestionResult().getRatio();
+            //float percent = 10.0f;
+            //float percent = 0.0f;
+            int count = 0;
+            if(i == 0){
+                count = yesCount;
+            }else{
+                count = noCount;
+            }
+
+
             //int color = pieColorResorce[i];
-            String color = answers.get(i).getanswerIndexColor();
-
-            pieSlice.setColor(Color.parseColor(color));
-            pieSlice.setValue(percent);
-            pieSlice.setTitle(title);
-            pieGraph.addSlice(pieSlice);
+            if(count > 0){
+                String color = choice.get(i).getChoiceIndexColor();
+                pieSlice.setColor(Color.parseColor(color));
+                pieSlice.setValue(count);
+                pieSlice.setTitle(title);
+                pieGraph.addSlice(pieSlice);
+            }
         }
-
         //回答の選択内容と選択数を入れる
-        setQuestionAnswerContentResult(answers);
+        //setQuestionAnswerContentResults(choice);
+        setQuestionAnswerContentResult(answerReuslt);
     }
 
     /**
@@ -367,9 +555,42 @@ public class QuestionnaireResultFragment extends MyMainFragment {
      * setQuestionAnswerContentResultメソッド
      * 選択肢や選択肢にたいする回答者数をセットする.
      */
-    private void setQuestionAnswerContentResult(List<Answer> answers){
-        AnswerCustomAdapter adapter = new AnswerCustomAdapter(this.getActivity(),R.layout.row_question_answer_result_item,answers);
-        this.resultContentGridView.setAdapter(adapter);
+    private void setQuestionAnswerContentResults(List<Choice> answers){
+        ChoiceCustomAdapter adapter = new ChoiceCustomAdapter(this.getActivity(),R.layout.row_question_answer_result_item,answers);
+        resultContentGridView.setAdapter(adapter);
+        resultContentGridView.invalidate();
+    }
+
+    /**
+     * アンケートの選択肢を強制的に作成
+     * **/
+    private void setQuestionAnswerContentResult(Result result){
+        List<Choice> cList = new ArrayList<Choice>();
+        //  「はい」（ACK)
+        Choice yesChoice = new Choice();
+        QuestionResult yesQr = new QuestionResult();
+        yesQr.setRatio(result.getYesRatio());
+        yesQr.setAnswerCount("" + result.getYesCount());
+        yesChoice.setChoice(result.getYesContent());
+        yesChoice.setChoiceColor(result.getYesColor());
+        yesChoice.setQuestionResult(yesQr);
+
+        //  「いいえ」（NACK)
+        Choice noChoice = new Choice();
+        QuestionResult noQr = new QuestionResult();
+        noQr.setRatio(result.getNoRatio());
+        noQr.setAnswerCount("" + result.getNoCount());
+        noChoice.setChoice(result.getNoContent());
+        noChoice.setChoiceColor(result.getNoColor());
+        noChoice.setQuestionResult(noQr);
+
+
+        cList.add(yesChoice);
+        cList.add(noChoice);
+
+        ChoiceCustomAdapter adapter = new ChoiceCustomAdapter(this.getActivity(), R.layout.row_question_answer_result_item, cList);
+        resultContentGridView.setAdapter(adapter);
+        resultContentGridView.invalidate();
     }
 
 

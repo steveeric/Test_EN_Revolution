@@ -1,7 +1,6 @@
 package jp.pmw.test_en_revolution.confirm_class_plan;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +23,7 @@ public class Roster implements Serializable {
      * 本日の出席者総数をかえします.
      * @return int 出席者数
      */
-    public int getTodayAttendeeCount(){
+    /*public int getTodayAttendeeCount(){
         int attendeeCount = 0;
         for (int i = 0; i < this.rosterList.size(); i++) {
             AttendanceState state = this.rosterList.get(i).getThisClassTime().getThisClassAttendanceState();
@@ -37,14 +36,14 @@ public class Roster implements Serializable {
             }
         }
         return attendeeCount;
-    }
+    }*/
     /**
      * Created by Shota Ito on 2015/1/6.
      * getTodayAttendeeメソッド
      * 本日の出席者総数をかえします.
      * @return List<StudentT> 出席者
      */
-    public List<Student> getTodayAttendee(){
+    /*public List<Student> getTodayAttendee(){
         List<Student> attendee = new ArrayList<Student>();
         for (int i = 0; i < this.rosterList.size(); i++) {
             AttendanceState state = this.rosterList.get(i).getThisClassTime().getThisClassAttendanceState();
@@ -56,6 +55,6 @@ public class Roster implements Serializable {
             }
         }
         return attendee;
-    }
+    }*/
 
 }

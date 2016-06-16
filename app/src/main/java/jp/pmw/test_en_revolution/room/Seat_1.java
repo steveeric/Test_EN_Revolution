@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Shota Ito on 2014/12/08.
  */
-public class Seat {
+public class Seat_1 {
     /*座席ID*/
     @SerializedName("seat_id")
     private String seatId;
@@ -17,7 +17,7 @@ public class Seat {
     //private int preattendee=0;
 
 
-    Seat(String seatId,int row,int column){
+    Seat_1(String seatId, int row, int column){
         this.seatId=seatId;
         this.row = row;
         this.column = column;

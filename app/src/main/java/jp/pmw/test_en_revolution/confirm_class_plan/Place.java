@@ -1,5 +1,7 @@
 package jp.pmw.test_en_revolution.confirm_class_plan;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +9,13 @@ import java.io.Serializable;
  * 場所に関することを管理するクラスです.
  */
 public class Place implements Serializable {
+    @SerializedName("room_id")
+    String roomId;
+    @SerializedName("building_name")
+    String buildingName;
+    @SerializedName("room_name")
+    String roomName;
+
     Room room;
     Building building;
     Campus campus;
@@ -18,6 +27,17 @@ public class Place implements Serializable {
         this.building = building;
         this.room = room;
     }
+    public String getRoomId(){
+        return this.roomId;
+    }
+    public String getBuildingName(){
+        return this.buildingName;
+    }
+    public String getRoomName(){
+        return this.roomName;
+    }
+
+
 
     public Room getRoom(){return this.room;}
     public Building getBuilding(){return this.building;}

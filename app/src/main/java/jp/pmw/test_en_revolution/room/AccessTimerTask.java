@@ -20,6 +20,6 @@ public class AccessTimerTask extends TimerTask implements Runnable{
     @Override
     public void run(){
         //出席者の情報を取得しに行く
-        fragment.getNetworkAttendanceInfo();
+        //fragment.getNetworkAttendanceInfo();
     }
 }

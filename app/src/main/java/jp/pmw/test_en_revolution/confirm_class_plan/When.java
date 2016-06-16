@@ -1,5 +1,7 @@
 package jp.pmw.test_en_revolution.confirm_class_plan;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -7,10 +9,13 @@ import java.io.Serializable;
  */
 public class When  implements Serializable {
     //実施年
+    @SerializedName("year")
     private String year;
     //実施月
+    @SerializedName("month")
     private String month;
     //実施日
+    @SerializedName("day")
     private String day;
 
     public When(String year,String month,String day) {

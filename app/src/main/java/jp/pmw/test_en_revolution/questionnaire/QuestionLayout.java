@@ -62,13 +62,14 @@ public class QuestionLayout extends LinearLayout {
             layout.setOrientation(LinearLayout.HORIZONTAL);
             layout.setBackgroundColor(this.getResources().getColor(R.color.lightCyan));
 
-            float fontSize = this.getContext().getResources().getDimension(R.dimen.textsize_large);
+            float fontSize = this.getContext().getResources().getDimension(R.dimen.textsize_xlarge);
             //Q.のテキストビュー
             TextView questionIndexTv = new TextView(this.getContext());
+            questionIndexTv.setTextSize(fontSize);
             setBackGroundColor(questionIndexTv);
-            String quecon = "　"
-                    +this.getContext().getResources().getString(R.string.ask_number)
-                    +asks.get(i).getAskNumber();
+            String quecon = "　";
+                    /*+this.getContext().getResources().getString(R.string.ask_number)
+                    +asks.get(i).getAskNumber();*/
             questionIndexTv.setText(quecon);
             questionIndexTv.setTextSize(fontSize);
             layout.addView(questionIndexTv);
@@ -76,8 +77,8 @@ public class QuestionLayout extends LinearLayout {
             //〇×■◀のテキストビュー
             TextView tv = new TextView(this.getContext());
             setBackGroundColor(tv);
-            String content =this.getContext().getResources().getString(R.string.ask_dot)
-                    +asks.get(i).getAskContent();
+            String content =/*this.getContext().getResources().getString(R.string.ask_dot)
+                    +*/asks.get(i).getAskContent();
             tv.setText(content);
             tv.setTextSize(fontSize);
             layout.addView(tv);
@@ -95,18 +96,18 @@ public class QuestionLayout extends LinearLayout {
             tv.setTextSize(fontSize);
             this.addView(tv);
             */
-            for(int j = 0; j < asks.get(i).getAnswer().size(); j++){
+            /*for(int j = 0; j < asks.get(i).getChoices().size(); j++){
                 TextView anstv = new TextView(this.getContext());
                 setBackGroundColor(anstv);
                 String asnContent = "　　"
-                        + asks.get(i).getAnswer().get(j).getAnswerIndexNumber()
+                        + asks.get(i).getChoices().get(j).getChoiceNumber()
                         + "　"
-                        + asks.get(i).getAnswer().get(j).getAnswerContent();
+                        + asks.get(i).getChoices().get(j).getChoice();
                 anstv.setText(asnContent);
                 float ansSize = this.getContext().getResources().getDimension(R.dimen.textsize_medium);
                 anstv.setTextSize(ansSize);
                 this.addView(anstv);
-            }
+            }*/
         }
     }
 

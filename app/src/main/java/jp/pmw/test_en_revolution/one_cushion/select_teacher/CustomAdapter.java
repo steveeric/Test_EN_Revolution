@@ -14,14 +14,14 @@ import jp.pmw.test_en_revolution.R;
 /**
  * Created by scr on 2014/12/04.
  */
-public class CustomAdapter extends ArrayAdapter<Teacher> {
+public class CustomAdapter extends ArrayAdapter<Faculty> {
 
     private Context _context;
     private int _textViewResourceId;
-    private List<Teacher> _items;
+    private List<Faculty> _items;
     private LayoutInflater _inflater;
 
-    public CustomAdapter(Context context, int resourceId, List<Teacher> items) {
+    public CustomAdapter(Context context, int resourceId, List<Faculty> items) {
         super(context, resourceId, items);
         _context = context;
         _textViewResourceId = resourceId;
@@ -38,9 +38,9 @@ public class CustomAdapter extends ArrayAdapter<Teacher> {
             view = _inflater.inflate(R.layout.row_onw_item, null);
         }
 
-        Teacher item = _items.get(position);
+        Faculty item = _items.get(position);
 
-        ((TextView) view.findViewById(R.id.row_text)).setText(item.getName());
+        ((TextView) view.findViewById(R.id.row_text)).setText(item.getFullName());
 
         return view;
     }

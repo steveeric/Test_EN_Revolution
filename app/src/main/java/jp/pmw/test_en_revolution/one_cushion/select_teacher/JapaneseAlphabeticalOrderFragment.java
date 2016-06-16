@@ -1,15 +1,26 @@
 package jp.pmw.test_en_revolution.one_cushion.select_teacher;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.BaseAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import jp.pmw.test_en_revolution.R;
 /**
@@ -39,10 +50,13 @@ public class JapaneseAlphabeticalOrderFragment extends Fragment {
     /**
      * 50音順にボタンを並べるグリッド
      * **/
-    private GridLayout mGridLayout;
+    public GridView mGridLayout;
 
     //ボタンが全て敷き詰められているかを表すフラグ
     private boolean mSetButtonFlag = false;
+
+    private int screenHeight = 0;
+    private int screenWidth = 0;
 
     private static final int FONT_SIZE = 30;
     /*50音順のボタンの高さ*/
@@ -75,51 +89,35 @@ public class JapaneseAlphabeticalOrderFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.mGridLayout = (GridLayout)this.getActivity().findViewById(R.id.japanese_alphabetical_grid);
+        this.mGridLayout = (GridView)this.getActivity().findViewById(R.id.japanese_alphabetical_grid);
     }
+
+    private static final int ROW = 5;
+    private static final int COLUMN = 10;
     @Override
     public void onResume(){
         super.onResume();
+        JapaneseAlphabeticalOrderFragmentActivity activity = (JapaneseAlphabeticalOrderFragmentActivity) this.getActivity();
 
-        if(this.mSetButtonFlag==false) {
-            //50音それぞれのボタンインデックス
-            int count = 0;
-            //グリッドビューの横幅
-            int gridWidthSize = this.mGridLayout.getWidth();
-            int widthCount = 0;
-            for (int i = 0; i < JapaneseAlphabeticalOrder.ALPHABET_BLOCK.length; i++) {
-                widthCount = JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i].length;
-                for (int j = 0; j < JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i].length; j++) {
-                    //５０音ボタン生成
-                    Button b = new Button(this.getActivity());
-                    b.setId(++count);
-                    b.setOnClickListener(new OnClickListener() {
-                        public void onClick(View v) {
-                            //タップしたボタンのIDを確認する.
-                            //confirmTapButtonId(v);
+        WindowManager wm = activity.getWindowManager();
+        Display disp = wm.getDefaultDisplay();
+        int width  = disp.getWidth();
+        int height = disp.getHeight();
+        screenHeight        = height;
+        screenWidth         = width;
+        int heightBtn    = screenWidth / (ROW);
+        int widthBtn   = screenHeight / COLUMN;
 
-                            //選択されたボタンIDを元にSelectActivityに画面遷移をする
-                            moveToActivity(v);
-                        }
-                    });
-                    //ボタン一つ一つに文字を入れる.
-                    String str = JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i][j];
-                    if (str.equals("")) {
-                        b.setVisibility(View.INVISIBLE);
-                    } else {
-                        b.setText(str);
-                        b.setTextSize(FONT_SIZE);
-                        //b.setText("::");
-                    }
-                    b.setHeight(this.INITIAL_BUTTON_HEIGHT);
-                    b.setWidth(this.INITIAL_BUTTON_WIDTH);
-                    b.setBackgroundResource(R.drawable.circle_oval_shape_gray_button_frame_border);
-                    b.setPadding(10,0,10,0);
-                    this.mGridLayout.addView(b);
-                }
+        ArrayList<String> list = new ArrayList<String>();
+        for (int i = 0; i < JapaneseAlphabeticalOrder.ALPHABET_BLOCK.length; i++) {
+            for (int j = 0; j < JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i].length; j++) {
+                //ボタン一つ一つに文字を入れる.
+                String str = JapaneseAlphabeticalOrder.ALPHABET_BLOCK[i][j];
+                list.add(String.valueOf(str));
             }
-            this.mSetButtonFlag = true;
         }
+        this.mGridLayout.setAdapter(new HueAdapter(this.getActivity(), 0, list, heightBtn, widthBtn));
+        this.mGridLayout.setNumColumns(COLUMN);
     }
 
     /**
@@ -189,6 +187,69 @@ public class JapaneseAlphabeticalOrderFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    public class HueAdapter extends ArrayAdapter<String> {
+        List<String> list;
+        private Context mContext;
+        private LayoutInflater mLayoutInflater;
+        private int heightBtn;
+        private int widthBtn;
+        private  class ViewHolder {
+            public Button button;
+        }
+
+        public HueAdapter(Context context, int layoutId, List<String> objects,int heightBtn,int widthBtn) {
+            super(context, layoutId, objects);
+            mContext = context;
+            mLayoutInflater = LayoutInflater.from(context);
+            list            = objects;
+            this.heightBtn  = heightBtn;
+            this.widthBtn   = widthBtn;
+        }
+
+        public String getItem(int position) {
+            //return mHueArray[position];
+            return this.list.get(position);
+        }
+
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder = null;
+            if (convertView == null) {
+                convertView = mLayoutInflater.inflate(R.layout.grid_item_japanese_alpabetical, null);
+                holder = new ViewHolder();
+                holder.button = (Button)convertView.findViewById(R.id.japanese_alphabetical_grid_button);
+                String str = this.getItem(position);
+                holder.button.setId(++position);
+                holder.button.setBackgroundResource(R.drawable.circle_oval_shape_gray_button_frame_border);
+                holder.button.setPadding(10, 0, 10, 0);
+                holder.button.setTextSize(FONT_SIZE);
+                holder.button.setMinimumHeight(heightBtn);
+
+                if(str.equals("")){
+                    holder.button.setVisibility(View.INVISIBLE);
+                }else{
+                    holder.button.setText(str);
+                    holder.button.setOnClickListener(new OnClickListener() {
+                        public void onClick(View v) {
+                            moveToActivity(v);
+                        }
+                     });
+                }
+                //holder.button.setHeight(heightBtn);
+                //holder.button.setWidth(widthBtn);
+
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder)convertView.getTag();
+            }
+
+            return convertView;
+        }
     }
 
 }

@@ -6,9 +6,16 @@
     <!-- TODO: Update blank fragment layout -->
     <!--<TextView android:textSize="@dimen/textsize_xlarge" android:layout_width="match_parent" android:layout_height="match_parent"
         android:text="円グラフを描く" android:gravity="center" android:layout_gravity="center|center_horizontal"/>-->
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="357dp"
+        android:layout_height="357dp"
+        android:id="@+id/fragment_clicker_result_progressBar"
+        android:layout_gravity="center"
+        android:indeterminate="false" />
     <LinearLayout
         android:id="@+id/fragment_clicker_result_start_questionnaire_linearLayout"
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -77,12 +84,21 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:numColumns="2"
+            android:numColumns="1"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:id="@+id/fragment_clicker_result_answer_contents_gridView"
             android:layout_gravity="center_horizontal|bottom" />
+        <!--<ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/fragment_clicker_result_answer_contents_listView"
+            android:layout_gravity="center_horizontal|bottom" />-->
 
 </LinearLayout>
 
@@ -99,8 +115,10 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="@dimen/textsize_xlarge"
-            android:text="アンケートが実施されていません." />
+            android:text="回答結果を閲覧する問題を選択してください." />
     </LinearLayout>
+
+
 
 
 </FrameLayout>

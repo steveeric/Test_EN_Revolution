@@ -281,7 +281,7 @@
             android:gravity="center"
             android:textSize="@dimen/textsize_xxlarge"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="今期の担当講義は終了しました." />
+            android:text="本日授業がありません." />
 
         <TextView
             android:id="@+id/confirm_class_plan_show_confirm_no_class_plan_exitcounter_textView"

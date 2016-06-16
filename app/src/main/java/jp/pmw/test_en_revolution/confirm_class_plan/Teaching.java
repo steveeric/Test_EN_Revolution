@@ -1,5 +1,7 @@
 package jp.pmw.test_en_revolution.confirm_class_plan;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by scr on 2014/12/22.
  * 本日又は今学期にどのような授業を持っているかを管理するクラスです.
@@ -14,6 +16,17 @@ public class Teaching {
      * **/
     private int today;
     /**
+     * createDate:2015/2/24
+     * 授業状態判定を保持します.
+     * 0 : 今期授業なし
+     * 1 : 今授業中
+     * 2 : 本日授業はあるが、時間帯がこの後.
+     * 3 : 明日以降に授業がる
+     * **/
+    @SerializedName("class_judge")
+    private int classJudge;
+
+    /**
      * 今又は次の授業が何なのかを表すクラスです.
      * 学期を超えて取得することはありません.
      * つまり、授業を持っている先生が
@@ -22,7 +35,8 @@ public class Teaching {
      * ClassPlan : NULL(今学期授業終わり)
      * ClassPlan : NULLでない(今学期まだ授業がある.)
      * **/
-    private ClassPlan classPlan;
+    @SerializedName("class")
+     private ClassPlan classPlan;
 
     /**
      * 学期を表します.
@@ -36,7 +50,7 @@ public class Teaching {
         this.classPlan = classPlan;
         this.semester = semester;
     }
-
+    public int getClassJudge(){return this.classJudge;}
     public int getToday(){return this.today;}
     public ClassPlan getClassPlan(){return this.classPlan;}
     public int getSemester(){return this.semester;}

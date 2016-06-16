@@ -1,21 +1,18 @@
 package jp.pmw.test_en_revolution.grouping;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by scr on 2015/01/06.
  * 一つのグループを管理するクラスです.
  */
 public class Group {
     //グループ名
+    @SerializedName("group_name")
     private String groupName;
-    //グループ内の学生
-    //private List<Student> menbers;
-
-    Group(String groupName/*, List<Student> members*/){
+    Group(String groupName){
         this.groupName = groupName;
-        //this.menbers = members;
     }
-
     public String getGroupName(){return this.groupName;}
-    //public List<Student> getMenbers(){return this.menbers;}
 
 }

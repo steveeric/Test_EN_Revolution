@@ -78,7 +78,7 @@ public class DemoReCollTheRollTimer extends TimerTask {
         for(int i = 0; i < students.size(); i++){
             Student st = students.get(i);
 
-            if(st.getThisClassTime().getThisClassAttendanceState().getTempAttendanceState() == 0
+            /*if(st.getThisClassTime().getThisClassAttendanceState().getTempAttendanceState() == 0
                     || st.getThisClassTime().getThisClassAttendanceState().getRequestForgotESLTime() !=null){
                 ++counter;
             }

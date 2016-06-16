@@ -3,12 +3,8 @@ package jp.pmw.test_en_revolution.dummy;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.pmw.test_en_revolution.confirm_class_plan.AttendanceState;
 import jp.pmw.test_en_revolution.confirm_class_plan.Roster;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
-import jp.pmw.test_en_revolution.confirm_class_plan.ThisClassTime;
-import jp.pmw.test_en_revolution.confirm_class_plan.Message;
-import jp.pmw.test_en_revolution.confirm_class_plan.TotalAttendance;
 
 /**
  * Helper class for providing sample content for user interfaces created by
@@ -22,7 +18,7 @@ public class DummyRosterContent {
      */
     public static List<Student> ITEMS = new ArrayList<Student>();
 
-    static {
+    /*static {
         ThisClassTime thisTime = null;
         thisTime = new ThisClassTime("3060580000000805",new AttendanceState(0,null,""));
         addItem(new Student("A03002","3060581500013", "かとう","いっぺい","加藤","一平","加藤一平",thisTime,new TotalAttendance(10,3),null));
@@ -174,7 +170,7 @@ public class DummyRosterContent {
         addItem(new Student("J06012","3060581500001", "かとう","たつや","加藤","達也","加藤達也",thisTime,new TotalAttendance(11,2),null));
         thisTime = new ThisClassTime("3060580000000208",new AttendanceState(0,null,null));
         addItem(new Student("J07011","3060581500000", "いとう","しょうた","伊藤","翔太","伊藤翔太",thisTime,new TotalAttendance(12,1),new Message("会計課","授業料について聞きたいので、会計課に来てください.","授業料が未納入です.")));
-    }
+    }*/
 
     private static void addItem(Student item) {
         ITEMS.add(item);

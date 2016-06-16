@@ -1,5 +1,8 @@
 package jp.pmw.test_en_revolution;
 
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.widget.Toast;
@@ -11,7 +14,7 @@ import jp.pmw.test_en_revolution.drawer.NavigationDrawerFragment;
  * FragmentAcitvityのリターンキーを制御するクラスです.
  */
 abstract public class MyFragmentActivity extends FragmentActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks,ConnectionReceiver.Observer{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -24,7 +27,32 @@ abstract public class MyFragmentActivity extends FragmentActivity
      * ドロワーフラグメントの必要個所をオープンにする.
      */
     abstract public void openNavigationDrawer();
+    private ConnectionReceiver mConnectionReceiver;
 
+    public void setReciver(){
+        IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        mConnectionReceiver = new ConnectionReceiver(this);
+        registerReceiver(mConnectionReceiver, filter);
+    }
+
+    @Override
+    public void onConnect() {
+        //ネットワーク接続検出
+        //Toast.makeText(getApplicationContext(), "onConnect", Toast.LENGTH_LONG).show();
+    }
+    @Override
+    public void onDisconnect() {
+        //ネットワーク切断検出
+        //Toast.makeText(getApplicationContext(), "onDisconnect", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this,DisconectActivity.class);
+        startActivity(intent);
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //ネットワークレシーバー
+        setReciver();
+    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent e) {
@@ -44,6 +72,9 @@ abstract public class MyFragmentActivity extends FragmentActivity
     @Override
     public void onDestroy(){
         super.onDestroy();
+        if(mConnectionReceiver != null){
+            unregisterReceiver(mConnectionReceiver);
+        }
         finish();
     }
 

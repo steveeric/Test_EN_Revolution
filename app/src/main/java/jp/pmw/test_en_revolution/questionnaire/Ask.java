@@ -1,5 +1,7 @@
 package jp.pmw.test_en_revolution.questionnaire;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,22 +10,24 @@ import java.util.List;
  * アンケートで尋ねる内容を管理するクラスです.
  */
 public class Ask implements Serializable {
+    @SerializedName("question_id")
+    private int askId;
     //尋ねる問番号
+    @SerializedName("question_number")
     private String askNumber;
     //尋ねる内容
+    @SerializedName("question")
     private String askContent;
     //回答情報
-    private List<Answer> answer;
-    public Ask(String askNumber, String askContent,List<Answer> answer){
-        this.askNumber = askNumber;
-        this.askContent = askContent;
-        this.answer = answer;
-    }
+    @SerializedName("choices")
+    private List<Choice> choice;
+
+    public int getAskId(){return this.askId;}
     public String getAskNumber(){
         return this.askNumber;
     }
     public String getAskContent(){
         return this.askContent;
     }
-    public List<Answer> getAnswer(){return this.answer;}
+    public List<Choice> getChoices(){return this.choice;}
 }

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_version">version 0.0.0</string>
-    <string name="app_name">授業運営管理ソリューション</string>
+    <string name="app_version">version 0.2.3</string>
+    <!--<string name="app_name">授業運営管理ソリューション</string>-->
+    <string name="app_name">SonoRIs MT</string>
     <string name="do_not_mistake">間違いありませんか?</string>
-    <string name="failed_to_get">取得に失敗しました.</string>
+    <string name="failed_to_get">教員名の取得に失敗しました.</string>
     <string name="regain">再取得</string>
     <string name="select_name">選択名</string>
     <string name="confirm_select_content">選択内容に間違いありませんか.</string>
@@ -16,7 +17,7 @@
     <string name="seat_number_separetar"> - </string>
     <string name="other">他</string>
     <string name="close">とじる</string>
-    <string name="space"> </string>
+    <string name="space"></string>
     <string name="year">年</string>
     <string name="month">月</string>
     <string name="day">日</string>
@@ -28,13 +29,15 @@
     <string name="negative">いいえ</string>
     <string name="loading">読み込み中...</string>
     <string name="chapter_attendance">ハンズフリー出席管理</string>
-    <string name="title_section0">選択画面</string>
+    <!--<string name="title_section0">選択画面</string>-->
+    <string name="title_section0">SonoRIs MT</string>
     <string name="title_section1">着席状況</string>
     <string name="title_section2">受講者一覧</string>
     <string name="title_section3">再調査</string>
-    <string name="title_section4">ESL忘れ</string>
+    <string name="title_section4">SonoRIs忘れ</string>
     <string name="title_section5">グルーピング</string>
-    <string name="title_section6">アンケート</string>
+    <string name="title_section12">グループ調整</string>
+    <string name="title_section6">クリッカー</string>
     <string name="title_section7">個人履歴</string>
     <string name="title_section8">講義内容</string>
     <string name="title_section9">メッセージ</string>
@@ -49,7 +52,6 @@
     <string name="action_example">Example action</string>
     <string name="menu_hands_free_attendance_student_history">個人履歴</string>
     <string name="menu_hands_free_attendance_re_call_the_roll">再出席調査</string>
-
     <string name="re_call_the_roll_alert_dialog_title">再出席調査中...</string>
     <string name="re_call_the_roll_alert_dialog_message">出席調査中です.しばらくお待ちください.</string>
     <string name="re_call_the_roll_end_alert_dialog_title">再調査終了</string>
@@ -64,34 +66,64 @@
     <string name="title_activity_kana_index_select">KanaIndexSelectActivity</string>
     <string name="message_help">ESLの表示が変わらない時は、ESLの故障が考えられます.学生課へ新しいESLを受け取りに行かせて下さい.</string>
     <string name="title_activity_confirm_class_plan">ConfirmClassPlanActivity</string>
+    <string name="shelf_labels">SonoRIs</string>
 
-    <!---->
-        <string name="fifty_index_table_page_title">50音表から選択して下さい.</string>
-    <!--選択名確認画面-->
+
+    <!--  -->
+    <string name="fifty_index_table_page_title">50音表から選択して下さい.</string>
+    <!-- 選択名確認画面 -->
     <string name="kana_index_select_select_name">選択名 : </string>
 
-    <!--講義内容確認画面-->
+    <!-- 講義内容確認画面 -->
     <string name="confirm_nearest_class_plan_title_messge">出席状況を確認しますか？</string>
     <string name="confirm_nearest_class_plan_now_brosing">名が出席状況をすでに閲覧中です.</string>
     <string name="confirm_for_class_plan_title_messge">次回の講義案内</string>
     <string name="confirm_not_today_class_but_next_class_message">本日の授業はありません.\r\n次回の授業案内</string>
-
     <string name="confirm_for_class_plan_class_date">授業日 : </string>
     <string name="confirm_for_class_plan_class_in_roomname">教室名 : </string>
     <string name="confirm_for_class_plan_class_subjectname">科目名 : </string>
-
     <string name="confirm_for_class_plan_re_select_prelude">担当の授業開始時間前です.\r\n</string>
     <string name="confirm_for_class_plan_re_select">に再度選択して下さい.</string>
     <string name="confirm_not_today_class_but_next_class_re_select">自動でアプリが終了しますので、しばらくお待ち下さい.</string>
 
-    <!--メイン画面のドロワーナビゲーション-->
+    <!-- メイン画面のドロワーナビゲーション -->
     <string name="return_fifty_index_table_page">50音表へ</string>
 
-
-    <!--講義内容確認画面-->
+    <!-- 講義内容確認画面 -->
     <string name="main_bottom_top_message">画面左側から右側に向かって\r\n指でスワイプして下さい.</string>
 
-    <!---->
+    <!-- 受講者一覧 -->
+    <string name="before_attendance_status">着席情報配信中です...</string>
+
+
+    <string name="group_number">グループ番号　</string>
+    <string name="seatposition">着席位置　</string>
+
+    <!-- 忘れ -->
+    <!--<string name="forgot_title">　SonoRIs.忘れを</string>-->
+    <!--<string name="forgot_title">　SonoRIsを持っていますか？</string>-->
+    <!--<string name="forgot_apply">は　い</string>
+    <string name="forgot_release">いいえ</string>-->
+    <string name="forgot_title"> </string>
+    <string name="forgot_apply">SonoRIs\n所持</string>
+    <string name="forgot_release">SonoRIs\n不携帯</string>
+
+    <!-- 手動出席申請 -->
+    <string name="manual_attendance_title">　出席していることを</string>
+    <!--<string name="manual_attendance_apply">出席していることを\r\n確認した</string>
+    <string name="manual_attendance_release">出席していることを\r\n取り消す</string>-->
+    <string name="manual_attendance_apply">出席\r\n認定</string>
+    <string name="manual_attendance_release">出席\r\n不認定</string>
+
+    <!-- 在室確認申請(送信中) -->
+    <string name="manual_be_in_wait_room_title">　再調査出席を送信しています.</string>
+    <!-- 在室確認申請 -->
+    <!--<string name="manual_be_in_room_title">　在室していることを</string>-->
+    <string name="manual_be_in_room_title"></string>
+    <string name="manual_be_in_room_apply">在室\r\n確認</string>
+    <string name="manual_be_in_room_release">在室\r\n未確認</string>
+
+    <!--  -->
     <string name="grouping_group_duaring_attendance">出席調査が終わるまでグルーピングを行うことはできません.</string>
     <string name="grouping_group_title">何に基づいてグループを編成しますか？</string>
     <string name="grouping_group_group_number">グループ数に基づいて</string>
@@ -99,6 +131,7 @@
     <string name="grouping_group_menber_number">メンバー数に基づいて</string>
     <string name="grouping_group_select_group_assist">グループ</string>
     <string name="grouping_group_select_menber_number">１つのグループ何人編成にするか入力して下さい.</string>
+    <string name="grouping_group_select_menber_number_guidance">１グループ何人編成にするか選択して下さい.</string>
     <string name="grouping_group_select_menber_assist_front">１グループ</string>
     <string name="grouping_group_select_menber_assist">人</string>
     <string name="grouping_group_enter">を入力して下さい.</string>
@@ -109,16 +142,22 @@
     <string name="grouping_group_end_message">グルーピングを行いました.</string>
     <string name="grouping_group_end_group_cnfirm">着席状況を確認</string>
 
-    <!--アンケート-->
-    <string name="question_duaring_attendance">出席調査が終わるまでアンケートを行うことはできません.</string>
+    <!-- アンケート -->
+    <string name="question_duaring_attendance">出席認定が終わるまでアンケートを行うことはできません.</string>
     <string name="question_index_number">アンケート</string>
-    <string name="questionnaire_topic">A</string>
-    <string name="questionnaire_number">Q</string>
+    <string name="questionnaire_topic">問</string>
+    <string name="questionnaire_number">問</string>
     <string name="ask_number">Q</string>
     <string name="ask_dot">.</string>
+
     <!-- アンケートカスタムダイアログ -->
-    <string name="questionnaire_custom_dialog_start">実施しますか?</string>
-    <string name="questionnaire_custom_dialog_result">回答結果を確認しますか?</string>
+    <string name="questionnaire_custom_dialog_start">の問題を送信しますか？</string>
+    <string name="questionnaire_custom_dialog_check">に対する回答を収集しますか？</string>
+    <string name="questionnaire_custom_dialog_result">の回答を学生に返信しますか？</string>
+    <string name="questionnaire_custom_dialog_another">しばらくお待ちください.</string>
+    <string name="questionnaire_custom_dialog_confirm_result">の結果円グラフを表示しますか？</string>
+    <string name="questionnaire_custom_dialog_warning1">SonoRIs.の画面を表に向け、\r\nクリッカー参加学生全員が机の上に置いたのを確認してから、\r\n開始してください.</string>
+    <string name="questionnaire_custom_dialog_warning2">回答が「いいえ」のひとが、SonoRIs.をカバンの奥深くにしまったのを確認してから、\n\n開始してください.</string>
 
     <!-- カスタムダイアログ -->
     <string name="number_of_times">回</string>
@@ -134,13 +173,56 @@
     <string name="history_dialog_frament_attendee_state">〇</string>
     <string name="history_dialog_frament_absentee_state">×</string>
     <string name="history_dialog_frament_forgot_esl">ESL忘れ</string>
-
     <string name="alert_title_message_unimplemented">未実装</string>
     <string name="alert_message_unimplemented">まだ使用することが出来ません.</string>
-
+    <string name="alert_title_message_nouse">使用できません.</string>
+    <string name="alert_message_nouse">現在のバージョンではお使いになることができません.</string>
+    <string name="alert_title_message_still_get_roster">しばらくお待ちください.</string>
+    <string name="alert_message_still_get_roster">履修者の情報を取得中です.</string>
     <string name="alert_title_message">メッセージ</string>
     <string name="alert_message_donot_re_call_the_roll">まだ全員の出席が確認できていないので使用することが出来ません.</string>
     <string name="alert_message_cannot_accept_input_value">入力された値ではグルーピングを行うことができません.</string>
+    <string name="title_activity_disconnect">DisconnectActivity</string>
 
+    <!-- ネットワーク接続が切断された -->
+    <string name="disconect_message">ネットワークが切断されました.ネットワーク接続を有効にして下さい.</string>
+    <string name="title_activity_disconect">DisconectActivity</string>
+
+    <!-- 送信お待ちください. -->
+    <string name="transmit_checker_dialog_tile"> </string>
+
+    <!-- 座席指定インジケータ -->
+    <string name="indicator_seat">指</string>
+    <!-- 出席認定インジケータ -->
+    <string name="indicator_attendance">認</string>
+    <!-- 再出席調査インジケータ -->
+    <string name="indicator_re_attendance">再</string>
+    <!-- プライバシー保護インジケータ -->
+    <string name="indicator_privacy_protection">P</string>
+
+    <!-- グループ再調整で出席者確定前の文言 -->
+    <string name="group_readjustment_attendance_undetermined_str">出席者が確定するまでお待ちください.</string>
+    <!-- グループ再調整で出席者確定後だがグループ調整を行う必要がないの文言 -->
+    <string name="group_readjustment_attendance_determined_readjustment_no_need_str">グループ調整を行う必要はありません.</string>
+    <!-- グループ再調整で出席者確定後だがグループ調整を行う必要があるの文言 -->
+    <string name="group_readjustment_attendance_determined_readjustment_need_str">最低人数未満のグループがあります.</string>
+    <!-- グループ再調整で出席者確定後だがグループ調整を行う必要がある画面で足らないグループをリストビューに表示する際に使用 -->
+    <string name="group_readjustment_attendance_determined_readjustment_need_listview">人グループ : </string>
+    <!-- グループ再調整で出席者確定後だがグループ調整を実施後の文言 -->
+    <string name="group_readjustment_attendance_determined_readjustmented_str">グループを移動するよう指示をしてください.</string>
+    <!-- グループ再調整で出席者確定後だがグループ調整を実施後で全員に移動先伝達後の文言 -->
+    <string name="group_readjustment_attendance_determined_readjustmented_toal_str">グループ調整が終了しました.</string>
+    <!-- グループ情報 -->
+    <string name="group_readjustment_attendance_determined_readjustmented_group_info_str">グループ情報</string>
+
+
+    <!-- 調整後グループ名 -->
+    <string name="group_readjustment_attendance_determined_group_name_str">調整後グループ名 : </string>
+    <!-- 調整後座席位置 -->
+    <string name="group_readjustment_attendance_determined_group_seat_name_str">調整後座席位置 : </string>
+
+
+    <!-- 再調整開始ボタン文言 -->
+    <string name="group_readjustment_start_btn">グループ調整を開始する</string>
 
 </resources>

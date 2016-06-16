@@ -8,20 +8,14 @@ import java.util.TimerTask;
  */
 public class FinishTimer  extends TimerTask {
     private MainActivity activity;
-    private long endTime;
-    FinishTimer(MainActivity activity,long endTime){
+    FinishTimer(MainActivity activity){
         this.activity = activity;
-        this.endTime = endTime;
     }
-
 
     @Override
     public void run() {
-        long nowTime = System.currentTimeMillis();
-        if(endTime < nowTime){
-            //アプリ終了
-            endClassRoom();
-        }
+        //アプリ終了
+        endClassRoom();
     }
 
     private void endClassRoom(){

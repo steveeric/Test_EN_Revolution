@@ -4,29 +4,18 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.List;
+
 import java.util.Timer;
-import jp.pmw.test_en_revolution.config.URL;
+import java.util.TimerTask;
+
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
-import jp.pmw.test_en_revolution.grouping.GroupingManagement;
-import jp.pmw.test_en_revolution.room.AccessConfig;
-import jp.pmw.test_en_revolution.room.AccessTimerTask;
-import jp.pmw.test_en_revolution.room.Room;
+import jp.pmw.test_en_revolution.confirm_class_plan.RoomInfoObject;
 import jp.pmw.test_en_revolution.room.RoomView;
 
 /**
@@ -58,9 +47,12 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
     /*教室情報を呼ぶのに必要*/
     private ProgressBar loadRoomMapProgressBar;
     /*教室用のView*/
-    private RoomView roomView;
+    public RoomView roomView;
+    //   授業参加学生を取得するまで待機するタイマー
+    private Timer waitTimer;
     /*出欠席者の情報を再取得しに行くためのタイマー*/
     private Timer mTimer;
+
 
     public SeatSituationFragment() {
     }
@@ -69,14 +61,6 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_seat_situation, container, false);
-
-
-
-        /*RoomView rv = new RoomView(getActivity());
-        rv.setRoomMap();*/
-        /*テスト用*/
-        /*MainActivity main = (MainActivity)getActivity();
-        main.test(rv,rv.getRoomMap().getCells());*/
         return rootView;
     }
 
@@ -87,10 +71,6 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
         loadRoomMapProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.seat_situation_load);
         /*教室マップを描くよう*/
         roomView = (RoomView)this.getActivity().findViewById(R.id.view);
-
-        //ドロワーの必要個所をオープンにする.
-        /*MainActivity activity = (MainActivity)this.getActivity();
-        activity.openNavigationDrawer();*/
     }
     /**
      * コールバック用のリスナー
@@ -107,35 +87,127 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
         //コールバック用に
         roomView.setSeatSituationFragment(this);
 
-        /*テスト確認用*/
-        roomView.setDummyDataRoomMap();
-
         MainActivity activity = (MainActivity)this.getActivity();
-        GroupingManagement gpManagement = activity.mTeacher.getGroupingManagement();
-        if(gpManagement.getDoGroupingFlag() == true){
-            //グルーピングモード
-            roomView.setDummyGrouping();
-        }else {
-            //通常着席モード
-            roomView.setDummyAttendance();
+        //Roster roster = activity.mTeacher.getRoster();
+        //RoomInfoObject tmpRoomInfo = activity.mTeacher.getTmpRoomInfo();
+        //  教室フロア情報(座席情報も)
+        RoomInfoObject  rio      =   activity.getClassObject().getRoomInfoObject();
+
+
+        if(rio != null){
+            super.cancelTimer();
+            roomView.setRoomInfoObject(rio);
+            //roomView.seatedStudents(sos);
+            roomView.invalidate();
+            showRoomMap();
+            getStudentsTimerTask();
+        }else{
+            //まだ取得できていないので
+            //ロード画面
+            super.loadFragment();
+        }
+    }
+
+
+
+    /**
+     * Created by scr on 2016/02/16.
+     * getStudentsTimerTaskメソッド
+     * 本日授業に参加する予定の学生群をネットワークDBから取得する.
+     * 学生群を取得でき次第、学生の着席位置を描画する.
+     */
+    private void getStudentsTimerTask(){
+        MainActivity activity = (MainActivity)this.getActivity();
+        StudentObject[] sos      =   activity.getClassObject().getStudentObject();
+        if(sos == null){
+            getMainActivity().getClassHttpRequest().getChkAttendance();
+            waitTimer = new Timer();
+            waitTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            StudentObject[] sos = getMainActivity().getClassObject().getStudentObject();
+                            if (sos != null) {
+                                roomView.seatedStudents(sos);
+                                timerTask();
+                            }
+                        }
+                    });
+                }
+            }, 0, RELOAD_INTERVAL);
+        }else{
+            roomView.seatedStudents(sos);
+            timerTask();
+        }
+    }
+    /**
+     * Created by scr on 2016/02/16.
+     * timerTaskメソッド
+     * 本日の授業参加者の状態を随時取得するタイマータスクを起動します.
+     */
+    private void timerTask(){
+
+        if(waitTimer != null){
+            //  学生取得用タイマー
+            waitTimer.cancel();
+            waitTimer = null;
         }
 
-        showRoomMap();
-        /*テスト確認用*/
-
-        /*本番用*/
-        /*教室情報を取得しに行く*/
-        //getNetworkRoomInfomation();
-        /*本番用*/
-
+        if(mTimer == null){
+            //  出席者情報随時取得用タイマー
+            MainActivity activity = (MainActivity)this.getActivity();
+            mTimer = new Timer();
+            mTimer.schedule(new SeatSituationFragmentTimeTask(activity, this), 0, this.RELOAD_INTERVAL);
+        }
     }
+    /**
+     * Created by scr on 2016/02/16.
+     * initStudentObjectメソッド
+     * インスタンスにある本日の授業参加学生データを初期化する.
+     */
+    /*public void initStudentObject(){
+        (getMainActivity()).getClassObject().setStudentObject(null);
+        (getMainActivity()).getClassHttpRequest().getChkAttendance();
+        (getMainActivity()).showAnotherErrorToast("initStudentObject!");
+    }*/
+
+    //  学生の出席状態を更新するHandlerThreadメソッドです.
+    public void displayRoomViewHandlerThread(){
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                redrawRoomView();
+            }
+        });
+    }
+    //  再描画
+    public void redrawRoomView(){
+        if(roomView != null){
+           roomView.invalidate();
+        }
+        /*if(mTimer!=null){
+            MainActivity activity = (MainActivity)this.getActivity();
+            TransmitStateObject tso = activity.getClassObject().getTransmitStateObject();
+            if(tso != null){
+                if(tso.getAttendanceTranmitEndTime() != null){
+                    this.mTimer.cancel();
+                    this.mTimer = null;
+                }
+            }
+        }*/
+    }
+
+
 
     /**
      * Created by scr on 2014/12/11.
      * getNetworkRoomInfomationメソッド
      * ネットワーク上のDBに教室情報を取得しにいく.
      */
-    private void getNetworkRoomInfomation(){
+    /*private void getNetworkRoomInfomation(){
         MainActivity activity = (MainActivity)this.getActivity();
         //教室情報を取得しに行く.
         //String url = URL.ROOM_MAP+"/"+activity.getRoomId();
@@ -159,7 +231,7 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
             }
         });
         AppController.getInstance(this.getActivity()).getRequestQueue().add(request);
-    }
+    }*/
 
     /**
      * Created by scr on 2014/12/11.
@@ -167,34 +239,34 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
      * ネットワークから取得した教室情報Jsonを解析する.
      * @param json ネットワークDBから取得した教室情報
      */
-    private void roomJsonParser(JSONObject json){
+    /*private void roomJsonParser(JSONObject json){
         Gson mygson = new Gson();
         //List<Teacher> teachers = new ArrayList<Teacher>();
         //Type collectionType = new TypeToken<Room>(){}.getType();
         Room room = mygson.fromJson(json.toString(),Room.class);
         setRoomInfomation(room);
-    }
+    }*/
 
     /**
      * Created by scr on 2014/12/11.
      * setRoomInfomationメソッド
      * RoomViewクラスにネットワークDBから取得した教室情報を流す
      */
-    private void setRoomInfomation(Room room){
+    /*private void setRoomInfomation(Room room){
         this.roomView.setRoomMap(room);
         //教室オープン
         showRoomMap();
-        /*出席者を取得し続ける*/
+        //出席者を取得し続ける
         mTimer = new Timer();
         mTimer.schedule(new AccessTimerTask(this), AccessConfig.WAIT_TIME, AccessConfig.RE_ATTENDANCE_ACCESS_TIME);
-    }
+    }*/
 
     /**
      * Created by scr on 2014/12/12.
      * getNetworkAttendanceInfoメソッド
      * ネットワークのデータベースに出席者の情報を取得しにいく.
      */
-    public void getNetworkAttendanceInfo(){
+    /*public void getNetworkAttendanceInfo(){
         MainActivity activity = (MainActivity)this.getActivity();
         //教室情報を取得しに行く.
         //String url = URL.ATTENDANCE_INFO+"/"+activity.getClassPlanId();
@@ -204,7 +276,7 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
                 new Response.Listener<JSONArray>() {
                     @Override public void onResponse(JSONArray response) {
                         // レスポンス受け取り時の処理...
-                        attendanceJsonParser(response);
+                        //attendanceJsonParser(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -214,7 +286,7 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
                     }
                 });
         AppController.getInstance(this.getActivity()).getRequestQueue().add(request);
-    }
+    }*/
 
     /**
      * Created by scr on 2014/12/12.
@@ -222,14 +294,14 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
      * ネットワークDBから取得した出欠席Jsonを解析する.
      * @param jsonArray ネットワークDBから取得した出欠席情報
      */
-    public void attendanceJsonParser(JSONArray jsonArray){
+    /*public void attendanceJsonParser(JSONArray jsonArray){
         Gson mygson = new Gson();
         Type collectionType = new TypeToken<Collection<Atteandance>>(){}.getType();
         //出欠席者を取得する
         List<Atteandance> attendance = mygson.fromJson(jsonArray.toString(),collectionType);
         //教室Viewに出欠席者の情報を渡す.
         this.roomView.setAttendance(attendance);
-    }
+    }*/
 
     /**
      * Created by scr on 2014/12/11.
@@ -243,11 +315,11 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
     }
 
     @Override
-    public void onStop(){
-        super.onStop();
-        if(this.mTimer != null) {
-            //タイマーキャンセル
-            this.mTimer.cancel();
+    public void onPause(){
+        super.onPause();
+        if(mTimer != null){
+            mTimer.cancel();
+            mTimer = null;
         }
     }
 
@@ -268,22 +340,29 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
      * タップしたセル位置の情報をアラートダイアログに出力する.
      * @param student 学生クラス
      */
-    public void openDialogFragmentShowCellInfo(Student student){
+    public void openDialogFragmentShowCellInfo(StudentObject so){
+        studentInfoDialogFragnemt = new StudentInfoCustomDialog();
+        studentInfoDialogFragnemt.showForSeatSituationFragment(this, so);
+    }
+
+    /*public void openDialogFragmentShowCellInfo(Student student){
         MainActivity activity = (MainActivity)this.getActivity();
         CustomDialogFragment customDialog = CustomDialogFragment.newInstance();
         customDialog.setTargetFragment(SeatSituationFragment.this,1);
         Bundle bundle = new Bundle();
+        String sameClassNumber = activity.mTeacher.getClassPlan().getSameClassNumber();
+        bundle.putString(CustomDialogFragment.SAME_CLASS_NUMBER,sameClassNumber);
         bundle.putSerializable(CustomDialogFragment.ATTENDANCE_STUDENT_INFO,student);
         customDialog.setArguments(bundle);
         customDialog.show(activity.getSupportFragmentManager(), "customDialog");
-    }
+    }*/
 
     @Override
     public void onOkClicked(Bundle args) {
         //座席再描画
         this.roomView.invalidate();
     }
-
+    /*
     public void demo(List<Student> attendance){
        Timer mainTimer = new Timer();
         MainActivity activity = (MainActivity)this.getActivity();
@@ -292,4 +371,5 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
         mainTimer.schedule(reTimer, 6000,1000);
         this.onResume();
     }
+    */
 }

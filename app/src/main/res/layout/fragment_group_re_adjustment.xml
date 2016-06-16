@@ -1,0 +1,154 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="25dp"
+    android:id="@+id/group_readjustment_fragment_linearLayout"
+    tools:context="jp.pmw.test_en_revolution.GroupReAdjustmentFragment">
+
+    <!-- グループ調整情報読み込みローディングレイアウト
+         どのような状況下でもかならずロード画面からスタートします.-->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/group_readjustment_fragment_loading_linearLayout"
+        android:gravity="center">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <!-- グループ調整実行不可の場合のレイアウト -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_readjustment_fragment_can_not_process_linearLayout"
+        android:layout_gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/group_readjustment_fragment_can_not_process_textView"
+            android:textSize="@dimen/textsize_xlarge"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <!-- 出席者確定前のレイアウト  -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_readjustment_fragment_first_linearLayout"
+        android:layout_gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/group_readjustment_attendance_undetermined_str"
+            android:textSize="@dimen/textsize_xlarge"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <!-- 出席者確定後でグループ調整開始前で調整必要なしレイアウト  -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_readjustment_fragment_second_linearLayout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/group_readjustment_attendance_determined_readjustment_no_need_str"
+            android:textSize="@dimen/textsize_xlarge"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <!-- 出席者確定後でグループ調整開始前で調整必要ありレイアウト  -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_readjustment_fragment_third_linearLayout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/group_readjustment_attendance_determined_readjustment_need_str"
+            android:textSize="@dimen/textsize_xlarge"
+            android:layout_gravity="center_horizontal" />
+        <!-- グループ内のメンバが不足しているグループをリストで表示 -->
+        <ListView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/group_readjustment_fragment_adjustment_needed_listView"
+        android:layout_gravity="center_horizontal" />
+
+        <!-- グループ調整開始ボタン -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/group_readjustment_start_btn"
+            android:id="@+id/group_readjustment_fragment_startBtn"
+            android:textSize="@dimen/textsize_xlarge"
+            android:background="@drawable/button_design"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+        <!-- グループ調整開始ボタン後のプログレスバー -->
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/group_readjustment_fragment_startBtn_tap_after_progressBar"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <!-- 出席者確定後でグループ調整開始後のレイアウト  -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_readjustment_fragment_fourth_linearLayout">
+        <!-- グループを移動するよう学生に指示をしてください. -->
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/group_readjustment_attendance_determined_readjustmented_str"
+        android:textSize="@dimen/textsize_xlarge"
+        android:layout_gravity="center"
+        android:id="@+id/group_readjustment_fragment_fourth_textView" />
+        <!-- 移動先の座席位置を表示する -->
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/group_readjustment_fragment_after_listview"
+            android:layout_gravity="center_horizontal"
+            android:clipToPadding="false"
+            android:divider="@null"
+            android:dividerHeight="16dp"
+            android:padding="16dp"
+            android:scrollbarStyle="outsideOverlay"/>
+    </LinearLayout>
+
+    <!-- ボトムレイアウト -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:id="@+id/group_readjustment_fragment_all_groups_state_linearLayout"
+        android:layout_gravity="bottom">
+        <!-- 境界線 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/black" />
+        <!-- 全グループ状態を表示するListView-->
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/group_readjustment_fragment_all_groups_state_listView" />
+    </LinearLayout>
+
+
+
+</FrameLayout>

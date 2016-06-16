@@ -28,6 +28,8 @@
     <color name="yellowGreen">#9acd32</color>
     <!-- みどり -->
     <color name="green">#00FF00</color>
+    <!-- 薄みどり -->
+    <color name= "tin_green">#CCFFCC</color>
     <!-- みどり -->
     <color name="semitransparenttranslucent_green">#5500FF00</color>
     <!--らいむ-->
