@@ -77,8 +77,9 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
     //  出席者確定後のレイアウト(GridViewの上段)
     private LinearLayout afterAttendanceStatusLinearLayout;
 
-    private TextView attendanceStatusTextView;
-    private TextView absentStatusTextView;
+    private TextView attendanceStatusTextView;  //  出席:
+    private TextView lateStatusTextView;        //  遅刻:
+    private TextView absentStatusTextView;      //  欠席:
     private TextView attendeeStatusTextView;
     //private ProgressBar attendeeLoadProgressBar;
     private ListView attendeeListView;
@@ -118,6 +119,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         this.afterAttendanceStatusLinearLayout      = (LinearLayout)this.getActivity().findViewById(R.id.after_attendance_status_linearLayout);
 
         this.attendanceStatusTextView   = (TextView)this.getActivity().findViewById(R.id.attendee_total_status_textView);
+        this.lateStatusTextView   = (TextView)this.getActivity().findViewById(R.id.late_total_status_textView);
         this.absentStatusTextView       = (TextView)this.getActivity().findViewById(R.id.absent_total_status_textView);
         this.attendeeStatusTextView = (TextView)this.getActivity().findViewById(R.id.attendee_status_message_textView);
         this.attendeeListView = (ListView)this.getActivity().findViewById(R.id.attendee_list);

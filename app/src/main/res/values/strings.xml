@@ -96,8 +96,10 @@
     <string name="before_attendance_status">着席情報配信中です...</string>
 
 
-    <string name="group_number">グループ番号　</string>
-    <string name="seatposition">着席位置　</string>
+    <string name="group_number">グループ </string>
+    <string name="seatposition">着席位置 </string>
+    <string name="position_delimiter">　</string>
+
 
     <!-- 忘れ -->
     <!--<string name="forgot_title">　SonoRIs.忘れを</string>-->
@@ -122,6 +124,13 @@
     <string name="manual_be_in_room_title"></string>
     <string name="manual_be_in_room_apply">在室\r\n確認</string>
     <string name="manual_be_in_room_release">在室\r\n未確認</string>
+
+    <!-- 出席とみなす＆みなさないボタンの文言 -->
+    <string name="str_regarded_as_attendance">現在欠席だが、出席とみなす</string>
+    <string name="str_regarded_as_not_attendance">現在出席だが、欠席とみなす</string>
+    <!-- 遅刻とみなす＆みなさないボタンの文言 -->
+    <string name="str_regarded_as_late">現在欠席だが、遅刻とみなす</string>
+    <string name="str_regarded_as_not_late">現在遅刻だが、欠席とみなす</string>
 
     <!--  -->
     <string name="grouping_group_duaring_attendance">出席調査が終わるまでグルーピングを行うことはできません.</string>
@@ -163,6 +172,7 @@
     <string name="number_of_times">回</string>
     <string name="total_attendee">出席</string>
     <string name="total_absentee">欠席</string>
+    <string name="total_late">遅刻</string>
     <string name="total_no_absentee">欠席なし</string>
 
     <!-- 個人履歴検索ダイアログフラグメント -->

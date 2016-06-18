@@ -7,9 +7,7 @@ public class URL {
     //  園田学園女子大学様 (add 2016-03-07 09:09)
     //private static final String TEMP_BASE_URL = "http://172.17.101.201/cms/";
     //private static final String TEMP_BASE_URL = "http://202.209.33.134/cms/";
-    private static final String TEMP_BASE_URL = "http://192.168.53.216/cms/";
-    //private static final String TEMP_BASE_URL = "http://192.168.53.195/cms/";
-    //private static final String BASE_URL = "http://aitech.ac.jp/scr/scr";
+    private static final String TEMP_BASE_URL = "http://192.168.11.5/cms/";
 
     //public static final String ALL_TEACHER = BASE_URL+"/test/catalunya/public/api/teacher";
     //public static final String JSON_DIR = "/sg/app/api/json";

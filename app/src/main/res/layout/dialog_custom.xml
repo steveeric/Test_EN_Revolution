@@ -37,40 +37,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <!-- 大学独自の学籍番号TextView -->
             <TextView
                 android:id="@+id/title_orijinal_student_id_textView"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="20"
                 android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
                 android:text="学籍番号取得中..."
-                android:textSize="@dimen/textsize_xxlarge"
+                android:textSize="@dimen/textsize_xlarge"
                 android:textColor="@android:color/white"
                 />
-            <!-- フリガナTextView -->
-            <!-- add 2016-05-24 09:58 -->
-            <TextView
-            android:id="@+id/title_furigana_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
-            android:text="フリガナ取得中..."
-            android:textSize="@dimen/textsize_xlarge"
-            android:textColor="@android:color/white"
-                />
-            <!-- 学生名TextView -->
-            <TextView
-                android:id="@+id/title_full_name_textView"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
-                android:text="氏名取得中..."
-                android:textSize="@dimen/textsize_xxlarge"
-                android:textColor="@android:color/white"
-                />
+                android:layout_weight="80">
+                <!-- フリガナTextView -->
+                <!-- add 2016-05-24 09:58 -->
+                <TextView
+                    android:id="@+id/title_furigana_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
+                    android:text="フリガナ取得中..."
+                    android:textSize="@dimen/textsize_large"
+                    android:textColor="@android:color/white"
+                    />
+                <!-- 学生名TextView -->
+                <TextView
+                    android:id="@+id/title_full_name_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
+                    android:text="氏名取得中..."
+                    android:textSize="@dimen/textsize_xlarge"
+                    android:textColor="@android:color/white"
+                    />
+                </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -91,8 +98,18 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!-- 本日の位置に関するテキストビュー(グループ・座席位置) -->
+        <TextView
+            android:id="@+id/today_positon_tv"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="@dimen/textsize_xlarge"
+            android:layout_margin="@dimen/activity_horizontal_xsmall_margin"/>
+
         <!-- 本日のグループゾーンレイアウト -->
-        <LinearLayout
+        <!--<LinearLayout
             android:visibility="gone"
             android:id="@+id/today_group_info_linearLayout"
             android:orientation="vertical"
@@ -108,21 +125,19 @@
                 android:background="@color/whiteSmoke"
                 android:textSize="@dimen/textsize_xlarge"
                 />
-            <!-- 着席位置TextView -->
             <TextView
                 android:id="@+id/today_group_info_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_horizontal_xsmall_margin"
-                android:textSize="@dimen/textsize_xxlarge"
+                android:textSize="@dimen/textsize_xlarge"
                 android:gravity="center"
                 android:text="グループ番号取得中..."
                 />
-        </LinearLayout>
-
+        </LinearLayout>-->
 
         <!-- 本日の着席位置ゾーンレイアウト -->
-        <LinearLayout
+        <!--<LinearLayout
             android:visibility="gone"
             android:id="@+id/today_seat_positon_linearLayout"
             android:orientation="vertical"
@@ -138,19 +153,18 @@
                 android:background="@color/whiteSmoke"
                 android:textSize="@dimen/textsize_xlarge"
                 />
-            <!-- 着席位置TextView -->
             <TextView
                 android:id="@+id/today_seat_positon_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_horizontal_xsmall_margin"
-                android:textSize="@dimen/textsize_xxlarge"
+                android:textSize="@dimen/textsize_xlarge"
                 android:gravity="center"
                 android:text="着席位置取得中..."
                 />
         </LinearLayout>
 
-    <!-- 出席状況レイアウト -->
+    <!- 出席状況レイアウト -->
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/total_attendance_situation_linearLayout"
@@ -164,21 +178,33 @@
             android:layout_height="wrap_content"
             android:text="　前回までの出欠"
             android:background="@color/whiteSmoke"
-            android:textSize="@dimen/textsize_xlarge"
+            android:textSize="@dimen/textsize_large"
             />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <!-- 出席回数 -->
             <TextView
                 android:id="@+id/total_attendance_attendee_situation_textView"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="出席..."
-                android:gravity="center|right"
+                android:gravity="center"
                 android:layout_marginRight="@dimen/activity_vertical_margin"
-                android:textSize="@dimen/textsize_xxlarge"
+                android:textSize="@dimen/textsize_xlarge"
+                />
+            <!-- 遅刻回数 -->
+            <TextView
+                android:id="@+id/total_attendance_late_situation_textView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="遅刻..."
+                android:gravity="center"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:textSize="@dimen/textsize_xlarge"
                 />
             <!-- 欠席回数 -->
             <TextView
@@ -187,9 +213,9 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="欠席"
-                android:gravity="center|left"
+                android:gravity="center"
                 android:layout_marginLeft="@dimen/activity_vertical_margin"
-                android:textSize="@dimen/textsize_xxlarge"
+                android:textSize="@dimen/textsize_xlarge"
                 />
         </LinearLayout>
     </LinearLayout>
@@ -208,7 +234,7 @@
                 android:layout_height="wrap_content"
                 android:text="　メッセージ"
                 android:background="@color/whiteSmoke"
-                android:textSize="@dimen/textsize_xlarge"
+                android:textSize="@dimen/textsize_large"
                 />
             <!-- 簡易メッセージ内容TextView -->
              <TextView
@@ -416,6 +442,125 @@
         </LinearLayout>
 
 
+        <!-- 出席とみなす＆出席とみなさないレイアウト -->
+        <LinearLayout
+            android:id="@+id/dialog_custom_regarded_as_attendance_ll"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_marginTop="@dimen/textsize_medium"
+            android:background="@color/semitransparenttranslucent_navy"
+            android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
+            <TextView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/manual_be_in_room_title"
+                android:background="@color/whiteSmoke"
+                android:textSize="@dimen/textsize_large"
+                />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- 出席とみなさないボタン -->
+                <Button
+                    android:id="@+id/dialog_custom_regarded_as_not_attendance_btn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_horizontal_small_margin"
+                    android:layout_marginBottom="@dimen/activity_horizontal_small_margin"
+                    android:background="@drawable/button_design"
+                    android:visibility="invisible"
+                    android:text="@string/str_regarded_as_not_attendance"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/textsize_xlarge"
+                    />
+
+                <!-- 出席とみなすボタン -->
+                <Button
+                    android:id="@+id/dialog_custom_regarded_as_attendance_btn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_horizontal_small_margin"
+                    android:layout_marginBottom="@dimen/activity_horizontal_small_margin"
+                    android:background="@drawable/button_design"
+                    android:visibility="visible"
+                    android:text="@string/str_regarded_as_attendance"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/textsize_xlarge"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 遅刻とみなす＆遅刻とみなさないレイアウト -->
+        <LinearLayout
+            android:id="@+id/dialog_custom_regarded_as_cb_ll"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_marginTop="@dimen/textsize_medium"
+            android:background="@color/semitransparenttranslucent_navy"
+            android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
+            <TextView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/manual_be_in_room_title"
+                android:background="@color/whiteSmoke"
+                android:textSize="@dimen/textsize_large"
+                />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- 遅刻とみなさないボタン -->
+                <Button
+                    android:id="@+id/dialog_custom_regarded_as_not_late_btn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_horizontal_small_margin"
+                    android:layout_marginBottom="@dimen/activity_horizontal_small_margin"
+                    android:background="@drawable/button_design"
+                    android:visibility="invisible"
+                    android:text="@string/str_regarded_as_not_late"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/textsize_xlarge"
+                    />
+
+                <!-- 遅刻とみなすボタン -->
+                <Button
+                    android:id="@+id/dialog_custom_regarded_as_late_btn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_horizontal_small_margin"
+                    android:layout_marginBottom="@dimen/activity_horizontal_small_margin"
+                    android:background="@drawable/button_design"
+                    android:visibility="visible"
+                    android:text="@string/str_regarded_as_late"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/textsize_xlarge"
+                    />
+            </LinearLayout>
+        </LinearLayout>
 
         <!-- 再出席再調査で出ないレイアウトゾーン -->
         <LinearLayout

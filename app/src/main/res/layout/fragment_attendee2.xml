@@ -62,6 +62,15 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:gravity="center"
+                android:textColor="@color/skyBlue"
+                android:textSize="@dimen/textsize_xlarge"
+                android:id="@+id/late_total_status_textView"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:gravity="center"
                 android:textColor="@color/red"
                 android:textSize="@dimen/textsize_xlarge"
                 android:id="@+id/absent_total_status_textView"/>

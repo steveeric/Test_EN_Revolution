@@ -396,7 +396,6 @@ public class CustomDialogFragment extends DialogFragment{
         //ESL忘れレイアウト
         LinearLayout layout = getLinearLayout(d, R.id.forgot_esl_linearLayout);
         //AttendanceState attState = this.attendanceStudent.getThisClassTime().getThisClassAttendanceState();
-        //Attendance att = this.attendanceStudent.getAttendance();
 
         AttendanceObject ao = this.tapStudent.getAttendanceObject();
 
@@ -745,7 +744,6 @@ public class CustomDialogFragment extends DialogFragment{
      */
     private void forgotAppy(int parameta){
         this.selectApplyType = parameta;
-        //Attendance att = this.attendanceStudent.getAttendance();
         AttendanceObject ao = this.tapStudent.getAttendanceObject();
         String url = URL.getForgotAppy(selectApplyType,ao.getAttendanceId());
 
@@ -822,18 +820,6 @@ public class CustomDialogFragment extends DialogFragment{
      * ESL忘れ登録手続きをこちらでおこいます.
      */
     private void forgotESLRequest(){
-         /*
-        AttendanceState state = this.attendanceStudent.getThisClassTime().getThisClassAttendanceState();
-        //出席回数調整...
-        this.attendanceStudent.getTotalAttendance().setForGotESLRequest(state);
-        this.attendanceStudent.getThisClassTime().getThisClassAttendanceState().forgotESLRequest();
-        */
-
-        /*Attendance att = this.attendanceStudent.getAttendance();
-        att.setStatus(FORGOT_ESL);
-        att.setFogotApplytTime("");*/
-
-
         //申請
         forgotAppy(this.PARAMETA_FORGOT_ESL);
         /*
@@ -1064,17 +1050,6 @@ public class CustomDialogFragment extends DialogFragment{
     /*private void setConfirmTodayAttendanceTime(Dialog d){
         //出席時刻確認レイアウト
         LinearLayout confirmLayout = this.getLinearLayout(d,R.id.attendee_confirm_time_linearLayout);
-
-        Attendance att = this.attendanceStudent.getAttendance();
-        if(att.getStatus() == Config.ALREADY_ATTENDANCE){
-            //出席時刻確認レイアウト表示
-            TextView confirmTV = this.getTextView(d,R.id.attendee_confirm_time_textViewt);
-            confirmTV.setText(att.getTime());
-            confirmLayout.setVisibility(View.VISIBLE);
-        }else{
-            //出席時刻確認レイアウト非表示
-            confirmLayout.setVisibility(View.GONE);
-        }
 
         /*
         AttendanceState thisClassAtt = getAttendanceState();
