@@ -271,13 +271,14 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
 
     public void showWaitFragment(){
         MainActivity activity = (MainActivity)this.getActivity();
+        NumOfAttendanceEntity noae = activity.getClassObject().getNumOfAttendanceEnttity();
         StudentObject[] sos = activity.getClassObject().getStudentObject();
         if(sos != null){
             //  再描画キャンセル
             cancelTimer();
             addNewRoster(sos);
             //  出席者数セット
-            setAttendanceStatusTextView(sos);
+            setAttendanceStatusTextView(noae);
             //  出席状態レイアウトセット
             setAttendanceStatusLayout();
             //  コンテンツ画面表示
@@ -301,7 +302,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
      * **/
     public void setReAttendanceStatusTextView(){
         MainActivity activity = (MainActivity)this.getActivity();
-        setAttendanceStatusTextView(activity.getClassObject().getStudentObject());
+        setAttendanceStatusTextView(activity.getClassObject().getNumOfAttendanceEnttity());
     }
 
     /**
@@ -332,7 +333,31 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         //  欠席者数セット
         this.absentStatusTextView.setText(strAbs+" "+absentCount);
     }*/
-    private void setAttendanceStatusTextView(StudentObject[] sos){
+
+    void setAttendanceStatusTextView(NumOfAttendanceEntity noae){
+        int attNotForgot    = noae.mAttendanceNotForgot;
+        int attForgot       = noae.mAttendanceForgot;
+        int lateNotForgot   = noae.mLateNotForgot;
+        int lateForgot      = noae.mLateForgot;
+        int absent          = noae.mAbsent;
+
+        String strAtt = getString(R.string.total_attendee) + " "+ attNotForgot;
+        if( attForgot > 0 ){
+            strAtt = strAtt + "+"+attForgot;
+        }
+        String strLate = getString(R.string.total_late) + " "+ lateNotForgot;
+        if( lateForgot > 0 ){
+            strLate = strLate + "+"+lateForgot;
+        }
+        String strAbsent = getString(R.string.total_absentee) + " "+ absent;
+
+        this.attendanceStatusTextView.setText(strAtt);
+        this.lateStatusTextView.setText(strLate);
+        this.absentStatusTextView.setText(strAbsent);
+    }
+
+
+    /*private void setAttendanceStatusTextView(StudentObject[] sos){
         int[] count = getAttendanceCount(sos);
         int attendCount = count[0];
         int absentCount = count[1];
@@ -355,7 +380,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         }
         //  欠席者数セット
         this.absentStatusTextView.setText(strAbs+" "+absentCount);
-    }
+    }*/
     /**
      * getAttendanceCountメソッド
      * 出席と欠席の人数を取得します.
