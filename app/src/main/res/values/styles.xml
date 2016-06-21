@@ -21,4 +21,7 @@
         <item name="android:height">100dp</item>
     </style>
 
+    <!--<style name="CustomCheckBox" parent="android:Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/custom_checkbox</item>
+    </style>-->
 </resources>

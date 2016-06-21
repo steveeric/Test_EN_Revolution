@@ -40,17 +40,33 @@
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <!-- 大学独自の学籍番号TextView -->
-                <TextView
-                    android:id="@+id/title_orijinal_student_id_textView"
+
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
-                    android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
-                    android:text="学籍番号取得中..."
-                    android:textSize="@dimen/textsize_xlarge"
-                    android:textColor="@android:color/white"
-                    />
+                    android:layout_weight="20">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="33"
+                        android:text="　"
+                        android:textSize="@dimen/textsize_large" />
+
+                    <!-- 大学独自の学籍番号TextView -->
+                    <TextView
+                        android:id="@+id/title_orijinal_student_id_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="66"
+                        android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
+                        android:text="学籍番号取得中..."
+                        android:textSize="@dimen/textsize_xlarge"
+                        android:textColor="@android:color/white"
+                        />
+
+                </LinearLayout>
+
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="0dp"
@@ -61,7 +77,8 @@
                     <TextView
                         android:id="@+id/title_furigana_textView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="33"
                         android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
                         android:text="フリガナ取得中..."
                         android:textSize="@dimen/textsize_large"
@@ -71,7 +88,8 @@
                     <TextView
                         android:id="@+id/title_full_name_textView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="66"
                         android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
                         android:text="氏名取得中..."
                         android:textSize="@dimen/textsize_xlarge"
@@ -276,86 +294,176 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
         android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
-
-        <CheckBox
-            android:id="@+id/dialog_custom_regarded_as_attendance_cb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="出席とみなす"
-            android:textSize="@dimen/textsize_xlarge" />
-        <CheckBox
-            android:id="@+id/dialog_custom_regarded_as_absent_cb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="遅刻とみなす"
-            android:textSize="@dimen/textsize_xlarge" />
-
-        <CheckBox
-            android:id="@+id/dialog_custom_regarded_as_forgot_cb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SonoRIs忘れ"
-            android:textSize="@dimen/textsize_xlarge" />
-        <!-- 補助メッセージ -->
         <TextView
-            android:id="@+id/dialog_custom_regarded_as_assist_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="　"/>
-        
-        <!-- CheckBoxに選択された出席・遅刻・忘れを反映するボタンレイアウト -->
+            android:text="　状態"
+            android:background="@color/whiteSmoke"
+            android:textSize="@dimen/textsize_large"
+            />
+        <!-- 出席・遅刻・SonoRIs忘れ選択レイアウト -->
         <LinearLayout
-            android:orientation="horizontal"
+            android:id="@+id/dialog_custom_regarded_as_child1_ll"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/dialog_custom_regarded_as_apply_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="50"
-                android:text="変更を適用する"
-                android:textSize="@dimen/textsize_xlarge" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/dialog_custom_regarded_as_return_undo_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="50"
-                android:text="変更を戻す"
-                android:textSize="@dimen/textsize_xlarge"
-                />
+                    <!--<RadioGroup
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:id="@+id/RadioGroup">
+                            <RadioButton
+                                android:id="@+id/RadioButton1"
+                                android:layout_height="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:text="出席"
+                                android:textSize="@dimen/textsize_xlarge" >
+                            </RadioButton>
+                            <RadioButton
+                                android:id="@+id/RadioButtoni2"
+                                android:layout_height="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:text="遅刻"
+                                android:textSize="@dimen/textsize_xlarge" >
+                            </RadioButton>
+                            <RadioButton
+                                android:layout_height="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:text="欠席"
+                                android:textSize="@dimen/textsize_xlarge" >
+                            </RadioButton>
+                    </RadioGroup>-->
 
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:id="@+id/dialog_custom_regarded_as_attendance_cb"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="出席"
+                        android:textSize="@dimen/textsize_xlarge" />
+                    <CheckBox
+                        android:id="@+id/dialog_custom_regarded_as_late_cb"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="遅刻"
+                        android:textSize="@dimen/textsize_xlarge" />
+                    <CheckBox
+                        android:id="@+id/dialog_custom_regarded_as_absent_cb"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="欠席"
+                        android:textSize="@dimen/textsize_xlarge" />
+                </LinearLayout>
+                <!--<CheckBox
+                    android:id="@+id/dialog_custom_regarded_as_forgot_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_regarded_as_forgot"
+                    android:textSize="@dimen/textsize_xlarge" />-->
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/dialog_custom_regarded_as_reason_ll"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="　理由"
+                    android:background="@color/whiteSmoke"
+                    android:textSize="@dimen/textsize_large"
+                    />
+                <RadioGroup
+                    android:id="@+id/dialog_custom_regarded_as_reason_rg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <RadioButton
+                        android:id="@+id/dialog_custom_regarded_as_reason_did_not_show_rb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_regarded_as_reason_did_not_show_rb"
+                        android:textSize="@dimen/textsize_xlarge" />
+                    <RadioButton
+                        android:id="@+id/dialog_custom_regarded_as_reason_ack_no_response_rb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_regarded_as_reason_ack_no_response_rb"
+                        android:textSize="@dimen/textsize_xlarge" />
+                    <RadioButton
+                        android:id="@+id/dialog_custom_regarded_as_reason_forgot_rb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_regarded_as_reason_forgot_rb"
+                        android:textSize="@dimen/textsize_xlarge" />
+                    <RadioButton
+                        android:id="@+id/dialog_custom_regarded_as_reason_other1_rb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_regarded_as_reason_other1_rb"
+                        android:textSize="@dimen/textsize_xlarge" />
+                </RadioGroup>
+            </LinearLayout>
+            <!-- 補助メッセージ -->
+            <!--<TextView
+                android:id="@+id/dialog_custom_regarded_as_assist_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="　"
+                android:textSize="@dimen/textsize_large"/>-->
 
-        <!--<RadioGroup
-            android:layout_height="wrap_content"
+            <!-- CheckBoxに選択された出席・遅刻・忘れを反映するボタンレイアウト -->
+            <LinearLayout
+                android:id="@+id/dialog_custom_regarded_as_btn"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/dialog_custom_regarded_as_apply_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:text="変更適用"
+                    android:textSize="@dimen/textsize_xlarge" />
+                <Button
+                    android:id="@+id/dialog_custom_regarded_as_return_undo_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:text="キャンセル"
+                    android:textSize="@dimen/textsize_xlarge"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+        <!-- 出席・遅刻・SonoRIs忘れ確認レイアウト -->
+        <!--<LinearLayout
+            android:id="@+id/dialog_custom_regarded_as_child2_ll"
+            android:orientation="vertical"
+            android:visibility="gone"
             android:layout_width="match_parent"
-            android:id="@+id/RadioGroupOs">
-            <RadioButton android:text="出席とみなす"
-                android:id="@+id/dialog_custom_regarded_as_attendance_rb"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/dialog_custom_regarded_as_child2_tv"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="@dimen/textsize_xlarge">
-            </RadioButton>
-            <RadioButton android:text="遅刻とみなす"
-                android:id="@+id/dialog_custom_regarded_as_late_rb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/textsize_xlarge">
-            </RadioButton>
-            <RadioButton android:text="欠席とみなす"
-                android:id="@+id/dialog_custom_regarded_as_atsent_rb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/textsize_xlarge">
-            </RadioButton>
-        </RadioGroup>
-        <RadioButton android:text="SonoRIs忘れ"
-            android:id="@+id/dialog_custom_regarded_as_forgot_rb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textsize_xlarge">
-        </RadioButton>-->
+                android:gravity="center"
+                android:textSize="@dimen/textsize_xlarge"/>
+        </LinearLayout>-->
+
         </LinearLayout>
 
         <!--<Button

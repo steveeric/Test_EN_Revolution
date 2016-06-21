@@ -7,7 +7,7 @@ public class URL {
     //  園田学園女子大学様 (add 2016-03-07 09:09)
     //private static final String TEMP_BASE_URL = "http://172.17.101.201/cms/";
     //private static final String TEMP_BASE_URL = "http://202.209.33.134/cms/";
-    private static final String TEMP_BASE_URL = "http://192.168.11.5/cms/";
+    private static final String TEMP_BASE_URL = "http://192.168.53.225/cms/";
 
     //public static final String ALL_TEACHER = BASE_URL+"/test/catalunya/public/api/teacher";
     //public static final String JSON_DIR = "/sg/app/api/json";
@@ -119,6 +119,35 @@ public class URL {
     public static final String getUndoLeak(String attendanceId,int parameta){
         return TEMP_BASE_URL + "AckLeakSupport_Controller/undoLeak?a="+attendanceId+"&p="+parameta;
     }
+    /**
+     *  getUrlRegardedAsAttendanceメソッド
+     *  出席とみなすURL
+     *  @param String   attendanceId    出席ID
+     *  @param int      reason          理由
+     *  @param int      forgot          SonoRIs忘れ(0:持っている,1:SonoRIs忘れ)
+     * **/
+    public static final String getUrlRegardedAsAttendance(String attendanceId, int reason, int forgot){
+        return TEMP_BASE_URL + "AckLeakSupport_Controller/attendance?a="+attendanceId+"&r="+reason+"&f="+forgot;
+    }
+    /**
+     *  getUrlRegardedAsLateメソッド
+     *  遅刻とみなすURL
+     *  @param String   attendanceId    出席ID
+     *  @param int      reason          理由
+     *  @param int      forgot          SonoRIs忘れ(0:持っている,1:SonoRIs忘れ)
+     * **/
+    public static final String getUrlRegardedAsLate(String attendanceId, int reason, int forgot){
+        return TEMP_BASE_URL + "AckLeakSupport_Controller/late?a="+attendanceId+"&r="+reason+"&f="+forgot;
+    }
+    /**
+     *  getUrlRegardedAsAbsentメソッド
+     *  欠席とみなすURL
+     *  @param String   attendanceId    出席ID
+     * **/
+    public static final String getUrlRegardedAsAbsent(String attendanceId){
+        return TEMP_BASE_URL + "AckLeakSupport_Controller/absent?a="+attendanceId;
+    }
+
 
 
     //教室情報を取得サイト

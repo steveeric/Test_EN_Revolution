@@ -47,9 +47,9 @@ public class RegardedAs {
      * */
     void initLayout(){
         //
-        setRegardedAsAttendanceListener();
+        //setRegardedAsAttendanceListener();
         //
-        showRegardedAsLateListener();
+        //showRegardedAsLateListener();
         //  ACKによる出席かどうか
         boolean byACK = mDialogFragment.tapStudent.getAttendanceObject().getAttendanceByACK();
         if( byACK ){
@@ -77,18 +77,18 @@ public class RegardedAs {
      * showRegardedAsAttendanceLayoutメソッド
      * 出席とみなす＆出席とみなさないレイアウトを表示する.
      **/
-    void setRegardedAsAttendanceListener(){
+    /*void setRegardedAsAttendanceListener(){
         //  出席とみなすレイアウト
         //  出席とみなすボタン
         getRregardedAsAttendanceBtn().setOnClickListener(mRregardedAsAttBtnListener);
         //  出席とみなさないボタン
         getRregardedAsNotAttendanceBtn().setOnClickListener(mRregardedAsAttBtnListener);
-    }
+    }*/
     /**
      *  togleRegardedAsAttendanceBtnメソッド
      *  出席とみなす＆出席とみなさないボタンをトグル機能にします.
      * **/
-    void togleRegardedAsAttendanceBtn(int resorceId){
+    /*void togleRegardedAsAttendanceBtn(int resorceId){
         switch (resorceId) {
             case R.id.dialog_custom_regarded_as_attendance_btn:
                 //  出席とみなすボタン
@@ -111,11 +111,11 @@ public class RegardedAs {
                 setDummyAbsentTime();;
                 break;
         }
-    }
+    }*/
     /**
      * 出席とみなす＆出席とみなさないボタンのリスナー
      * */
-    private View.OnClickListener mRregardedAsAttBtnListener = new View.OnClickListener() {
+    /*private View.OnClickListener mRregardedAsAttBtnListener = new View.OnClickListener() {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.dialog_custom_regarded_as_attendance_btn:
@@ -129,24 +129,24 @@ public class RegardedAs {
                     break;
             }
         }
-    };
+    };*/
     /**
      * Created by si on 2016/06/16.
      * showRegardedAsLateLayoutメソッド
      * 遅刻とみなす＆遅刻とみなさないレイアウトを表示する.
      **/
-    void showRegardedAsLateListener(){
+    /*void showRegardedAsLateListener(){
         //  遅刻とみなすレイアウト
         //  遅刻とみなすボタン
         getRregardedAsLateBtn().setOnClickListener(mRregardedAsLateBtnListener);
         //  遅刻とみなさないボタン
         getRregardedAsNotLateBtn().setOnClickListener(mRregardedAsLateBtnListener);
-    }
+    }*/
     /**
      *  togleRegardedAsAttendanceBtnメソッド
      *  遅刻とみなす＆遅刻とみなさないボタンをトグル機能にします.
      * **/
-    void togleRegardedAsLateBtn(int resorceId){
+    /*void togleRegardedAsLateBtn(int resorceId){
         switch (resorceId) {
             //  遅刻とみなすボタンタップ
             case R.id.dialog_custom_regarded_as_late_btn:
@@ -171,11 +171,11 @@ public class RegardedAs {
                 setDummyAbsentTime();
                 break;
         }
-    }
+    }*/
     /**
      * 遅刻とみなす＆遅刻とみなさないボタンのリスナー
      * */
-    private View.OnClickListener mRregardedAsLateBtnListener = new View.OnClickListener() {
+    /*private View.OnClickListener mRregardedAsLateBtnListener = new View.OnClickListener() {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.dialog_custom_regarded_as_late_btn:
@@ -189,7 +189,7 @@ public class RegardedAs {
                     break;
             }
         }
-    };
+    };*/
 
     /**
      *  showLateStateメソッド

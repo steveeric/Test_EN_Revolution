@@ -125,12 +125,16 @@
     <string name="manual_be_in_room_apply">在室\r\n確認</string>
     <string name="manual_be_in_room_release">在室\r\n未確認</string>
 
-    <!-- 出席とみなす＆みなさないボタンの文言 -->
-    <string name="str_regarded_as_attendance">現在欠席だが、出席とみなす</string>
-    <string name="str_regarded_as_not_attendance">現在出席だが、欠席とみなす</string>
-    <!-- 遅刻とみなす＆みなさないボタンの文言 -->
-    <string name="str_regarded_as_late">現在欠席だが、遅刻とみなす</string>
-    <string name="str_regarded_as_not_late">現在遅刻だが、欠席とみなす</string>
+    <!-- 学生個人確認ダイアログのみなした文言 -->
+    <string name="str_regarded_as_attendance">出席とみなした</string>
+    <string name="str_regarded_as_late">遅刻とみなした</string>
+    <string name="str_regarded_as_absent">欠席とみなした</string>
+    <string name="str_regarded_as_forgot">SonoRIs忘れを確認した</string>
+    <string name="str_regarded_as_reason_did_not_show_rb">SonoRIsに表示されなかった</string>
+    <string name="str_regarded_as_reason_ack_no_response_rb">ACK応答がなかった</string>
+    <string name="str_regarded_as_reason_forgot_rb">SonoRIs不携帯を確認した</string>
+    <string name="str_regarded_as_reason_other1_rb">目視確認</string>
+
 
     <!--  -->
     <string name="grouping_group_duaring_attendance">出席調査が終わるまでグルーピングを行うことはできません.</string>
