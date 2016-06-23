@@ -351,9 +351,17 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         }
         String strAbsent = getString(R.string.total_absentee) + " "+ absent;
 
-        this.attendanceStatusTextView.setText(strAtt);
-        this.lateStatusTextView.setText(strLate);
-        this.absentStatusTextView.setText(strAbsent);
+        final String fStrAtt = strAtt;
+        final String fStrLat = strLate;
+        final String fStrAbs = strAbsent;
+
+        mHandler.post(new Runnable() {
+            public void run() {
+                attendanceStatusTextView.setText(fStrAtt);
+                lateStatusTextView.setText(fStrLat);
+                absentStatusTextView.setText(fStrAbs);
+            }
+        });
     }
 
 
