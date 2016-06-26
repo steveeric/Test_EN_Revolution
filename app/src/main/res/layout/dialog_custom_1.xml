@@ -397,12 +397,12 @@
                         android:layout_height="wrap_content"
                         android:text="@string/str_regarded_as_reason_did_not_show_rb"
                         android:textSize="@dimen/textsize_xlarge" />
-                    <RadioButton
+                    <!--<RadioButton
                         android:id="@+id/dialog_custom_regarded_as_reason_ack_no_response_rb"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/str_regarded_as_reason_ack_no_response_rb"
-                        android:textSize="@dimen/textsize_xlarge" />
+                        android:textSize="@dimen/textsize_xlarge" />-->
                     <RadioButton
                         android:id="@+id/dialog_custom_regarded_as_reason_forgot_rb"
                         android:layout_width="wrap_content"
@@ -431,12 +431,16 @@
                 android:id="@+id/dialog_custom_regarded_as_btn"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
                 <Button
                     android:id="@+id/dialog_custom_regarded_as_apply_btn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
+                    android:background="@drawable/button_design"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:text="変更適用"
                     android:textSize="@dimen/textsize_xlarge" />
                 <Button
@@ -444,6 +448,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
+                    android:background="@drawable/button_design"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:text="キャンセル"
                     android:textSize="@dimen/textsize_xlarge"
                     />

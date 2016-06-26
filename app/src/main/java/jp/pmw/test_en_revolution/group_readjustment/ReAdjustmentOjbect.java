@@ -9,7 +9,6 @@ import java.util.List;
  * Created by si on 2016/05/11.
  */
 public class ReAdjustmentOjbect {
-
     /**
      *  グルーピング授業かどうかを表しております.
      *  ■not_groupingが「null」の場合
@@ -66,6 +65,23 @@ public class ReAdjustmentOjbect {
     @SerializedName("all_group_states")
     public List<AllGroupState> allGroupStates;
     public List<AllGroupState> getAllGroupStates(){return allGroupStates;}
+
+    //  一グループ最大数のグループ数
+    @SerializedName("maximum_group_count")
+    public String mMaximumGroupCount;
+    public String getMaximumGroupCount(){return this.mMaximumGroupCount;}
+    //  一グループ最小数のグループ数
+    @SerializedName("minimum_group_count")
+    public String mMinimumGroupCount;
+    public String getMinimumGroupCount(){return this.mMinimumGroupCount;}
+    //  それ以外のグループ数
+    @SerializedName("do_not_condition_count_str")
+    public String mStrDoNotConditionCount;
+    public String getStrDoNotConditionCount(){return this.mStrDoNotConditionCount;}
+    //  それ以外のグループ数
+    @SerializedName("do_not_condition_count")
+    public int mDoNotConditionCount;
+    public int getDoNotConditionCount(){return this.mDoNotConditionCount;}
 
     /**
      * グループ調整実行済みかを調べる.

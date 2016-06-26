@@ -1,6 +1,7 @@
 package jp.pmw.test_en_revolution.group_readjustment;
 
 import android.os.Handler;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,23 +22,23 @@ public class RedrawListViewTimer extends TimerTask {
     //  フラグメント
     private GroupReAdjustmentFragment fragment;
     //  移動対象学生リストビュー
-    private ListView mAfterListView;
+    private GridView mAfterListView;
     //  全グループ状態リストビュー
-    private ListView mAllGroupStateListView;
+    //private ListView mAllGroupStateListView;
     //  移動対象学生アダプター
     private AdjustmentAfterAdapter mAfterAdapter;
     //  全グループ状態アダプター
-    private AllGroupStateAdapter mAllGroupStateAdapter;
+    //private AllGroupStateAdapter mAllGroupStateAdapter;
 
-    public RedrawListViewTimer(GroupReAdjustmentFragment f, ListView afterListView,
-                               AdjustmentAfterAdapter afterAdapter,
+    public RedrawListViewTimer(GroupReAdjustmentFragment f, GridView afterListView,
+                               AdjustmentAfterAdapter afterAdapter/*,
                                ListView allGroupStateListView,
-                               AllGroupStateAdapter mAllGroupStateAdapter){
+                               AllGroupStateAdapter mAllGroupStateAdapter*/){
         this.fragment               = f;
         this.mAfterListView         = afterListView;
-        this.mAllGroupStateListView = allGroupStateListView;
+        //this.mAllGroupStateListView = allGroupStateListView;
         this.mAfterAdapter          = afterAdapter;
-        this.mAllGroupStateAdapter  = mAllGroupStateAdapter;
+        //this.mAllGroupStateAdapter  = mAllGroupStateAdapter;
     }
 
     @Override
@@ -47,13 +48,15 @@ public class RedrawListViewTimer extends TimerTask {
                 ReAdjustmentOjbect rao = fragment.getMainActivity().getClassObject().getReAdjustment();
                 if( rao != null ){
                     mAfterAdapter.updateContactedDateTime(rao.getMoveds());
-                    mAllGroupStateAdapter.updateAllGroupState(rao.getAllGroupStates());
+                    //mAllGroupStateAdapter.updateAllGroupState(rao.getAllGroupStates());
                     mAfterAdapter.notifyDataSetChanged();
                     mAfterListView.invalidateViews();
-                    mAllGroupStateAdapter.notifyDataSetChanged();
-                    mAllGroupStateListView.invalidateViews();
+                    //mAllGroupStateAdapter.notifyDataSetChanged();
+                    //mAllGroupStateListView.invalidateViews();
                     //  全員に伝達済み
                     fragment.chkToaldToEveyone(rao);
+                    //  グループ全体の数状況をテキストビューにセットします.
+                    fragment.setGroupConditionsHedder();
                 }
             }
         });

@@ -20,6 +20,8 @@ public class Moved {
         private String line3;
         @SerializedName("line4")
         private String line4;
+        @SerializedName("position")
+        private String mPosition;
         @SerializedName("contact_date_time")
         private String contactDateTime;
 
@@ -30,6 +32,7 @@ public class Moved {
         public String getLine2(){return this.line2;}
         public String getLine3(){return this.line3;}
         public String getLine4(){return this.line4;}
+        public String getPosition(){return this.mPosition;}
         public void setContactDateTime(String contactDateTime){
                 this.contactDateTime = contactDateTime;
         }

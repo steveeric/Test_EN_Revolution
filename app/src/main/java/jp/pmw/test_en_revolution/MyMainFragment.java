@@ -1,6 +1,8 @@
 package jp.pmw.test_en_revolution;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -18,6 +20,8 @@ public class MyMainFragment extends Fragment {
     public boolean reGetStudentFlag = false;
 
     public FrameLayout loadingFrameLayout;
+    //
+    public Handler mHandler = new Handler(Looper.getMainLooper());
 
     public LinearLayout contentLayout;
     //  学生の詳細を確認するダイアログフラグメント

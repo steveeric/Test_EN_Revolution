@@ -11,9 +11,9 @@ public enum RegardedAsReasonEnum {
     //  並び順(StringのリソースID, 理由ID, 忘れ)
     NOT_SELECTED(-1, 0, 0),
     REASON_DID_NOT_SHOW(R.id.dialog_custom_regarded_as_reason_did_not_show_rb, 1, 0),
-    REASON_ACK_NO_RESPONSE(R.id.dialog_custom_regarded_as_reason_ack_no_response_rb, 2, 0),
-    REASON_FORGOT(R.id.dialog_custom_regarded_as_reason_forgot_rb, 3, 1),
-    REASON_OTHER1(R.id.dialog_custom_regarded_as_reason_other1_rb, 4, 0);
+    //REASON_ACK_NO_RESPONSE(R.id.dialog_custom_regarded_as_reason_ack_no_response_rb, 2, 0),
+    REASON_FORGOT(R.id.dialog_custom_regarded_as_reason_forgot_rb, 2, 1),
+    REASON_OTHER1(R.id.dialog_custom_regarded_as_reason_other1_rb, 3, 0);
 
     //  リソースID
     private final int mResorceId;

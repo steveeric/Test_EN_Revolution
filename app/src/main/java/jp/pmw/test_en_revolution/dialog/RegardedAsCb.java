@@ -407,9 +407,19 @@ public class RegardedAsCb {
         }else{
             undoCheckBoxAbsentState();
         }
+        clearSelectedRadioGropu();
         setAssistMessage();
         setChangeSelectedState();
     }
+    /**
+     *  clearSelectedRadioGropuメソッド
+     *  「キャンセル」ボタンタップ時に、
+     *  ラジオボタン選択内容も初期化する.
+     * */
+    void clearSelectedRadioGropu(){
+        this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.clearCheck();
+    }
+
     /**
      *  getUndoForgotStateメソッド
      *  変更適用前の忘れ状態を

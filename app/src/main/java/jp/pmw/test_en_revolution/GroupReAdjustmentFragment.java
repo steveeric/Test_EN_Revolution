@@ -1,6 +1,7 @@
 package jp.pmw.test_en_revolution;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -51,6 +53,8 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
     }
     //  再描画間隔時間[s]
     private static final long REDRAW_PERIOD = 1000;
+    //  グループ調整GridViewのカラム数
+    private static final int NUM_OF_COLUMNS = 2;
 
     //  ⓪ グルーピング授業でないためグループ調整じたい行うことができないレイアウト
     private static final int ZERO = 0;
@@ -70,11 +74,13 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
     private RedrawListViewTimer mRedrawListViewTimer;
     //  グループ調整オブジェクト
     private ReAdjustmentOjbect rao;
+    //  調整終了フラグ(false:調整する前, true:調整後)
+    private boolean mEndAdjustFlag = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_group_re_adjustment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_group_re_adjustment2, container, false);
         return rootView;
     }
 
@@ -106,6 +112,7 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
     public void onResume() {
         super.onResume();
         toAllHideLayout();
+        //startGroupAdjustment();
         //  グループ調整情報をWEBから取得する
         getMainActivity().getClassHttpRequest().getGroupAdjustmentStatus();
         showWaitFragment();
@@ -181,10 +188,12 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
                 second();
                 break;
             case THIRD:
-                third();
+                //third();
+                //  グループ調整開始
+                startGroupAdjustment();
                 break;
             case FOURTH:
-                fourth();
+                chiceFourth();
                 break;
             case CAN_NOT_GROUP_ADJUST:
                 canNotGroupAdjast();
@@ -275,9 +284,9 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
         LinearLayout firstLayout = (LinearLayout) getActivity().findViewById(R.id.group_readjustment_fragment_can_not_process_linearLayout);
         TextView tv = (TextView) getActivity().findViewById(R.id.group_readjustment_fragment_can_not_process_textView);
         tv.setText(rao.getNotGrouping());
-        setListViewAllGroupsState();
+        //setListViewAllGroupsState();
         //  ２つのレイアウトを画面内にうまく収まるように調整します.
-        adjustTwoLayouts(firstLayout);
+        //adjustTwoLayouts(firstLayout);
         showLayout(firstLayout);
     }
 
@@ -288,9 +297,9 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
      */
     void first() {
         LinearLayout firstLayout = (LinearLayout) getActivity().findViewById(R.id.group_readjustment_fragment_first_linearLayout);
-        setListViewAllGroupsState();
+        //setListViewAllGroupsState();
         //  ２つのレイアウトを画面内にうまく収まるように調整します.
-        adjustTwoLayouts(firstLayout);
+        //adjustTwoLayouts(firstLayout);
         showLayout(firstLayout);
     }
 
@@ -302,9 +311,9 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
         //
         LinearLayout secondLayout = (LinearLayout) getActivity().findViewById(R.id.group_readjustment_fragment_second_linearLayout);
         //  全グループ状態
-        setListViewAllGroupsState();
+        //setListViewAllGroupsState();
         //  ２つのレイアウトを画面内にうまく収まるように調整します.
-        adjustTwoLayouts(secondLayout);
+        //adjustTwoLayouts(secondLayout);
         showLayout(secondLayout);
     }
 
@@ -324,10 +333,10 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
         //  グループ調整開始ボタンの機能
         groupAdjustmentStartBtn.setOnClickListener(groupAdjustmentStartBtnListener);
         //  全グループ状態
-        setListViewAllGroupsState();
+        // setListViewAllGroupsState();
 
         //  ２つのレイアウトを画面内にうまく収まるように調整します.
-        adjustTwoLayouts(thirdLayout);
+        //adjustTwoLayouts(thirdLayout);
 
         showLayout(thirdLayout);
     }
@@ -340,18 +349,38 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
     View.OnClickListener groupAdjustmentStartBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //  グループ調整を開始するボタンを非表示に
-            ((Button) getActivity().findViewById(R.id.group_readjustment_fragment_startBtn)).setVisibility(View.GONE);
-            //  グループ調整開始ローディングを表示にする.
-            ((ProgressBar) getActivity().findViewById(R.id.group_readjustment_fragment_startBtn_tap_after_progressBar)).setVisibility(View.VISIBLE);
-            //  グループ調整開始URL
-            getMainActivity().getClassHttpRequest().startGroupAdjustment();
-            //  オブジェクトを初期化する.
-            initObject();
-            //  グループ調整フラグメントリロード
-            showWaitFragment();
+            startGroupAdjustment();
         }
     };
+
+    /**
+     *  setEndGroupAdjustFlagメソッド
+     *  グループ調整終了フラグを立てる.
+     * */
+    void setEndGroupAdjustFlag(){
+        this.mEndAdjustFlag = true;
+    }
+
+
+    /**
+     * startGroupAdjustmentメソッド
+     * グループ調整を開始する.
+     */
+    void startGroupAdjustment(){
+        //  グループ調整を開始するボタンを非表示に
+        ((Button) getActivity().findViewById(R.id.group_readjustment_fragment_startBtn)).setVisibility(View.GONE);
+        //  グループ調整開始ローディングを表示にする.
+        ((ProgressBar) getActivity().findViewById(R.id.group_readjustment_fragment_startBtn_tap_after_progressBar)).setVisibility(View.VISIBLE);
+        //  グループ調整開始URL
+        getMainActivity().getClassHttpRequest().startGroupAdjustment();
+        //  オブジェクトを初期化する.
+        initObject();
+        //  グループ調整フラグメントリロード
+        showWaitFragment();
+        //
+        setEndGroupAdjustFlag();
+    }
+
 
     /**
      * オブジェクトを初期化する.
@@ -362,8 +391,20 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
         //  履修生の情報を初期化
         getMainActivity().getClassObject().setStudentObject(null);
     }
-
-
+    /**
+     *  chiceFourthメソッド
+     * ④ 出席確定後でグループ調整実施後レイアウト時は、
+     * 画面閲覧時に一度でもグループ調整を行っていない場合は、
+     * グループ調整を必ず一度自動で行う.
+     * */
+    void chiceFourth(){
+        if( !this.mEndAdjustFlag ){
+            //  グループ調整を行っていなければ行う.
+            startGroupAdjustment();
+        }else{
+            fourth();
+        }
+    }
     /**
      * ④ 出席確定後でグループ調整実施後レイアウト
      * 画面に「グループを移動するよう学生に指示をしてください.」と文面を表示する.
@@ -371,18 +412,21 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
      */
     public void fourth() {
         LinearLayout fourthLayout = (LinearLayout) getActivity().findViewById(R.id.group_readjustment_fragment_fourth_linearLayout);
-
+        //  グループ状況
+        setGroupConditionsHedder();
         //  座席移動対象群リストビュー
-        ListView lv = (ListView) getActivity().findViewById(R.id.group_readjustment_fragment_after_listview);
+        //ListView lv = (ListView) getActivity().findViewById(R.id.group_readjustment_fragment_after_listview);
+        GridView gv = (GridView) getActivity().findViewById(R.id.group_readjustment_fragment_after_gv);
+        gv.setNumColumns(NUM_OF_COLUMNS);
         // スクロールバーを表示させる
-        lv.setScrollbarFadingEnabled(false);
+        gv.setScrollbarFadingEnabled(false);
         // 座席移動対象群アダプター
-        AdjustmentAfterAdapter afterAdapter = setSeatAfterMovings(lv);
-
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        AdjustmentAfterAdapter afterAdapter = setSeatAfterMovings(gv);
+        //  アイテムクリックリスナー
+        gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent,
                                     View view, int pos, long id) {
-                ListView listView = (ListView) parent;
+                GridView listView = (GridView) parent;
                 Moved item = (Moved) listView.getItemAtPosition(pos);
                 if (item.getContactDateTime() == null) {
                     //  右揃えでなければ
@@ -394,7 +438,7 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
         });
 
         //  全グループ情報
-        AllGroup ag = setListViewAllGroupsState();
+        //AllGroup ag = setListViewAllGroupsState();
         //
         showLayout(fourthLayout);
 
@@ -403,29 +447,57 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
         mTimer = new Timer();
         mRedrawListViewTimer = new RedrawListViewTimer(
                    this,
-                   lv,
-                   afterAdapter,
+                   gv,
+                   afterAdapter/*,
                    ag.allGroupsListView,
-                   ag.allGroupAdapter);
+                   ag.allGroupAdapter*/);
         mTimer.schedule(mRedrawListViewTimer, 0, REDRAW_PERIOD);
         //  ２つのレイアウトを画面内にうまく収まるように調整します.
-        adjustTwoLayouts(fourthLayout);
+        //adjustTwoLayouts(fourthLayout);
+    }
+    /**
+     *  setGroupConditionsHedderメソッド
+     *  グループ全体の数状況をテキストビューにセットします.
+     * */
+    public void setGroupConditionsHedder(){
+        //  変数
+        final TextView otherGroupCountTv = (TextView) getActivity().findViewById(R.id.group_readjustment_fragment_after_othergroup_count_tv);
+        final TextView maximuGroupCountTv = (TextView) getActivity().findViewById(R.id.group_readjustment_fragment_after_maximamugroup_count_tv);
+        final TextView minimumGroupCountTv = (TextView) getActivity().findViewById(R.id.group_readjustment_fragment_after_minimumgroup_count_tv);
+        //
+        if(this.getAdjustmentObject().getDoNotConditionCount() == 0){
+            //  周りの色とそろえる.
+            otherGroupCountTv.setTextColor(maximuGroupCountTv.getTextColors());
+        }else{
+            otherGroupCountTv.setTextColor(Color.RED);
+        }
+        //
+        final String strMaximum = this.getAdjustmentObject().getMaximumGroupCount();
+        final String strMinimum = this.getAdjustmentObject().getMinimumGroupCount();
+        final String strOther   = this.getAdjustmentObject().getStrDoNotConditionCount() + this.getAdjustmentObject().getDoNotConditionCount();
+        this.mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                maximuGroupCountTv.setText(strMaximum);
+                minimumGroupCountTv.setText(strMinimum);
+                otherGroupCountTv.setText(strOther);
+            }
+        });
     }
     /**
      *  ２つのレイアウトを画面内にうまく収まるように調整します.
      *
      * */
-    void adjustTwoLayouts(LinearLayout linearLayout){
+    /*void adjustTwoLayouts(LinearLayout linearLayout){
         FrameLayout layout = (FrameLayout) getActivity().findViewById(R.id.group_readjustment_fragment_linearLayout);
         ListView bottomListView = (ListView) getActivity().findViewById(R.id.group_readjustment_fragment_all_groups_state_listView);
         DisplaySizeCheck dsc = new DisplaySizeCheck();
         Point p = dsc.getViewSize(layout);
         int heightScreen = p.y;
         int spliteScreen = heightScreen / 4;
-        linearLayout.getLayoutParams().height = spliteScreen * 3 - 100;
+        linearLayout.getLayoutParams().height = spliteScreen * 3 - 150;
         bottomListView.getLayoutParams().height = spliteScreen;
-    }
-
+    }*/
     /**
      * 座席移動伝達時のタイマーをストップする.
      * */
@@ -436,23 +508,24 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
             mRedrawListViewTimer = null;
         }
     }
-
-
     /**
      * 全員に座席移動伝達済みかを確認する.
      * @param object グループ調整オブジェクト
      * **/
     public void chkToaldToEveyone(ReAdjustmentOjbect object){
-        if (object.toldToMoveSeatsToEveryone()) {
+        /*if (object.toldToMoveSeatsToEveryone()) {
             //  全員に移動先を伝達したので、
             //  ヘッダー部分を終了しましたの文言に変更する.
             ((TextView) getActivity().findViewById(R.id.group_readjustment_fragment_fourth_textView))
                     .setText(getText(R.string.group_readjustment_attendance_determined_readjustmented_toal_str));
             // 座席移動伝達時のタイマーをストップする.
             stopReDrawTimer();
-        }
+        }else{
+            //  グループを移動するよう指示をしてくださいの文言に変更する.
+            ((TextView) getActivity().findViewById(R.id.group_readjustment_fragment_fourth_textView))
+                    .setText(getText(R.string.group_readjustment_attendance_determined_readjustmented_str));
+        }*/
     }
-
     /**
      * 移動先の座席を伝えます.
      * グループ調整実施後、
@@ -467,7 +540,6 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
         //  オブジェクト初期化
         initObject();
     }
-
     /**
      * グループ調整不可能レイアウト
      */
@@ -478,8 +550,6 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
         tv.setText(rao.getUnnableMessage());
         showLayout(canNotProcessLayout);
     }
-
-
     /**
      * グループの最低人数を満たしていないグループがいくつあるかをセットする.
      */
@@ -488,17 +558,15 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
         AllGroupStateAdapter adapter = (new AllGroupStateAdapter(getActivity(), 0, messages));
         lv.setAdapter(adapter);
     }
-
     /**
      * 座席移動形跡をリストビューにセットする.
      */
-    AdjustmentAfterAdapter setSeatAfterMovings(ListView lv) {
+    AdjustmentAfterAdapter setSeatAfterMovings(/*ListView lv*/GridView gv) {
         rao = getAdjustmentObject();
         AdjustmentAfterAdapter adapter = new AdjustmentAfterAdapter(getActivity(), 0, rao.getMoveds());
-        lv.setAdapter(adapter);
+        gv.setAdapter(adapter);
         return adapter;
     }
-
     /**
      * 全グループ数の状態をリストビューにセットする.
      * androidタブレットの画面下部に設置されている
@@ -511,7 +579,7 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
      * ※表示データは、サーバーより取得しております.
      * @return All
      */
-    AllGroup setListViewAllGroupsState() {
+    /*AllGroup setListViewAllGroupsState() {
         AllGroupStateAdapter adjustmentBeforeAdapter = null;
         rao = getAdjustmentObject();
         //  全グループ数状態リストビュー
@@ -533,7 +601,26 @@ public class GroupReAdjustmentFragment extends MyMainFragment {
         }
         //
         return new AllGroup(allGroupsListView, adjustmentBeforeAdapter);
-    }
+    }*/
+    /**
+     * showOnceAgainBtn
+     * グループ調整をもう一度行うボタンを表示するメソッドです.
+     * グループ調整後に、出席・遅刻になった学生を含め、
+     * 再度グループ調整を行うために使用します.
+     */
+    /*public void showOnceAgainBtn(){
+        int onceAgainState = getAdjustmentObject().getOnceAgain();
+        Button onceAgainGroupAdjustmentStartBtn = (Button) getActivity().findViewById(R.id.group_readjustment_fragment_after_once_adjustment_btn);
+        if( onceAgainState == ReAdjustmentOjbect.S_ONCE_AGAIN ){
+            //  もう一度ボタンを表示する.
+            onceAgainGroupAdjustmentStartBtn.setVisibility(View.VISIBLE);
+            //  グループ調整開始ボタンの機能
+            onceAgainGroupAdjustmentStartBtn.setOnClickListener(groupAdjustmentStartBtnListener);
+        }else{
+            //  もう一度ボタンを非表示する.
+            onceAgainGroupAdjustmentStartBtn.setVisibility(View.INVISIBLE);
+        }
+    }*/
 
     //再描画で使用するレイアウトの一部分クラス
     class AllGroup{

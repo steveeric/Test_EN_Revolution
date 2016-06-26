@@ -78,10 +78,10 @@
             android:layout_gravity="center_horizontal" />
         <!-- グループ内のメンバが不足しているグループをリストで表示 -->
         <ListView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/group_readjustment_fragment_adjustment_needed_listView"
-        android:layout_gravity="center_horizontal" />
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/group_readjustment_fragment_adjustment_needed_listView"
+            android:layout_gravity="center_horizontal" />
 
         <!-- グループ調整開始ボタン -->
         <Button
@@ -109,56 +109,48 @@
         android:layout_height="wrap_content"
         android:id="@+id/group_readjustment_fragment_fourth_linearLayout">
         <!-- グループを移動するよう学生に指示をしてください. -->
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/group_readjustment_attendance_determined_readjustmented_str"
-        android:textSize="@dimen/textsize_xlarge"
-        android:layout_gravity="center"
-        android:id="@+id/group_readjustment_fragment_fourth_textView" />
-        <!-- 移動先の座席位置を表示する -->
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/group_readjustment_fragment_after_listview"
-            android:layout_gravity="center_horizontal"
-            android:clipToPadding="false"
-            android:divider="@null"
-            android:dividerHeight="16dp"
-            android:padding="16dp"
-            android:scrollbarStyle="outsideOverlay"/>
-    </LinearLayout>
-
-    <!-- ボトムレイアウト -->
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:id="@+id/group_readjustment_fragment_all_groups_state_linearLayout"
-        android:paddingTop="16dp"
-        android:layout_marginBottom="10dp"
-        android:layout_gravity="bottom">
-        <!-- 境界線 -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:background="@color/black" />
-        <!-- 全グループ状態を表示するListView-->
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/group_readjustment_fragment_all_groups_state_listView" />
-        <!-- もう一度グループ調整を行うボタン -->
-        <!--<Button
-            android:id="@+id/group_readjustment_fragment_after_once_adjustment_btn"
+        <!--<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="invisible"
+            android:text="@string/group_readjustment_attendance_determined_readjustmented_str"
             android:textSize="@dimen/textsize_xlarge"
-            android:background="@drawable/button_design"
-            android:text="もう一度グループ調整を行う"/>-->
+            android:layout_gravity="center"
+            android:id="@+id/group_readjustment_fragment_fourth_textView" />-->
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/textsize_xlarge"
+                android:id="@+id/group_readjustment_fragment_after_othergroup_count_tv"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/textsize_xlarge"
+                android:id="@+id/group_readjustment_fragment_after_maximamugroup_count_tv"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:gravity="center"
+                android:textSize="@dimen/textsize_xlarge"
+                android:id="@+id/group_readjustment_fragment_after_minimumgroup_count_tv"/>
+
+        </LinearLayout>
+        <!-- 移動先の座席位置を表示する -->
+        <GridView
+            android:id="@+id/group_readjustment_fragment_after_gv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </GridView>
     </LinearLayout>
 
 

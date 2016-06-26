@@ -12,9 +12,9 @@ public class PastAttendanceCount{
     private int attendedCount;
     public int getAttendedCount(){return attendedCount;}
     //  遅刻した回数
-    @SerializedName("late_count")
-    private int lateCount;
-    public int getLateCount(){return lateCount;}
+    @SerializedName("lated_count")
+    private int latedCount;
+    public int getLatedCount(){return latedCount;}
     //  欠席した回数
     @SerializedName("absented_count")
     private int absentedCount;

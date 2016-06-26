@@ -4,39 +4,55 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:background="@drawable/gray_border">
-        <!-- 1行目 -->
-        <TextView
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:textSize="@dimen/textsize_xlarge"
-            android:id="@+id/row_group_readjustmented_line1"/>
-        <!-- 2行目 -->
-        <TextView
-            android:layout_width="match_parent"
+            android:layout_weight="30">
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_finished"
+                android:id="@+id/row_group_readjustmented_finished_iv"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textsize_large"
+                android:layout_gravity="left"
+                android:id="@+id/row_group_readjustmented_position_tv"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:textSize="@dimen/textsize_xlarge"
-            android:id="@+id/row_group_readjustmented_line2"/>
-        <!-- 3行目 -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="@dimen/textsize_xlarge"
-            android:id="@+id/row_group_readjustmented_line3"/>
-        <!-- 4行目 -->
-        <!--<TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="@dimen/textsize_xlarge"
-            android:id="@+id/row_group_readjustmented_line4"/>-->
-
+            android:layout_weight="70">
+            <!-- 1行目 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:textSize="@dimen/textsize_medium"
+                android:id="@+id/row_group_readjustmented_line1"/>
+            <!-- 2行目 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:textSize="@dimen/textsize_medium"
+                android:id="@+id/row_group_readjustmented_line2"/>
+            <!-- 3行目 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="@dimen/textsize_large"
+                android:id="@+id/row_group_readjustmented_line3"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

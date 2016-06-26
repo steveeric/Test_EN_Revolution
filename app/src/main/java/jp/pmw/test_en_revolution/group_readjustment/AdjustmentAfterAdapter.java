@@ -1,11 +1,13 @@
 package jp.pmw.test_en_revolution.group_readjustment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
 import jp.pmw.test_en_revolution.R;
@@ -67,8 +69,11 @@ public class AdjustmentAfterAdapter extends ArrayAdapter<Moved> {
         if (null == convertView) {
             convertView = layoutInflater_.inflate(R.layout.row_group_readjustmented, null);
         }
+        //
+        ((TextView)convertView.findViewById(R.id.row_group_readjustmented_position_tv)).setText(item.getPosition());
         //  (学籍番号 氏名)をセットする.
-        ((TextView)convertView.findViewById(R.id.row_group_readjustmented_line1)).setText(item.getLine1());
+        TextView tv = (TextView)convertView.findViewById(R.id.row_group_readjustmented_line1);
+        tv.setText(item.getLine1());
         //  座席名称 (グループ名称)をセットする.
         ((TextView)convertView.findViewById(R.id.row_group_readjustmented_line2)).setText(item.getLine2());
         //
@@ -80,22 +85,18 @@ public class AdjustmentAfterAdapter extends ArrayAdapter<Moved> {
         //  デフォルトでは、左寄せにする.
         if(item.getContactDateTime() != null){
             //  学生にグループ移動連絡済み
-            ((TextView)convertView.findViewById(R.id.row_group_readjustmented_line1)).setGravity(Gravity.RIGHT);
-            ((TextView)convertView.findViewById(R.id.row_group_readjustmented_line2)).setGravity(Gravity.RIGHT);
-            ((TextView)convertView.findViewById(R.id.row_group_readjustmented_line3)).setGravity(Gravity.RIGHT);
-            //((TextView)convertView.findViewById(R.id.row_group_readjustmented_line4)).setGravity(Gravity.RIGHT);
+            ((ImageView)convertView.findViewById(R.id.row_group_readjustmented_finished_iv)).setVisibility(View.VISIBLE);
+            ((TextView)convertView.findViewById(R.id.row_group_readjustmented_position_tv)).setTextColor(tv.getTextColors());
         }else{
             //  学生にグループ移動未伝達
-            ((TextView)convertView.findViewById(R.id.row_group_readjustmented_line1)).setGravity(Gravity.LEFT);
-            ((TextView)convertView.findViewById(R.id.row_group_readjustmented_line2)).setGravity(Gravity.LEFT);
-            ((TextView)convertView.findViewById(R.id.row_group_readjustmented_line3)).setGravity(Gravity.LEFT);
-            //((TextView)convertView.findViewById(R.id.row_group_readjustmented_line4)).setGravity(Gravity.LEFT);
+            ((ImageView)convertView.findViewById(R.id.row_group_readjustmented_finished_iv)).setVisibility(View.INVISIBLE);
+            ((TextView)convertView.findViewById(R.id.row_group_readjustmented_position_tv)).setTextColor(Color.RED);
         }
 
         //  バンディング
-        ((TextView)convertView.findViewById(R.id.row_group_readjustmented_line1)).setPadding(10,0,10,0);
-        ((TextView)convertView.findViewById(R.id.row_group_readjustmented_line2)).setPadding(10,0,10,0);
-        ((TextView)convertView.findViewById(R.id.row_group_readjustmented_line3)).setPadding(10,0,10,0);
+        //((TextView)convertView.findViewById(R.id.row_group_readjustmented_line1)).setPadding(10,0,10,0);
+        //((TextView)convertView.findViewById(R.id.row_group_readjustmented_line2)).setPadding(10,0,10,0);
+        //((TextView)convertView.findViewById(R.id.row_group_readjustmented_line3)).setPadding(10,0,10,0);
         //((TextView)convertView.findViewById(R.id.row_group_readjustmented_line4)).setPadding(10,0,10,0);
 
         return convertView;
