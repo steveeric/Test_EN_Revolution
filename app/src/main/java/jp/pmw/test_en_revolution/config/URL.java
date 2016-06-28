@@ -38,8 +38,9 @@ public class URL {
     }
     //  出席IDから過去の出・遅・欠席回数を取得する.
     public static final String getPastTotalAttendanceCount(String attendanceId){
-        return TEMP_BASE_URL + "AttendanceJson_Controller/getPastTotalAttendanceCount?a="+attendanceId;
+        return TEMP_BASE_URL + "AttendanceJson_Controller/getPastTotalAttendanceCount?scn="+sameClassNumber;
     }
+
     //  在室確認(再出席調査)URL
     public static final String getReAttendanceStart(String sameClassNumber){
         return TEMP_BASE_URL + "AttendanceJson_Controller/reAttendanceStart?scn="+sameClassNumber;
