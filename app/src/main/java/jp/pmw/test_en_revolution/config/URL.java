@@ -7,7 +7,7 @@ public class URL {
     //  園田学園女子大学様 (add 2016-03-07 09:09)
     //private static final String TEMP_BASE_URL = "http://172.17.101.201/cms/";
     //private static final String TEMP_BASE_URL = "http://202.209.33.134/cms/";
-    private static final String TEMP_BASE_URL = "http://192.168.53.225/cms/";
+    private static final String TEMP_BASE_URL = "http://192.168.53.74/cms/";
 
     //public static final String ALL_TEACHER = BASE_URL+"/test/catalunya/public/api/teacher";
     //public static final String JSON_DIR = "/sg/app/api/json";
@@ -36,11 +36,10 @@ public class URL {
     public static final String getAttendanceRelationShipInto(String sameClassNumber){
         return TEMP_BASE_URL + "AttendanceJson_Controller/getAttendanceRelationshipInfo?scn="+sameClassNumber;
     }
-    //  出席IDから過去の出・遅・欠席回数を取得する.
+    //  出・遅・欠席回数を取得用
     public static final String getPastTotalAttendanceCount(String attendanceId){
-        return TEMP_BASE_URL + "AttendanceJson_Controller/getPastTotalAttendanceCount?scn="+sameClassNumber;
+        return TEMP_BASE_URL + "AttendanceJson_Controller/getPastTotalAttendanceCount?a="+attendanceId;
     }
-
     //  在室確認(再出席調査)URL
     public static final String getReAttendanceStart(String sameClassNumber){
         return TEMP_BASE_URL + "AttendanceJson_Controller/reAttendanceStart?scn="+sameClassNumber;

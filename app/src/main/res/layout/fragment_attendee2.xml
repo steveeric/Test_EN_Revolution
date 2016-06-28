@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:gravity="center"
-                android:textColor="@color/skyBlue"
+                android:textColor="@color/tuyukusairo"
                 android:textSize="@dimen/textsize_xlarge"
                 android:id="@+id/late_total_status_textView"/>
             <TextView

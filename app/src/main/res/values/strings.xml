@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_version">version 0.3.9</string>
+    <string name="app_version">version 0.3.10</string>
     <!--<string name="app_name">授業運営管理ソリューション</string>-->
     <string name="app_name">SonoRIs MT</string>
     <string name="do_not_mistake">間違いありませんか?</string>
@@ -51,11 +51,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="menu_hands_free_attendance_student_history">個人履歴</string>
-    <string name="menu_hands_free_attendance_re_call_the_roll">再出席調査</string>
-    <string name="re_call_the_roll_alert_dialog_title">再出席調査中...</string>
-    <string name="re_call_the_roll_alert_dialog_message">出席調査中です.しばらくお待ちください.</string>
-    <string name="re_call_the_roll_end_alert_dialog_title">再調査終了</string>
-    <string name="re_call_the_roll_end_alert_dialog_message">出席調査が終了しました.</string>
+    <string name="menu_hands_free_attendance_re_call_the_roll">在室確認</string>
+    <string name="re_call_the_roll_alert_dialog_title">在室確認中...</string>
+    <string name="re_call_the_roll_alert_dialog_message">在室確認中です.しばらくお待ちください.</string>
+    <string name="re_call_the_roll_end_alert_dialog_title">在室確認終了</string>
+    <string name="re_call_the_roll_end_alert_dialog_message">在室確認が終了しました.</string>
     <string name="menu_action_questionnaire_servey">アンケート調査</string>
     <string name="menu_action_questionnaire_result">回答結果</string>
     <string name="action_attendance_list">出席者一覧</string>
@@ -133,7 +133,7 @@
     <string name="str_regarded_as_reason_did_not_show_rb">SonoRIsに表示されなかった</string>
     <string name="str_regarded_as_reason_ack_no_response_rb">ACK応答がなかった</string>
     <string name="str_regarded_as_reason_forgot_rb">SonoRIs不携帯を確認した</string>
-    <string name="str_regarded_as_reason_other1_rb">目視確認</string>
+    <string name="str_regarded_as_reason_other1_rb">その他の理由による</string>
 
 
     <!--  -->
@@ -208,9 +208,9 @@
     <!-- 座席指定インジケータ -->
     <string name="indicator_seat">指</string>
     <!-- 出席認定インジケータ -->
-    <string name="indicator_attendance">認</string>
-    <!-- 再出席調査インジケータ -->
-    <string name="indicator_re_attendance">再</string>
+    <string name="indicator_attendance">出</string>
+    <!-- 在室確認インジケータ -->
+    <string name="indicator_re_attendance">在</string>
     <!-- プライバシー保護インジケータ -->
     <string name="indicator_privacy_protection">P</string>
 
