@@ -18,7 +18,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_finished"
+                android:src="@drawable/ic_finished_blue"
                 android:id="@+id/row_group_readjustmented_finished_iv"/>
             <TextView
                 android:layout_width="wrap_content"

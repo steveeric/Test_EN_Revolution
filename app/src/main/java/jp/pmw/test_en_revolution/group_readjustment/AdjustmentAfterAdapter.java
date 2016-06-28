@@ -86,7 +86,7 @@ public class AdjustmentAfterAdapter extends ArrayAdapter<Moved> {
         if(item.getContactDateTime() != null){
             //  学生にグループ移動連絡済み
             ((ImageView)convertView.findViewById(R.id.row_group_readjustmented_finished_iv)).setVisibility(View.VISIBLE);
-            ((TextView)convertView.findViewById(R.id.row_group_readjustmented_position_tv)).setTextColor(tv.getTextColors());
+            ((TextView)convertView.findViewById(R.id.row_group_readjustmented_position_tv)).setTextColor(Color.BLUE);
         }else{
             //  学生にグループ移動未伝達
             ((ImageView)convertView.findViewById(R.id.row_group_readjustmented_finished_iv)).setVisibility(View.INVISIBLE);

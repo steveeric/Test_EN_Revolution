@@ -198,7 +198,22 @@
                 android:background="@color/whiteSmoke"
                 android:textSize="@dimen/textsize_large"
                 />
+            <!-- 出・遅・欠　取得　ローディングレイアウト -->
             <LinearLayout
+                android:id="@+id/total_attendance_situation_loding_display_ll"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textsize_xlarge"/>
+                </LinearLayout>
+            <!-- 出・遅・欠　回数　表示レイアウト -->
+            <LinearLayout
+                android:id="@+id/total_attendance_situation_count_display_ll"
+                android:visibility="gone"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -236,6 +251,7 @@
                     android:textSize="@dimen/textsize_xlarge"
                     />
             </LinearLayout>
+
         </LinearLayout>
 
         <!-- メッセージレイアウト -->
@@ -501,12 +517,13 @@
     <!-- Close ボタン -->
     <Button
         android:id="@+id/dialog_custom_upper_right_cloase_btn"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/bt_dialog_close"
         android:text="×"
+        android:textSize="@dimen/textsize_xxlarge"
         android:textColor="@color/black"
         />
 
