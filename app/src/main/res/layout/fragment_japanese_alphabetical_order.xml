@@ -28,6 +28,7 @@
         android:id="@+id/japanese_alphabetical_grid">
     </GridView>
     <TextView
+        android:id="@+id/japanese_alphabetical_version_tv"
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
      android:textAppearance="?android:attr/textAppearanceSmall"

@@ -4,17 +4,16 @@ package jp.pmw.test_en_revolution.config;
  * Created by scr on 2014/12/07.
  */
 public class URL {
-    //  園田学園女子大学様 (add 2016-03-07 09:09)
-    //private static final String TEMP_BASE_URL = "http://172.17.101.201/cms/";
-    //private static final String TEMP_BASE_URL = "http://202.209.33.134/cms/";
-    private static final String TEMP_BASE_URL = "http://192.168.53.74/cms/";
-
-    //public static final String ALL_TEACHER = BASE_URL+"/test/catalunya/public/api/teacher";
-    //public static final String JSON_DIR = "/sg/app/api/json";
+    //  Enumクラス
+    public static final UrlEnum S_URL_ENUM = UrlEnum.AIT;
+    //  IPアドレス
+    public static final String S_IP_ADDRESS = S_URL_ENUM.getIpAddress();
+    //  WEBアプリ名称
+    public static final String S_WEB_APP_NAME = S_URL_ENUM.getWebAppName();
+    //  ベースとなるURL
+    private static final String TEMP_BASE_URL = "http://"+S_IP_ADDRESS+"/"+S_WEB_APP_NAME+"/";
 
     //選択した頭文字から教員名リストを取得するサイト
-    //public static final String TEACHER_FAMILY_NAME_INITIAL = BASE_URL+"/test/catalunya/public/api/teacher_family_name_initial";
-    //public static final String TEACHER_FAMILY_NAME_INITIAL = BASE_URL+JSON_DIR;
     public static String getTeacherFamilyNameInitial(int index){
         //return  BASE_URL+JSON_DIR + "/search_faculty_family_name.php?index="+index;
         return TEMP_BASE_URL+"FacultyJson_Controller/searchFacultyFamilyName?index="+index;
@@ -60,8 +59,6 @@ public class URL {
     public static final String getManualContacted(String seatAfterMoving,String sameClassNumber){
         return TEMP_BASE_URL + "Group_Controller/manualContacted?sam="+seatAfterMoving+"&scn="+sameClassNumber;
     }
-
-
 
     public static final String getClassInfo(String sameClassNumber){
         //return BASE_URL + JSON_DIR + "/class.php?class_id="+classId;
@@ -151,14 +148,4 @@ public class URL {
     public static final String getUrlRegardedAsAbsent(String attendanceId){
         return TEMP_BASE_URL + "AckLeakSupport_Controller/absent?a="+attendanceId;
     }
-
-
-
-    //教室情報を取得サイト
-    //public static final String ROOM_MAP = BASE_URL+"/test/catalunya/public/api/room_map";
-    //出欠席の情報を取得サイト
-    //public static final String ATTENDANCE_INFO = BASE_URL+"/test/catalunya/public/api/attendance";
-    //出席者の情報を取得サイト
-    //public static final String ATTENDEE_LIST = BASE_URL+"/test/catalunya/public/api/attendee_list";
-
 }

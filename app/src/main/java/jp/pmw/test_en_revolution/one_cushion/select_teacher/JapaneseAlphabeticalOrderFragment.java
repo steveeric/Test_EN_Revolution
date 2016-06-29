@@ -19,10 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.BaseAdapter;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import jp.pmw.test_en_revolution.R;
+import jp.pmw.test_en_revolution.config.URL;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -84,8 +87,18 @@ public class JapaneseAlphabeticalOrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_japanese_alphabetical_order, container, false);
+        setAppVersionName(view);
         return view;
     }
+    /**
+     *  setAppVersionNameメソッド
+     * */
+    void setAppVersionName(View view){
+        TextView tv = (TextView)view.findViewById(R.id.japanese_alphabetical_version_tv);
+        String versionName = this.getString(R.string.app_version)+" ("+ URL.S_IP_ADDRESS+"/"+URL.S_WEB_APP_NAME+")";
+        tv.setText(versionName);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
