@@ -432,6 +432,16 @@
                         android:text="@string/str_regarded_as_reason_other1_rb"
                         android:textSize="@dimen/textsize_xlarge" />
                 </RadioGroup>
+                <!-- 理由未選択の場合に表示するアラートテキストビュー -->
+                <TextView
+                    android:id="@+id/dialog_custom_regarded_as_reason_alert_unselected_tv"
+                    android:visibility="invisible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textsize_large"
+                    android:textColor="@color/red"
+                    android:gravity="center"
+                    android:text="@string/str_regarded_as_reason_alert_unselected"/>
             </LinearLayout>
             <!-- 補助メッセージ -->
             <!--<TextView

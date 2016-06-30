@@ -57,6 +57,8 @@ public class RegardedAsCb {
         mStudentInfoDialogFragnemt.mRegarededAsReasonRg = (RadioGroup) mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_rg);
 
         //mStudentInfoDialogFragnemt.mRegaredeAsAssistTv = mStudentInfoDialogFragnemt.getTextView(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_assist_tv);
+        //  理由未選択
+        mStudentInfoDialogFragnemt.mAlertUnselectedReasonTv = mStudentInfoDialogFragnemt.getTextView(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_reason_alert_unselected_tv);
 
         mStudentInfoDialogFragnemt.mRegaredeAsApplyBtn = mStudentInfoDialogFragnemt.getButton(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_apply_btn);
         mStudentInfoDialogFragnemt.mRegaredeAsUndoBtn = mStudentInfoDialogFragnemt.getButton(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_return_undo_btn);
@@ -381,6 +383,10 @@ public class RegardedAsCb {
             if( this.mAbsentCbState ){
                 this.mStudentInfoDialogFragnemt.mRegaredeAsReasonLl.setVisibility(View.INVISIBLE);
             }else{
+                //  選択理由を初期化する.
+                clearSelectedRadioGropu();
+                //  変更理由が選択されていないを非表示にする.
+                invisibleAlertUnselectedReasenTv();
                 //  欠席じゃなければ理由を問うレイアウトを表示する
                 this.mStudentInfoDialogFragnemt.mRegaredeAsReasonLl.setVisibility(View.VISIBLE);
             }
@@ -492,7 +498,7 @@ public class RegardedAsCb {
         //  選択された理由
         RegardedAsReasonEnum reasonEnum = getSelectedReasen();
 
-        if( this.mAttendanceCbState ){
+        /*if( this.mAttendanceCbState ){
             //  出席とみなす
             updateCheckBoxAttendanceState(reasonEnum);
         }else if( this.mLateCbState ){
@@ -501,8 +507,62 @@ public class RegardedAsCb {
         }else{
             //  欠席とみなします
             updateCheckBoxAbsentState();
-        }
+        }*/
 
+        if( this.mAbsentCbState ){
+            //  欠席とみなします
+            updateCheckBoxAbsentState();
+        }else{
+            //  出席 又は 遅刻とみなします.
+            updateCheckBoxAttendanceOrLateState(reasonEnum);
+        }
+    }
+    /**
+     *  visibleAlertUnselectedReasenTvメソッド
+     *  理由が未選択です.を表示する.
+     * */
+    void visibleAlertUnselectedReasenTv(){
+        this.mStudentInfoDialogFragnemt.mAlertUnselectedReasonTv.setVisibility(View.VISIBLE);
+    }
+    /**
+     *  invisibleAlertUnselectedReasenTvメソッド
+     *  理由が未選択です.を非表示する.
+     * */
+    void invisibleAlertUnselectedReasenTv(){
+        this.mStudentInfoDialogFragnemt.mAlertUnselectedReasonTv.setVisibility(View.INVISIBLE);
+    }
+    /**
+     *  chkSelectedReasonメソッド
+     *  理由が選択されているかを確認します.
+     *  @param RegardedAsReasonEnum     選択理由イーナム
+     *  @return {true} 選択されている. {false} 選択されていない.
+     * */
+    boolean chkSelectedReason(RegardedAsReasonEnum reasonEnum) {        //  理由が選択されていない
+        if (reasonEnum == RegardedAsReasonEnum.NOT_SELECTED) {
+            visibleAlertUnselectedReasenTv();
+            return false;
+        } else {
+            invisibleAlertUnselectedReasenTv();
+            return true;
+        }
+    }
+
+    /**
+     *  updateCheckBoxAttendanceOrLateStateメソッド
+     *  出席又は遅刻状態に振り分けます.
+     * */
+    void updateCheckBoxAttendanceOrLateState(RegardedAsReasonEnum reasonEnum){
+        if( !chkSelectedReason(reasonEnum) ){
+            //  遅刻理由未選択のため処理させない
+            return;
+        }
+        if( this.mAttendanceCbState ){
+            //  出席とみなす
+            updateCheckBoxAttendanceState(reasonEnum);
+        }else{
+            //  遅刻とみなす
+            updateCheckBoxLateState(reasonEnum);
+        }
     }
     /**
      * updateCheckBoxAttendanceStateメソッド

@@ -253,9 +253,6 @@ public class MainActivity extends MyFragmentActivity {
         super.onResume();
         //  onResume時に初期化
         initOnResume();
-
-        //
-
         //  起動時
         this.caController.startUp();
         String roomId       =   this.getClassObject().getFacultyObject().getClassPlan().getPlace().getRoomId();
@@ -263,26 +260,6 @@ public class MainActivity extends MyFragmentActivity {
         this.classHttpRequest.getRoomFloaMapInfo(roomId);
         //  アンケート取得
         this.classHttpRequest.getQuestionnaire();
-
-
-
-        //this.getClassHttpRequest().doOkHttp(ClassHttpRequest.DO_TYPE_CLASS_REAMING_TIME,);
-
-        //String sameClassNumber = this.getClassObject().getSameClassNumber();
-        //String url = URL.getUrlChkAttendance(sameClassNumber);
-        //doVolley1(url);
-        //doOkHttp3(url);
-        //  読み込み中画面を出力
-        //showLoadingFragment();
-        //  授業残り時間を調べる
-        //getClassReamingTimeFromNetWrokDB();
-        /*if(this.mTeacher == null){
-            //メモリから教員に関すること(授業情報、受講生など)が消えた.
-            //エラーなので初めからやり直すように促す.
-        }else{
-            //エラーではないので処理を始める
-            getClassReamingTimeFromNetWrokDB();
-        }*/
     }
     /**
      * Created by si on 2016/01/31.

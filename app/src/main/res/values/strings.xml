@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_version">version 0.3.11</string>
+    <string name="app_version">version 0.3.12</string>
     <!--<string name="app_name">授業運営管理ソリューション</string>-->
     <string name="app_name">SonoRIs MT</string>
     <string name="do_not_mistake">間違いありませんか?</string>
@@ -134,7 +134,7 @@
     <string name="str_regarded_as_reason_ack_no_response_rb">ACK応答がなかった</string>
     <string name="str_regarded_as_reason_forgot_rb">SonoRIs不携帯を確認した</string>
     <string name="str_regarded_as_reason_other1_rb">その他の理由による</string>
-
+    <string name="str_regarded_as_reason_alert_unselected">理由を選択してください.</string>
 
     <!--  -->
     <string name="grouping_group_duaring_attendance">出席調査が終わるまでグルーピングを行うことはできません.</string>
