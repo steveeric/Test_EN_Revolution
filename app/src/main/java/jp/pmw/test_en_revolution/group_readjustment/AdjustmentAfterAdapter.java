@@ -60,17 +60,28 @@ public class AdjustmentAfterAdapter extends ArrayAdapter<Moved> {
         return this.getCount();
     }
 
-
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Moved item = (Moved)getItem(position);
-
         if (null == convertView) {
             convertView = layoutInflater_.inflate(R.layout.row_group_readjustmented, null);
         }
-        //
-        ((TextView)convertView.findViewById(R.id.row_group_readjustmented_position_tv)).setText(item.getPosition());
+        //  基本的な情報をセットします.
+        setBasicInfo( convertView, item );
+        //  連絡済みのため右寄せにする.
+        //  デフォルトでは、左寄せにする.
+        if(item.getContactDateTime() != null){
+            tell( convertView, item );
+        }else{
+            notTell( convertView, item );
+        }
+        return convertView;
+    }
+    /**
+     *  setBasicInfoメソッド
+     *  基本情報をセットします.
+     * */
+    void setBasicInfo( View convertView, Moved item ){
         //  (学籍番号 氏名)をセットする.
         TextView tv = (TextView)convertView.findViewById(R.id.row_group_readjustmented_line1);
         tv.setText(item.getLine1());
@@ -78,27 +89,28 @@ public class AdjustmentAfterAdapter extends ArrayAdapter<Moved> {
         ((TextView)convertView.findViewById(R.id.row_group_readjustmented_line2)).setText(item.getLine2());
         //
         ((TextView)convertView.findViewById(R.id.row_group_readjustmented_line3)).setText(item.getLine3());
-        //  座席名称 (グループ名称)をセットする.
-        //((TextView)convertView.findViewById(R.id.row_group_readjustmented_line4)).setText(item.getLine4());
-
-        //  連絡済みのため右寄せにする.
-        //  デフォルトでは、左寄せにする.
-        if(item.getContactDateTime() != null){
-            //  学生にグループ移動連絡済み
-            ((ImageView)convertView.findViewById(R.id.row_group_readjustmented_finished_iv)).setVisibility(View.VISIBLE);
-            ((TextView)convertView.findViewById(R.id.row_group_readjustmented_position_tv)).setTextColor(Color.BLUE);
-        }else{
-            //  学生にグループ移動未伝達
-            ((ImageView)convertView.findViewById(R.id.row_group_readjustmented_finished_iv)).setVisibility(View.INVISIBLE);
-            ((TextView)convertView.findViewById(R.id.row_group_readjustmented_position_tv)).setTextColor(Color.RED);
-        }
-
-        //  バンディング
-        //((TextView)convertView.findViewById(R.id.row_group_readjustmented_line1)).setPadding(10,0,10,0);
-        //((TextView)convertView.findViewById(R.id.row_group_readjustmented_line2)).setPadding(10,0,10,0);
-        //((TextView)convertView.findViewById(R.id.row_group_readjustmented_line3)).setPadding(10,0,10,0);
-        //((TextView)convertView.findViewById(R.id.row_group_readjustmented_line4)).setPadding(10,0,10,0);
-
-        return convertView;
     }
+    /**
+     *  tellメソッド
+     *  グループ移動先伝達済み
+     * */
+    void tell( View convertView, Moved item ){
+        //  学生にグループ移動連絡済み
+        //  グループと座席移動後
+        ((TextView)convertView.findViewById(R.id.row_group_readjustmented_position_tv)).setText(item.getPosition());
+        ((ImageView)convertView.findViewById(R.id.row_group_readjustmented_finished_iv)).setVisibility(View.VISIBLE);
+        ((TextView)convertView.findViewById(R.id.row_group_readjustmented_position_tv)).setTextColor(Color.BLUE);
+    }
+    /**
+     *  notTellメソッド
+     *  グループ移動先未伝達
+     * */
+    void notTell( View convertView, Moved item ){
+        //  学生にグループ移動未伝達
+        //  グループと座席位置移動前
+        ((TextView)convertView.findViewById(R.id.row_group_readjustmented_position_tv)).setText(item.getNowPosition());
+        ((ImageView)convertView.findViewById(R.id.row_group_readjustmented_finished_iv)).setVisibility(View.INVISIBLE);
+        ((TextView)convertView.findViewById(R.id.row_group_readjustmented_position_tv)).setTextColor(Color.RED);
+    }
+
 }

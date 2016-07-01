@@ -104,7 +104,6 @@ public class URL {
 
     //  送信状態を授業識別番号を頼りに探します.
     public static final String getTransmitState(String sameClassNumber){
-        // http://192.168.53.163/cms/TransmitStateJson_Controller/transmitState?scn=160328143000161000ROOM3060580002
         return TEMP_BASE_URL + "TransmitStateJson_Controller/transmitState?scn="+sameClassNumber;
     }
     //  出席ACK漏れ(そのだ教授)
@@ -148,4 +147,21 @@ public class URL {
     public static final String getUrlRegardedAsAbsent(String attendanceId){
         return TEMP_BASE_URL + "AckLeakSupport_Controller/absent?a="+attendanceId;
     }
+    /**
+     *  getUrlchkExistenceFaceImageメソッド
+     *  ネットワーク上のサーバーの特定ディレクトリに顔画像が存在するかを確認します.
+     *  @param String   studentId    学生ID
+     * **/
+    public static final String getUrlchkExistenceFaceImage(String studentId){
+        return TEMP_BASE_URL + "AttendanceJson_Controller/chkExistenceFaceImage?st="+studentId;
+    }
+    /**
+     *  getUrlgetFaceImageメソッド
+     *  顔画像を取得します.
+     *  @param String   studentId    学生ID
+     * **/
+    public static final String getUrlgetFaceImage(String studentId){
+        return TEMP_BASE_URL + "AttendanceJson_Controller/getFaceImage?st="+studentId;
+    }
+
 }

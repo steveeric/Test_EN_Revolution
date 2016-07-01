@@ -327,37 +327,6 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                    <!--<RadioGroup
-                        android:orientation="horizontal"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:id="@+id/RadioGroup">
-                            <RadioButton
-                                android:id="@+id/RadioButton1"
-                                android:layout_height="wrap_content"
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
-                                android:text="出席"
-                                android:textSize="@dimen/textsize_xlarge" >
-                            </RadioButton>
-                            <RadioButton
-                                android:id="@+id/RadioButtoni2"
-                                android:layout_height="wrap_content"
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
-                                android:text="遅刻"
-                                android:textSize="@dimen/textsize_xlarge" >
-                            </RadioButton>
-                            <RadioButton
-                                android:layout_height="wrap_content"
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
-                                android:text="欠席"
-                                android:textSize="@dimen/textsize_xlarge" >
-                            </RadioButton>
-                    </RadioGroup>-->
-
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -443,15 +412,6 @@
                     android:gravity="center"
                     android:text="@string/str_regarded_as_reason_alert_unselected"/>
             </LinearLayout>
-            <!-- 補助メッセージ -->
-            <!--<TextView
-                android:id="@+id/dialog_custom_regarded_as_assist_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="　"
-                android:textSize="@dimen/textsize_large"/>-->
-
             <!-- CheckBoxに選択された出席・遅刻・忘れを反映するボタンレイアウト -->
             <LinearLayout
                 android:id="@+id/dialog_custom_regarded_as_btn"
@@ -482,35 +442,30 @@
                     />
             </LinearLayout>
         </LinearLayout>
-        <!-- 出席・遅刻・SonoRIs忘れ確認レイアウト -->
-        <!--<LinearLayout
-            android:id="@+id/dialog_custom_regarded_as_child2_ll"
-            android:orientation="vertical"
-            android:visibility="gone"
+     </LinearLayout>
+
+    <!-- 顔画像表示ゾーン (愛工大のみ) -->
+    <LinearLayout
+        android:id="@+id/dialog_custom_face_image_ll"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/dialog_custom_regarded_as_child2_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="@dimen/textsize_xlarge"/>
-        </LinearLayout>-->
-
-        </LinearLayout>
-
-        <!--<Button
-            android:id="@+id/positive_button"
-            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_horizontal_large_margin"
-            android:background="@drawable/bt_dialog_positive"
-            android:text="@string/close"
-            android:textSize="@dimen/textsize_xlarge"
-            android:textColor="@android:color/white"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            />-->
+            android:text="　顔写真"
+            android:background="@color/whiteSmoke"
+            android:textSize="@dimen/textsize_large"
+            />
+    <ImageView
+        android:id="@+id/dialog_custom_face_image_iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+    </LinearLayout>
 
     </LinearLayout>
 
