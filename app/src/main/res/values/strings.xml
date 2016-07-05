@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_version">version 0.3.15</string>
+    <string name="app_version">version 0.3.17</string>
     <!--<string name="app_name">授業運営管理ソリューション</string>-->
     <string name="app_name">SonoRIs MT</string>
     <string name="do_not_mistake">間違いありませんか?</string>
@@ -118,7 +118,7 @@
     <string name="manual_attendance_release">出席\r\n不認定</string>
 
     <!-- 在室確認申請(送信中) -->
-    <string name="manual_be_in_wait_room_title">　再調査出席を送信しています.</string>
+    <string name="manual_be_in_wait_room_title">　在室確認を送信しています.</string>
     <!-- 在室確認申請 -->
     <!--<string name="manual_be_in_room_title">　在室していることを</string>-->
     <string name="manual_be_in_room_title"></string>
