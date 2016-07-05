@@ -1072,7 +1072,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
     /**
      * Created by scr on 2016/02/20.
      * confirmReAttendance
-     * 再出席調査を行いますか？の確認ダイアログ
+     * 在室確認を行いますか？の確認ダイアログ
      */
     private void confirmReAttendance(){
 
@@ -1082,8 +1082,8 @@ public boolean onOptionsItemSelected(MenuItem item) {
             return;
         }
         new AlertDialog.Builder(this)
-                .setTitle("再出席調査")
-                .setMessage("再出席調査をおこないますか？")
+                .setTitle("在室確認")
+                .setMessage("在室確認をおこないますか？")
                 .setPositiveButton("はい", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
