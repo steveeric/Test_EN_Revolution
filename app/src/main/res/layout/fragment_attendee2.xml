@@ -74,7 +74,6 @@
                 android:textColor="@color/red"
                 android:textSize="@dimen/textsize_xlarge"
                 android:id="@+id/absent_total_status_textView"/>
-
         </LinearLayout>
 
         <GridView

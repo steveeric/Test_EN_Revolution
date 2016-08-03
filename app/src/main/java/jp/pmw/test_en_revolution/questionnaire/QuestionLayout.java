@@ -83,36 +83,10 @@ public class QuestionLayout extends LinearLayout {
             tv.setTextSize(fontSize);
             layout.addView(tv);
             this.addView(layout, new LinearLayout.LayoutParams(MP, MP));
-            /*TextView tv = new TextView(this.getContext());
-            setBackGroundColor(tv);
-            String content = "　"
-                    +this.getContext().getResources().getString(R.string.ask_number)
-                    +asks.get(i).getAskNumber()
-                    +this.getContext().getResources().getString(R.string.ask_dot)
-                    +asks.get(i).getAskContent();
-            tv.setText(content);
-            //問題の門とサイズ
-            float fontSize = this.getContext().getResources().getDimension(R.dimen.textsize_large);
-            tv.setTextSize(fontSize);
-            this.addView(tv);
-            */
-            /*for(int j = 0; j < asks.get(i).getChoices().size(); j++){
-                TextView anstv = new TextView(this.getContext());
-                setBackGroundColor(anstv);
-                String asnContent = "　　"
-                        + asks.get(i).getChoices().get(j).getChoiceNumber()
-                        + "　"
-                        + asks.get(i).getChoices().get(j).getChoice();
-                anstv.setText(asnContent);
-                float ansSize = this.getContext().getResources().getDimension(R.dimen.textsize_medium);
-                anstv.setTextSize(ansSize);
-                this.addView(anstv);
-            }*/
         }
     }
 
     private void setBackGroundColor(TextView tv){
         tv.setBackgroundColor(this.getResources().getColor(R.color.lightCyan));
-        //tv.setBackgroundColor(this.getResources().getDrawable(R.drawable.row_question_item));
     }
 }

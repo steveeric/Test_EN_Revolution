@@ -5,7 +5,7 @@ package jp.pmw.test_en_revolution.config;
  */
 public class URL {
     //  Enumクラス
-    public static final UrlEnum S_URL_ENUM = UrlEnum.SONODA;
+    public static final UrlEnum S_URL_ENUM = UrlEnum.AIT;
     //  IPアドレス
     public static final String S_IP_ADDRESS = S_URL_ENUM.getIpAddress();
     //  WEBアプリ名称

@@ -79,24 +79,6 @@ public class QuestionnaireDialogFragment extends DialogFragment{
         return new TransmitChecker(getMainActivity()).chkTransmitPossible();
     }
 
-
-    /**
-     * コールバック用のリスナー
-     * **/
-    /*private OnOkClickListener mListener;
-    public interface OnOkClickListener {
-        public void onOkClicked(Bundle args);
-    }*/
-
-    /*@Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mListener = (OnOkClickListener) getTargetFragment();
-        if (mListener instanceof OnOkClickListener == false) {
-            throw new ClassCastException("実装エラー");
-        }
-    }*/
-
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
     }

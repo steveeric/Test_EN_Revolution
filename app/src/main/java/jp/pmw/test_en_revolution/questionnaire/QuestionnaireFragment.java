@@ -107,61 +107,16 @@ public class QuestionnaireFragment extends MyMainFragment {
         //  最終送信結果を表示するテキストビュー
         //  A2の問題を2名の学生が正常に受信できませんでした.etc...
         this.transmitResultTextView =       (TextView)this.getActivity().findViewById(R.id.clicker_survey_do_question_transmit_result_textView);
-
-
-        //  最後に送信を行った際の情報
-        //this.lastQuestionBmpTransmitTimerTask =    new LastQuestionBmpTransmitLogTimerTask(this);
-
-
-
     }
-
-    private void showQuestionnaireResultFragment(int position){
-        moveToResultFragment(position);
-    }
-
     private String getStrShelfLabels(){
         return this.shelfLabels;
-        //MainActivity activity = (MainActivity)this.getActivity();
-        //return activity.getResources().getString(R.string.shelf_labels);
-        //return this.getResources().getString(R.string.shelf_labels);
     }
-
     private void moveToResultFragment(int position){
         MainActivity activity = (MainActivity)this.getActivity();
         String titleNumber = activity.getClassObject().getQuestionnaire().getQuestions().get(position).getQuestionNumber();
         activity.getClassObject().getQuestionnaire().setLastSeeQuestionTitleNumber(titleNumber);
         activity.doClickerDistributeFragment(MainFragmentConfig.QUESTIONNAIRE_FRAGMENT, MainFragmentConfig.QUESTIONNAIRE_FRAGMENT_RESULT);
     }
-
-    /*private void chkAlertNextNotYet(Question question) {
-        MainActivity activity = (MainActivity)this.getActivity();
-        int nowTapNumber = activity.mNowSeeQuestionTopic + 1;   //  問○
-        int beforeSecond = Integer.valueOf(Npd.NPD_ID_Q2_TEXT);    //141
-        int beforeThird = Integer.valueOf(Npd.NPD_ID_Q3_TEXT);    //181
-
-        if(this.lastQuestionBmpTransmitLogObject == null){
-            if(nowTapNumber == 2){
-                //まだ行うことができません.
-                return;
-            }else if(nowTapNumber == 3){
-                //まだ行うことができません.
-                return;
-            }
-        }
-
-        String strLastNpdId = this.lastQuestionBmpTransmitLogObject.getLastQuestionNpdId();
-        int lastNpdId = Integer.valueOf(strLastNpdId);
-        if(){
-
-        }
-
-
-
-        showQuestionnaireDialogFragment();
-
-    }*/
-
     /**
      * Created by scr on 2015/1/5.
      * showQuestionnaireDialogFragmentメソッド
@@ -169,28 +124,18 @@ public class QuestionnaireFragment extends MyMainFragment {
     private void showQuestionnaireDialogFragment(Question question){
         MainActivity activity = (MainActivity)this.getActivity();
         int nowTapNumber = activity.mNowSeeQuestionTopic + 1;   //  問○
-        int beforeSecond = Integer.valueOf(Npd.NPD_ID_Q1_ANSWER);    //111
-        int beforeThird = Integer.valueOf(Npd.NPD_ID_Q2_ANSWER);    //151
         String strLastNpdId = "-2";
         if(this.lastQuestionBmpTransmitLogObject != null){
             strLastNpdId = this.lastQuestionBmpTransmitLogObject.getLastQuestionNpdId();
-        }
-        int lastNpdId = Integer.valueOf(strLastNpdId);
-
-        //問2と問3
-        if(nowTapNumber == 2 || nowTapNumber == 3){
-            if(lastNpdId < beforeSecond){
-               return;
+            if( !(chkCanBeSelected(nowTapNumber, strLastNpdId)) ){
+                return;
             }
-        }
-        //問3
-        if(nowTapNumber == 3){
-            if(lastNpdId < beforeThird){
+        }else{
+            //  クリッカー問題未送信の場合は、問1のタップしか受付ないようにする.
+            if(nowTapNumber!=1){
                 return;
             }
         }
-
-
         QuestionnaireDialogFragment customDialog = QuestionnaireDialogFragment.newInstance();
         customDialog.setTargetFragment(QuestionnaireFragment.this, 0);
         Bundle bundle = new Bundle();
@@ -199,9 +144,27 @@ public class QuestionnaireFragment extends MyMainFragment {
         customDialog.setQuestionnaireFragment(this);
         customDialog.show(activity.getSupportFragmentManager(), QuestionnaireDialogFragment.QUESTION_NAIRE_DIALOG_FRAGMENT);
     }
-
-
-
+    /**
+     * Created by scr on 2016/08/03.
+     * chkCanBeSelectedメソッド
+     * クリッカー問をタップ時に、反応を(ポップアップを表示)させても良いかを確認します.
+     * @param   int     nowTapNumber    タップされた問番号
+     * @param   String  nowNpdId        現在のNPD_ID
+     * @return  {true}  反応させてもよい    {false} 反応させない.
+     */
+    boolean chkCanBeSelected(int nowTapNumber, String nowNpdId){
+        int length  = nowNpdId.length();
+        int number        = Integer.valueOf( nowNpdId.substring( (length -4), (length -3) ) );
+        int contentNumber = Integer.valueOf( nowNpdId.substring( (length -2)) );
+        if( contentNumber == 4 ){
+            number        = number - 1;
+        }
+        if( nowTapNumber == number ){
+            return true;
+        }else{
+            return false;
+        }
+    }
     /**
      * Created by scr on 2014/12/31.
      * checkTapListメソッド
@@ -211,7 +174,6 @@ public class QuestionnaireFragment extends MyMainFragment {
         MainActivity activity = (MainActivity)this.getActivity();
         activity.mNowSeeQuestionTopic = tapPosition;
     }
-
     @Override
     public void onResume(){
         super.onResume();
