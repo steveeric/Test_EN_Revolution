@@ -153,18 +153,43 @@ public class QuestionnaireFragment extends MyMainFragment {
      * @return  {true}  反応させてもよい    {false} 反応させない.
      */
     boolean chkCanBeSelected(int nowTapNumber, String nowNpdId){
-        int length  = nowNpdId.length();
-        int number        = Integer.valueOf( nowNpdId.substring( (length -4), (length -3) ) );
-        int contentNumber = Integer.valueOf( nowNpdId.substring( (length -2)) );
-        if( contentNumber == 4 ){
-            number        = number - 1;
+        int number  =   getClikcerNumber(nowNpdId);
+        int contentNumber   = Integer.valueOf( getClikcerNpdContent(nowNpdId) );
+        if( contentNumber == (TransmitStateObject.CLIKCER_TRANMIST_CONTENT_COUNT - 1) ){
+            number        = number + 1;
         }
-        if( nowTapNumber == number ){
+        if( nowTapNumber <= number ){
             return true;
         }else{
             return false;
         }
     }
+    /**
+     * Created by scr on 2016/08/03.
+     * getClikcerNumberメソッド
+     * クリッカー問番号をNPD_IDから取得します.
+     * @param   String  npdId   NPD_ID
+     * @return  int     クリッカー問番号
+     */
+    int getClikcerNumber(String npdId){
+        int length          =   npdId.length();
+        String num          =   npdId.substring( (length -4), (length -2) );
+        int number          = Integer.valueOf( num );
+        return number;
+    }
+    /**
+     * Created by scr on 2016/08/03.
+     * getClikcerNpdContentメソッド
+     * クリッカー送信コンテンツ番号をNPD_IDから取得します.
+     * @param   String  npdId   NPD_ID
+     * @return  String  クリッカー送信コンテンツ番号
+     */
+    String getClikcerNpdContent(String npdId){
+        int length          =   npdId.length();
+        return npdId.substring( (length -2));
+    }
+
+
     /**
      * Created by scr on 2014/12/31.
      * checkTapListメソッド
@@ -202,12 +227,6 @@ public class QuestionnaireFragment extends MyMainFragment {
                 setDummyTestData(questions);
             }
         }
-        //dummyTestStart();
-        /*if(activity.mTeacher.getEndAttendanceFlag()==false){
-            duaringAttendanceLayout.setVisibility(View.VISIBLE);
-        }else{
-            dummyTestStart();
-        }*/
     }
 
     public void onPause(){
@@ -291,6 +310,8 @@ public class QuestionnaireFragment extends MyMainFragment {
             //setNextActionTextView(object.getLastNpdWording()+"しています.");
             return;
         }
+        //  最終NPD_ID
+        String lastNpdId        = this.lastQuestionBmpTransmitLogObject.getLastQuestionNpdId();
 
         String tilteContent     =   "";
         String resultContent    =   "";
@@ -316,49 +337,23 @@ public class QuestionnaireFragment extends MyMainFragment {
                 //  あります.
                 return;
             }
-
             tilteContent       =    lastNpdWording + "しました.";
-            //resultContent      =    nackCount + "名が正常に送信を行うことができませんでした.";
-
-            int lastTransmitType = object.getLastTransmitType();
-            if(TransmitStateObject.Q1_TEXT_STATUS == lastTransmitType){
+            //  クリッカー送信コンテンツ
+            String content = getClikcerNpdContent(lastNpdId);
+            if( content.equals( TransmitStateObject.CLIKCER_TRANSMIT_TEXT ) ){
                 resultContent      =    nackCount + "名の学生については、問題文を受信できません.";
-            }else if(TransmitStateObject.Q1_ANSWER_RESPONSE_STATUS == lastTransmitType){
+            }else if( content.equals( TransmitStateObject.CLIKCER_TRANMIST_ANSWER ) ){
                 resultContent      =    nackCount + "名の学生については、回答を収集できません.";
-            }else if(TransmitStateObject.Q1_YES_ANSWER_STATUS == lastTransmitType){
-                resultContent      =    nackCount + "名の学生については、回答を返信できません.";
-            }else if(TransmitStateObject.Q2_TEXT_STATUS == lastTransmitType){
-                resultContent      =    nackCount + "名の学生については、問題文を受信できません.";
-            }else if(TransmitStateObject.Q2_ANSWER_RESPONSE_STATUS == lastTransmitType){
-                resultContent      =    nackCount + "名の学生については、回答を収集できません.";
-            }else if(TransmitStateObject.Q2_YES_ANSWER_STATUS == lastTransmitType){
-                resultContent      =    nackCount + "名の学生については、回答を返信できません.";
-            }else if(TransmitStateObject.Q3_TEXT_STATUS == lastTransmitType){
-                resultContent      =    nackCount + "名の学生については、問題文を受信できません.";
-            }else if(TransmitStateObject.Q3_ANSWER_RESPONSE_STATUS == lastTransmitType){
-                resultContent      =    nackCount + "名の学生については、回答を収集できません.";
-            }else if(TransmitStateObject.Q3_YES_ANSWER_STATUS == lastTransmitType){
+            }else if( content.equals( TransmitStateObject.CLIKCER_TRANSMIT_RESULT ) ){
                 resultContent      =    nackCount + "名の学生については、回答を返信できません.";
             }
-
+            //  出席者全員からACKありの場合.
             if(nackCount == 0){
-                if(TransmitStateObject.Q1_TEXT_STATUS == lastTransmitType){
+                if( content.equals( TransmitStateObject.CLIKCER_TRANSMIT_TEXT ) ){
                     resultContent      =   "全員が問題文を受信しました.";
-                }else if(TransmitStateObject.Q1_ANSWER_RESPONSE_STATUS == lastTransmitType){
+                }else if( content.equals( TransmitStateObject.CLIKCER_TRANMIST_ANSWER ) ){
                     resultContent      =   "全員から回答を収集しました.";
-                }else if(TransmitStateObject.Q1_YES_ANSWER_STATUS == lastTransmitType){
-                    resultContent      =    "全員に回答を返信しました.";
-                }else if(TransmitStateObject.Q2_TEXT_STATUS == lastTransmitType){
-                    resultContent      =   "全員が問題文を受信しました.";
-                }else if(TransmitStateObject.Q2_ANSWER_RESPONSE_STATUS == lastTransmitType){
-                    resultContent      =   "全員から回答を収集しました.";
-                }else if(TransmitStateObject.Q2_YES_ANSWER_STATUS == lastTransmitType){
-                    resultContent      =    "全員に回答を返信しました.";
-                }else if(TransmitStateObject.Q3_TEXT_STATUS == lastTransmitType){
-                    resultContent      =   "全員が問題文を受信しました.";
-                }else if(TransmitStateObject.Q3_ANSWER_RESPONSE_STATUS == lastTransmitType){
-                    resultContent      =   "全員から回答を収集しました.";
-                }else if(TransmitStateObject.Q3_YES_ANSWER_STATUS == lastTransmitType){
+                }else if( content.equals( TransmitStateObject.CLIKCER_TRANSMIT_RESULT ) ){
                     resultContent      =    "全員に回答を返信しました.";
                 }
             }
@@ -391,51 +386,29 @@ public class QuestionnaireFragment extends MyMainFragment {
      * @param object アンケート送信状態オブジェクト
      */
     private void doNextAction(LastQuestionBmpTransmitLogObject object){
-
         //  最終NPD_ID
-        String lastNpdId = object.getLastQuestionNpdId();
+        String  lastNpdId   = object.getLastQuestionNpdId();
+        //  NPD_IDの文字列数
+        int     length      = lastNpdId.length();
         //  棚札名称
         String strESL   =   getStrShelfLabels();
         //
         String str = "";
-        switch (lastNpdId){
-            case Npd.NPD_ID_Q1_TEXT:
-                str = getStrQtext(1);
-                setNextActionTextView(str);
-                break;
-            case Npd.NPD_ID_Q1_ANSWER:
-                str = getStrAnswerText(1);
-                setNextActionTextView(str);
-                break;
-            case Npd.NPD_ID_Q1_RESULT:
-                str = getStrResult(2);
-                setNextActionTextView(str);
-                break;
-            case Npd.NPD_ID_Q2_TEXT:
-                str = getStrQtext(2);
-                setNextActionTextView(str);
-                break;
-            case Npd.NPD_ID_Q2_ANSWER:
-                str = getStrAnswerText(2);
-                setNextActionTextView(str);
-                break;
-            case Npd.NPD_ID_Q2_RESULT:
-                str = getStrResult(3);
-                setNextActionTextView(str);
-                break;
-            case Npd.NPD_ID_Q3_TEXT:
-                str = getStrQtext(3);
-                setNextActionTextView(str);
-                break;
-            case Npd.NPD_ID_Q3_ANSWER:
-                str = getStrAnswerText(3);
-                setNextActionTextView(str);
-                break;
-            case Npd.NPD_ID_Q3_RESULT:
-                str = getStrResult(4);
-                setNextActionTextView(getStrEndText(str,object));
-                break;
+        //  クリッカー問番号
+        int     number          = getClikcerNumber( lastNpdId );
+        //  クリッカー送信コンテンツ番号
+        String  contentNumber   = getClikcerNpdContent( lastNpdId );
+        //  文字列を取得する.
+        if( contentNumber.equals(Npd.NPD_CONTENT_Q_TEXT) ){
+            str = getStrQtext( number );
+        }else if( contentNumber.equals(Npd.NPD_CONTENT_ANSWER_TEXT) ){
+            str = getStrAnswerText( number );
+        }else if( contentNumber.equals(Npd.NPD_CONTENT_RESULT_TEXT) ){
+            //  次の問の案内のために+1をしています.
+            str = getStrResult( number + 1 );
         }
+        //  テキストにセットする.
+        setNextActionTextView(str);
     }
 
     private String getStrEndText(String str,LastQuestionBmpTransmitLogObject object){

@@ -7,7 +7,7 @@ public enum UrlEnum {
     //  園田学園女子大学様
     SONODA("172.17.101.201","cms"),
     //  愛知工業大学
-    AIT("192.168.53.132","cms");
+    AIT("192.168.53.225","cms");
 
     //  IPアドレス
     private final String mIpAddress;
