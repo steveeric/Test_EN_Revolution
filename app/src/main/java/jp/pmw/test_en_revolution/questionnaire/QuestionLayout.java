@@ -25,6 +25,8 @@ public class QuestionLayout extends LinearLayout {
     private TextView questionTextView;
     private ListView questionsListView;*/
 
+    LayoutParams mLayoutParams;
+
     public QuestionLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -44,18 +46,11 @@ public class QuestionLayout extends LinearLayout {
      *
      ***/
     public void bindView(int index,Question question) {
-
         //アンケート番号
-        //this.questionNumberTextView.setText(this.getContext().getResources().getString(R.string.question_index_number) + index);
         String str = this.getResources().getString(R.string.questionnaire_topic) + index + " " +question.getQuestionTitle();
         this.questionNumberTextView.setText(str);
-        //テーマ
-        //this.themeTextView.setText(str);
         //尋ねる内容
         List<Ask> asks = question.getAsks();
-        /*MainActivity activity = (MainActivity)this.getContext();
-        QuestionAskAdapter adapter = new QuestionAskAdapter(activity,R.layout.row_ask_item,asks);
-        this.askListView.setAdapter(adapter);*/
         for(int i = 0; i < asks.size();i++){
             //Q.〇×■◀のレイアウト
             LinearLayout layout = new LinearLayout(this.getContext());
@@ -68,8 +63,6 @@ public class QuestionLayout extends LinearLayout {
             questionIndexTv.setTextSize(fontSize);
             setBackGroundColor(questionIndexTv);
             String quecon = "　";
-                    /*+this.getContext().getResources().getString(R.string.ask_number)
-                    +asks.get(i).getAskNumber();*/
             questionIndexTv.setText(quecon);
             questionIndexTv.setTextSize(fontSize);
             layout.addView(questionIndexTv);
@@ -77,15 +70,14 @@ public class QuestionLayout extends LinearLayout {
             //〇×■◀のテキストビュー
             TextView tv = new TextView(this.getContext());
             setBackGroundColor(tv);
-            String content =/*this.getContext().getResources().getString(R.string.ask_dot)
-                    +*/asks.get(i).getAskContent();
+            String content = asks.get(i).getAskContent();
             tv.setText(content);
             tv.setTextSize(fontSize);
             layout.addView(tv);
-            this.addView(layout, new LinearLayout.LayoutParams(MP, MP));
+            mLayoutParams = new LinearLayout.LayoutParams(MP, MP);
+            this.addView(layout, mLayoutParams);
         }
     }
-
     private void setBackGroundColor(TextView tv){
         tv.setBackgroundColor(this.getResources().getColor(R.color.lightCyan));
     }

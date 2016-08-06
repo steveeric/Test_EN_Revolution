@@ -14,11 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import java.util.List;
 import java.util.Timer;
-
-import jp.pmw.test_en_revolution.FinishTimer;
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.MainFragmentConfig;
 import jp.pmw.test_en_revolution.MyMainFragment;
@@ -203,8 +200,7 @@ public class QuestionnaireFragment extends MyMainFragment {
     public void onResume(){
         super.onResume();
         MainActivity activity = (MainActivity)this.getActivity();
-        //List<Question> questions = activity.mTeacher.getQuestionnaire().getQuestions();
-        Questionnaire q = activity.getClassObject().getQuestionnaire();//activity.mTeacher.getQuestionnaire();
+        Questionnaire q = activity.getClassObject().getQuestionnaire();
         if(q == null){
             //リロードフラグメント
             super.loadFragment();
