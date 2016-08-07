@@ -39,7 +39,8 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
             holder = (ViewHolder)view.getTag();
         }
         //  クリッカー問題番号
-        int index = position + 1;
+        //int index = position + 1;
+        int index = position;
         String strTitleNumber = getContext().getResources().getString(R.string.questionnaire_topic) + index + " " +question.getQuestionTitle();
         holder.mTitleNumberTv.setText( strTitleNumber );
         //  クリッカー問題

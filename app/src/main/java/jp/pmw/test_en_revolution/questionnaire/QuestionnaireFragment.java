@@ -430,14 +430,14 @@ public class QuestionnaireFragment extends MyMainFragment {
     private String getStrQtext(int number){
         String strESL   =   getStrShelfLabels();
         return"① 回答を収集します.\r\n" +
-                "② 「いいえ」の学生は"+strESL+"を、かばんなどにしまうよう指示してください.\r\n" +
+                "② 「いいえ」の学生は"+strESL+"の受信部を隠すよう指示してください.\r\n" +
                 "③ 学生が②を終えた後、問"+number+"をタップしてください.";
     }
 
     private String getStrAnswerText(int number){
         String strESL   =   getStrShelfLabels();
         return "① 回答を学生の"+strESL+"に返信します.\r\n" +
-                "② "+strESL+"をしまっていた学生は表向けて机の上に置くよう指示をしてください.\r\n" +
+                "② "+strESL+"の受信部を隠していた学生は受信部を表向きにするよう指示をしてください.\r\n" +
                 "③ 学生が②を終えた後、問"+number+"をタップしください.";
     }
 
