@@ -90,8 +90,9 @@ public class StudentObject implements Serializable {
     public void setPastAttendanceCount(PastAttendanceCount pac){this.pac = pac;}
     public PastAttendanceCount getPastAttendanceCount(){return this.pac;}
 
-    StudentObject(String studentIdNumber, String fullName, SeatObject seatObject,SeatObject seatAfterMoving){
+    public StudentObject(String studentIdNumber,String furigana, String fullName, SeatObject seatObject,SeatObject seatAfterMoving){
         this.studentIdNumber = studentIdNumber;
+        this.furigana = furigana;
         this.fullName = fullName;
         this.seatObject = seatObject;
         this.seatAfterMoving = seatAfterMoving;

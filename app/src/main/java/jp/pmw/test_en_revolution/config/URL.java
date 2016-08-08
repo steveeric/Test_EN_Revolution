@@ -163,5 +163,16 @@ public class URL {
     public static final String getUrlgetFaceImage(String studentId){
         return TEMP_BASE_URL + "AttendanceJson_Controller/getFaceImage?st="+studentId;
     }
+    /**
+     * getUrlgetQuestionAnswersメソッド
+     * 質問回答群取得URL
+     * @param   String  questionId      質問ID(クリッカー用)
+     * @param   int     answerType      回答タイプ(0:はい、1:いいえ)
+     * @author Ito Shota
+     * @since  2016/08/08
+     **/
+    public static final String getUrlgetQuestionAnswers(String questionId, int answerType){
+        return TEMP_BASE_URL + "QuestionJson_Controller/getQuestionAnswers?qid="+questionId+"&at="+answerType;
+    }
 
 }

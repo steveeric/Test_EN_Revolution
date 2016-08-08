@@ -15,7 +15,7 @@ public class QuestionResult {
     @SerializedName("answer_count")
     private String answerCount;
     @SerializedName("ratio")
-    private float ratio;
+    private int ratio;
     @SerializedName("percentage")
     private String percentage;
 
@@ -23,7 +23,7 @@ public class QuestionResult {
         this.answerCount = answerCount;
     }
 
-    public void setRatio(float ratio){
+    public void setRatio(int ratio){
         this.ratio = ratio;
     }
 

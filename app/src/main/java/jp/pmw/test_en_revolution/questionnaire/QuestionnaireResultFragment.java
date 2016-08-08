@@ -1,6 +1,8 @@
 package jp.pmw.test_en_revolution.questionnaire;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -93,6 +96,9 @@ public class QuestionnaireResultFragment extends MyMainFragment {
     private PieGraph pieGraph;
     //
     private GridView resultContentGridView;
+    //
+    ChoiceCustomAdapter mChoiceCustomAdapter;
+
 
     public QuestionnaireResultFragment() {
     }
@@ -128,14 +134,30 @@ public class QuestionnaireResultFragment extends MyMainFragment {
         this.questionNumberTextView = (TextView)this.getActivity().findViewById(R.id.fragment_clicker_result_question_number_textView);
         this.titleTextView = (TextView)this.getActivity().findViewById(R.id.fragment_clicker_result_title_textView);
         this.pieGraph = (PieGraph)this.getActivity().findViewById(R.id.holo_graph_view);
-            this.pieGraph.setOnSliceClickedListener(new OnSliceClickedListener() {
-                @Override
-                public void onClick(int index) {
-                   //円グラフをタップした際の処理
-                }
-            });
         this.resultContentGridView = (GridView)this.getActivity().findViewById(R.id.fragment_clicker_result_answer_contents_gridView);
+        this.resultContentGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showQuestionnaireAnswerResult( position );
+            }
+        });
     }
+    /**
+     * showQuestionnaireAnswerResultメソッド
+     * 誰がそのように回答したかを確認する.
+     * @param 	int     position    グリッドビューのインデックス
+     * @return 	質問回答結果群
+     * @since 	2016/08/08
+     **/
+    public void showQuestionnaireAnswerResult(int position){
+        Question question = questions.get(nowSeeTopic);
+        Bundle args = new Bundle();
+        args.putInt(QuestionnaireResultDialogFragment.TAP_POSITION, position);
+        args.putSerializable(QuestionnaireResultDialogFragment.QUESTION, question);
+        QuestionnaireResultDialogFragment qrdf = QuestionnaireResultDialogFragment.newInstance();
+        qrdf.setArguments(args);
+        qrdf.show(activity.getSupportFragmentManager(), QuestionnaireResultDialogFragment.QUESTIONNNAIRE_RESULT_DIALOG_FRAGMENT);
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -182,8 +204,6 @@ public class QuestionnaireResultFragment extends MyMainFragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                int a =0;
-                a = 12;
                 //activity.showAnotherErrorToast(error.getMessage());
                 //Toast.makeText(getActivity(), "Unable to fetch data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -199,8 +219,8 @@ public class QuestionnaireResultFragment extends MyMainFragment {
             String questionId   = qList.get(i).getQuestionId();
             int yes             = qList.get(i).getResult().getYesCount();
             int no              = qList.get(i).getResult().getNoCount();
-            float yesRatio      = qList.get(i).getResult().getYesRatio();
-            float noRatio       = qList.get(i).getResult().getNoRatio();
+            int yesRatio      = qList.get(i).getResult().getYesRatio();
+            int noRatio       = qList.get(i).getResult().getNoRatio();
             if(yes != -1 && no != -1){
                 setAnswerResult(questionId,yes,no,yesRatio,noRatio);
             }
@@ -208,7 +228,7 @@ public class QuestionnaireResultFragment extends MyMainFragment {
         processStart();
     }
     //  問題に回答結果を保持させる
-    void setAnswerResult(String targetQuestionId,int yesCount,int noCount,float yesRatio,float noRatio){
+    void setAnswerResult(String targetQuestionId,int yesCount,int noCount,int yesRatio,int noRatio){
 
         this.questions = activity.getClassObject().getQuestionnaire().getQuestions();
         for(int i = 0; i < questions.size(); i++){
@@ -240,56 +260,6 @@ public class QuestionnaireResultFragment extends MyMainFragment {
             }
         }
     }
-
-    /*private void getQuestionResultInfoFromNetWrokDB(Faculty f){
-        //授業ID
-        //String classId = f.getClassPlan().getClassId();
-        String sameClassNumber = f.getClassPlan().getSameClassNumber();
-
-        String url = URL.getQuestionResult(sameClassNumber,);
-        JsonArrayRequest request = new JsonArrayRequest(url,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        jsonArrayQuestionResult(response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                int a = 0;
-                a = 12;
-            }
-        });
-
-        AppController.getInstance(this.getMainActivity()).getRequestQueue().add(request);
-    }*/
-
-    private void jsonArrayQuestionResult(JSONArray jsonArray){
-        // JSON to Java
-        Gson gson = new Gson();
-        Type collectionType = new TypeToken<Collection<QuestionResult>>(){}.getType();
-        //List<QuestionResult> questionResults = gson.fromJson(jsonArray.toString(),collectionType);
-
-        /*MainActivity activity = (MainActivity)this.getActivity();
-        Questionnaire q = activity.mTeacher.getQuestionnaire();
-        for(int i = 0;i<q.getQuestions().size();i++){
-           List<Ask> as = q.getQuestions().get(i).getAsks();
-            for(int j=0;j<as.size();j++){
-                List<Choice> cs = as.get(j).getChoices();
-                for(int k=0;k<cs.size();k++){
-                    for(int m=0;m<questionResults.size();m++){
-                        int orijinalChoiceId = cs.get(k).getChoiceId();
-                        int choiceId = questionResults.get(m).getChoiceId();
-                        if(orijinalChoiceId == choiceId){
-                            cs.get(k).setQuestionResult(questionResults.get(m));
-                        }
-                    }
-                }
-            }
-        }*/
-        processStart();
-    }
-
     private void processStart(){
         //Questionnaire questionnaire = activity.mTeacher.getQuestionnaire();
         Questionnaire questionnaire = activity.getClassObject().getQuestionnaire();
@@ -588,8 +558,9 @@ public class QuestionnaireResultFragment extends MyMainFragment {
         cList.add(yesChoice);
         cList.add(noChoice);
 
-        ChoiceCustomAdapter adapter = new ChoiceCustomAdapter(this.getActivity(), R.layout.row_question_answer_result_item, cList);
-        resultContentGridView.setAdapter(adapter);
+        //
+        mChoiceCustomAdapter = new ChoiceCustomAdapter(this.getActivity(), R.layout.row_question_answer_result_item, cList);
+        resultContentGridView.setAdapter(mChoiceCustomAdapter);
         resultContentGridView.invalidate();
     }
 

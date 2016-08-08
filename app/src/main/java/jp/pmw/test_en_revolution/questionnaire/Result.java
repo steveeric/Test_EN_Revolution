@@ -19,9 +19,9 @@ public class Result implements Serializable {
     private int noCount;
 
     @SerializedName("yes_ratio")
-    private float yesRatio;
+    private int yesRatio;
     @SerializedName("no_ratio")
-    private float noRatio;
+    private int noRatio;
 
     @SerializedName("yes_color")
     private String yesColor;
@@ -32,8 +32,8 @@ public class Result implements Serializable {
         this.yesCount = yesCount;
     }
     public void setNoCount(int noCount){this.noCount = noCount;}
-    public void setYesRatio(float yesRatio){this.yesRatio = yesRatio;}
-    public void setNoRatio(float noRatio){this.noRatio = noRatio;}
+    public void setYesRatio(int yesRatio){this.yesRatio = yesRatio;}
+    public void setNoRatio(int noRatio){this.noRatio = noRatio;}
 
     public String getYesContent(){return this.yesContent;}
     public String getNoContent(){return this.noContent;}
@@ -45,8 +45,8 @@ public class Result implements Serializable {
         return this.noCount;
     }
 
-    public float getYesRatio(){return this.yesRatio;}
-    public float getNoRatio(){return this.noRatio;}
+    public int getYesRatio(){return this.yesRatio;}
+    public int getNoRatio(){return this.noRatio;}
 
     public String getYesColor(){return this.yesColor;}
     public String getNoColor(){return this.noColor;}

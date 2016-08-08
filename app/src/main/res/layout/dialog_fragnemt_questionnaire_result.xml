@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- 読み込みレイアウト -->
+    <ProgressBar
+        android:id="@+id/dialog_fragment_questionnaire_result_loding_pb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+    <!-- 回答者の結果表示レイアウト -->
+    <LinearLayout
+        android:id="@+id/dialog_fragment_questionnaire_result_ll"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- 選択文を表示 -->
+            <TextView
+                android:id="@+id/dialog_fragment_questionnaire_result_text_tv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="10"
+                android:text=""
+                android:gravity="top|center_vertical"
+                android:textSize="@dimen/textsize_xlarge"
+                android:background="@color/white"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="80"
+                android:layout_gravity="center">
+                <GridView
+                    android:id="@+id/dialog_fragment_questionnaire_result_answer_gv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/dialog_fragment_questionnaire_result_not_exist_answer_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="回答者がいません."
+                    android:textSize="@dimen/textsize_xlarge"
+                    android:background="@color/white"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/dialog_fragment_questionnaire_result_close_btn"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="10"
+                android:text="×"
+                android:gravity="center"
+                android:textSize="@dimen/textsize_xxlarge"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <!--<LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="いいえ"
+                android:textSize="@dimen/textsize_large"
+                android:background="@color/white"/>
+            <GridView
+                android:id="@+id/dialog_fragment_questionnaire_result_no_answer_gv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/dialog_fragment_questionnaire_result_no_no_answer_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:visibility="gone"
+                android:text="「いいえ」と回答した回答者がいません."/>
+        </LinearLayout>-->
+    </LinearLayout>
+</LinearLayout>

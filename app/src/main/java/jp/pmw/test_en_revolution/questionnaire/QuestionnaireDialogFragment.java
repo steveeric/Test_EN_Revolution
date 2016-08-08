@@ -439,11 +439,9 @@ public class QuestionnaireDialogFragment extends DialogFragment{
         int noCount;
 
         @SerializedName("yes_ratio")
-        float yesRatio;
+        int yesRatio;
         @SerializedName("no_ratio")
-        float noRatio;
-
-
+        int noRatio;
     }
 
   }
