@@ -1,6 +1,8 @@
 package jp.pmw.test_en_revolution.questionnaire;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -108,58 +110,66 @@ public class QuestionnaireFragment extends MyMainFragment {
     private String getStrShelfLabels(){
         return this.shelfLabels;
     }
-    private void moveToResultFragment(int position){
-        MainActivity activity = (MainActivity)this.getActivity();
-        String titleNumber = activity.getClassObject().getQuestionnaire().getQuestions().get(position).getQuestionNumber();
-        activity.getClassObject().getQuestionnaire().setLastSeeQuestionTitleNumber(titleNumber);
-        activity.doClickerDistributeFragment(MainFragmentConfig.QUESTIONNAIRE_FRAGMENT, MainFragmentConfig.QUESTIONNAIRE_FRAGMENT_RESULT);
-    }
     /**
      * Created by scr on 2015/1/5.
      * showQuestionnaireDialogFragmentメソッド
+     * @param Quesiton question タップされたクリッカー問
      */
     private void showQuestionnaireDialogFragment(Question question){
         MainActivity activity = (MainActivity)this.getActivity();
-        int nowTapNumber = activity.mNowSeeQuestionTopic + 1;   //  問○
-        String strLastNpdId = "-2";
-        if(this.lastQuestionBmpTransmitLogObject != null){
-            strLastNpdId = this.lastQuestionBmpTransmitLogObject.getLastQuestionNpdId();
-            if( !(chkCanBeSelected(nowTapNumber, strLastNpdId)) ){
-                return;
-            }
+        String nowTapNumber = question.getQuestionNumber();
+        //  クリッカーの送信を行いますか？といったダイアログを出力しないようにするかどうか
+        boolean stopFlag = chkCnaBeSelected( nowTapNumber );
+
+        if( stopFlag ){
+            //  他のクリッカー問が実行中のため実行できないとダイアログを表示する.
+            canNotNextProcess();
         }else{
-            //  クリッカー問題未送信の場合は、問1のタップしか受付ないようにする.
-            if(nowTapNumber!=1){
-                return;
-            }
+            //
+            QuestionnaireDialogFragment customDialog = QuestionnaireDialogFragment.newInstance();
+            customDialog.setTargetFragment(QuestionnaireFragment.this, 0);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(QuestionnaireDialogFragment.QUESTION_NAIRE,question);
+            customDialog.setArguments(bundle);
+            customDialog.setQuestionnaireFragment(this);
+            customDialog.show(activity.getSupportFragmentManager(), QuestionnaireDialogFragment.QUESTION_NAIRE_DIALOG_FRAGMENT);
         }
-        QuestionnaireDialogFragment customDialog = QuestionnaireDialogFragment.newInstance();
-        customDialog.setTargetFragment(QuestionnaireFragment.this, 0);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(QuestionnaireDialogFragment.QUESTION_NAIRE,question);
-        customDialog.setArguments(bundle);
-        customDialog.setQuestionnaireFragment(this);
-        customDialog.show(activity.getSupportFragmentManager(), QuestionnaireDialogFragment.QUESTION_NAIRE_DIALOG_FRAGMENT);
     }
     /**
      * Created by scr on 2016/08/03.
      * chkCanBeSelectedメソッド
      * クリッカー問をタップ時に、反応を(ポップアップを表示)させても良いかを確認します.
      * @param   int     nowTapNumber    タップされた問番号
-     * @param   String  nowNpdId        現在のNPD_ID
      * @return  {true}  反応させてもよい    {false} 反応させない.
      */
-    boolean chkCanBeSelected(int nowTapNumber, String nowNpdId){
-        int number  =   getClikcerNumber(nowNpdId);
-        int contentNumber   = Integer.valueOf( getClikcerNpdContent(nowNpdId) );
-        if( contentNumber == (TransmitStateObject.CLIKCER_TRANMIST_CONTENT_COUNT - 1) ){
-            number        = number + 1;
+    boolean chkCnaBeSelected(String nowTapNumber){
+        Questionnaire questionnaire = getMainActivity().getClassObject().getQuestionnaire();
+        List<Question> questionList = questionnaire.getQuestions();
+        boolean stopFlag            =   false;
+        for(int i = 0; i < questionList.size(); i++){
+            Question q = questionList.get(i);
+            if( !( nowTapNumber.equals( questionList.get(i).getQuestionNumber() ) ) ){
+                String openStartTime    =   q.getQuesiontStartDateTime();
+                String resultEndTime    =   q.getQuestionResultEndDateTime();
+                if( openStartTime != null && resultEndTime == null){
+                    //  他のクリッカー問が途中です...
+                    stopFlag        =   true;
+                }
+            }
         }
-        if( nowTapNumber <= number ){
-            return true;
-        }else{
-            return false;
-        }
+        return stopFlag;
+    }
+    /**
+     * canNotNextProcessメソッド
+     * 他のクリッカー問題が実行中のため処理を
+     * @since  2016/08/09
+     **/
+    void canNotNextProcess(){
+        new AlertDialog.Builder(getActivity())
+                .setTitle("クリッカー")
+                .setMessage("他の問が途中のため行うことができません.")
+                .setPositiveButton("とじる", null)
+                .show();
     }
     /**
      * Created by scr on 2016/08/03.
@@ -183,7 +193,7 @@ public class QuestionnaireFragment extends MyMainFragment {
      */
     String getClikcerNpdContent(String npdId){
         int length          =   npdId.length();
-        return npdId.substring( (length -2));
+        return npdId.substring( (length -2) );
     }
 
 
@@ -298,7 +308,7 @@ public class QuestionnaireFragment extends MyMainFragment {
         this.lastQuestionBmpTransmitLogObject = object;
 
         if(object == null){
-            setNextActionTextView(getStrText(1));
+            setNextActionTextView(getStrText());
             return;
         }
 
@@ -384,10 +394,6 @@ public class QuestionnaireFragment extends MyMainFragment {
     private void doNextAction(LastQuestionBmpTransmitLogObject object){
         //  最終NPD_ID
         String  lastNpdId   = object.getLastQuestionNpdId();
-        //  NPD_IDの文字列数
-        int     length      = lastNpdId.length();
-        //  棚札名称
-        String strESL   =   getStrShelfLabels();
         //
         String str = "";
         //  クリッカー問番号
@@ -401,67 +407,82 @@ public class QuestionnaireFragment extends MyMainFragment {
             str = getStrAnswerText( number );
         }else if( contentNumber.equals(Npd.NPD_CONTENT_RESULT_TEXT) ){
             //  次の問の案内のために+1をしています.
-            str = getStrResult( number + 1 );
+            str = getStrResult();
         }
         //  テキストにセットする.
         setNextActionTextView(str);
     }
-
-    private String getStrEndText(String str,LastQuestionBmpTransmitLogObject object){
-
-        String start = object.getLastBmpTransmitStartTime();
-        String  end  = object.getLastBmpTransmitEndTime();
-
-        if(end == null){
-            return str+"しています.";
-        }
-        return str+"しました.";
-    }
-
-
-    private String getStrText(int number){
+    /**
+     * getStrTextメソッド
+     * クリッカー問の送信をおこなってくださいメッセージ
+     * @since
+     **/
+    String getStrText(){
         String strESL   =   getStrShelfLabels();
         return"① 問題を送信します.\r\n" +
                 "② "+strESL+"を表向けて机の上に出すよう指示してください.\r\n" +
-                "③ 学生が②を終えた後、問"+number+"をタップしてください.";
+                "③ 学生が②を終えた後、問をタップしてください.";
     }
-
-
-    private String getStrQtext(int number){
+    /**
+     * getStrQtextメソッド
+     * 回答状況を取得する送信を行ってくださいメッセージ
+     * @since
+     **/
+    String getStrQtext(int number){
         String strESL   =   getStrShelfLabels();
         return"① 回答を収集します.\r\n" +
                 "② 「いいえ」の学生は"+strESL+"の受信部を隠すよう指示してください.\r\n" +
                 "③ 学生が②を終えた後、問"+number+"をタップしてください.";
     }
-
-    private String getStrAnswerText(int number){
+    /**
+     * getStrAnswerTextメソッド
+     * 回答結果を反映する送信を行ってくださいメッセージ
+     * @since
+     **/
+    String getStrAnswerText(int number){
         String strESL   =   getStrShelfLabels();
         return "① 回答を学生の"+strESL+"に返信します.\r\n" +
                 "② "+strESL+"の受信部を隠していた学生は受信部を表向きにするよう指示をしてください.\r\n" +
                 "③ 学生が②を終えた後、問"+number+"をタップしください.";
     }
-
-    private String getStrResult(int number){
+    /**
+     * getStrResultメソッド
+     * 回答結果を反映する送信後のメッセージ
+     * @since
+     **/
+    String getStrResult(){
         MainActivity activity = (MainActivity)this.getActivity();
-        List<Question> qList = activity.getClassObject().getQuestionnaire().getQuestions();
-        //  問題数
-        int questionCount = qList.size();
+        List<Question> questionList = activity.getClassObject().getQuestionnaire().getQuestions();
         String str = "";
-        if(number > questionCount){
-            str = getStrEndAllQuestion();
+        if(getEndClikcerCount() == questionList.size()){
+            str = "問がすべて終了しました.";
         }else{
-            str = getStrText(number);
+            str = getStrText();
         }
         return str;
     }
-
-
-    private String getStrEndAllQuestion(){
-        return "問がすべて終了しました.";
+    /**
+     * getEndClikcerCountメソッド
+     * クリッカー問題が終了した数
+     * ①    問題送信開始がnullでない
+     * ②    回答結果送信がnullでない
+     * を満たすものが終了した数になります.
+     * @since  2016/08/08
+     **/
+    int getEndClikcerCount(){
+        int endCount = 0;
+        MainActivity activity = (MainActivity)this.getActivity();
+        List<Question> questionList = activity.getClassObject().getQuestionnaire().getQuestions();
+        for( int i = 0; i < questionList.size(); i++ ){
+            Question question       =   questionList.get(i);
+            String startDateTime    =   question.getQuesiontStartDateTime();
+            String endDateTime      =   question.getQuestionResultEndDateTime();
+            if( startDateTime != null && endDateTime != null ){
+                ++endCount;
+            }
+        }
+        return endCount;
     }
-
-
-
     /**
      * Created by scr on 2016/02/07.
      * setNextActionTextViewメソッド
@@ -481,9 +502,6 @@ public class QuestionnaireFragment extends MyMainFragment {
             }
         });
     }
-
-
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

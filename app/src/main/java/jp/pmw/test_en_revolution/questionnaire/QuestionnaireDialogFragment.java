@@ -40,36 +40,23 @@ public class QuestionnaireDialogFragment extends DialogFragment{
     public static final String QUESTION_NAIRE_DIALOG_FRAGMENT = "questionnaireDialog";
     private Question question;
     private QuestionnaireFragment questionnaireFragment;
-
     private Context context;
-
-        /**
-         * ファクトリーメソッド
-         */
-    public static QuestionnaireDialogFragment newInstance(/*String title, String message, int type*/){
+    public static QuestionnaireDialogFragment newInstance(){
         QuestionnaireDialogFragment instance = new QuestionnaireDialogFragment();
         return instance;
     }
-
     public void setQuestionnaireFragment (QuestionnaireFragment q){
         this.questionnaireFragment = q;
-
     }
-
-
     private MainActivity getMainActivity(){
         return (MainActivity)context;
     }
-
-
-
     /**
      * 強制的に何かを送信中にします.
      * */
     private void forciblyTranmitBmpTransmitId(){
         new ForciblyTransmit().forciblyTranmitBmpTransmitId(getMainActivity());
     }
-
     /**
      * 現在何か送信中かを調べる.
      * @return false    :   送信中のため、送信NG
@@ -98,9 +85,6 @@ public class QuestionnaireDialogFragment extends DialogFragment{
         // 背景を透明にする
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        TextView questionTitle = (TextView)dialog.findViewById(R.id.dialog_custom_questionnaire_title);
-        //questionTitle.setText(question.getQuestionTitle());
-
         LinearLayout startLayout = (LinearLayout)dialog.findViewById(R.id.dialog_custom_questionnaire_start_linearlayout);
         LinearLayout checkLayout = (LinearLayout)dialog.findViewById(R.id.dialog_custom_questionnaire_check_linearlayout);
         LinearLayout resultLayout = (LinearLayout)dialog.findViewById(R.id.dialog_custom_questionnaire_result_linearlayout);
@@ -116,49 +100,37 @@ public class QuestionnaireDialogFragment extends DialogFragment{
                 return dialog;
             }
         }
-
-
         String strNo = "";
         if(this.question.getQuesiontStartDateTime()==null && this.question.getQuestionCheckStartDateTime() == null){
             //  問題文を送信します.
             String title = this.getResources().getString(R.string.questionnaire_topic) + question.getQuestionNumber() + strNo
                     + this.getResources().getString(R.string.questionnaire_custom_dialog_start);
-            //String str = this.getResources().getString(R.string.questionnaire_custom_dialog_warning1);
 
-            //questionTitle.setText(title);
             actionTV.setText(title);
 
             Button donotStartNegativeBtn = (Button)dialog.findViewById(R.id.dialog_custom_questionnaire_dontstart_negative_button);
             Button startPositiveBtn = (Button)dialog.findViewById(R.id.dialog_custom_questionnaire_start_positive_button);
             donotStartNegativeBtn.setOnClickListener(questionnaireStartBtnListener);
             startPositiveBtn.setOnClickListener(questionnaireStartBtnListener);
-            //
+
             startLayout.setVisibility(View.VISIBLE);
-            //checkLayout.setVisibility(View.GONE);
-            //resultLayout.setVisibility(View.GONE);
         }else if(this.question.getQuestionEndDateTime()!=null && this.question.getQuestionCheckStartDateTime() == null){
             //  回答状況確認赤外線を送信します.
             String title = this.getResources().getString(R.string.questionnaire_topic) + question.getQuestionNumber() + strNo
                     +this.getResources().getString(R.string.questionnaire_custom_dialog_check);
-            //String str = this.getResources().getString(R.string.questionnaire_custom_dialog_warning2);
 
-            //questionTitle.setText(title);
             actionTV.setText(title);
+
             Button donotStartNegativeBtn = (Button)dialog.findViewById(R.id.dialog_custom_questionnaire_check_negative_button);
             Button startPositiveBtn = (Button)dialog.findViewById(R.id.dialog_custom_questionnaire_check_positive_button);
             donotStartNegativeBtn.setOnClickListener(questionnaireCheckStartBtnListener);
             startPositiveBtn.setOnClickListener(questionnaireCheckStartBtnListener);
 
-            //
-           // startLayout.setVisibility(View.GONE);
             checkLayout.setVisibility(View.VISIBLE);
-            //resultLayout.setVisibility(View.GONE);
         }else if(this.question.getQuestionEndDateTime()!=null && this.question.getQuestionCheckStartDateTime() != null && this.question.getQuestionResultStartDateTime() == null){
             String title = this.getResources().getString(R.string.questionnaire_topic) + question.getQuestionNumber() + strNo
                     +this.getResources().getString(R.string.questionnaire_custom_dialog_result);
-            //String str = this.getResources().getString(R.string.questionnaire_custom_dialog_warning1);
 
-            //questionTitle.setText(title);
             actionTV.setText(title);
 
             Button resultNegativeBtn = (Button)dialog.findViewById(R.id.dialog_custom_questionnaire_reslut_negative_button);
@@ -167,16 +139,11 @@ public class QuestionnaireDialogFragment extends DialogFragment{
             resultNegativeBtn.setOnClickListener(questionnaireresultBtnListener);
             resultPositiveBtn.setOnClickListener(questionnaireresultBtnListener);
 
-            //
-            //startLayout.setVisibility(View.GONE);
-            //checkLayout.setVisibility(View.GONE);
             resultLayout.setVisibility(View.VISIBLE);
         }else if(this.question.getQuestionEndDateTime()!=null && this.question.getQuestionCheckStartDateTime() != null && this.question.getQuestionResultStartDateTime() != null) {
             String title = this.getResources().getString(R.string.questionnaire_topic) + question.getQuestionNumber() + strNo
                     +this.getResources().getString(R.string.questionnaire_custom_dialog_confirm_result);
-            //String str = this.getResources().getString(R.string.questionnaire_custom_dialog_confirm_result);
 
-            //questionTitle.setText(title);
             actionTV.setText(title);
 
             Button resultNegativeBtn = (Button)dialog.findViewById(R.id.dialog_custom_questionnaire_reslut_negative_button);
@@ -185,9 +152,6 @@ public class QuestionnaireDialogFragment extends DialogFragment{
             resultNegativeBtn.setOnClickListener(questionnaireresultBtnListener);
             resultPositiveBtn.setOnClickListener(questionnaireresultBtnListener);
 
-            //
-            //startLayout.setVisibility(View.GONE);
-            //checkLayout.setVisibility(View.GONE);
             resultLayout.setVisibility(View.VISIBLE);
         }else{
             //  実行中のためしばらく待ってください.
@@ -274,13 +238,6 @@ public class QuestionnaireDialogFragment extends DialogFragment{
             }
         }
     };
-
-    /*private void startQuestionnaire(){
-        this.question.setQuestionStartdateTime();
-        MainActivity activity = (MainActivity)this.getActivity();
-        String questionId = this.question.getQuestionId();
-        activity.setLastSeeQuestionId(questionId);
-    }*/
     /**
      * 問題文送信要求DBに出す.
      * **/
@@ -316,12 +273,6 @@ public class QuestionnaireDialogFragment extends DialogFragment{
     * アンケート回答調査送信開始要求
     * */
     private void startQruestionnaireCheck(){
-
-        /*boolean transmitPossible = chkTransmitPossible();
-        if(!transmitPossible){
-            return;
-        }*/
-
         String questionIds = this.question.getQuestionId();
         final String questionNumber = this.question.getQuestionNumber();
         String url = URL.getQuestionnaireCheckStart(questionIds);

@@ -320,6 +320,8 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                 thirdTransmitRound(holder, ao,  tso);
                 //      ESL忘れは処理をさせない
                 if(ao.getForgotApplyTime() != null){return;}
+                //      出席・遅刻のどちらかでない場合は、グレーのままにする.
+                if(ao.getAttendanceTime() == null){return;}
                 //      デフォルトではグレーシグナルを描く
                 Drawable signalDrawable = ContextCompat.getDrawable(_context, R.drawable.signal_gray);
                 //

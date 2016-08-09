@@ -92,7 +92,7 @@ public class Question implements Serializable {
     public String getQuestionCheckEndDateTime(){return this.questionCheckEndDateTime;}
 
     public String getQuestionResultStartDateTime(){return this.questionResultStartDateTime;}
-
+    public String getQuestionResultEndDateTime(){return this.questionResultEndDateTime;}
 
     public List<Ask> getAsks(){return this.asks;}
     public Result getResult(){

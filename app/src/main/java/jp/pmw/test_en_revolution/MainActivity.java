@@ -1013,48 +1013,18 @@ public boolean onCreateOptionsMenu(Menu menu) {
     }
 @Override
 public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
     int id = item.getItemId();
-
-    //noinspection SimplifiableIfStatement
     if (id == R.id.action_settings) {
         return true;
-    } /*else if (id == R.id.menu_hands_free_attendance_student_history) {
-        //未実装
-        //openAlertDialogUnimplemented();
-
-        //受講生一覧
-        Roster roster = this.mTeacher.getRoster();
-        if (roster != null) {
-            //学生個人履歴フラグメント
-            SearchHistoryDialogFragment customDialog = SearchHistoryDialogFragment.newInstance();
-            customDialog.setTargetFragment(null, 0);
-            Bundle bundle = new Bundle();
-
-            bundle.putSerializable(SearchHistoryDialogFragment.ROSTER, roster);
-            customDialog.setArguments(bundle);
-            customDialog.show(getSupportFragmentManager(), SearchHistoryDialogFragment.SEARCH_HISTORY_DIALOG_FRAGMENT);
-        } else {
-            //履修者一覧が取得できてないからちょっと待ってね...
-            openAlertDialogSitllGetRegistration();
-        }
-    }*/else if(id == R.id.menu_hands_free_help_signal){
+    }else if(id == R.id.menu_hands_free_help_signal){
         showHelpSignalFragment();
     }else if (id == R.id.menu_hands_free_attendance_re_call_the_roll) {
-        //現在のバージョンでは使うことが出来ません.
-        //openAlertDialogNoUse();
+        //  在室確認実施へ
         confirmReAttendance();
     } else if (id == R.id.menu_action_questionnaire_survey) {
-        /*クリッカー調査実施画面へ*/
-        //Toast.makeText(this,"クリッカー問題送信画面", Toast.LENGTH_SHORT).show();
+        //  クリッカー問リスト画面へ
         doClickerDistributeFragment(MainFragmentConfig.QUESTIONNAIRE_FRAGMENT, 1);
-    }/*else if(id == R.id.menu_action_questionnaire_result){
-        //クリッカーの回答結果を見る
-        //Toast.makeText(this,"クリッカーの回答結果を見る.", Toast.LENGTH_SHORT).show();
-        doClickerDistributeFragment(5, 2);
-    }*/
+    }
     return super.onOptionsItemSelected(item);
 }
     /**
@@ -1064,11 +1034,8 @@ public boolean onOptionsItemSelected(MenuItem item) {
      */
     private void showHelpSignalFragment(){
         HelpSignalDialogFragnemt hsDf = HelpSignalDialogFragnemt.newInstance();
-        //Bundle bundle = new Bundle();
-        //hsDf.setArguments(bundle);
         hsDf.show(this.getSupportFragmentManager(), HelpSignalDialogFragnemt.HELP_SIGNAL_DIALOG_FRAGMENT);
     }
-
     /**
      * Created by scr on 2016/02/20.
      * confirmReAttendance
