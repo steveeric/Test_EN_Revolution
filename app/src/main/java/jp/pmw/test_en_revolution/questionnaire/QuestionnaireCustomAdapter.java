@@ -38,11 +38,12 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
         } else {
             holder = (ViewHolder)view.getTag();
         }
-        //  クリッカー問題番号
-        //int index = position + 1;
-        int index = position;
-        String strTitleNumber = getContext().getResources().getString(R.string.questionnaire_topic) + index + " " +question.getQuestionTitle();
-        holder.mTitleNumberTv.setText( strTitleNumber );
+        //  タイトルをセットする.
+        setTitle( position, question, holder );
+
+        //  既に処理済みにする.
+        setAlreayProcessed( question, holder );
+
         //  クリッカー問題
         List<Ask> asks = question.getAsks();
         String strClikcerQuestion = asks.get(0).getAskContent();
@@ -50,6 +51,48 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
 
         return view;
     }
+    /**
+     * setTitle
+     * タイトルをセットする.
+     * @param   int             positoion 選択インデックス
+     * @param   Question        question  質問
+     * @param   ViewHolder      holder    ビューホルダー
+     * @author Ito Shota
+     * @since  2016/08/10
+     **/
+    void setTitle(int position, Question question,ViewHolder holder){
+        int index = position;
+        String strTitleNumber = getContext().getResources().getString(R.string.questionnaire_topic) + index + " " +question.getQuestionTitle();
+        holder.mTitleNumberTv.setText( strTitleNumber );
+    }
+
+    /**
+     * setAlreayProcessed
+     * 既に処理済みにする.
+     * @param   Question        question  質問
+     * @param   ViewHolder      holder    ビューホルダー
+     * @author Ito Shota
+     * @since  2016/08/10
+     **/
+    void setAlreayProcessed(Question question,ViewHolder holder){
+        //  クリッカー問題送信開始日時
+        String startTime = question.getQuesiontStartDateTime();
+        //  クリッカー回答送信日時
+        String endTime = question.getQuestionResultEndDateTime();
+        if( startTime != null && endTime != null ){
+            //  済を表示
+            holder.mAlreadyTv.setVisibility(View.VISIBLE);
+            //  タイトルの背景色
+            holder.mTitleNumberTv.setBackgroundResource(R.color.limeGreen);
+        }else{
+            //  非表示に
+            holder.mAlreadyTv.setVisibility(View.GONE);
+            //  タイトルの背景色
+            holder.mTitleNumberTv.setBackgroundResource(R.color.darkRed);
+        }
+    }
+
+
     //以下2つをfalseで返すと選択が行えなくなる
     public boolean areAllItemsEnabled() {
         return true;
@@ -63,10 +106,13 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
     public class ViewHolder {
         //      クリッカー問題番号
         public TextView mTitleNumberTv;
+        //      済（クリッカー済)
+        public TextView mAlreadyTv;
         //      クリッカー問
         public TextView mClikcerQuestionTv;
         public ViewHolder(View view) {
             this.mTitleNumberTv = (TextView) view.findViewById(R.id.row_question_question_index_textView);
+            this.mAlreadyTv = (TextView) view.findViewById(R.id.row_question_question_already_tv);
             this.mClikcerQuestionTv = (TextView) view.findViewById(R.id.row_clikcer_question_textView);
         }
     }

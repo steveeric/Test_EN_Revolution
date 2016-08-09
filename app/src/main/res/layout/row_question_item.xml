@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jp.pmw.test_en_revolution.questionnaire.QuestionLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/gray_border">
     <!-- クリッカーの問題番号を表示する. -->
-    <TextView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="アンケートトピック"
-        android:id="@+id/row_question_question_index_textView"
-        android:textSize="@dimen/textsize_xlarge"
-        android:background="@color/limeGreen"
-        android:textColor="@color/whiteSmoke" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="90"
+            android:layout_gravity="left"
+            android:gravity="left"
+            android:text="アンケートトピック"
+            android:id="@+id/row_question_question_index_textView"
+            android:textSize="@dimen/textsize_xlarge"
+            android:background="@color/limeGreen"
+            android:textColor="@color/whiteSmoke" />
+        <TextView
+            android:id="@+id/row_question_question_already_tv"
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:text="済"
+            android:textSize="@dimen/textsize_xlarge"
+            android:background="@color/limeGreen"
+            android:textColor="@color/whiteSmoke" />
+    </LinearLayout>
+
     <!-- クリッカーの問を表示する. -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/row_clikcer_question_textView"
         android:textSize="@dimen/textsize_xlarge"/>
-    <!--<TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="(主題がありません.)"
-        android:id="@+id/row_question_topic"
-        android:textSize="@dimen/textsize_xlarge"/>-->
 
-    <!--<ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/row_question_asks_listView">
-    </ListView>-->
-    <!--<TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="(問)"
-        android:id="@+id/row_question_question_textView"
-        android:textSize="@dimen/textsize_xlarge"
-        android:layout_gravity="center_horizontal" />-->
-    
-
-</jp.pmw.test_en_revolution.questionnaire.QuestionLayout>
+</LinearLayout>
