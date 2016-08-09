@@ -146,6 +146,19 @@ public class QuestionnaireFragment extends MyMainFragment {
         Questionnaire questionnaire = getMainActivity().getClassObject().getQuestionnaire();
         List<Question> questionList = questionnaire.getQuestions();
         boolean stopFlag            =   false;
+        //  タップされた問が最後まで終了しているかを確認する.
+        for(int i = 0; i < questionList.size(); i++){
+            Question q = questionList.get(i);
+            if( nowTapNumber.equals( questionList.get(i).getQuestionNumber() )  ){
+                String openStartTime    =   q.getQuesiontStartDateTime();
+                String resultEndTime    =   q.getQuestionResultEndDateTime();
+                if( resultEndTime != null ){
+                    return false;
+                }
+            }
+        }
+
+
         for(int i = 0; i < questionList.size(); i++){
             Question q = questionList.get(i);
             if( !( nowTapNumber.equals( questionList.get(i).getQuestionNumber() ) ) ){
