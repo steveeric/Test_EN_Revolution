@@ -36,6 +36,19 @@ public class Question implements Serializable {
     @SerializedName("question_result_end_time")
     private String questionResultEndDateTime;
 
+    @SerializedName("open_ack_count")
+    public int mOpenACKCount;
+    @SerializedName("open_nack_count")
+    public int mOpenNACKCount;
+    @SerializedName("yes_count")
+    public int mYesCount;
+    @SerializedName("no_count")
+    public int mNoCount;
+    @SerializedName("answerresult_ack_count")
+    public int mAnswerresultACKCount;
+    @SerializedName("answerresult_nack_count")
+    public int mAnswerresultNACKCount;
+
     //
     @SerializedName("question_topic")
     private List<Ask> asks;
@@ -79,6 +92,12 @@ public class Question implements Serializable {
         this.questionCheckEndDateTime   =   qts.getAnswerCheckEndTime();
         this.questionResultStartDateTime    =   qts.getAnswerResultStartTime();
         this.questionResultEndDateTime      =   qts.getAnswerResultEndTime();
+        this.mOpenACKCount                  =   qts.mOpenACKCount;
+        this.mOpenNACKCount                 =   qts.mOpenACKCount;
+        this.mYesCount                      =   qts.mYesCount;
+        this.mNoCount                       =   qts.mNoCount;
+        this.mAnswerresultACKCount          =   qts.mAnswerresultACKCount;
+        this.mAnswerresultNACKCount         =   qts.mAnswerresultNACKCount;
     }
 
 

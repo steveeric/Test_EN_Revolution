@@ -60,6 +60,8 @@
     <color name="silver">#C0C0C0</color>
     <!-- シアン -->
     <color name="cyan">#00FFFF</color>
+    <!-- アクア -->
+    <color name="aqua">#00FFFF</color>
     <!-- ライトシアン -->
     <color name="lightCyan">#E0FFFF</color>
 

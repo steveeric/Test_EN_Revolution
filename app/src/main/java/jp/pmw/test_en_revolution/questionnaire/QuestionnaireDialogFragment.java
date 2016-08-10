@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import jp.pmw.test_en_revolution.AppController;
 import jp.pmw.test_en_revolution.ClassReamingTime;
@@ -38,6 +40,11 @@ public class QuestionnaireDialogFragment extends DialogFragment{
 
     public static final String QUESTION_NAIRE = "questionnaire";
     public static final String QUESTION_NAIRE_DIALOG_FRAGMENT = "questionnaireDialog";
+
+    private static final int FIRST_TRANSMITTED = 1;
+    private static final int SECOND_TRANMISTTED = 2;
+    private static final int THIRD_TRANSMITTED = 3;
+
     private Question question;
     private QuestionnaireFragment questionnaireFragment;
     private Context context;
@@ -125,6 +132,8 @@ public class QuestionnaireDialogFragment extends DialogFragment{
             Button startPositiveBtn = (Button)dialog.findViewById(R.id.dialog_custom_questionnaire_check_positive_button);
             donotStartNegativeBtn.setOnClickListener(questionnaireCheckStartBtnListener);
             startPositiveBtn.setOnClickListener(questionnaireCheckStartBtnListener);
+            //  送信結果表示
+            showTransmitted( dialog, FIRST_TRANSMITTED );
 
             checkLayout.setVisibility(View.VISIBLE);
         }else if(this.question.getQuestionEndDateTime()!=null && this.question.getQuestionCheckStartDateTime() != null && this.question.getQuestionResultStartDateTime() == null){
@@ -133,11 +142,18 @@ public class QuestionnaireDialogFragment extends DialogFragment{
 
             actionTV.setText(title);
 
+            //  回答状況返信のみ
+            TextView     resultTv     = (TextView)dialog.findViewById(R.id.dialog_custom_questionnaire_result_tv);
+            resultTv.setText(R.string.questionnaire_custom_dialog_receiving_directive);
+
             Button resultNegativeBtn = (Button)dialog.findViewById(R.id.dialog_custom_questionnaire_reslut_negative_button);
             Button resultPositiveBtn = (Button)dialog.findViewById(R.id.dialog_custom_questionnaire_reslut_positive_button);
 
             resultNegativeBtn.setOnClickListener(questionnaireresultBtnListener);
             resultPositiveBtn.setOnClickListener(questionnaireresultBtnListener);
+
+            //  送信結果表示
+            showTransmitted( dialog, SECOND_TRANMISTTED );
 
             resultLayout.setVisibility(View.VISIBLE);
         }else if(this.question.getQuestionEndDateTime()!=null && this.question.getQuestionCheckStartDateTime() != null && this.question.getQuestionResultStartDateTime() != null) {
@@ -151,6 +167,9 @@ public class QuestionnaireDialogFragment extends DialogFragment{
 
             resultNegativeBtn.setOnClickListener(questionnaireresultBtnListener);
             resultPositiveBtn.setOnClickListener(questionnaireresultBtnListener);
+
+            //  送信結果表示
+            showTransmitted( dialog, THIRD_TRANSMITTED );
 
             resultLayout.setVisibility(View.VISIBLE);
         }else{
@@ -368,8 +387,47 @@ public class QuestionnaireDialogFragment extends DialogFragment{
         moveToResultFragment();
     }
 
-
-
+    //  送信赤外線のNACK数表示
+    void showTransmitted(Dialog dialog, int transmitted){
+        if( transmitted == FIRST_TRANSMITTED ){
+            showFirstTransmitted( dialog );
+        }else if( transmitted == SECOND_TRANMISTTED ){
+            showFirstTransmitted( dialog );
+            showSecondTransmitted( dialog );
+        }else if( transmitted == THIRD_TRANSMITTED ){
+            showFirstTransmitted( dialog );
+            showSecondTransmitted( dialog );
+            showThirdTransmitted( dialog );
+        }
+    }
+    //  問題送信の結果
+    void showFirstTransmitted( Dialog dialog ){
+        //  問題送信のNACK数表示
+        LinearLayout firstLinearLayout = (LinearLayout) dialog.findViewById(R.id.dialog_custom_questionnaire_first_tranmitted_result_ll);
+        TextView nackTv = (TextView) dialog.findViewById(R.id.dialog_custom_questionnaire_first_tranmitted_result_nack_count_tv);
+        nackTv.setText(""+question.mOpenNACKCount);
+        firstLinearLayout.setVisibility(View.VISIBLE);
+    }
+    //  回答収集の結果
+    void showSecondTransmitted( Dialog dialog ){
+        LinearLayout secondLinearLayout = (LinearLayout) dialog.findViewById(R.id.dialog_custom_questionnaire_second_tranmitted_result_ll);
+        secondLinearLayout.setVisibility(View.VISIBLE);
+        TextView yesTv = (TextView) dialog.findViewById(R.id.dialog_custom_questionnaire_second_tranmitted_result_yes_count_tv);
+        TextView noTv = (TextView) dialog.findViewById(R.id.dialog_custom_questionnaire_second_tranmitted_result_no_count_tv);
+        //  はいと回答した人数
+        yesTv.setText(""+question.mYesCount);
+        //  いいえと回答した人数
+        noTv.setText(""+question.mNoCount);
+    }
+    //  回答収集の結果
+    void showThirdTransmitted( Dialog dialog ){
+        LinearLayout thirdLinearLayout = (LinearLayout) dialog.findViewById(R.id.dialog_custom_questionnaire_third_tranmitted_result_ll);
+        if( question.getQuestionResultEndDateTime() != null ){
+            TextView nackTv = (TextView) dialog.findViewById(R.id.dialog_custom_questionnaire_third_tranmitted_result_nack_count_tv);
+            nackTv.setText(""+question.mAnswerresultNACKCount);
+            thirdLinearLayout.setVisibility(View.VISIBLE);
+        }
+    }
     class TransmitQuestion{
         @SerializedName("question_id")
         String questionid;
@@ -394,5 +452,4 @@ public class QuestionnaireDialogFragment extends DialogFragment{
         @SerializedName("no_ratio")
         int noRatio;
     }
-
   }

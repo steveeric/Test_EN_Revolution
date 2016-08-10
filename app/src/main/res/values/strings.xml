@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_version">version 0.3.27</string>
+    <string name="app_version">version 0.3.28</string>
     <!--<string name="app_name">授業運営管理ソリューション</string>-->
     <string name="app_name">SonoRIs MT</string>
     <string name="do_not_mistake">間違いありませんか?</string>
@@ -171,6 +171,9 @@
     <string name="questionnaire_custom_dialog_confirm_result">の結果円グラフを表示しますか？</string>
     <string name="questionnaire_custom_dialog_warning1">SonoRIs.の画面を表に向け、\r\nクリッカー参加学生全員が机の上に置いたのを確認してから、\r\n開始してください.</string>
     <string name="questionnaire_custom_dialog_warning2">回答が「いいえ」のひとが、SonoRIs.をカバンの奥深くにしまったのを確認してから、\n\n開始してください.</string>
+    <string name="questionnaire_custom_dialog_receiving_directive">SonoRIsが赤外線信号を受信できるように指示してください.</string>
+    <string name="questionnaire_custom_dialog_do_hide_directive">「いいえ」の学生はSonoRIsの受信部を隠すよう指示してください.</string>
+    <string name="questionnaire_custom_dialog_browsable">回答閲覧可能</string>
 
     <!-- カスタムダイアログ -->
     <string name="number_of_times">回</string>

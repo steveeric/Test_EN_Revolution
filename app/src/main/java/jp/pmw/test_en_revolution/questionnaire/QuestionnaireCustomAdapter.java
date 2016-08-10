@@ -25,6 +25,30 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
         mFactory = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mItemLayoutResource = resource;
     }
+    /**
+     *  setACKAndNACkCountメソッド
+     *  ACK・NACK数を入れ替える
+     * */
+    public void setACKAndNACkCount(List<Question> newQuestionList){
+        for( int i = 0; i < newQuestionList.size(); i++ ){
+            Question newQuestion = newQuestionList.get(i);
+            String newQuestionId = newQuestion.getQuestionId();
+            for( int j = 0; j < newQuestionList.size(); j++ ){
+                Question question = getItem(j);
+                String questionId = question.getQuestionId();
+                if( newQuestionId.equals( questionId ) ){
+                    question.mOpenACKCount = newQuestion.mOpenACKCount;
+                    question.mOpenNACKCount = newQuestion.mOpenNACKCount;
+                    question.getResult().setYesCount( newQuestion.getResult().getYesCount() );
+                    question.getResult().setNoCount( newQuestion.getResult().getNoCount() );
+                    question.mAnswerresultACKCount = newQuestion.mAnswerresultACKCount;
+                    question.mAnswerresultNACKCount = newQuestion.mAnswerresultNACKCount;
+                }
+            }
+        }
+    }
+
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
@@ -115,20 +139,26 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
         String endTime = question.getQuestionResultEndDateTime();
         if( startTime != null && endTime != null ){
             //  クリッカー済み
+            holder.mAlreadyTv.setText(R.string.questionnaire_custom_dialog_browsable);
             holder.mAlreadyTv.setVisibility(View.VISIBLE);
             holder.mProgressStatusLl.setVisibility(View.GONE);
             holder.mTitleNumberTv.setBackgroundResource(R.color.limeGreen);
+            holder.mAlreadyTv.setBackgroundResource(R.color.limeGreen);
         }else if(startTime == null && endTime == null){
             //  クリッカー未送信
+            holder.mAlreadyTv.setText("");
+            holder.mAlreadyTv.setBackgroundResource(R.color.limeGreen);
             holder.mAlreadyTv.setVisibility(View.GONE);
             holder.mProgressStatusLl.setVisibility(View.VISIBLE);
             holder.mProgressStatusLl.setBackgroundResource(R.color.limeGreen);
             holder.mTitleNumberTv.setBackgroundResource(R.color.limeGreen);
         }else{
             //  クリッカー実施中
+            holder.mAlreadyTv.setText("");
             holder.mAlreadyTv.setVisibility(View.GONE);
             holder.mProgressStatusLl.setVisibility(View.VISIBLE);
             holder.mProgressStatusLl.setBackgroundResource(R.color.gold);
+            holder.mAlreadyTv.setBackgroundResource(R.color.gold);
             holder.mTitleNumberTv.setBackgroundResource(R.color.gold);
         }
     }

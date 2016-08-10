@@ -35,4 +35,18 @@ public class QuestionTransmitState implements Serializable {
     @SerializedName("answerresult_end_time")
     private String answerResultEndTime;
     public String getAnswerResultEndTime(){return this.answerResultEndTime;}
+
+    @SerializedName("open_ack_count")
+    public int mOpenACKCount;
+    @SerializedName("open_nack_count")
+    public int mOpenNACKCount;
+    @SerializedName("yes_count")
+    public int mYesCount;
+    @SerializedName("no_count")
+    public int mNoCount;
+    @SerializedName("answerresult_ack_count")
+    public int mAnswerresultACKCount;
+    @SerializedName("answerresult_nack_count")
+    public int mAnswerresultNACKCount;
+
 }

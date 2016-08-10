@@ -147,6 +147,7 @@ public class QuestionnaireFragment extends MyMainFragment {
     boolean chkCnaBeSelected(String nowTapNumber){
         Questionnaire questionnaire = getMainActivity().getClassObject().getQuestionnaire();
         List<Question> questionList = questionnaire.getQuestions();
+
         boolean stopFlag            =   false;
         //  タップされた問が最後まで終了しているかを確認する.
         for(int i = 0; i < questionList.size(); i++){
@@ -159,7 +160,6 @@ public class QuestionnaireFragment extends MyMainFragment {
                 }
             }
         }
-
 
         for(int i = 0; i < questionList.size(); i++){
             Question q = questionList.get(i);
@@ -293,15 +293,15 @@ public class QuestionnaireFragment extends MyMainFragment {
      * ダミーデータでアンケート調査画面を開始する.
      */
     private void dummyTestStart() {
-//質問アイテムを取得
+        //質問アイテムを取得
         //List<Question> questions = DummyQuestionContent.ITEMS;
         MainActivity activity = (MainActivity)this.getActivity();
         List<Question> questions = activity.mTeacher.getQuestionnaire().getQuestions();
         if(questions.size() == 0){
-//アンケートがない.
+            //アンケートがない.
             showNoQuestionLayout();
         }else{
-//アンケートがある.
+            //アンケートがある.
             showQuestionLayout();
             setDummyTestData(questions);
         }

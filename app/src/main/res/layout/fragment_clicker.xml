@@ -45,6 +45,7 @@
             android:id="@+id/clicker_survey_no_question_textView"
             android:layout_gravity="center|center" />
     </LinearLayout>
+    <!-- クリッカー問表示 -->
     <LinearLayout
         android:visibility="visible"
         android:orientation="vertical"
@@ -56,9 +57,9 @@
             android:textSize="@dimen/textsize_xlarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text=""
+            android:text="　"
             android:layout_gravity="center"
+            android:visibility="gone"
             android:id="@+id/clicker_survey_do_question_textView"/>
 
         <TextView
@@ -66,8 +67,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10sp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text=""
+            android:visibility="gone"
             android:layout_gravity="center"
             android:id="@+id/clicker_survey_do_question_transmit_result_textView" />
 
@@ -78,8 +79,8 @@
             android:layout_marginTop="10sp"
             android:layout_marginLeft="15dp"
             android:layout_marginBottom="10sp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text=""
+            android:visibility="gone"
             android:id="@+id/clicker_survey_do_question_transmit_next_action_textView" />
         <ListView
             android:layout_width="match_parent"
