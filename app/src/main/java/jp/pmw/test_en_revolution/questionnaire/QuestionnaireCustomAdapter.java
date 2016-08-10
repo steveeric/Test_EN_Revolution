@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -41,6 +42,9 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
         //  タイトルをセットする.
         setTitle( position, question, holder );
 
+        //
+        setStatus( holder, question );
+
         //  既に処理済みにする.
         setAlreayProcessed( question, holder );
 
@@ -65,7 +69,37 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
         String strTitleNumber = getContext().getResources().getString(R.string.questionnaire_topic) + index + " " +question.getQuestionTitle();
         holder.mTitleNumberTv.setText( strTitleNumber );
     }
-
+    /**
+     * setStatusメソッド
+     * 進行状況テキストビューの色をセットする.
+     * @param   ViewHolder  holder      ホルダー
+     * @param   String      time        時間文字列
+     * @author Ito Shota
+     * @since  2016/08/10
+     **/
+    void setStatus(ViewHolder holder, Question question){
+        String firstEndTime = question.getQuestionEndDateTime();
+        setChangeStataus( holder.mFirstStatusTv,  firstEndTime);
+        String secondEndTime = question.getQuestionCheckEndDateTime();
+        setChangeStataus( holder.mSecondStatusTv,  secondEndTime);
+        String thirdEndTime = question.getQuestionResultEndDateTime();
+        setChangeStataus( holder.mThirdStatusTv,  thirdEndTime);
+    }
+    /**
+     * setChangeStatausメソッド
+     * 進行状況テキストビューの色をセットする.
+     * @param   TextView    tv          テキストビュー
+     * @param   String      time        時間文字列
+     * @author Ito Shota
+     * @since  2016/08/10
+     **/
+    void setChangeStataus(TextView tv, String time){
+        if( time != null ){
+            tv.setBackgroundResource(R.color.gold);
+        }else{
+            tv.setBackgroundResource(R.color.white);
+        }
+    }
     /**
      * setAlreayProcessed
      * 既に処理済みにする.
@@ -82,15 +116,20 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
         if( startTime != null && endTime != null ){
             //  クリッカー済み
             holder.mAlreadyTv.setVisibility(View.VISIBLE);
+            holder.mProgressStatusLl.setVisibility(View.GONE);
             holder.mTitleNumberTv.setBackgroundResource(R.color.limeGreen);
         }else if(startTime == null && endTime == null){
             //  クリッカー未送信
             holder.mAlreadyTv.setVisibility(View.GONE);
+            holder.mProgressStatusLl.setVisibility(View.VISIBLE);
+            holder.mProgressStatusLl.setBackgroundResource(R.color.limeGreen);
             holder.mTitleNumberTv.setBackgroundResource(R.color.limeGreen);
         }else{
             //  クリッカー実施中
             holder.mAlreadyTv.setVisibility(View.GONE);
-            holder.mTitleNumberTv.setBackgroundResource(R.color.darkRed);
+            holder.mProgressStatusLl.setVisibility(View.VISIBLE);
+            holder.mProgressStatusLl.setBackgroundResource(R.color.gold);
+            holder.mTitleNumberTv.setBackgroundResource(R.color.gold);
         }
     }
     //以下2つをfalseで返すと選択が行えなくなる
@@ -104,6 +143,13 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
      *  ViewHolderクラス
      * */
     public class ViewHolder {
+        public LinearLayout mProgressStatusLl;
+        //  一つ目の状況
+        public TextView mFirstStatusTv;
+        //  二つ目の状況
+        public TextView mSecondStatusTv;
+        //  三つ目の状況
+        public TextView mThirdStatusTv;
         //      クリッカー問題番号
         public TextView mTitleNumberTv;
         //      済（クリッカー済)
@@ -111,6 +157,10 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
         //      クリッカー問
         public TextView mClikcerQuestionTv;
         public ViewHolder(View view) {
+            this.mProgressStatusLl = (LinearLayout) view.findViewById(R.id.row_question_question_progress_status_ll);
+            this.mFirstStatusTv     =   (TextView) view.findViewById(R.id.row_question_question_first_status_tv);
+            this.mSecondStatusTv    =   (TextView) view.findViewById(R.id.row_question_question_second_status_tv);
+            this.mThirdStatusTv     =   (TextView) view.findViewById(R.id.row_question_question_third_status_tv);
             this.mTitleNumberTv = (TextView) view.findViewById(R.id.row_question_question_index_textView);
             this.mAlreadyTv = (TextView) view.findViewById(R.id.row_question_question_already_tv);
             this.mClikcerQuestionTv = (TextView) view.findViewById(R.id.row_clikcer_question_textView);

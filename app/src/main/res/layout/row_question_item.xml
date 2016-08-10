@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="90"
+            android:layout_weight="80"
             android:layout_gravity="left"
             android:gravity="left"
             android:text="アンケートトピック"
@@ -21,18 +21,46 @@
             android:textSize="@dimen/textsize_xlarge"
             android:background="@color/limeGreen"
             android:textColor="@color/whiteSmoke" />
-        <TextView
-            android:id="@+id/row_question_question_already_tv"
-            android:visibility="gone"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
             android:layout_gravity="right"
-            android:gravity="right"
-            android:text="済"
-            android:textSize="@dimen/textsize_xlarge"
-            android:background="@color/limeGreen"
-            android:textColor="@color/whiteSmoke" />
+            android:background="@color/limeGreen">
+            <!-- 送信状況ステータス -->
+            <LinearLayout
+                android:id="@+id/row_question_question_progress_status_ll"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/row_question_question_first_status_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/row_question_question_second_status_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/row_question_question_third_status_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/row_question_question_already_tv"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|right"
+                android:text="回答閲覧可能"
+                android:textSize="@dimen/textsize_large"
+                android:textColor="@color/cyan" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <!-- クリッカーの問を表示する. -->

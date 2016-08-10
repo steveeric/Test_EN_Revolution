@@ -26,6 +26,8 @@
     <color name="semitransparenttranslucent_darkRed">#55B3424A</color>
     <!-- きいろ -->
     <color name="yellow">#FFFF00</color>
+    <!-- コールド -->
+    <color name="gold">#FFD700</color>
     <!-- きみどり -->
     <color name="yellowGreen">#9acd32</color>
     <!-- みどり -->
