@@ -1,6 +1,7 @@
 package jp.pmw.test_en_revolution.questionnaire;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,12 @@ import jp.pmw.test_en_revolution.StudentObject;
  * クリッカーの回答者アダプター
  */
 public class QuestionnaireResultAdapter extends ArrayAdapter<StudentObject> {
-    private LayoutInflater mLayoutInflater;
-    public QuestionnaireResultAdapter(Context context, int resourceId, StudentObject[] items) {
+    private LayoutInflater  mLayoutInflater;
+    String  mColor;
+    public QuestionnaireResultAdapter(Context context, int resourceId, String color, StudentObject[] items) {
         super(context, resourceId, items);
-        mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mLayoutInflater =   (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mColor          =   color;
     }
 
     @Override
@@ -36,6 +39,7 @@ public class QuestionnaireResultAdapter extends ArrayAdapter<StudentObject> {
         }
         StudentObject so = getItem( position );
         setItem( holder, so );
+        setItemColor( holder );
         return view;
     }
     /**
@@ -51,6 +55,20 @@ public class QuestionnaireResultAdapter extends ArrayAdapter<StudentObject> {
         holder.furiganaTextView.setText(so.getFurigana());
         holder.fullNameTextView.setText(so.getFullName());
     }
+    /**
+     * setItemColorメソッド
+     * 学生情報の文字列に色をセットする.(「はい」は青色,「いいえ」は赤色)
+     * クリッカー回答結果の円グラフに合わせております.
+     * @param   ViewHolder      holder  ビューホルダー
+     * @author Ito Shota
+     * @since  2016/08/10
+     **/
+    void setItemColor(ViewHolder holder){
+        holder.orijinalStudentIdTextView.setTextColor(Color.parseColor(mColor));
+        holder.furiganaTextView.setTextColor(Color.parseColor(mColor));
+        holder.fullNameTextView.setTextColor(Color.parseColor(mColor));
+    }
+
     public class ViewHolder {
         //
         LinearLayout mLeftLl;

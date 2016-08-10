@@ -178,7 +178,8 @@ public class QuestionnaireResultDialogFragment extends DialogFragment {
             @Override
             public void run() {
                 if( sos.length > 0 ){
-                    mAdapter = new QuestionnaireResultAdapter(getActivity(), RosterCustomAdapter_2.ALL_LAYOUT ,sos);
+                    String color = mQuestion.getAsks().get(0).getChoices().get(mTapPosition).getChoiceIndexColor();
+                    mAdapter = new QuestionnaireResultAdapter(getActivity(), RosterCustomAdapter_2.ALL_LAYOUT, color, sos);
                     mAnswerGv.setAdapter( mAdapter );
                     mAnswerGv.setVisibility(View.VISIBLE);
                 }else{
