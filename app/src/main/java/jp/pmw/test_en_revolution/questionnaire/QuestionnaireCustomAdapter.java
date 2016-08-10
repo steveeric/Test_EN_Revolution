@@ -80,19 +80,19 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
         //  クリッカー回答送信日時
         String endTime = question.getQuestionResultEndDateTime();
         if( startTime != null && endTime != null ){
-            //  済を表示
+            //  クリッカー済み
             holder.mAlreadyTv.setVisibility(View.VISIBLE);
-            //  タイトルの背景色
+            holder.mTitleNumberTv.setBackgroundResource(R.color.limeGreen);
+        }else if(startTime == null && endTime == null){
+            //  クリッカー未送信
+            holder.mAlreadyTv.setVisibility(View.GONE);
             holder.mTitleNumberTv.setBackgroundResource(R.color.limeGreen);
         }else{
-            //  非表示に
+            //  クリッカー実施中
             holder.mAlreadyTv.setVisibility(View.GONE);
-            //  タイトルの背景色
             holder.mTitleNumberTv.setBackgroundResource(R.color.darkRed);
         }
     }
-
-
     //以下2つをfalseで返すと選択が行えなくなる
     public boolean areAllItemsEnabled() {
         return true;

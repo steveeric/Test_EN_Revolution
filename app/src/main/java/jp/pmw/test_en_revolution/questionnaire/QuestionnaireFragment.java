@@ -76,6 +76,8 @@ public class QuestionnaireFragment extends MyMainFragment {
 
     private LastQuestionBmpTransmitLogObject lastQuestionBmpTransmitLogObject;
 
+    QuestionnaireCustomAdapter mAdapter;
+
     public QuestionnaireFragment() {
     }
     @Override
@@ -306,8 +308,8 @@ public class QuestionnaireFragment extends MyMainFragment {
     }
 
     private void setDummyTestData(List<Question> questions){
-        QuestionnaireCustomAdapter adapter = new QuestionnaireCustomAdapter(this.getActivity(),R.layout.row_question_item,questions);
-        this.questionListView.setAdapter(adapter);
+        mAdapter = new QuestionnaireCustomAdapter(this.getActivity(),R.layout.row_question_item,questions);
+        this.questionListView.setAdapter(mAdapter);
     }
 
 
@@ -391,6 +393,8 @@ public class QuestionnaireFragment extends MyMainFragment {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
+                    mAdapter.notifyDataSetChanged();
+                    questionListView.invalidate();
                     doQuestionTextView.setText(hedder);
                     transmitResultTextView.setText(result);
                 }
