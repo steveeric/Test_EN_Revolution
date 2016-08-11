@@ -93,7 +93,7 @@ public class Question implements Serializable {
         this.questionResultStartDateTime    =   qts.getAnswerResultStartTime();
         this.questionResultEndDateTime      =   qts.getAnswerResultEndTime();
         this.mOpenACKCount                  =   qts.mOpenACKCount;
-        this.mOpenNACKCount                 =   qts.mOpenACKCount;
+        this.mOpenNACKCount                 =   qts.mOpenNACKCount;
         this.mYesCount                      =   qts.mYesCount;
         this.mNoCount                       =   qts.mNoCount;
         this.mAnswerresultACKCount          =   qts.mAnswerresultACKCount;
