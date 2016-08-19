@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jp.pmw.test_en_revolution.survey.ChoiceLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gray_border">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="　"
+        android:layout_gravity="center"
+        android:textSize="@dimen/textsize_large"
+        android:gravity="center"
+        android:id="@+id/row_questionnaire_answer_result_index_color_textView" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="はい"
+        android:textSize="@dimen/textsize_xxlarge"
+        android:gravity="center"
+        android:id="@+id/row_questionnaire_answer_result_choice_textView" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="○○人"
+        android:textSize="@dimen/textsize_xxlarge"
+        android:gravity="right"
+        android:id="@+id/row_questionnaire_answer_result_answer_count_textView" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textsize_xxlarge"
+        android:gravity="right"
+        android:layout_marginRight="10dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="○○%"
+        android:id="@+id/row_questionnaire_answer_result_answer_percentage_textView" />
+</jp.pmw.test_en_revolution.survey.ChoiceLayout>

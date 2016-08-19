@@ -7,6 +7,7 @@ import jp.pmw.test_en_revolution.group_readjustment.ReAdjustmentOjbect;
 import jp.pmw.test_en_revolution.one_cushion.select_teacher.Faculty;
 import jp.pmw.test_en_revolution.questionnaire.Questionnaire;
 import jp.pmw.test_en_revolution.room.Room;
+import jp.pmw.test_en_revolution.survey.Survey;
 
 /**
  * Created by si on 2016/01/29.
@@ -65,6 +66,11 @@ public class ClassObject {
         this.questionnaire = q;
     }
     public Questionnaire getQuestionnaire(){return this.questionnaire;}
+
+    //  アンケートオブジェクト
+    private Survey survey;
+    public void setSurvey(Survey s){this.survey = s;}
+    public Survey getSurvey(){return this.survey;}
 
     //  グループ調整オブジェクト
     private ReAdjustmentOjbect reAdjustment;

@@ -86,7 +86,6 @@ public class URL {
         return TEMP_BASE_URL + "TransmitStateJson_Controller/lastQuestionTransmitState?scn="+sameClassNumber;
     }
 
-
     public static final String getOnlyQuestionResult(String sameClassNumber, String questionId){
         //return BASE_URL + JSON_DIR + "/question_result.php?scn="+sameClassNumber;
         return TEMP_BASE_URL + "QuestionJson_Controller/getOnlyQuestionResult?scn="+sameClassNumber+"&question_id="+questionId;
@@ -174,5 +173,38 @@ public class URL {
     public static final String getUrlgetQuestionAnswers(String questionId, int answerType){
         return TEMP_BASE_URL + "QuestionJson_Controller/getQuestionAnswers?qid="+questionId+"&at="+answerType;
     }
+    /**
+     * getUrlSurveyStateメソッド
+     * アンケート状態を取得します.
+     * @param   String  sameClassNumber 授業識別番号
+     * @author Ito Shota
+     * @since  2016/08/17
+     **/
+    public static final String getUrlSurveyState(String sameClassNumber){
+        return TEMP_BASE_URL + "SurveyDevaice_Controller/getSituation?scn="+sameClassNumber;
+    }
+    /**
+     * getUrlStartSurveyメソッド
+     * アンケートを開始するURLを取得します.
+     * @param   String  sameClassNumber 授業識別番号
+     * @author Ito Shota
+     * @since  2016/08/17
+     **/
+    public static final String getUrlStartSurvey(String sameClassNumber){
+        return TEMP_BASE_URL + "SurveyDevaice_Controller/startSurvey?scn="+sameClassNumber;
+    }
+    /**
+     * getUrlGetSurveyAnswersメソッド
+     * アンケートを開始するURLを取得します.
+     * @param   String  surveyId        アンケートID(スマホ クリッカー)
+     * @param   String  selectNumber    選択されている問題番号(問は除く、数字のみ)
+     * @param   String  selectedId      選択ID(二択のみしか受けておりません.)[例 はい:○○○○_01, いいえ:○○○○_02]
+     * @author Ito Shota
+     * @since  2016/08/18
+     **/
+    public static final String getUrlGetSurveyAnswers(String surveyId, String selectNumber, String selectedId){
+        return TEMP_BASE_URL + "SurveyDevaice_Controller/getSurveyAnswers?sc="+surveyId+"&sn="+selectNumber+"&sl="+selectedId;
+    }
+
 
 }

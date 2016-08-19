@@ -162,10 +162,7 @@ public class QuestionnaireResultFragment extends MyMainFragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        //テストなのでダミーデータを入れる.
-        //this.questions = DummyQuestionContent.ITEMS;
         activity = (MainActivity)this.getActivity();
-        //this.questions = activity.mTeacher.getQuestionnaire().getQuestions();
         this.questions = activity.getClassObject().getQuestionnaire().getQuestions();
     }
 
@@ -451,7 +448,6 @@ public class QuestionnaireResultFragment extends MyMainFragment {
     private void setTestItems(){
         //String number = DummyQuestionContent.ITEMS.get(0).getQuestionNumber();
         //String content = DummyQuestionContent.ITEMS.get(0).getAsks().get(0).getAskContent();
-        //List<Answer> answers =  DummyQuestionContent.ITEMS.get(0).getAsks().get(0).getAnswer();
 
         //再描画ゾーンをきれいにする.
         removeZone();

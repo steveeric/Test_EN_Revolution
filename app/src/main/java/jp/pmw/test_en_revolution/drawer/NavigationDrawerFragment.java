@@ -123,17 +123,9 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-
-        /*List<DrawerItem> items = new ArrayList<DrawerItem>();
-        for(int i=0;i<resores.length;i++){
-            items.add(new DrawerItem(resores[i],titles[i]));
-        }*/
-
         Drawer drawer = new Drawer();
         List<DrawerBindData> items = drawer.getDrawerItem(this.getActivity());
         mDrawerListView.setAdapter(new DrawerAdapter(getActionBar().getThemedContext(),R.layout.fragment_drawer_sector,items));
-
-        //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
         //50音順に戻るボタン
         this.returnTopActivityButton = (Button)this.getActivity().findViewById(R.id.fragment_navigation_drawer_return_top_button);
@@ -185,19 +177,6 @@ public class NavigationDrawerFragment extends Fragment {
         // getViewで対象のViewを更新
         listView.getAdapter().getView(mCurrentSelectedPosition, targetView, listView);
     }
-
-
-
-   /* @Override
-    public void onWindowFocusChanged(final boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        ListView list = (ListView) this.getActivity().findViewById(R.id.navigation_drawer_list);
-        LinearLayout listItem = (LinearLayout) list.getChildAt(0);
-        if (listItem != null) {
-            int y = list.getHeight()/2 - listItem.getHeight() / 2;
-            list.setSelectionFromTop(SELECT_LIST_INDEX, y);
-        }
-    }*/
 
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);

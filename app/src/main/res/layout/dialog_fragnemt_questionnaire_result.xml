@@ -15,10 +15,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <Button
+                android:id="@+id/dialog_fragment_questionnaire_result_update_btn"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="10"
+                android:text="更新する"
+                android:gravity="center"
+                android:visibility="gone"
+                android:textSize="@dimen/textsize_xxlarge"
+                android:textColor="@color/white"/>
             <!-- 選択文を表示 -->
             <TextView
                 android:id="@+id/dialog_fragment_questionnaire_result_text_tv"

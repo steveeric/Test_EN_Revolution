@@ -1,4 +1,4 @@
-package jp.pmw.test_en_revolution.questionnaire;
+package jp.pmw.test_en_revolution.survey;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -12,38 +12,36 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.echo.holographlibrary.Line;
+import java.util.Timer;
 
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.R;
 import jp.pmw.test_en_revolution.StudentObject;
 import jp.pmw.test_en_revolution.attendee.RosterCustomAdapter_2;
+import jp.pmw.test_en_revolution.confirm_class_plan.Student;
+import jp.pmw.test_en_revolution.questionnaire.QuestionnaireResultAdapter;
 
 /**
- * Created by si on 2016/08/07.
- * QuestionnaireResultDialogFragmentクラス
- * クリッカーの「はい」と「いいえ」を答えた学生を表示します.
+ * Created by si on 2016/08/18.
+ * SurveyResultDialogFragmentクラス
+ * スマホ クリッカー(アンケート)の詳細な結果を表示する
  */
-public class QuestionnaireResultDialogFragment extends DialogFragment {
+public class SurveyResultDialogFragment  extends DialogFragment {
     public static final String TAP_POSITION = "tap_position";
-    public static final String QUESTION     = "question";
-    public static final String QUESTIONNNAIRE_RESULT_DIALOG_FRAGMENT = "questionnaire_result_dialog_fragment";
-     public static QuestionnaireResultDialogFragment newInstance(){
-        QuestionnaireResultDialogFragment instance = new QuestionnaireResultDialogFragment();
+    public static final String SURVEY     = "survey";
+    public static final String TAP_STR     = "tap_str";
+    public static final String SURVEY_RESULT_DIALOG_FRAGMENT = "survey_result_dialog_fragment";
+    public static SurveyResultDialogFragment newInstance(){
+        SurveyResultDialogFragment instance = new SurveyResultDialogFragment();
         return instance;
     }
     //  グリッドビューのカラム数
     private static final int COLUMN_COUNT = 2;
-    //  「はい」をタップ
-    private static final int TAP_POSITON_YES = 0;
-    //  「いいえ」をタップ
-    private static final int TAP_POSITION_NO = 1;
     //  UIハンドラー
     Handler mHandler = new Handler(Looper.myLooper());
     //
@@ -54,10 +52,13 @@ public class QuestionnaireResultDialogFragment extends DialogFragment {
     GridView mAnswerGv;
     TextView mNoAnswerTv;
     TextView mExistAnswerTv;
-    Button   mCloseBtn;
+    Button mUpdateBtn;
+    Button mCloseBtn;
     QuestionnaireResultAdapter mAdapter;
     int mTapPosition;
-    Question mQuestion;
+    String mTapStr;
+    Survey mSurvey;
+    Timer mSurveyResultTimer;
 
     MainActivity getMainAcitivty(){
         return (MainActivity) getActivity();
@@ -96,10 +97,29 @@ public class QuestionnaireResultDialogFragment extends DialogFragment {
         super.onResume();
         //  プログレスバーを表示し、それ以外はgone.
         mLoadingPb.setVisibility(View.VISIBLE);
-        mLinearLayout.setVisibility(View.GONE);;
-        //  回答者の情報をネットワークから取得
-        String questionId = mQuestion.getQuestionId();
-        new QuestionnaireResultAsyncTask(this, questionId, mTapPosition).execute();
+        mLinearLayout.setVisibility(View.GONE);
+        //mSurveyResultTimer = new Timer();
+        //mSurveyResultTimer.schedule(new SurveyResultTimerTask(this), 0 ,3000);
+        processSurveyResultAsyncTask();
+    }
+    /**
+     * processSurveyResultAsyncTaskメソッド
+     * 回答状況をネットワークから取得します.
+     * @author Ito Shota
+     * @since  2016/08/19
+     **/
+    void processSurveyResultAsyncTask(){
+        //  アンケート(スマホ クリッカー)の回答状況を取得する.
+        new SurveyResultAsyncTask(this, mSurvey, mTapStr).execute();
+    }
+
+
+    public void onPause(){
+        super.onPause();
+        if( mSurveyResultTimer != null ){
+            mSurveyResultTimer.cancel();
+            mSurveyResultTimer = null;
+        }
     }
 
     /**
@@ -110,6 +130,7 @@ public class QuestionnaireResultDialogFragment extends DialogFragment {
      * @since  2016/08/07
      **/
     void layout(Dialog d){
+        this.mUpdateBtn = (Button) d.findViewById(R.id.dialog_fragment_questionnaire_result_update_btn);
         this.mLinearLayout = (LinearLayout) d.findViewById(R.id.dialog_fragment_questionnaire_result_ll);
         this.mLoadingPb = (ProgressBar) d.findViewById(R.id.dialog_fragment_questionnaire_result_loding_pb);
         this.mSelectItemTv = (TextView) d.findViewById(R.id.dialog_fragment_questionnaire_result_text_tv);
@@ -118,6 +139,8 @@ public class QuestionnaireResultDialogFragment extends DialogFragment {
         this.mCloseBtn = (Button)d.findViewById(R.id.dialog_fragment_questionnaire_result_close_btn);
         //  グリッドビューのカラム数
         setColumn();
+        //
+        setUpdateBtnListener();
         //
         setCloseBtnListener();
     }
@@ -130,6 +153,23 @@ public class QuestionnaireResultDialogFragment extends DialogFragment {
     void setColumn(){
         this.mAnswerGv.setNumColumns(COLUMN_COUNT);
     }
+    /**
+     * setUpdateBtnListenerメソッド
+     * 更新ボタン
+     * @author Ito Shota
+     * @since  2016/08/19
+     **/
+    void setUpdateBtnListener(){
+        this.mUpdateBtn.setOnClickListener( updateBtnListener );
+    }
+    View.OnClickListener updateBtnListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mLoadingPb.setVisibility(View.VISIBLE);
+            mLinearLayout.setVisibility(View.GONE);
+            processSurveyResultAsyncTask();
+        }
+    };
     /**
      * setCloseBtnListenerメソッド
      * 「×」ボタンのリスナー
@@ -153,9 +193,11 @@ public class QuestionnaireResultDialogFragment extends DialogFragment {
      **/
     void getMyArguments(){
         //
-        mTapPosition = getArguments().getInt(TAP_POSITION);
+        mTapStr         = getArguments().getString(TAP_STR);
         //
-        mQuestion = (Question)getArguments().getSerializable(QUESTION);
+        mTapPosition    = getArguments().getInt(TAP_POSITION);
+        //
+        mSurvey         = (Survey)getArguments().getSerializable(SURVEY);
     }
     /**
      * setTextSelectItemメソッド
@@ -164,7 +206,7 @@ public class QuestionnaireResultDialogFragment extends DialogFragment {
      * @since  2016/08/08
      **/
     void setTextSelectItem(){
-        String str = this.mQuestion.getAsks().get(0).getChoices().get(mTapPosition).getChoice();
+        String str = mSurvey.getQuestion().mChoices[getTapChoice()].mChoice;
         this.mSelectItemTv.setText(str);
     }
     /**
@@ -178,9 +220,19 @@ public class QuestionnaireResultDialogFragment extends DialogFragment {
             @Override
             public void run() {
                 if( sos.length > 0 ){
-                    String color = mQuestion.getAsks().get(0).getChoices().get(mTapPosition).getChoiceIndexColor();
-                    mAdapter = new QuestionnaireResultAdapter(getActivity(), RosterCustomAdapter_2.ALL_LAYOUT, color, sos);
+                    /*if( mAdapter != null ){
+                        int oldStudentObjectSize = mAdapter.getCount();
+                        if(sos.length != oldStudentObjectSize){
+                            mAdapter.removeItem( sos );
+                            mAdapter.notifyDataSetChanged();
+                            mAnswerGv.invalidate();
+                        }
+                    }else{
+
+                    }*/
+                    setMyAdapter( sos );
                     mAnswerGv.setAdapter( mAdapter );
+                    mUpdateBtn.setVisibility(View.VISIBLE);
                     mAnswerGv.setVisibility(View.VISIBLE);
                 }else{
                     mExistAnswerTv.setVisibility(View.VISIBLE);
@@ -190,6 +242,38 @@ public class QuestionnaireResultDialogFragment extends DialogFragment {
             }
         });
     }
+    /**
+     * setMyAdapterメソッド
+     * アダプターをセットする.
+     * @author Ito Shota
+     * @since  2016/08/19
+     **/
+    public void setMyAdapter(StudentObject[] sos){
+        String color = mSurvey.getQuestion().mChoices[getTapChoice()].mChoiceIndexColor;
+        mAdapter = new QuestionnaireResultAdapter(getActivity(), RosterCustomAdapter_2.ALL_LAYOUT, color, sos);
+    }
+
+    /**
+     * getTapChoiceメソッド
+     * タップされたグリッドビューのインデックスを取得する.
+     * @author Ito Shota
+     * @since  2016/08/18
+     **/
+    int getTapChoice(){
+        int index = 0;
+        Question q = this.mSurvey.getQuestion();
+        Choice[] choices = q.mChoices;
+        for(int i = 0; i < choices.length; i++){
+            String strChoice = choices[i].mChoice;
+            if( strChoice.equals(this.mTapStr) ){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
+
     /*void setDummyYes(){
         StudentObject[] sos = getDummy();
         mYesAdapter = new QuestionnaireResultAdapter(getActivity(), RosterCustomAdapter_2.ALL_LAYOUT ,sos);

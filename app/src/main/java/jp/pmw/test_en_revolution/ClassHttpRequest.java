@@ -14,6 +14,8 @@ import jp.pmw.test_en_revolution.confirm_class_plan.RoomInfoObject;
 import jp.pmw.test_en_revolution.group_readjustment.ReAdjustmentOjbect;
 import jp.pmw.test_en_revolution.questionnaire.Questionnaire;
 import jp.pmw.test_en_revolution.room.Room;
+import jp.pmw.test_en_revolution.survey.Survey;
+import jp.pmw.test_en_revolution.survey.SurveyState;
 import okhttp3.Request;
 
 /**
@@ -37,8 +39,8 @@ public class ClassHttpRequest {
     private static final int DO_TYPE_ROOM_FLOA_MAP = 7;
     //  グループ調整に関するデータ取得タイプ
     private static final int DO_TYPE_GROUP_ADJUSTMENT = 8;
-    //  グループ調整開始タイプ
-    private static final int DO_TYPE_START_GROUP_ADJUSTMENT = 9;
+    //  アンケートに関するデータ取得タイプ
+    private static final int DO_TYPE_STATE_SURVEY = 9;
 
 
     public MainActivity activity;
@@ -71,6 +73,11 @@ public class ClassHttpRequest {
     public void getQuestionnaire(){
         String url = URL.getQuestionnaireInfo(sameClassNumber);
         doOkHttp(DO_TYPE_QUESTIONNAIRE, url);
+    }
+    //  アンケートの状態を取得します.
+    public void getSurvey(){
+        String url = URL.getUrlSurveyState( sameClassNumber );
+        doOkHttp(DO_TYPE_STATE_SURVEY, url);
     }
 
     public void getAttendanceRelationShipInto(){
@@ -214,6 +221,11 @@ public class ClassHttpRequest {
                 ReAdjustmentOjbect reAdjustmentOjbect = groupReAdjustmentOjbect.rao;
                 setGroupReAdjustment(reAdjustmentOjbect);
                 break;
+            case DO_TYPE_STATE_SURVEY:
+                SurveyState surveyState = gson.fromJson(jsonObject.toString(), SurveyState.class);
+                Survey survey = surveyState.mSurvey;
+                setSurvyState( survey );
+                break;
         }
     }
 
@@ -350,5 +362,13 @@ public class ClassHttpRequest {
         @SerializedName("re_adjustment")
         public ReAdjustmentOjbect rao;
     }
-
+    /**
+     * setSurvyStateメソッド
+     * 現在のアンケート状態を取得します.
+     * @author Ito Shota
+     * @since  2016/08/17
+     **/
+    private void setSurvyState(jp.pmw.test_en_revolution.survey.Survey survey){
+        this.activity.getClassObject().setSurvey( survey );
+    }
 }

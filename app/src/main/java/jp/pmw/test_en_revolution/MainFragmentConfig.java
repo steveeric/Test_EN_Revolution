@@ -27,4 +27,8 @@ public class MainFragmentConfig {
 
     public static final int QUESTIONNAIRE_FRAGMENT_RESULT = 2;
 
+    //  アンケート画面
+    public static final int SURVEY_FRAGMENT = 6;
+    public static final int SURVEY_FRAGMENT_TILTE = 7;
+
 }

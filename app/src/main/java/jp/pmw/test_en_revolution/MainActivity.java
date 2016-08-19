@@ -48,6 +48,7 @@ import jp.pmw.test_en_revolution.questionnaire.Questionnaire;
 import jp.pmw.test_en_revolution.questionnaire.QuestionnaireDialogFragment;
 import jp.pmw.test_en_revolution.questionnaire.QuestionnaireFragment;
 import jp.pmw.test_en_revolution.questionnaire.QuestionnaireResultFragment;
+import jp.pmw.test_en_revolution.survey.SurveyFragment;
 import okhttp3.OkHttpClient;
 
 public class MainActivity extends MyFragmentActivity {
@@ -84,12 +85,6 @@ public class MainActivity extends MyFragmentActivity {
     private OkHttpClient client = new OkHttpClient();
     public OkHttpClient getOkHttpClient(){return this.client;}
 
-
-    //
-    /*private ChkAttendanceHttpRequest chkAttendanceHttpRequest;
-    public ChkAttendanceHttpRequest getChkAttendanceHttpRequest(){return this.chkAttendanceHttpRequest;}*/
-
-
     //  出席関係取得中フラグ(false:取得中でない, true:取得中)
     public boolean chkAttendanceRelationshipInfoRetrieving = false;
 
@@ -102,21 +97,6 @@ public class MainActivity extends MyFragmentActivity {
         init();
 
         createNavigationDrawer();
-
-
-
-         /*
-         mNavigationDrawerFragment = (NavigationDrawerFragment)
-                    getFragmentManager().findFragmentById(R.id.navigation_drawer);
-
-            //タイトルバー初期化
-            mTitle = "";
-
-            // Set up the drawer.
-            mNavigationDrawerFragment.setUp(
-                    R.id.navigation_drawer,
-                    (DrawerLayout) findViewById(R.id.drawer_layout));
-        */
     }
     /**
      * Created by scr on 2016/1/29.
@@ -135,16 +115,12 @@ public class MainActivity extends MyFragmentActivity {
             this.classObject.setFacultyObject(data);
             this.classObject.setSameClassNumber(sameClassNumber);
         }
-
-
         //
         //  TODO:全画面からintentされた教員データを格納すること!!
         //  授業画面コントローラ
         this.caController           = new ClassAcitvityContoller(this);
         //
         this.classHttpRequest       = new ClassHttpRequest(this);
-
-        //chkTrxTranmitState();
 
     }
     /**
@@ -160,22 +136,6 @@ public class MainActivity extends MyFragmentActivity {
         Toast.makeText(this, "showToast", Toast.LENGTH_SHORT).show();
     }
 
-    /*public void displayToastThroughHandlerThread() {
-        final HandlerThread ht = new HandlerThread("TestThread#3");
-        ht.start();
-
-        Handler h = new Handler(ht.getLooper());
-        h.post(new Runnable() {
-            @Override
-            public void run() {
-                showToast();
-                //moveToAttendeeFragment();
-            }
-        });
-
-        // 別スレッドを停止
-        //ht.quit();
-    }*/
     /**
      * Created by scr on 2016/2/1.
      * showAnotherErrorToast
@@ -203,30 +163,6 @@ public class MainActivity extends MyFragmentActivity {
         });
     }
 
-
-
-
-
-    /**
-     * Created by scr on 2015/1/5.
-     * setDummyQuestionnaireメソッド
-     * 通常はネットワークDBから取得するアンケートに関するデータを
-     * ローカル端末内設置されたダミーデータから読み取る
-     */
-    /*private void setDummyQuestionnaire(Faculty teacher){
-        //グルーピング
-        GroupingManagement groupingManagement = new GroupingManagement();
-        teacher.setGroupingManagement(groupingManagement);
-        //アンケート//
-        List<Question> questions = DummyQuestionContent.getQuestions();
-        Questionnaire que = new Questionnaire(questions);
-        teacher.setQuestionnaire(que);
-    }*/
-    /*public void setTimer(Timer timer){
-        demoCallTheRollTimer = timer;
-    }*/
-    //出席調査タイマー
-   // private Timer demoCallTheRollTimer;
     //授業終了タイマー
     public Timer endClassRoomTimer;
 
@@ -242,13 +178,6 @@ public class MainActivity extends MyFragmentActivity {
         //アプリ画面自動で落とす
         finish();
     }
-
-    public void demoCallTheRollCancel(){
-        /*if(demoCallTheRollTimer!=null){
-            demoCallTheRollTimer.cancel();
-        }*/
-        showEndCallTheRollAlertDialog();
-    }
     public void onResume(){
         super.onResume();
         //  onResume時に初期化
@@ -258,8 +187,10 @@ public class MainActivity extends MyFragmentActivity {
         String roomId       =   this.getClassObject().getFacultyObject().getClassPlan().getPlace().getRoomId();
         //  教室情報取得
         this.classHttpRequest.getRoomFloaMapInfo(roomId);
-        //  アンケート取得
+        //  クリッカー取得
         this.classHttpRequest.getQuestionnaire();
+        //  アンケート取得
+        this.classHttpRequest.getSurvey();
     }
     /**
      * Created by si on 2016/01/31.
@@ -279,26 +210,6 @@ public class MainActivity extends MyFragmentActivity {
                     R.id.navigation_drawer,
                     (DrawerLayout) findViewById(R.id.drawer_layout));
         }
-    }
-
-    /*public void doVolley(String url){
-        JsonObjectRequest request = new JsonObjectRequest(url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        jsonObjectParser(response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override public void onErrorResponse(VolleyError error) {
-               showErrorToast(error.getMessage());
-            }
-        });
-        AppController.getInstance(this).getRequestQueue().add(request);
-    }*/
-    public void jsonObjectParser(JSONObject jsonObject){
-        Gson gson  = new Gson();
-        ClassReamingTime crTime =  gson.fromJson(jsonObject.toString(), ClassReamingTime.class);
-        setClassReamingTime(crTime);
     }
     /**
      * Created by si on 2016/01/29.
@@ -325,62 +236,7 @@ public class MainActivity extends MyFragmentActivity {
             //  まだ授業中であれば
             //  授業データを取得する.
             this.getClassActivityController().getClassData();
-
-            //activity.chkTrxTranmitState();
         }
-    }
-
-    /*public void doVolley1(String url){
-        JsonObjectRequest request = new JsonObjectRequest(url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        jsonObjectParser1(response);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        showErrorToast(error.getMessage());
-                }
-        });
-        AppController.getInstance(this).getRequestQueue().add(request);
-        AppController.getInstance(this).getRequestQueue().start();
-    }*/
-
-    /*public void doOkHttp3(final String url){
-        new MyAsyncTask() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String res = null;
-                try {
-                    String result = run(url);
-                    JSONObject resJson = new JSONObject(result);
-                    jsonObjectParser1(resJson);
-                } catch(IOException e) {
-                    e.printStackTrace();
-                } catch(JSONException e) {
-                    e.printStackTrace();
-                }
-
-                return res;
-            }
-        }.execute();
-    }*/
-
-    // OKHttpを使った通信処理
-    /*public String run(String url) throws IOException {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        return response.body().string();
-    }*/
-
-    public void jsonObjectParser1(JSONObject jsonObject){
-        Gson gson = new Gson();
-        RegistrationObject ro =  gson.fromJson(jsonObject.toString(), RegistrationObject.class);
-        doChkAttendance(ro.sos);
     }
     /**
      * Created by si on 2016/01/29.
@@ -421,18 +277,6 @@ public class MainActivity extends MyFragmentActivity {
         showBottomFragment();
     }
 
-
-    /**
-     * Created by scr on 2016/01/29.
-     * showLoadingFragmentメソッド
-     * 読み込み中...フラグメントを表示する
-     */
-    /*public void showLoadingFragment(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, LoadingFragment.newInstance(0))
-                .commit();
-    }*/
     /**
      * Created by scr on 2016/01/31.
      * showBottomFragmentメソッド
@@ -445,73 +289,6 @@ public class MainActivity extends MyFragmentActivity {
                 .replace(R.id.container, MainBottomFragment.newInstance(0))
                 .commit();
     }
-
-    /**
-     * Created by scr on 2016/01/29.
-     * getDateメソッド
-     * データベースから授業に関する
-     */
-    public void getDate(){
-
-    }
-
-
-    /**
-     * Created by scr on 2015/3/12.
-     * getClassReamingTimeFromNetWrokDBメソッド
-     * 授業の残り時間をサバ―からミリ秒単位で取得する.
-     */
-    /*public void getClassReamingTimeFromNetWrokDB(){
-        //String sameClassNumber = mTeacher.getClassPlan().getSameClassNumber();
-        String sameClassNumber = this.classObject.getSameClassNumber();
-        String url = URL.getClassReaminingTime(sameClassNumber);
-        JsonObjectRequest request = new JsonObjectRequest(url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        setClassReamingTime(response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override public void onErrorResponse(VolleyError error) {
-                showErrorToast(error.getMessage());
-            }
-        });
-        AppController.getInstance(this).getRequestQueue().add(request);
-    }*/
-    /**
-     * Created by scr on 2015/3/12.
-     * setClassReamingTimeメソッド
-     * 授業終了時間をClassObjectのclassTimeReamingにセットします.
-     */
-    /*private void setClassReamingTime(JSONObject response){
-        Gson gson = new Gson();
-        ClassReamingTime crTime =  gson.fromJson(response.toString(), ClassReamingTime.class);
-        this.classObject.setClassTimeReaming(crTime.reamingTime);
-        //  授業残り時間[msec]
-        long classReamingTime = this.classObject.getClassTimeReaming();
-
-        if(this.endClassRoomTimer == null){
-            //授業終了タイマー
-            this.endClassRoomTimer = new Timer();
-        }else{
-            this.endClassRoomTimer.cancel();
-            this.endClassRoomTimer = null;
-            this.endClassRoomTimer = new Timer();
-        }
-        //授業終了タイマー
-        this.endClassRoomTimer.schedule(new FinishTimer(this), classReamingTime);
-
-
-
-        //  赤外線送信状態を取得する
-        //chkTrxTranmitState();
-
-        //まだ授業ちゅうであれば.
-        /*if(classReamingTime != 0){
-            getRoomInfoAndRosterFromNetWrokDB();
-            getQuestionnaireInfoFromNetWrokDB();
-        }*/
-    //}
 
     /**
      * Created by scr on 2016/1/28.
@@ -529,35 +306,6 @@ public class MainActivity extends MyFragmentActivity {
         }
     }
 
-    /**
-     * Created by scr on 2015/2/24.
-     * getRoomInfoAndRosterFromNetWrokDBメソッド
-     * ネットワーク上のDBより、
-     * ・教室の情報
-     * ・履修者の情報
-     * を取得する.
-     */
-    /*public void getRoomInfoAndRosterFromNetWrokDB(){
-        //授業ID
-        //String classId = mTeacher.getClassPlan().getClassId();
-        String sameClassNumber = mTeacher.getClassPlan().getSameClassNumber();
-        String url = URL.getClassInfo(sameClassNumber);
-        JsonObjectRequest request = new JsonObjectRequest(url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        TmpClassInfo tmpInfo = jsonParserClassInfo(response);
-                        setTmpClassInfo(tmpInfo);
-                    }
-                }, new Response.ErrorListener() {
-            @Override public void onErrorResponse(VolleyError error) {
-                int a =0;
-                a = 12;
-                //Toast.makeText(getActivity(), "Unable to fetch data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-         });
-    AppController.getInstance(this).getRequestQueue().add(request);
-    }*/
     /**
      * Created by scr on 2015/2/24.
      * jsonParserClassInfoメソッド
@@ -588,34 +336,6 @@ public class MainActivity extends MyFragmentActivity {
         mTeacher.setTmpRoomInfo(tmp.tmpRoomInfo);
 
     }
-
-
-    /**
-     * Created by scr on 2015/3/4.
-     * getQuestionnaireInfoFromNetWrokDBメソッド
-     * ネットワークDBよりアンケート情報を取得する.
-     */
-    /*private void getQuestionnaireInfoFromNetWrokDB(){
-        //授業ID
-        //String classId = mTeacher.getClassPlan().getClassId();
-        String sameClassNumber = mTeacher.getClassPlan().getSameClassNumber();
-        String url = URL.getQuestionnaireInfo(sameClassNumber);
-        JsonObjectRequest request = new JsonObjectRequest(url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        setQuestionnaire(response);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                int a =0;
-                a = 12;
-                //Toast.makeText(getActivity(), "Unable to fetch data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        AppController.getInstance(this).getRequestQueue().add(request);
-    }*/
 
     /**
      * Created by scr on 2015/3/4.
@@ -649,28 +369,7 @@ public class MainActivity extends MyFragmentActivity {
     }
     public void onDestroy(){
         super.onDestroy();
-        /*if(this.mTeacher!=null){
-            //グループ情報初期化
-            //initializeGrouping();
-            initializeStudent();
-            this.mTeacher = null;
-        }
-        //授業終了タイマー初期化
-        if(endClassRoomTimer != null){
-            this.mTeacher = null;
-        }*/
     }
-    private void initializeStudent(){
-        for(int i=0;i<this.mTeacher.getRoster().getRosterList().size();i++){
-            Student student = this.mTeacher.getRoster().getRosterList().get(i);
-            student = null;
-        }
-    }
-    /*private void initializeGrouping(){
-        for(int i=0;i<this.mTeacher.getRoster().getRosterList().size();i++){
-            this.mTeacher.getRoster().getRosterList().get(i).getThisClassTime().setThisClassGroup(null);
-        }
-    }*/
 
     /**
      * Created by scr on 2014/12/11.
@@ -695,41 +394,21 @@ public class MainActivity extends MyFragmentActivity {
     public void moveToSeatSituationFragment(){
         int position = MainFragmentConfig.SEAT_SITUATION_FRAGMENT;
         FragmentManager fragmentManager = getSupportFragmentManager();
-        /*ListView listView = mNavigationDrawerFragment.getDrawerListView();
-
-        mNavigationDrawerFragment.changeTap(listView,position);
-        mNavigationDrawerFragment.selectItem(position);*/
-
         fragmentManager.beginTransaction()
                 .replace(R.id.container, SeatSituationFragment.newInstance(position))
                 .commit();
     }
 
-    public void moveToAttendeeFragment(){
-
-    }
-@Override
-public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        //FragmentManager fragmentManager = getFragmentManager();
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        /*fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();*/
-
-        // update the main content by replacing fragments
-        //FragmentManager fragmentManager = getSupportFragmentManager();
-        //FragmentManager fragmentManager = getSupportFragmentManager();
-    mNavigationDrawerItemSelected = position;
-
+        mNavigationDrawerItemSelected = position;
         if(position == MainFragmentConfig.BOTTOM_FRAGMENT){
             fragmentManager.beginTransaction()
                     .replace(R.id.container, MainBottomFragment.newInstance(position))
                     .commit();
         }else if(position == MainFragmentConfig.SEAT_SITUATION_FRAGMENT){
             /*着席状況一覧*/
-            //moveToSeatSituationFragment();
-                     /*着座状況*/
             fragmentManager.beginTransaction()
                     .replace(R.id.container, SeatSituationFragment.newInstance(position))
                     .commit();
@@ -756,18 +435,16 @@ public void onNavigationDrawerItemSelected(int position) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, GroupReAdjustmentFragment.newInstance(position))
                     .commit();
-        }/*else if(position == 13){
-            //ヘルプ
+        }else if( position == MainFragmentConfig.SURVEY_FRAGMENT ){
+            //  アンケート画面
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, HelpFragment.newInstance(position + 1))
+                    .replace(R.id.container, SurveyFragment.newInstance(position))
                     .commit();
-        }*/else{
+        }else{
             fragmentManager.beginTransaction()
                     .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                     .commit();
         }
-        //ドロワーの必要個所をオープンにする.
-        //openNavigationDrawer();
     }
 
     /**
@@ -851,106 +528,29 @@ public void onNavigationDrawerItemSelected(int position) {
         dialogFragment.show(getSupportFragmentManager(), "dialog1");
     }
 
-    /**
-     * Created by Shota Ito on 2014/12/11～2014/12/11.
-     * openDialogShowCellInfoメソッド
-     * RoomViewをユーザーがタップした場合にアラートが立ち上がる.
-     * タップしたセル位置の情報をアラートダイアログに出力する.
-     * @param cell 教室マップのセルを管理するクラス.
-     */
-    /*public void openDialogShowCellInfo(Cell cell) {
-       // String str = cell.getSeat().getSeatId()+":"+cell.getSeat().getSeatRowNumber()+"-"+cell.getSeat().getSeatColumnNumber();
-        Bundle args = new Bundle();
-        args.putInt(CommonDialogFragment.FIELD_TITLE, R.string.infomation_sitter);
-        // 定義されてる文字なら
-        //args.putIntArray(CommonDialogFragment.FIELD_LIST_ITEMS, new int[] {R.string.item1, R.string.item2});
-        // ソースで動的に文字列をつくるなら
-        //args.putStringArray(CommonDialogFragment.FIELD_LIST_ITEMS_STRING, new String[] {"座席ID : "+cell.getSeat().getSeatId(), "セルの行 : "+cell.getSeat().getSeatRowNumber(),"セルの列 : "+cell.getSeat().getSeatColumnNumber()});
-        args.putStringArray(CommonDialogFragment.FIELD_LIST_ITEMS_STRING, new String[] {"学籍番号 : "+cell.getAttendee().getOriginalstudentId(), "氏  名 : "+cell.getAttendee().getFullName()});
-        args.putInt(CommonDialogFragment.FIELD_LABEL_POSITIVE, R.string.close);
-
-        CommonDialogFragment dialogFragment = new CommonDialogFragment();
-        dialogFragment.setArguments(args);
-        dialogFragment.show(getSupportFragmentManager(), "openDialogShowCellInfo");
-    }*/
-
-    /*Timer timer;
-    public void test(final RoomView rv,final Cell[][] cells){
-        //タイマー
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                Log.d("run", "TimerTask Thread id = " + Thread.currentThread().getId());
-                try {
-                    // 10回に1回2500msの遅延
-                    //Thread.sleep(count % 10 == 0 ? 2500 : 0);
-                    Thread.sleep(3000);
-                    for(int i=0;i<cells.length;i++){
-                        for(int j=0;j<cells[i].length;j++){
-                            if(cells[i][j].getPreAttendee() == 1){
-                                if(cells[i][j].getPreAttendee()==1){
-                                    if(cells[i][j].getSeat().getPreAttendeeState()==0){
-                                        int ran=(int)(Math.random()*10);
-                                        int state = 2;
-                                        if(ran > 2){
-                                            state = 1;
-                                        }
-                                        cells[i][j].getSeat().setPreAttendeeState(state);
-                                        rv.postInvalidate();
-                                        Thread.sleep(250);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }, 1000,2000);
-    }
-    @Override
-    protected void onStop(){
-        super.onStop();
-        try {
-            //タイマーを停止させる
-            timer.cancel();
-            //アプリがストップしてから１０秒後にタイマーを終了させる。
-            TimeUnit.SECONDS.sleep(0);
-            //Log.d(TAG,"停止しました。");
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }*/
-
     public void onSectionAttached(int number) {
         switch (number) {
             case MainFragmentConfig.BOTTOM_FRAGMENT:
                 mTitle = getString(R.string.title_section0);
                 break;
             case MainFragmentConfig.SEAT_SITUATION_FRAGMENT:
-                //mTitle = getString(R.string.title_section1);
                 //着座状況
-                //String roomName = this.mTeacher.getClassPlan().getPlace().getRoom().getRoomName();
                 String roomName = this.getClassObject().getFacultyObject().getClassPlan().getPlace().getRoomName();
                 mTitle = getString(R.string.title_section1)+" ("+roomName+")";
                 break;
             case MainFragmentConfig.PARTICIPANTS_FRAGNEMT:
                 mTitle = getString(R.string.title_section2);
                 break;
-            /*case MainFragmentConfig.GROUPING_FRAGMENT:
-                mTitle = getString(R.string.title_section5);
-                break;*/
             case MainFragmentConfig.GROUP_READJUSTMENT:
                 //  グループ再調整
                 mTitle = getString(R.string.title_section12);
                 break;
             case MainFragmentConfig.QUESTIONNAIRE_FRAGMENT:
                 mTitle = getString(R.string.title_section6);
+                break;
+            case MainFragmentConfig.SURVEY_FRAGMENT:
+                //  アンケート
+                mTitle = getString(R.string.title_section13);
                 break;
         }
     }
@@ -963,33 +563,28 @@ public void onNavigationDrawerItemSelected(int position) {
      }
 
 
-@Override
-public boolean onCreateOptionsMenu(Menu menu) {
-    if (!mNavigationDrawerFragment.isDrawerOpen()) {
-        // Only show items in the action bar relevant to this screen
-        // if the drawer i  s not showing. Otherwise, let the drawer
-        // decide what to show in the action bar.
-
-        //getMenuInflater().inflate(R.menu.main, menu);
-        if(mNavigationDrawerFragment.getCurrentSelectedPosition() ==  MainFragmentConfig.SEAT_SITUATION_FRAGMENT) {
-            //着席状況把握の場合
-            //ハンズフリー出席管理用のメニュー
-            //主に再出席調査メニューが含まれています.
-            getMenuInflater().inflate(R.menu.menu_hands_free_attendance, menu);
-        }else if(mNavigationDrawerFragment.getCurrentSelectedPosition() ==  MainFragmentConfig.PARTICIPANTS_FRAGNEMT){
-            //受講者一覧の場合.
-            getMenuInflater().inflate(R.menu.menu_roster, menu);
-        }else if(mNavigationDrawerFragment.getCurrentSelectedPosition() == MainFragmentConfig.QUESTIONNAIRE_FRAGMENT){
-            //  クリッカー
-            getMenuInflater().inflate(R.menu.menu_questionnaire, menu);
-        }else{
-            getMenuInflater().inflate(R.menu.main, menu);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+            if(mNavigationDrawerFragment.getCurrentSelectedPosition() ==  MainFragmentConfig.SEAT_SITUATION_FRAGMENT) {
+                //着席状況把握の場合
+                //ハンズフリー出席管理用のメニュー
+                //主に再出席調査メニューが含まれています.
+                getMenuInflater().inflate(R.menu.menu_hands_free_attendance, menu);
+            }else if(mNavigationDrawerFragment.getCurrentSelectedPosition() ==  MainFragmentConfig.PARTICIPANTS_FRAGNEMT){
+                //受講者一覧の場合.
+                getMenuInflater().inflate(R.menu.menu_roster, menu);
+            }else if(mNavigationDrawerFragment.getCurrentSelectedPosition() == MainFragmentConfig.QUESTIONNAIRE_FRAGMENT){
+                //  クリッカー
+                getMenuInflater().inflate(R.menu.menu_questionnaire, menu);
+            }else{
+                getMenuInflater().inflate(R.menu.main, menu);
+            }
+            restoreActionBar();
+            return true;
         }
-        restoreActionBar();
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
-    return super.onCreateOptionsMenu(menu);
-}
 
     /**現在送信中です...**/
     public void showAlertDialogSendState() {

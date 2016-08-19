@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_version">version 0.3.29</string>
+    <string name="app_version">version 0.3.32</string>
     <!--<string name="app_name">授業運営管理ソリューション</string>-->
     <string name="app_name">SonoRIs MT</string>
     <string name="do_not_mistake">間違いありませんか?</string>
@@ -37,7 +37,8 @@
     <string name="title_section4">SonoRIs忘れ</string>
     <string name="title_section5">グルーピング</string>
     <string name="title_section12">グループ調整</string>
-    <string name="title_section6">クリッカー</string>
+    <string name="title_section13">スマホ クリッカー</string>
+    <string name="title_section6">SonoRIs クリッカー</string>
     <string name="title_section7">個人履歴</string>
     <string name="title_section8">講義内容</string>
     <string name="title_section9">メッセージ</string>

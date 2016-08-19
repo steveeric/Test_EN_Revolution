@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.Unbinder;
+
 /**
  * Created by scr on 2014/12/23.
  */
@@ -32,6 +34,9 @@ public class MyMainFragment extends Fragment {
     public MainActivity getMainActivity(){
         return (MainActivity)this.getActivity();
     }
+    //  Butter Knife用
+    public Unbinder mUnbinder;
+
     /**
      * Created by scr on 2016/1/31.
      * showWaitFragmentメソッド
@@ -100,6 +105,9 @@ public class MyMainFragment extends Fragment {
     public void onDestroy(){
         super.onDestroy();
         cancelTimer();
+        if( this.mUnbinder != null ){
+            this.mUnbinder.unbind();
+        }
     }
 
     /**

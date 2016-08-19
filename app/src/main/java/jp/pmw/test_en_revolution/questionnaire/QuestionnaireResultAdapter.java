@@ -9,6 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import jp.pmw.test_en_revolution.R;
 import jp.pmw.test_en_revolution.StudentObject;
 
@@ -20,10 +24,27 @@ import jp.pmw.test_en_revolution.StudentObject;
 public class QuestionnaireResultAdapter extends ArrayAdapter<StudentObject> {
     private LayoutInflater  mLayoutInflater;
     String  mColor;
+    List<String> mDisplayUnnecessaryList = new ArrayList<String>();
     public QuestionnaireResultAdapter(Context context, int resourceId, String color, StudentObject[] items) {
         super(context, resourceId, items);
         mLayoutInflater =   (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mColor          =   color;
+    }
+
+    public void removeItem(StudentObject[] sos){
+        int size = getCount();
+        for( int i = 0; i < size; i++ ){    //  既存のアダプターに登録されている学生群
+            boolean sameFlag = false;
+            String studentId = this.getItem(i).studentId;
+            for( int j = 0; j < sos.length; j++ ){
+                if( studentId.equals( sos[j].getStudentId() ) ){
+                    sameFlag = true;
+                }
+            }
+            if( !sameFlag ){
+                this.mDisplayUnnecessaryList.add( studentId );
+            }
+        }
     }
 
     @Override
@@ -38,8 +59,15 @@ public class QuestionnaireResultAdapter extends ArrayAdapter<StudentObject> {
             holder = (ViewHolder)view.getTag();
         }
         StudentObject so = getItem( position );
-        setItem( holder, so );
-        setItemColor( holder );
+        String studentId = so.getStudentId();
+        if( mDisplayUnnecessaryList.indexOf( studentId ) == -1 ){
+            setItem( holder, so );
+            setItemColor( holder );
+            holder.mOverAllLl.setBackgroundResource(R.drawable.sector_grid);
+        }else{
+            //
+            holder.mOverAllLl.setBackgroundResource(R.color.black);
+        }
         return view;
     }
     /**
@@ -71,6 +99,8 @@ public class QuestionnaireResultAdapter extends ArrayAdapter<StudentObject> {
 
     public class ViewHolder {
         //
+        LinearLayout mOverAllLl;
+        //
         LinearLayout mLeftLl;
         //      1番目信号
         TextView firstSignalTextView;
@@ -93,6 +123,7 @@ public class QuestionnaireResultAdapter extends ArrayAdapter<StudentObject> {
         ImageView messageTextView;
 
         public ViewHolder(View view) {
+            this.mOverAllLl = (LinearLayout) view.findViewById(R.id.roster_overall_ll);
             this.mLeftLl = (LinearLayout)view.findViewById(R.id.roster_left_ll);
             this.mLeftLl.setVisibility(View.GONE);
             //      1番目信号
