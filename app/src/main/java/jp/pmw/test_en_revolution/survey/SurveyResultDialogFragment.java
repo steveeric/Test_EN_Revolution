@@ -219,21 +219,13 @@ public class SurveyResultDialogFragment  extends DialogFragment {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
+                //  更新ボタン
+                mUpdateBtn.setVisibility(View.VISIBLE);
                 if( sos.length > 0 ){
-                    /*if( mAdapter != null ){
-                        int oldStudentObjectSize = mAdapter.getCount();
-                        if(sos.length != oldStudentObjectSize){
-                            mAdapter.removeItem( sos );
-                            mAdapter.notifyDataSetChanged();
-                            mAnswerGv.invalidate();
-                        }
-                    }else{
-
-                    }*/
                     setMyAdapter( sos );
                     mAnswerGv.setAdapter( mAdapter );
-                    mUpdateBtn.setVisibility(View.VISIBLE);
                     mAnswerGv.setVisibility(View.VISIBLE);
+                    mExistAnswerTv.setVisibility(View.GONE);
                 }else{
                     mExistAnswerTv.setVisibility(View.VISIBLE);
                 }

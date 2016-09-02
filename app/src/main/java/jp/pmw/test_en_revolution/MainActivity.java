@@ -527,7 +527,12 @@ public class MainActivity extends MyFragmentActivity {
         dialogFragment.setArguments(args);
         dialogFragment.show(getSupportFragmentManager(), "dialog1");
     }
-
+    /**
+     *  onSectionAttachedメソッド
+     *  ドロワーナビゲーションで選択された項目名称が、
+     *  ActionBar内(画面左上)の文言に反映されます.
+     *  @param int number ドロワーナビゲーションで選択された番号
+     * */
     public void onSectionAttached(int number) {
         switch (number) {
             case MainFragmentConfig.BOTTOM_FRAGMENT:

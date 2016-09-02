@@ -9,7 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="アンケート調査を開始する."
+        android:text="スマホ クリッカーを開始する"
+        android:background="@drawable/segmented_left_normal"
         android:textSize="@dimen/textsize_xxlarge"/>
 
     <!-- アンケート回答結果を表示する. -->

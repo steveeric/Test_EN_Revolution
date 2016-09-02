@@ -41,9 +41,9 @@ public class Drawer {
                 R.drawable.ic_chear,
                 R.drawable.ic_atend_list,
                 0,
-                R.drawable.ic_questionnaire,
+                R.drawable.ic_monochrome_sonoris,
                 R.drawable.ic_grouping,
-                R.drawable.ic_questionnaire
+                R.drawable.ic_monochrome_smart_phone
         };
         int[] chapters = {1,0,0,1,0,0,0};
         int[] sections = {0,1,1,0,1,1,1};

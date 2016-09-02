@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_version">version 0.3.32</string>
+    <string name="app_version">version 0.3.34</string>
     <!--<string name="app_name">授業運営管理ソリューション</string>-->
     <string name="app_name">SonoRIs MT</string>
     <string name="do_not_mistake">間違いありませんか?</string>
@@ -57,7 +57,7 @@
     <string name="re_call_the_roll_alert_dialog_message">在室確認中です.しばらくお待ちください.</string>
     <string name="re_call_the_roll_end_alert_dialog_title">在室確認終了</string>
     <string name="re_call_the_roll_end_alert_dialog_message">在室確認が終了しました.</string>
-    <string name="menu_action_questionnaire_servey">アンケート調査</string>
+    <string name="menu_action_questionnaire_servey">スマホ クリッカー</string>
     <string name="menu_action_questionnaire_result">回答結果</string>
     <string name="action_attendance_list">出席者一覧</string>
     <string name="action_sit_situation">着座状況</string>

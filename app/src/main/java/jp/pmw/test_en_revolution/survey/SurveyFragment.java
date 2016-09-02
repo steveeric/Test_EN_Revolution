@@ -1,6 +1,8 @@
 package jp.pmw.test_en_revolution.survey;
 
+import android.app.Activity;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -226,15 +228,21 @@ public class SurveyFragment  extends MyMainFragment {
      **/
     void showPageBtn(){
         int viewPage = this.mSurvey.mViewPageNumber;
-        if( viewPage == 0 ){
-            mNextPageBtn.setVisibility(View.VISIBLE);
-            mBackPageBtn.setVisibility(View.INVISIBLE);
-        }else if( viewPage == (mSurvey.mQuestions.length - 1) ){
+        if( mSurvey.mQuestions.length == 1 ){
+            //  デフォルト問題しかセットされていない.
             mNextPageBtn.setVisibility(View.INVISIBLE);
-            mBackPageBtn.setVisibility(View.VISIBLE);
+            mBackPageBtn.setVisibility(View.INVISIBLE);
         }else{
-            mNextPageBtn.setVisibility(View.VISIBLE);
-            mBackPageBtn.setVisibility(View.VISIBLE);
+            if( viewPage == 0  ){
+                mNextPageBtn.setVisibility(View.VISIBLE);
+                mBackPageBtn.setVisibility(View.INVISIBLE);
+            }else if( viewPage == (mSurvey.mQuestions.length - 1) ){
+                mNextPageBtn.setVisibility(View.INVISIBLE);
+                mBackPageBtn.setVisibility(View.VISIBLE);
+            }else{
+                mNextPageBtn.setVisibility(View.VISIBLE);
+                mBackPageBtn.setVisibility(View.VISIBLE);
+            }
         }
         setItem();
     }
@@ -285,72 +293,10 @@ public class SurveyFragment  extends MyMainFragment {
         srdf.setArguments(args);
         srdf.show(getActivity().getSupportFragmentManager(), SurveyResultDialogFragment.SURVEY_RESULT_DIALOG_FRAGMENT);
     }
-    /*Question[] getDummyQuestions(){
-        Question[] questions = new Question[4];
 
-        Choice[] c1s = new Choice[2];
-        Choice c1y    =   new Choice();
-        c1y.mChoice   =     "はい";
-        c1y.mAnswer   =     15;
-        c1y.mStrAnswer=     "15人";
-        c1y.mChoiceIndexColor = "#0000FF";
-        c1y.mPercentage       = "15%";
-        c1s[0]          =   c1y;
-
-        Choice c1n    =   new Choice();
-        c1n.mChoice   =     "いいえ";
-        c1n.mAnswer   =     45;
-        c1n.mStrAnswer=     "45人";
-        c1n.mChoiceIndexColor = "#FF0000";
-        c1n.mPercentage       = "45%";
-        c1s[1]          =   c1n;
-
-
-        Question q0 = new Question();
-        q0.mNumber = "問0";
-        q0.mTitle  = "授業は理解できましたか？";
-        q0.mChoices = c1s;
-
-        Question q1 = new Question();
-        q1.mNumber = "問1";
-        q1.mTitle  = "子どもが逆上がりができないのは親が運動音痴だからだ";
-        q1.mChoices = c1s;
-
-        Choice[] c2s = new Choice[2];
-        Choice c2y    =   new Choice();
-        c2y.mChoice   =     "はい";
-        c2y.mAnswer   =     32;
-        c2y.mStrAnswer=     "32人";
-        c2y.mChoiceIndexColor = "#0000FF";
-        c2y.mPercentage       = "32%";
-        c2s[0]          =   c2y;
-
-        Choice c2n    =   new Choice();
-        c2n.mChoice   =     "いいえ";
-        c2n.mAnswer   =     13;
-        c2n.mStrAnswer=     "13人";
-        c2n.mChoiceIndexColor = "#FF0000";
-        c2n.mPercentage       = "13%";
-        c2s[1]          =   c2n;
-
-        Question q2 = new Question();
-        q2.mNumber = "問2";
-        q2.mTitle  = "子どもの歌が下手なのは親が音痴だからだ";
-        q2.mChoices = c2s;
-
-        Question q3 = new Question();
-        q3.mNumber = "問3";
-        q3.mTitle  = "子どもの成績が悪いのは親が馬鹿だからだ";
-        q3.mChoices = c1s;
-
-        questions[0] = q0;
-        questions[1] = q1;
-        questions[2] = q2;
-        questions[3] = q3;
-        return questions;
-    }*/
-
-
-
-
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
+    }
 }
