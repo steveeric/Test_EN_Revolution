@@ -64,7 +64,7 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
             holder = (ViewHolder)view.getTag();
         }
         //  タイトルをセットする.
-        setTitle( position, question, holder );
+        setTitle( question, holder );
 
         //
         setStatus( holder, question );
@@ -82,15 +82,13 @@ public class QuestionnaireCustomAdapter extends ArrayAdapter<Question> {
     /**
      * setTitle
      * タイトルをセットする.
-     * @param   int             positoion 選択インデックス
      * @param   Question        question  質問
      * @param   ViewHolder      holder    ビューホルダー
      * @author Ito Shota
      * @since  2016/08/10
      **/
-    void setTitle(int position, Question question,ViewHolder holder){
-        int index = position;
-        String strTitleNumber = getContext().getResources().getString(R.string.questionnaire_topic) + index + " " +question.getQuestionTitle();
+    void setTitle(Question question,ViewHolder holder){
+        String strTitleNumber = question.getQuestionNumberWord();
         holder.mTitleNumberTv.setText( strTitleNumber );
     }
     /**

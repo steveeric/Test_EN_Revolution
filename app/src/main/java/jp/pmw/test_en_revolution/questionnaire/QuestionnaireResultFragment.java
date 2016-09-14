@@ -281,7 +281,7 @@ public class QuestionnaireResultFragment extends MyMainFragment {
                 }
             }*/
                 for(int i = 0; i < this.questions.size(); i++){
-                    String quetionTitleNumber = this.questions.get(i).getQuestionNumber();
+                    String quetionTitleNumber = this.questions.get(i).getQuestionNumberWord();
                     if(lastSeeQuestionId.equals(quetionTitleNumber)){
                         this.nowSeeTopic = i;
                     }
@@ -453,7 +453,7 @@ public class QuestionnaireResultFragment extends MyMainFragment {
         removeZone();
 
         //String number = this.questions.get(nowSeeQuestionTopic).getQuestionNumber();
-        String number = this.questions.get(nowSeeTopic).getAsks().get(nowSeePage).getAskNumber();
+        String number = this.questions.get(nowSeeTopic).getAsks().get(nowSeePage).getAskNumberWord();
         String content = this.questions.get(nowSeeTopic).getAsks().get(nowSeePage).getAskContent();
         List<Choice> choice =  this.questions.get(nowSeeTopic).getAsks().get(nowSeePage).getChoices();
         Result answerReuslt = this.questions.get(nowSeeTopic).getResult();
@@ -503,8 +503,7 @@ public class QuestionnaireResultFragment extends MyMainFragment {
      * アンケート番号を表示する.
      */
     private void setQuestionNumber(String number){
-        String baseIndex = this.getString(R.string.questionnaire_number);
-        this.questionNumberTextView.setText(baseIndex + number);
+        this.questionNumberTextView.setText(number);
     }
 
     /**

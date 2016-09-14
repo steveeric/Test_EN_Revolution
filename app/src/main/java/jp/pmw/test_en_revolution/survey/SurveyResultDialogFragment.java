@@ -264,20 +264,4 @@ public class SurveyResultDialogFragment  extends DialogFragment {
         }
         return index;
     }
-
-
-    /*void setDummyYes(){
-        StudentObject[] sos = getDummy();
-        mYesAdapter = new QuestionnaireResultAdapter(getActivity(), RosterCustomAdapter_2.ALL_LAYOUT ,sos);
-        mAnswerGv.setAdapter( mYesAdapter );
-    }*/
-    /*StudentObject[] getDummy(){
-        StudentObject[] sos = new StudentObject[5];
-        sos[0]  = new StudentObject("J07001","アンドウ タカシ","安藤 隆", null, null);
-        sos[1]  = new StudentObject("J07002","イトウ ショウタ","伊藤 翔太", null, null);
-        sos[2]  = new StudentObject("J07003","カトウ タカシ","加藤 隆", null, null);
-        sos[3]  = new StudentObject("J070010","サトウ ミチアキ","佐藤 道明", null, null);
-        sos[4]  = new StudentObject("J070032","ナイトウ ノブテル","内藤 伸晃", null, null);
-        return sos;
-    }*/
 }

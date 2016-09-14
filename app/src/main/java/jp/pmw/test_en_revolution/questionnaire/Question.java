@@ -14,6 +14,8 @@ import jp.pmw.test_en_revolution.config.Config;
 public class Question implements Serializable {
     @SerializedName("question_title_number")
     private String questionNumber;
+    @SerializedName("question_title_number_word")
+    private String questionNumberWord;
     //アンケートタイトル
     @SerializedName("question_title")
     private String questionTitle;
@@ -103,6 +105,7 @@ public class Question implements Serializable {
 
 
     public String getQuestionNumber(){return this.questionNumber;}
+    public String getQuestionNumberWord(){return this.questionNumberWord;}
     public String getQuestionTitle(){return this.questionTitle;}
     public String getQuesiontStartDateTime(){return this.quesiontStartDateTime;}
     public String getQuestionEndDateTime(){return this.quesiontEndDateTime;}

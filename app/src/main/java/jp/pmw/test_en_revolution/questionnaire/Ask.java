@@ -15,6 +15,8 @@ public class Ask implements Serializable {
     //尋ねる問番号
     @SerializedName("question_number")
     private String askNumber;
+    @SerializedName("question_number_word")
+    private String askNumberWord;
     //尋ねる内容
     @SerializedName("question")
     private String askContent;
@@ -26,6 +28,7 @@ public class Ask implements Serializable {
     public String getAskNumber(){
         return this.askNumber;
     }
+    public String getAskNumberWord(){return this.askNumberWord;}
     public String getAskContent(){
         return this.askContent;
     }

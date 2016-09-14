@@ -31,7 +31,7 @@ public class AskLayout extends LinearLayout {
      *
      ***/
     public void bindView(Ask ask) {
-        String number = this.getContext().getResources().getString(R.string.ask_number)+ask.getAskNumber();
+        String number = ask.getAskNumberWord();
         askNumber.setText(number);
         String theme = ask.getAskContent();
         askTheme.setText(theme);

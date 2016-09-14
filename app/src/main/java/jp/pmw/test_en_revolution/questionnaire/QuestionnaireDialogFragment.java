@@ -110,7 +110,7 @@ public class QuestionnaireDialogFragment extends DialogFragment{
         String strNo = "";
         if(this.question.getQuesiontStartDateTime()==null && this.question.getQuestionCheckStartDateTime() == null){
             //  問題文を送信します.
-            String title = this.getResources().getString(R.string.questionnaire_topic) + question.getQuestionNumber() + strNo
+            String title = question.getQuestionNumberWord() + strNo
                     + this.getResources().getString(R.string.questionnaire_custom_dialog_start);
 
             actionTV.setText(title);
@@ -123,7 +123,7 @@ public class QuestionnaireDialogFragment extends DialogFragment{
             startLayout.setVisibility(View.VISIBLE);
         }else if(this.question.getQuestionEndDateTime()!=null && this.question.getQuestionCheckStartDateTime() == null){
             //  回答状況確認赤外線を送信します.
-            String title = this.getResources().getString(R.string.questionnaire_topic) + question.getQuestionNumber() + strNo
+            String title = question.getQuestionNumberWord() + strNo
                     +this.getResources().getString(R.string.questionnaire_custom_dialog_check);
 
             actionTV.setText(title);
@@ -137,7 +137,7 @@ public class QuestionnaireDialogFragment extends DialogFragment{
 
             checkLayout.setVisibility(View.VISIBLE);
         }else if(this.question.getQuestionEndDateTime()!=null && this.question.getQuestionCheckStartDateTime() != null && this.question.getQuestionResultStartDateTime() == null){
-            String title = this.getResources().getString(R.string.questionnaire_topic) + question.getQuestionNumber() + strNo
+            String title =question.getQuestionNumberWord() + strNo
                     +this.getResources().getString(R.string.questionnaire_custom_dialog_result);
 
             actionTV.setText(title);
@@ -157,7 +157,7 @@ public class QuestionnaireDialogFragment extends DialogFragment{
 
             resultLayout.setVisibility(View.VISIBLE);
         }else if(this.question.getQuestionEndDateTime()!=null && this.question.getQuestionCheckStartDateTime() != null && this.question.getQuestionResultStartDateTime() != null) {
-            String title = this.getResources().getString(R.string.questionnaire_topic) + question.getQuestionNumber() + strNo
+            String title = question.getQuestionNumberWord() + strNo
                     +this.getResources().getString(R.string.questionnaire_custom_dialog_confirm_result);
 
             actionTV.setText(title);
@@ -230,7 +230,7 @@ public class QuestionnaireDialogFragment extends DialogFragment{
     private void moveToResultFragment(){
         MainActivity activity = (MainActivity)context;
         //String questionId = this.question.getQuestionId();
-        String titleNumber = this.question.getQuestionNumber();
+        String titleNumber = this.question.getQuestionNumberWord();
         activity.getClassObject().getQuestionnaire().setLastSeeQuestionTitleNumber(titleNumber);
         activity.doClickerDistributeFragment(MainFragmentConfig.QUESTIONNAIRE_FRAGMENT,MainFragmentConfig.QUESTIONNAIRE_FRAGMENT_RESULT);
     }
@@ -334,7 +334,7 @@ public class QuestionnaireDialogFragment extends DialogFragment{
         }
         String questionIds = this.question.getQuestionId();
         final String sameClassNumber = this.getMainActivity().getClassObject().getSameClassNumber();
-        final String questionNumber = this.question.getQuestionNumber();
+        final String questionNumber = this.question.getQuestionNumberWord();
         String url = URL.getQuestionResult(sameClassNumber,questionIds);
         JsonObjectRequest request = new JsonObjectRequest(url, null,
                 new Response.Listener<JSONObject>() {
@@ -356,7 +356,7 @@ public class QuestionnaireDialogFragment extends DialogFragment{
     private void getOnlyQuestionResult() {
         String questionIds = this.question.getQuestionId();
         final String sameClassNumber = this.getMainActivity().getClassObject().getSameClassNumber();
-        final String questionNumber = this.question.getQuestionNumber();
+        final String questionNumber = this.question.getQuestionNumberWord();
         String url = URL.getOnlyQuestionResult(sameClassNumber, questionIds);
         JsonObjectRequest request = new JsonObjectRequest(url, null,
                 new Response.Listener<JSONObject>() {
