@@ -227,6 +227,14 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                 firstTransmitRound(holder,ao);
                 //      一つ目ACKなしシグナル
                 firstTransmitRoundNotAck(holder, ao);
+
+                //      IR1のACKありで、IR2のACK無し
+                //      2016年10月17日に抜けていることに気付きました.
+                if(ao.getFirstAccessTime() != null){
+                        Drawable signalReadDrawable = ContextCompat.getDrawable(_context, R.drawable.signal_red);
+                        holder.secondSignalTextView.setBackgroundDrawable(signalReadDrawable);
+                }
+
                 //      IR1のACKありで、IR2もACKあり
                 if( ao.getFirstAccessTime() != null
                         && ao.getManualRequestAttendance() == AttendanceObject.MANUAL_NOT
@@ -243,31 +251,6 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                         Drawable signalReadDrawable = ContextCompat.getDrawable(_context, R.drawable.signal_tie_green);
                         holder.secondSignalTextView.setBackgroundDrawable(signalReadDrawable);
                 }
-
-
-                /*if(ao.getAttendanceTime() != null){
-                        Drawable signalReadDrawable = ContextCompat.getDrawable(_context, R.drawable.signal_green);
-                        holder.firstSignalTextView.setBackgroundDrawable(signalReadDrawable);
-                        if(ao.getManualRequestAttendance() == StudentInfoDialogFragnemt.MANUAL_REQUEST){
-                                signalReadDrawable = ContextCompat.getDrawable(_context, R.drawable.signal_tie_green);
-                        }
-                        holder.secondSignalTextView.setBackgroundDrawable(signalReadDrawable);
-                }else{
-                        if(ao.getFirstAccessTime() != null && ao.getAttendanceTime() == null){
-                                Drawable signalGreenDrawable = ContextCompat.getDrawable(_context, R.drawable.signal_green);
-                                Drawable signalReadDrawable = ContextCompat.getDrawable(_context, R.drawable.signal_red);
-                                holder.firstSignalTextView.setBackgroundDrawable(signalGreenDrawable);
-                                holder.secondSignalTextView.setBackgroundDrawable(signalReadDrawable);
-                        }else{
-                                Drawable signalReadDrawable = ContextCompat.getDrawable(_context, R.drawable.signal_red);
-                                holder.firstSignalTextView.setBackgroundDrawable(signalReadDrawable);
-                        }
-                }
-
-                if(ao.getFirstAccessTime() == null){
-                        Drawable signalReadDrawable = ContextCompat.getDrawable(_context, R.drawable.signal_red);
-                        holder.firstSignalTextView.setBackgroundDrawable(signalReadDrawable);
-                }*/
         }
 
         /**

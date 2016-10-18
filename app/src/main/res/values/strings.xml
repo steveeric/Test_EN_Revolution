@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_version">version 0.3.35</string>
+    <string name="app_version">version 0.3.36</string>
     <!--<string name="app_name">授業運営管理ソリューション</string>-->
     <string name="app_name">SonoRIs MT</string>
     <string name="do_not_mistake">間違いありませんか?</string>
