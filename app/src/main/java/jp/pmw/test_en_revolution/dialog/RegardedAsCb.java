@@ -56,6 +56,9 @@ public class RegardedAsCb {
         mStudentInfoDialogFragnemt.mRegaredeAsReasonLl = mStudentInfoDialogFragnemt.getLinearLayout(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_reason_ll);
         mStudentInfoDialogFragnemt.mRegarededAsReasonRg = (RadioGroup) mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_rg);
 
+        //  理由項目のSonoRIs忘れ
+        mStudentInfoDialogFragnemt.mReasonForgotRb = (RadioButton) mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_forgot_rb);
+
         //mStudentInfoDialogFragnemt.mRegaredeAsAssistTv = mStudentInfoDialogFragnemt.getTextView(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_assist_tv);
         //  理由未選択
         mStudentInfoDialogFragnemt.mAlertUnselectedReasonTv = mStudentInfoDialogFragnemt.getTextView(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_reason_alert_unselected_tv);
@@ -100,6 +103,10 @@ public class RegardedAsCb {
                 && ao.getAttendanceTime() != null){
             //  ACkで出席を得ているから表示しない
             return;
+        }
+        if( ao.getFirstAccessTime() != null ){
+            //  座席指定ACKありの場合は、理由項目のSonoRIs忘れを選択不可にする.
+            mStudentInfoDialogFragnemt.mReasonForgotRb.setVisibility(View.GONE);
         }
         mStudentInfoDialogFragnemt.mRegaredeAsCbLl.setVisibility(View.VISIBLE);
     }
