@@ -35,12 +35,6 @@ public class TransmitReAttChecker {
             return false;
         }
 
-        if(tso.getReAttendanceEndTime() != null){
-            //在室確認はすでに行いました.
-            endReAttendance();
-            return false;
-        }
-
         //  送信受付終了
         if(tso.getUndoTranmitStartReamingTime() < TransmitChecker.reamingUndoTime || tso.getUndoTransmitEndTime() != null){
             transmitEnd();
@@ -61,10 +55,6 @@ public class TransmitReAttChecker {
     private void pleaseWaitTransmit(){
         showAlertDialogSendState(TransmitChecker.STR_TRANSMITTING);
     }
-
-    private void endReAttendance(){
-        showAlertDialogSendState(TransmitChecker.STR_END_RE_ATTEND);}
-
 
     private void transmitEnd(){
         showAlertDialogSendState(TransmitChecker.STR_END_TRANMIT);

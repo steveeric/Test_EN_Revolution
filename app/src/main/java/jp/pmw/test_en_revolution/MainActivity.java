@@ -687,11 +687,27 @@ public boolean onOptionsItemSelected(MenuItem item) {
      *          true    :   送信していないので、送信OK
      * **/
     private boolean chkTransmitReAttPossible(){
-        return new TransmitReAttChecker(this).chkTransmitPossible();
+        boolean chkFlag = new TransmitReAttChecker(this).chkTransmitPossible();
+        if( !chkFlag ){
+            //  送信できない
+            return false;
+        }
+        TransmitStateObject tso = getClassObject().getTransmitStateObject();
+        if(tso.getReAttendanceEndTime() != null){
+            //在室確認はすでに行いました.
+            endReAttendance();
+            return false;
+        }
+        return true;
     }
-
-
-
+    /**
+     * Created by scr on 2016/02/04.
+     * endReAttendanceメソッド
+     * 在室確認が終了していることを表示する.
+     * **/
+    private void endReAttendance(){
+        new TransmitReAttChecker(this).showAlertDialogSendState(TransmitChecker.STR_END_RE_ATTEND);
+    }
 
     /**
  * A placeholder fragment containing a simple view.
