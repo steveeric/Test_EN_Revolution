@@ -49,6 +49,8 @@ public class RoomView extends View {
     private Paint paint;
     /*画面を再描画する*/
     Canvas canvas = new Canvas();
+    //
+    String mTapAttendanceId = "";
     /**
      * コンストラクタ
      * @param context
@@ -350,6 +352,8 @@ public class RoomView extends View {
                                     if(cell.getItem().equals(MapConfig.SEAT) && cell.getAttendee() != null){
 
                                         StudentObject so = cell.getAttendee();
+                                        this.mTapAttendanceId = so.getAttendanceObject().getAttendanceId();
+                                        this.invalidate();
                                         fragment.openDialogFragmentShowCellInfo(so);
                                         break;
                                     }
@@ -434,7 +438,17 @@ public class RoomView extends View {
                             , cell.getCx() - sitterVerticalSpace
                             , cell.getCy() - sitterHorizontalSpace
                             , paint);
-
+                    //  中抜き用(タップされている座席をわかるようにするため)
+                    if( this.mTapAttendanceId.equals( studentObjecct.getAttendanceObject().getAttendanceId() ) ){
+                        float svs = (cell.getWidth() / this.SITTER_VERTICAL_SPACE) + 10;
+                        float shs = (cell.getHeight() / this.SITTER_HORIZONTAL_SPACE) + 10 ;
+                        paint.setColor(r.getColor(R.color.white) );
+                        canvas.drawRect(cell.getCx() - cell.getWidth() + svs
+                                , cell.getCy() - cell.getHeight() + shs
+                                , cell.getCx() - svs
+                                , cell.getCy() - shs
+                                , paint);
+                    }
                     //  補助者を引き連れいているかどうか
                     if(studentObjecct.getAssistants() != null){
                         //  補助者を引き連れている場合は、
