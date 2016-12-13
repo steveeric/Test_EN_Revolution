@@ -69,12 +69,14 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                 //AttendanceObject ao = so.getAttendanceObject();
 
                 if(view == null){
-                        view = _inflater.inflate(R.layout.row_roster_item_4, null);
+                        view = _inflater.inflate(R.layout.row_roster_item_5, null);
                         holder = new ViewHolder(view);
                         view.setTag(holder);
                 }else{
                         holder = (ViewHolder)view.getTag();
                 }
+                //      学籍番号とフリガナと氏名
+                chkAfterAttendanceSetName(holder, so);
 
                 //      メッセージ非表示
                 holder.messageTextView.setVisibility(View.INVISIBLE);
@@ -91,16 +93,6 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
 
                 //      送信信号機に色をセットする.
                 setColorOfSignal(holder, so);
-
-                //
-
-
-                //holder.subContentLinearLayout.setVisibility(View.INVISIBLE);
-                //holder.forgotESLTextView.setVisibility(View.INVISIBLE);
-                //holder.messageTextView.setVisibility(View.INVISIBLE);
-
-                //holder.attendanceStateColorTextView.setVisibility(View.GONE);
-
                 return view;
         }
         /**
@@ -116,19 +108,19 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                 switch (nowTransmitStatus){
                         case TransmitStateObject.ENTERING_A_ROOM_STATUS:
                                 firstTransmitRound(holder, ao);
-                                chkBeforeAttendanceSetName(holder, so);
+                                //chkBeforeAttendanceSetName(holder, so);
                                 break;
                         case TransmitStateObject.ATTENDANCE_END_TIME_STATUS:
                                 secondTransmitRound(holder, ao);
-                                chkAfterAttendanceSetName(holder, so);
+                                //chkAfterAttendanceSetName(holder, so);
                                 break;
                         case TransmitStateObject.RE_ATTENDANCE_END_TIME_STATUS:
                                 thirdTransmitRound(holder, ao, tso);
-                                chkAfterAttendanceSetName(holder, so);
+                                //chkAfterAttendanceSetName(holder, so);
                                 break;
                         case TransmitStateObject.UNDO_TRANMIT_END_TIME_STATUS:
                                 fourthTransmitRound(holder, ao, tso);
-                                chkAfterAttendanceSetName(holder, so);
+                                //chkAfterAttendanceSetName(holder, so);
                                 break;
                 }
         }
