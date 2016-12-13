@@ -2,6 +2,7 @@ package jp.pmw.test_en_revolution;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,7 +10,10 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -45,7 +49,13 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
         return fragment;
     }
     /*教室情報を呼ぶのに必要*/
-    private ProgressBar loadRoomMapProgressBar;
+    ProgressBar loadRoomMapProgressBar;
+    LinearLayout mSeatSituationLl;
+    ImageView mFaceIv;
+    TextView mStudentIdNumberTv;
+    TextView mFuriganaTv;
+    TextView mFullNameTv;
+    //TextView mPositionTv;
     /*教室用のView*/
     public RoomView roomView;
     //   授業参加学生を取得するまで待機するタイマー
@@ -69,6 +79,12 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
         super.onActivityCreated(savedInstanceState);
          /*ロード用*/
         loadRoomMapProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.seat_situation_load);
+        mSeatSituationLl = (LinearLayout)this.getActivity().findViewById(R.id.seat_situation_ll);
+        mFaceIv = (ImageView)this.getActivity().findViewById(R.id.seat_situation_ll_face_iv);
+        mStudentIdNumberTv = (TextView)this.getActivity().findViewById(R.id.seat_situation_ll_student_id_number_tv);
+        mFuriganaTv = (TextView)this.getActivity().findViewById(R.id.seat_situation_ll_furigana_tv);
+        mFullNameTv = (TextView)this.getActivity().findViewById(R.id.seat_situation_ll_full_name_tv);
+        //mPositionTv = (TextView)this.getActivity().findViewById(R.id.seat_situation_ll_position_name_tv);
         /*教室マップを描くよう*/
         roomView = (RoomView)this.getActivity().findViewById(R.id.view);
     }
@@ -311,7 +327,7 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
      */
     public void showRoomMap(){
         loadRoomMapProgressBar.setVisibility(View.GONE);
-        roomView.setVisibility(View.VISIBLE);
+        mSeatSituationLl.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -333,6 +349,7 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+    int imgCounter = 0;
     /**
      * Created by Shota Ito on 2015/1/4
      * openDialogFragmentShowCellInfoメソッド
@@ -341,8 +358,45 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
      * @param student 学生クラス
      */
     public void openDialogFragmentShowCellInfo(StudentObject so){
-        studentInfoDialogFragnemt = new StudentInfoCustomDialog();
-        studentInfoDialogFragnemt.showForSeatSituationFragment(this, so);
+        Drawable drawable = null;
+        if( imgCounter % 2 == 0 ){
+            drawable = getResources().getDrawable(R.drawable.k16125);
+        }else{
+            drawable = getResources().getDrawable(R.drawable.k13097);
+        }
+        ++imgCounter;
+        mFaceIv.setImageDrawable( drawable );
+        mStudentIdNumberTv.setText( so.getStudentIdNumber() + " (" + getSeatPosition(so.getSeatObject())  + ")" );
+        mFuriganaTv.setText( so.getFurigana() );
+        mFullNameTv.setText(  so.getFullName() );
+        //mPositionTv.setText( getSeatPosition(so.getSeatObject()) );
+        //studentInfoDialogFragnemt = new StudentInfoCustomDialog();
+        //studentInfoDialogFragnemt.showForSeatSituationFragment(this, so);
+    }
+    /**
+     * Created by Shota Ito on 2016/12/13
+     * getSeatPositionメソッド
+     * 座席位置(グループ名称)を取得します.
+     * @param student 学生クラス
+     */
+    String getSeatPosition(SeatObject so){
+        String groupNumber = so.getGroupName();
+        String seatName = so.getSeatName();
+        String strGroupNumber    = "グループ ";
+        String strDemiliter      = "　";
+        String strSeatPosition   = "着席位置 ";
+        String str = "";
+        if(groupNumber != null){
+            if( groupNumber.length() > 0 ){
+                //  グループ名称関係
+                str = str + strGroupNumber +" "+ groupNumber + strDemiliter;
+            }
+        }
+        if( seatName != null ){
+            //  座席名称関係
+            str = str + strSeatPosition +" "+ seatName;
+        }
+        return str;
     }
 
     /*public void openDialogFragmentShowCellInfo(Student student){

@@ -3,7 +3,6 @@
     android:layout_height="match_parent"
     tools:context="jp.pmw.test_en_revolution.SeatSituationFragment">
 
-
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="357dp"
@@ -11,13 +10,71 @@
         android:id="@+id/seat_situation_load"
         android:layout_gravity="center"
         android:indeterminate="false" />
-
-    <jp.pmw.test_en_revolution.room.RoomView
+    <LinearLayout
         android:visibility="gone"
+        android:id="@+id/seat_situation_ll"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/view"
-        android:layout_gravity="center" />
+        android:layout_height="match_parent">
+        <!-- 学生情報レイアウト -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+            <LinearLayout
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/seat_situation_ll_face_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/seat_situation_ll_student_id_number_tv"
+                    android:text=" "
+                    android:textSize="@dimen/textsize_large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/seat_situation_ll_furigana_tv"
+                    android:text=" "
+                    android:textSize="@dimen/textsize_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/seat_situation_ll_full_name_tv"
+                    android:text=" "
+                    android:textSize="@dimen/textsize_xlarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <!--<TextView
+                    android:id="@+id/seat_situation_ll_position_name_tv"
+                    android:text=" "
+                    android:textSize="@dimen/textsize_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>-->
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <jp.pmw.test_en_revolution.room.RoomView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:id="@+id/view"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+
 
 
 </FrameLayout>
