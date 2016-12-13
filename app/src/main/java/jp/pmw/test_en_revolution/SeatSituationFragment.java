@@ -55,7 +55,7 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
     TextView mStudentIdNumberTv;
     TextView mFuriganaTv;
     TextView mFullNameTv;
-    //TextView mPositionTv;
+    TextView mPositionTv;
     /*教室用のView*/
     public RoomView roomView;
     //   授業参加学生を取得するまで待機するタイマー
@@ -84,7 +84,7 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
         mStudentIdNumberTv = (TextView)this.getActivity().findViewById(R.id.seat_situation_ll_student_id_number_tv);
         mFuriganaTv = (TextView)this.getActivity().findViewById(R.id.seat_situation_ll_furigana_tv);
         mFullNameTv = (TextView)this.getActivity().findViewById(R.id.seat_situation_ll_full_name_tv);
-        //mPositionTv = (TextView)this.getActivity().findViewById(R.id.seat_situation_ll_position_name_tv);
+        mPositionTv = (TextView)this.getActivity().findViewById(R.id.seat_situation_ll_position_name_tv);
         /*教室マップを描くよう*/
         roomView = (RoomView)this.getActivity().findViewById(R.id.view);
     }
@@ -365,14 +365,31 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
             drawable = getResources().getDrawable(R.drawable.k13097);
         }
         ++imgCounter;
+        TransmitStateObject tso = this.getMainActivity().getClassObject().getTransmitStateObject();
+        int attColor = so.getAttendanceObject().getAttendanceStateColor(getMainActivity(), tso);
+
         mFaceIv.setImageDrawable( drawable );
-        mStudentIdNumberTv.setText( so.getStudentIdNumber() + " (" + getSeatPosition(so.getSeatObject())  + ")" );
+        mStudentIdNumberTv.setText( so.getStudentIdNumber() );
+        setTextColor(attColor, mStudentIdNumberTv);
         mFuriganaTv.setText( so.getFurigana() );
+        setTextColor(attColor, mFuriganaTv);
         mFullNameTv.setText(  so.getFullName() );
-        //mPositionTv.setText( getSeatPosition(so.getSeatObject()) );
+        setTextColor(attColor, mFullNameTv);
+        mPositionTv.setText( getSeatPosition(so.getSeatObject()) );
         //studentInfoDialogFragnemt = new StudentInfoCustomDialog();
         //studentInfoDialogFragnemt.showForSeatSituationFragment(this, so);
     }
+    /**
+     * Created by Shota Ito on 2016/12/13
+     * setTextColorメソッド
+     * 座席位置(グループ名称)を取得します.
+     * @param int       color     出席カラー
+     * @param TextView  tv        TextView
+     */
+    void setTextColor(int color, TextView tv){
+        tv.setTextColor( color );
+    }
+
     /**
      * Created by Shota Ito on 2016/12/13
      * getSeatPositionメソッド

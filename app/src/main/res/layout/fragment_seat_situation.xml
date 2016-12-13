@@ -55,12 +55,12 @@
                     android:textSize="@dimen/textsize_xlarge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-                <!--<TextView
+                <TextView
                     android:id="@+id/seat_situation_ll_position_name_tv"
                     android:text=" "
-                    android:textSize="@dimen/textsize_medium"
+                    android:textSize="@dimen/textsize_large"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>-->
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
         </LinearLayout>
