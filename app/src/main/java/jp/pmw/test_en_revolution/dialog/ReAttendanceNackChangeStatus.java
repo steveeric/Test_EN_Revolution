@@ -10,6 +10,7 @@ import jp.pmw.test_en_revolution.SeatObject;
 
 /**
  * Created by si on 2016/12/16.
+ * 在室確認対象学生から、在室確認時にACKがなかった学生オブジェクト
  */
 
 public class ReAttendanceNackChangeStatus {

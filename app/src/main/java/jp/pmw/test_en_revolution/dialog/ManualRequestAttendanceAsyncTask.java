@@ -1,12 +1,7 @@
 package jp.pmw.test_en_revolution.dialog;
 
-
-import com.google.gson.Gson;
-
 import java.io.IOException;
-
 import jp.pmw.test_en_revolution.MyAsyncTask;
-import jp.pmw.test_en_revolution.StudentObject;
 import jp.pmw.test_en_revolution.config.URL;
 import jp.pmw.test_en_revolution.network.MyHttpConnection;
 import jp.pmw.test_en_revolution.network.MyIOException;

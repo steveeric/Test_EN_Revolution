@@ -9,6 +9,7 @@ import jp.pmw.test_en_revolution.network.MyIOException;
 
 /**
  * Created by si on 2016/12/16.
+ * 在室確認ダイアログを以降表示しないようにネットワークDBに記録します.
  */
 
 public class ReAttendanceBulkChangeEndDateTimeAsyncTask extends MyAsyncTask {

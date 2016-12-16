@@ -14,6 +14,7 @@ import jp.pmw.test_en_revolution.TransmitStateObject;
 
 /**
  * Created by si on 2016/12/16.
+ * 在室確認赤外線に対してACKがなかった学生のアダプター
  */
 
 public class ReAttendanceChangeStatusAdapter extends ArrayAdapter<ReAttendanceNackChangeStatus> {
@@ -121,8 +122,10 @@ public class ReAttendanceChangeStatusAdapter extends ArrayAdapter<ReAttendanceNa
 
         if( acs.mBeInRoom ){
             holder.mForgotIv.setVisibility(View.VISIBLE);
+            holder.mForgotTv.setTextColor(this.getContext().getResources().getColor(R.color.forestGreen));
         }else{
             holder.mForgotIv.setVisibility(View.INVISIBLE);
+            holder.mForgotTv.setTextColor(this.getContext().getResources().getColor(R.color.black));
         }
 
         //  不要のため非表示
@@ -131,6 +134,7 @@ public class ReAttendanceChangeStatusAdapter extends ArrayAdapter<ReAttendanceNa
 
         setRequestBtnListener(holder);
     }
+
 
     /**
      * setRequestBtnListenerメソッド

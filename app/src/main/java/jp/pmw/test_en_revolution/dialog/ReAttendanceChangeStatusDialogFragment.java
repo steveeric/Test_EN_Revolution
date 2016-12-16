@@ -20,6 +20,8 @@ import jp.pmw.test_en_revolution.R;
 
 /**
  * Created by si on 2016/12/16.
+ * 在室確認ACKがなかった学生を
+ * SonoRIs MTから手動でACKがあったことにするダイアログを表示します.
  */
 
 public class ReAttendanceChangeStatusDialogFragment  extends DialogFragment {
