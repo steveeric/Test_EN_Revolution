@@ -31,6 +31,8 @@ public class AttendeeFragmentTimeTask extends TimerTask {
         chkReDrawAttendeeFragment();
         //  出席関係の情報を取得する.
         chkAttendanceRelationshipInfo();
+        //
+        attendeeFragment.showReAttendanceChangeStatusDialogFrament();
     }
 
     private void chkReDrawAttendeeFragment(){

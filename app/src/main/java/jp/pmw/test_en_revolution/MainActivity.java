@@ -39,6 +39,7 @@ import jp.pmw.test_en_revolution.confirm_class_plan.ConfirmClassPlanActivity;
 import jp.pmw.test_en_revolution.confirm_class_plan.Roster;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
 import jp.pmw.test_en_revolution.confirm_class_plan.TmpClassInfo;
+import jp.pmw.test_en_revolution.dialog.ReAttendanceChangeStatusDialogFragment;
 import jp.pmw.test_en_revolution.drawer.NavigationDrawerFragment;
 import jp.pmw.test_en_revolution.grouping.GroupingFragment_1;
 import jp.pmw.test_en_revolution.help.HelpSignalDialogFragnemt;
@@ -264,11 +265,9 @@ public class MainActivity extends MyFragmentActivity {
     public void initOnResume(){
         //  送信状態確認オブジェクト
         chkTrxTranmitState();
-
-        //  送信状態オブジェクト初期化
-        //this.getClassObject().setTransmitStateObject(null);
+        //  閲覧可能状況を初期化する.
+        ReAttendanceChangeStatusDialogFragment.newInstance().initBrowsing();
         getFragmentManager().invalidateOptionsMenu();
-        //getMenuInflater().inflate(R.menu.main, menu);
         //  強制的に戻す
         mNavigationDrawerItemSelected = 0;
         ListView lv = mNavigationDrawerFragment.getDrawerListView();

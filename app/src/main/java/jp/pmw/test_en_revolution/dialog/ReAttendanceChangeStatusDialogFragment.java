@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.DialogFragment;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -15,51 +14,63 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import jp.pmw.test_en_revolution.AttendeeFragment;
-import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.R;
-import jp.pmw.test_en_revolution.attendee.AttendanceChangeStatusAdapter;
 
 /**
- * Created by si on 2016/12/15.
- * 赤外線で出席認定にならなかった学生を表示するダイアログです.
+ * Created by si on 2016/12/16.
  */
 
-public class AttendanceChangeStatusDialogFragment extends DialogFragment {
-    public static final String ATTENDANCE_CHANGE_STATUS_DIALOG_FRAGMENT = "attendance_change_status_dialog_fragment";
+public class ReAttendanceChangeStatusDialogFragment  extends DialogFragment {
+    public static final int CANCEL = 0;
+    public static final int REQUEST = 1;
+    public static final String RE_ATTENDANCE_CHANGE_STATUS_DIALOG_FRAGMENT = "re_attendance_change_status_dialog_fragment";
     public static final String SAME_CLASS_NUMBER = "same_class_number";
-    private static AttendanceChangeStatusDialogFragment instance = null;
-    public static AttendanceChangeStatusDialogFragment newInstance() {
+
+    private static final String TITLE = "在室確認で学生のSonoRIsから反応がなかったリスト";
+    private static ReAttendanceChangeStatusDialogFragment instance = null;
+    public static ReAttendanceChangeStatusDialogFragment newInstance() {
         if (instance == null) {
-            instance = new AttendanceChangeStatusDialogFragment();
-        } else {
-            //  2重起動防止用
-            instance.dismiss();
-            return null;
+            instance = new ReAttendanceChangeStatusDialogFragment();
         }
         return instance;
     }
     @Override
     public void onDetach() {
         super.onDetach();
-        this.instance = null;
+        if( !foreverNotBrowsing ){
+            browsing = false;
+        }
+        dismiss();
     }
-
-    public AttendeeFragment mAttendeeFragment;
-    public Handler mHandler;
+    public boolean browsing = false;
+    //  永久的にこのダイアログを出したくないかどうか
+    //  false:出て欲しい、true:出したくない
+    boolean foreverNotBrowsing = false;
     String mSameClassNumber;
     Dialog mDialog;
     ProgressBar mProgressBar;
     LinearLayout mLinearLayout;
-    GridView mAbsentGv;
+    TextView mTitleTextView;
+    GridView mNackReAttendanceGv;
     Button mCloseBtn;
-    AttendanceChangeStatusAdapter mAttendanceChangeStatusAdapter;
-
+    ReAttendanceChangeStatusAdapter mReAttendanceChangeStatusAdapter;
+    public Handler mHandler;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        browsing = true;
         init();
         return mDialog;
+    }
+    /**
+     *  Created by si on 2016/12/16.
+     *  initBrowsingメソッド
+     *  閲覧可能状態を初期化する.
+     **/
+    public void initBrowsing(){
+        this.browsing = false;
+        this.foreverNotBrowsing = false;
     }
     /**
      *  Created by si on 2016/12/15.
@@ -75,7 +86,7 @@ public class AttendanceChangeStatusDialogFragment extends DialogFragment {
         //
         setSizeDialogFragment();
         //
-        new AttendanceChangeStatusAsyncTask(this, mSameClassNumber).execute();
+        new ReAttendanceChangeStatusAsyncTask(this, mSameClassNumber).execute();
     }
     /**
      *  Created by si on 2016/12/15.
@@ -115,42 +126,31 @@ public class AttendanceChangeStatusDialogFragment extends DialogFragment {
     public class CloseBtnListener implements View.OnClickListener {
         @Override
         public void onClick(View v){
-            if( mAttendeeFragment != null ){
-                //  受講者一覧を再描画する
-                mAttendeeFragment.initFragment();
-                MainActivity ma = mAttendeeFragment.getMainActivity();
-                ma.getClassObject().setStudentObject( null );
-                mAttendeeFragment.showWaitFragment();
-                mAttendeeFragment.reGetStudentFlag = true;
-                mAttendeeFragment.getMainActivity()
-                        .getClassObject()
-                        .getTransmitStateObject()
-                        .mAttendanceBulkChangeEndDateTime = " ";
-                new AttendanceBulkChangeEndDateTimeAsyncTask( mSameClassNumber ).execute();
-            }
+            new ReAttendanceBulkChangeEndDateTimeAsyncTask( mSameClassNumber ).execute();
+            foreverNotBrowsing = true;
             dismiss();
         }
     }
-    public void setItme(final AttendanceChangeStatus[] acss){
-        if( getActivity() != null ) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    //
-                    mLinearLayout = (LinearLayout) mDialog.findViewById(R.id.dialog_custom_attendance_change_status_ll);
-                    //
-                    mAbsentGv = (GridView) mDialog.findViewById(R.id.dialog_custom_attendance_change_status_gv);
-                    //
-                    mAttendanceChangeStatusAdapter = getAdapter(acss);
-                    //
-                    mAbsentGv.setAdapter(mAttendanceChangeStatusAdapter);
-                    //
-                    mLinearLayout.setVisibility(View.VISIBLE);
-                    //
-                    mProgressBar.setVisibility(View.GONE);
-                }
-            });
-        }
+    public void setItme(final ReAttendanceNackChangeStatus[] rencs){
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mLinearLayout = (LinearLayout) mDialog.findViewById(R.id.dialog_custom_attendance_change_status_ll);
+                //
+                mTitleTextView = (TextView) mDialog.findViewById(R.id.dialog_custom_attendance_change_status_tv);
+                mTitleTextView.setText( TITLE );
+                //
+                mNackReAttendanceGv = (GridView) mDialog.findViewById(R.id.dialog_custom_attendance_change_status_gv);
+                //
+                mReAttendanceChangeStatusAdapter = getAdapter(rencs);
+                //
+                mNackReAttendanceGv.setAdapter(mReAttendanceChangeStatusAdapter);
+                //
+                mLinearLayout.setVisibility(View.VISIBLE);
+                //
+                mProgressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     /**
@@ -158,12 +158,12 @@ public class AttendanceChangeStatusDialogFragment extends DialogFragment {
      *  setAdapterメソッド
      *  アダプターをセットする
      **/
-    AttendanceChangeStatusAdapter getAdapter(AttendanceChangeStatus[] acss){
-        AttendanceChangeStatusAdapter adapter =
-                 new AttendanceChangeStatusAdapter(
-                getActivity(),
-                R.layout.row_attendance_change_status,
-                         acss);
+    ReAttendanceChangeStatusAdapter getAdapter(ReAttendanceNackChangeStatus[] rencs){
+        ReAttendanceChangeStatusAdapter adapter =
+                new ReAttendanceChangeStatusAdapter(
+                        getActivity(),
+                        R.layout.row_attendance_change_status,
+                        rencs);
         return adapter;
     }
 

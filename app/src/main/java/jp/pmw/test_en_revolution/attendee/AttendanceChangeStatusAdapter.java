@@ -20,15 +20,8 @@ import jp.pmw.test_en_revolution.dialog.ManualRequestAttendanceAsyncTask;
  * Created by si on 2016/12/15.
  */
 
-public class AttendanceChangeStatusAdapter  extends ArrayAdapter<AttendanceChangeStatus> {
-    //  SonoRIs忘れタップ状況(0:イナクティブ, 1:アクティブ)
-    //  private boolean tapForgotStatus = false;
-    //  無反応タップ状況(0:イナクティブ, 1:アクティブ)
-    //  private boolean tapNoResponseStatus = false;
-
-
+public class AttendanceChangeStatusAdapter extends ArrayAdapter<AttendanceChangeStatus> {
     private LayoutInflater mLayoutInflater;
-
     public AttendanceChangeStatusAdapter(Context context, int resourceId, AttendanceChangeStatus[] items) {
         super(context, resourceId, items);
         mLayoutInflater =   (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -61,19 +54,6 @@ public class AttendanceChangeStatusAdapter  extends ArrayAdapter<AttendanceChang
                 this.notifyDataSetChanged();
             }
         }
-        /*if( getContext() != null ){
-            MainActivity ma = (MainActivity)getContext();
-            if( ma.getClassObject().getStudentObject() != null ){
-                StudentObject[] sos = ma.getClassObject().getStudentObject();
-                for( int i = 0; i < sos.length; i++ ){
-                    if( sos[i].getAttendanceObject().getAttendanceId().equals(so.getAttendanceObject().getAttendanceId()) ){
-                        sos[i].getAttendanceObject().setAttendanceTime(so.getAttendanceObject().getAttendanceTime());
-                        sos[i].getAttendanceObject().setAttendanceTime(so.getAttendanceObject().getForgotApplyTime());
-                        break;
-                    }
-                }
-            }
-        }*/
     }
 
     @Override

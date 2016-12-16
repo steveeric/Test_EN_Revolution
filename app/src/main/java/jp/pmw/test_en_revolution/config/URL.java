@@ -225,8 +225,25 @@ public class URL {
     public static final String getUrlRecordAttendanceBulkChangeEndDateTime(String sameClassNumber){
         return TEMP_BASE_URL + "TransmitStateJson_Controller/recordAttendanceBulkChangeEndDateTime?scn=" + sameClassNumber;
     }
-
-
-
+    /**
+     * getUrlNackReAttendanceメソッド
+     * 在室確認ACKがなかった学生を取得します.
+     * @param   String  sameClassNumber 授業識別番号
+     * @author Ito Shota
+     * @since  2016/12/16
+     **/
+    public static final String getUrlNackReAttendance(String sameClassNumber){
+        return TEMP_BASE_URL + "AttendanceJson_Controller/getNackReAttendnace?scn=" + sameClassNumber;
+    }
+    /**
+     * getUrlRecordReAttendanceBulkChangeEndDateTimeメソッド
+     * 在室確認ACKがなかったポップアップ表示を終了します.
+     * @param   String  sameClassNumber 授業識別番号
+     * @author Ito Shota
+     * @since  2016/12/16
+     **/
+    public static final String getUrlRecordReAttendanceBulkChangeEndDateTime(String sameClassNumber){
+        return TEMP_BASE_URL + "TransmitStateJson_Controller/recordReAttendanceBulkChangeEndDateTime?scn=" + sameClassNumber;
+    }
 
 }

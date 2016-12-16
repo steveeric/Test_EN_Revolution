@@ -29,12 +29,17 @@ public class TransmitStateObject implements Serializable {
     public static final String CLIKCER_TRANMIST_ANSWER       = "02";
     //  クリッカー結果送信
     public static final String CLIKCER_TRANSMIT_RESULT       = "03";
+    //  在室確認ACK一括変更ダイアログを表示する.
+    public static final int RE_ATTENDANCE_BULK_CHANGE_SHOW = 1;
 
     @SerializedName("attendance_transmit_end_time")
     public String attendanceTranmitEndTime;
 
     @SerializedName("attendance_bulk_change_end_date_time")
     public String mAttendanceBulkChangeEndDateTime = null;
+
+    @SerializedName("re_attendance_bulk_change_show")
+    public int mReAttendanceBulkChangeShow = 0;
 
     @SerializedName("bmp_transmit_id")
     public String bmpTransmitId;

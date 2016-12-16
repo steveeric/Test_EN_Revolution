@@ -48,6 +48,7 @@ import jp.pmw.test_en_revolution.config.URL;
 import jp.pmw.test_en_revolution.confirm_class_plan.Roster;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
 import jp.pmw.test_en_revolution.dialog.AttendanceChangeStatusDialogFragment;
+import jp.pmw.test_en_revolution.dialog.ReAttendanceChangeStatusDialogFragment;
 import jp.pmw.test_en_revolution.dialog.StudentInfoDialogFragnemt;
 
 /**
@@ -289,7 +290,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
             setAttendanceStatusLayout();
             //  コンテンツ画面表示
             switchContentScreen();
-            //
+            //  出席認定一括変更ダイアログを表示
             showAttendanceChangeStatusDialogFrament();
         } else{
 
@@ -721,10 +722,11 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         this.attendeeGridView.invalidate();
     }
     AttendanceChangeStatusDialogFragment mAttendanceChangeStatusDialogFragment;
+    ReAttendanceChangeStatusDialogFragment mReAttendanceChangeStatusDialogFragment;
     /**
-     * Created by scr on 2015/1/4.
+     * Created by scr on 2016/12/14.
      * showAttendanceChangeStatusDialogFramentメソッド
-     * CustomDialogFramentからのコールバックで使用します.
+     * 出席認定一括変更ダイアログを表示する.
      */
     void showAttendanceChangeStatusDialogFrament(){
         if( getMainActivity().getClassObject().getTransmitStateObject().mAttendanceBulkChangeEndDateTime == null ){
@@ -733,11 +735,29 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
             }
             if( getMainActivity().getClassObject().getTransmitStateObject().mAttendanceBulkChangeEndDateTime == null ){
                 mAttendanceChangeStatusDialogFragment.mAttendeeFragment = this;
+                mAttendanceChangeStatusDialogFragment.mHandler = this.mHandler;
                 Bundle bundle = new Bundle();
                 String sameClassNumber = getMainActivity().getClassObject().getSameClassNumber();
                 bundle.putString(AttendanceChangeStatusDialogFragment.SAME_CLASS_NUMBER, sameClassNumber);
                 mAttendanceChangeStatusDialogFragment.setArguments(bundle);
                 mAttendanceChangeStatusDialogFragment.show(getActivity().getSupportFragmentManager(), AttendanceChangeStatusDialogFragment.ATTENDANCE_CHANGE_STATUS_DIALOG_FRAGMENT);
+            }
+        }
+    }
+    /**
+     * Created by scr on 2016/12/16
+     * showReAttendanceChangeStatusDialogFramentメソッド
+     * 在室確認一括変更ダイアログを表示する.
+     */
+    void showReAttendanceChangeStatusDialogFrament(){
+        if( getMainActivity().getClassObject().getTransmitStateObject().mReAttendanceBulkChangeShow == TransmitStateObject.RE_ATTENDANCE_BULK_CHANGE_SHOW ) {
+            if( !ReAttendanceChangeStatusDialogFragment.newInstance().browsing ) {
+                ReAttendanceChangeStatusDialogFragment.newInstance().mHandler = this.mHandler;
+                Bundle bundle = new Bundle();
+                String sameClassNumber = getMainActivity().getClassObject().getSameClassNumber();
+                bundle.putString(AttendanceChangeStatusDialogFragment.SAME_CLASS_NUMBER, sameClassNumber);
+                ReAttendanceChangeStatusDialogFragment.newInstance().setArguments(bundle);
+                ReAttendanceChangeStatusDialogFragment.newInstance().show(getActivity().getSupportFragmentManager(), ReAttendanceChangeStatusDialogFragment.RE_ATTENDANCE_CHANGE_STATUS_DIALOG_FRAGMENT);
             }
         }
     }
