@@ -1,7 +1,11 @@
 package jp.pmw.test_en_revolution.attendee;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
         import android.view.View;
@@ -12,15 +16,14 @@ import android.widget.LinearLayout;
         import android.widget.TextView;
 
 
-import org.w3c.dom.Text;
-
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 import jp.pmw.test_en_revolution.AttendanceObject;
-import jp.pmw.test_en_revolution.CustomDialogFragment;
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.R;
 import jp.pmw.test_en_revolution.StudentObject;
 import jp.pmw.test_en_revolution.TransmitStateObject;
-import jp.pmw.test_en_revolution.dialog.StudentInfoDialogFragnemt;
 
 /**
  * Created by si on 2016/01/29.
@@ -52,7 +55,8 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                 _requestNumber = requestNumber;
                 _transmitStateObject = tso;
         }
-
+        Handler handler = new Handler(Looper.getMainLooper()); // (1)
+        int counter = 0;
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
                 ViewHolder holder = null;
@@ -75,6 +79,35 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                 }else{
                         holder = (ViewHolder)view.getTag();
                 }
+
+                String url = so.mFaceUrl;
+                holder.mLoaderFaceImageView.setUrl(url);
+                holder.mLoaderFaceImageView.setTag(url);
+                Bitmap bitmap = null;
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                RealmResults<FaceImageRealmObject> results = realm.where(FaceImageRealmObject.class)
+                        .equalTo("url", url)
+                        .findAll();
+                int registeredCount = results.size();
+                if(registeredCount == 1){
+                        byte[] faceImageByts = results.get(0).getFaceImage();
+                        if( faceImageByts != null ){
+                                bitmap = BitmapFactory.decodeByteArray(faceImageByts, 0, faceImageByts.length);
+                        }
+                }
+                realm.commitTransaction();
+                realm.close();
+                if( bitmap != null ){
+                        holder.mLoaderFaceImageView.setImageBitmap( bitmap );
+                        holder.mLoaderFaceImageView.setVisibility(View.VISIBLE);
+                }else{
+                        Drawable drawable = _context.getResources().getDrawable(R.drawable.img_kanaechan);
+                        holder.mLoaderFaceImageView.setImageDrawable(drawable);
+                        FaceImageTask fit = new FaceImageTask(getContext(), holder.mLoaderFaceImageView, url);
+                        fit.execute(url);
+                }
+
                 //      学籍番号とフリガナと氏名
                 chkAfterAttendanceSetName(holder, so);
 
@@ -95,6 +128,31 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                 setColorOfSignal(holder, so);
                 return view;
         }
+        /**
+         * Created by si on 2016/12/14.
+         * getFaceImageLocalDBメソッド
+         * ローカル端末のDBに登録されている顔写真を取得します.
+         * @param       String  url
+         * @return      Bitmap ビットマップ , なければnull
+         * **/
+        /*Bitmap getFaceImageLocalDB(String url){
+                RealmConfiguration realmConfig = new RealmConfiguration.Builder(_context).build();
+                Realm realm = Realm.getInstance(realmConfig);
+                realm.beginTransaction();
+                RealmResults<FaceImageRealmObject> results = realm.where(FaceImageRealmObject.class)
+                        .equalTo("url", url)
+                        .findAll();
+                int registeredCount = results.size();
+                if(registeredCount == 1){
+                        byte[] faceImageByts = results.get(0).getFaceImage();
+                        if( faceImageByts != null ){
+                                Bitmap bmp = BitmapFactory.decodeByteArray(faceImageByts, 0, faceImageByts.length);
+                                return bmp;
+                        }
+                }
+                realm.commitTransaction();
+                return null;
+        }*/
         /**
          * Created by si on 2016/02/01.
          * setColorOfSignalメソッド
@@ -344,6 +402,7 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
         }
 
         private static class ViewHolder {
+                LoaderFaceImageView mLoaderFaceImageView;
                 //      1番目信号
                 TextView firstSignalTextView;
                 //      2番目信号
@@ -365,6 +424,7 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                 ImageView messageTextView;
 
                 public ViewHolder(View view) {
+                        this.mLoaderFaceImageView = (LoaderFaceImageView) view.findViewById(R.id.roster_face_iv);
                         //      1番目信号
                         this.firstSignalTextView = (TextView) view.findViewById(R.id.roster_first_signal_textView);
                         //      2番目信号

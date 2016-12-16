@@ -2,6 +2,7 @@ package jp.pmw.test_en_revolution;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,13 +28,18 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 import java.util.Timer;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 import jp.pmw.test_en_revolution.attendee.Attendee;
 import jp.pmw.test_en_revolution.attendee.CustomAdapter;
+import jp.pmw.test_en_revolution.attendee.FaceImageRealmObject;
 import jp.pmw.test_en_revolution.attendee.RosterCustomAdapter_1;
 import jp.pmw.test_en_revolution.attendee.RosterCustomAdapter_2;
 import jp.pmw.test_en_revolution.config.Config;
@@ -41,6 +47,7 @@ import jp.pmw.test_en_revolution.config.TimerConfig;
 import jp.pmw.test_en_revolution.config.URL;
 import jp.pmw.test_en_revolution.confirm_class_plan.Roster;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
+import jp.pmw.test_en_revolution.dialog.AttendanceChangeStatusDialogFragment;
 import jp.pmw.test_en_revolution.dialog.StudentInfoDialogFragnemt;
 
 /**
@@ -80,6 +87,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
     private TextView attendanceStatusTextView;  //  出席:
     private TextView lateStatusTextView;        //  遅刻:
     private TextView absentStatusTextView;      //  欠席:
+    private TextView leavEarlyStatusTextView;   //  早退:
     private TextView attendeeStatusTextView;
     //private ProgressBar attendeeLoadProgressBar;
     private ListView attendeeListView;
@@ -121,6 +129,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         this.attendanceStatusTextView   = (TextView)this.getActivity().findViewById(R.id.attendee_total_status_textView);
         this.lateStatusTextView   = (TextView)this.getActivity().findViewById(R.id.late_total_status_textView);
         this.absentStatusTextView       = (TextView)this.getActivity().findViewById(R.id.absent_total_status_textView);
+        this.leavEarlyStatusTextView = (TextView)this.getActivity().findViewById(R.id.leav_eary_total_status_textView);
         this.attendeeStatusTextView = (TextView)this.getActivity().findViewById(R.id.attendee_status_message_textView);
         this.attendeeListView = (ListView)this.getActivity().findViewById(R.id.attendee_list);
         //this.attendeeLoadProgressBar = (ProgressBar)this.getActivity().findViewById(R.id.attendee_load_progressBar);
@@ -199,7 +208,6 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
     @Override
     public void onResume(){
         super.onResume();
-
         //  タイマータスク
         if(transmitStateTimerTask == null){
             MainActivity acitivty = (MainActivity)this.getActivity();
@@ -207,8 +215,6 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
             java.util.Timer timer = new java.util.Timer();                                      //タイマークラスのインスタンス
             timer.schedule(transmitStateTimerTask, 0, TimerConfig.TIMER_INTERVAL_TIME_ATTENDANCE);                                    //起動時0秒後から10秒間隔で起動
         }
-
-
         showWaitFragment();
 
         //受講者クラス
@@ -283,6 +289,8 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
             setAttendanceStatusLayout();
             //  コンテンツ画面表示
             switchContentScreen();
+            //
+            showAttendanceChangeStatusDialogFrament();
         } else{
 
             if(this.reGetStudentFlag){
@@ -340,6 +348,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         int lateNotForgot   = noae.mLateNotForgot;
         int lateForgot      = noae.mLateForgot;
         int absent          = noae.mAbsent;
+        int leave           = noae.mLeavEarly;
 
         String strAtt = getString(R.string.total_attendee) + " "+ attNotForgot;
         if( attForgot > 0 ){
@@ -351,15 +360,19 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         }
         String strAbsent = getString(R.string.total_absentee) + " "+ absent;
 
+        String strLeave = getString(R.string.leave_early) + " " + leave;
+
         final String fStrAtt = strAtt;
         final String fStrLat = strLate;
         final String fStrAbs = strAbsent;
+        final String fStrLeave = strLeave;
 
         mHandler.post(new Runnable() {
             public void run() {
                 attendanceStatusTextView.setText(fStrAtt);
                 lateStatusTextView.setText(fStrLat);
                 absentStatusTextView.setText(fStrAbs);
+                leavEarlyStatusTextView.setText(fStrLeave);
             }
         });
     }
@@ -587,6 +600,10 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
             this.transmitStateTimerTask.cancel();
             this.transmitStateTimerTask = null;
         }
+        //  一括出席認定変更ダイアログを閉じる
+        if( this.mAttendanceChangeStatusDialogFragment != null ){
+            mAttendanceChangeStatusDialogFragment.dismiss();
+        }
     }
 
 
@@ -703,16 +720,23 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         this.adapter.notifyDataSetChanged();
         this.attendeeGridView.invalidate();
     }
-
-    private Handler handler = new Handler();
-
-
-    /*public void demo(List<Student> attendance){
-        Timer mainTimer = new Timer();
-        MainActivity activity = (MainActivity)this.getActivity();
-        activity.setTimer(mainTimer);
-        DemoReCollTheRollTimer reTimer  = new DemoReCollTheRollTimer(activity,DemoReCollTheRollTimer.MODE_ATTENDEE_FRAGMENT,attendance);
-        reTimer.setAttendeeFragment(handler,this.attendeeGridView,this.adapter);
-        mainTimer.schedule(reTimer, 6000,1000);
-    }*/
+    AttendanceChangeStatusDialogFragment mAttendanceChangeStatusDialogFragment;
+    /**
+     * Created by scr on 2015/1/4.
+     * showAttendanceChangeStatusDialogFramentメソッド
+     * CustomDialogFramentからのコールバックで使用します.
+     */
+    void showAttendanceChangeStatusDialogFrament(){
+        if( mAttendanceChangeStatusDialogFragment == null ){
+            mAttendanceChangeStatusDialogFragment = AttendanceChangeStatusDialogFragment.newInstance();
+        }
+        if( !mAttendanceChangeStatusDialogFragment.oneClose ){
+            mAttendanceChangeStatusDialogFragment.mAttendeeFragment = this;
+            Bundle bundle = new Bundle();
+            String sameClassNumber = getMainActivity().getClassObject().getSameClassNumber();
+            bundle.putString(AttendanceChangeStatusDialogFragment.SAME_CLASS_NUMBER, sameClassNumber);
+            mAttendanceChangeStatusDialogFragment.setArguments(bundle);
+            mAttendanceChangeStatusDialogFragment.show(getActivity().getSupportFragmentManager(), AttendanceChangeStatusDialogFragment.ATTENDANCE_CHANGE_STATUS_DIALOG_FRAGMENT);
+        }
+    }
 }

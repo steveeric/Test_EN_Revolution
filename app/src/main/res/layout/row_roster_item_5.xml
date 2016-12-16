@@ -14,10 +14,15 @@
             android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <ImageView
-                android:src="@drawable/k13097"
-                android:layout_width="100dp"
-                android:layout_height="150dp" />
+            <jp.pmw.test_en_revolution.attendee.LoaderFaceImageView
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:visibility="invisible"
+                android:id="@+id/roster_face_iv"/>
+            <!--<ImageView
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:id="@+id/roster_face_iv"/>-->
         </LinearLayout>
 
         <!-- 右側レイアウト(学籍番号と氏名) -->
@@ -69,89 +74,95 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!-- ACKインジケーター -->
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
+            android:gravity="right"
+            android:layout_marginRight="3dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <!-- 左から1つ目 -->
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+            <!-- ACKシグナル -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <!-- 左から1つ目 -->
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/signal_gray"
+                    android:id="@+id/roster_first_signal_textView"/>
+                <!-- 左から2つ目 -->
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/signal_gray"
+                    android:id="@+id/roster_second_signal_textView"/>
+                <!-- 左から3つ目 -->
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/signal_gray"
+                    android:id="@+id/roster_third_signal_textView"/>
+                <!-- 左から4つ目 -->
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/signal_gray"
+                    android:id="@+id/roster_fourth_signal_textView"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
                 android:layout_marginLeft="5dp"
-                android:background="@drawable/signal_gray"
-                android:id="@+id/roster_first_signal_textView"/>
-            <!-- 左から2つ目 -->
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/signal_gray"
-                android:id="@+id/roster_second_signal_textView"/>
-            <!-- 左から3つ目 -->
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/signal_gray"
-                android:id="@+id/roster_third_signal_textView"/>
-            <!-- 左から4つ目 -->
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/signal_gray"
-                android:id="@+id/roster_fourth_signal_textView"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/textsize_small"
+                    android:text="@string/indicator_seat"/>
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/textsize_small"
+                    android:text="@string/indicator_attendance" />
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/textsize_small"
+                    android:text="@string/indicator_re_attendance"/>
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/textsize_small"
+                    android:text="@string/indicator_privacy_protection"/>
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="center"
-                android:textSize="@dimen/textsize_small"
-                android:text="@string/indicator_seat"/>
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="center"
-                android:textSize="@dimen/textsize_small"
-                android:text="@string/indicator_attendance" />
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="center"
-                android:textSize="@dimen/textsize_small"
-                android:text="@string/indicator_re_attendance"/>
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="center"
-                android:textSize="@dimen/textsize_small"
-                android:text="@string/indicator_privacy_protection"/>
-        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

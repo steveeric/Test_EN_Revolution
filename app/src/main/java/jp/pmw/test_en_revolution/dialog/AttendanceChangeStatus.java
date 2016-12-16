@@ -1,14 +1,23 @@
-package jp.pmw.test_en_revolution;
+package jp.pmw.test_en_revolution.dialog;
 
 import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
+import jp.pmw.test_en_revolution.Assistant;
+import jp.pmw.test_en_revolution.AttendanceObject;
+import jp.pmw.test_en_revolution.MessageObject;
+import jp.pmw.test_en_revolution.PastAttendanceCount;
+import jp.pmw.test_en_revolution.SeatObject;
+import jp.pmw.test_en_revolution.StudentObject;
 
 /**
- * Created by si on 2016/01/29.
- * 学生オブジェクトクラス
+ * Created by si on 2016/12/15.
  */
-public class StudentObject implements Serializable {
+
+public class AttendanceChangeStatus{
+    //  SonoRIs忘れタップ状況(0:イナクティブ, 1:アクティブ)
+    public boolean mTapForgotStatus = false;
+    //  無反応タップ状況(0:イナクティブ, 1:アクティブ)
+    public boolean mTapNoResponseStatus = false;
+
     //学生ID
     @SerializedName("student_id")
     public String studentId;
@@ -94,14 +103,4 @@ public class StudentObject implements Serializable {
     public String mFaceUrl;
     @SerializedName("last_update_time")
     public String mLastUpdateTime;
-
-    /*public StudentObject(String studentIdNumber,String furigana, String fullName, SeatObject seatObject,SeatObject seatAfterMoving){
-        this.studentIdNumber = studentIdNumber;
-        this.furigana = furigana;
-        this.fullName = fullName;
-        this.seatObject = seatObject;
-        this.seatAfterMoving = seatAfterMoving;
-    }*/
-
-
 }

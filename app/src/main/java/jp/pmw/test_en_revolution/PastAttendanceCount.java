@@ -19,4 +19,9 @@ public class PastAttendanceCount{
     @SerializedName("absented_count")
     private int absentedCount;
     public int getAbsentedCount(){return absentedCount;}
+    //
+    //  早退した回数
+    @SerializedName("leave_early_count")
+    private int leaveEarlyCount;
+    public int getLeaveEarlyCount(){return leaveEarlyCount;}
 }

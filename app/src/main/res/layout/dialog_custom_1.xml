@@ -250,6 +250,17 @@
                     android:layout_marginLeft="@dimen/activity_vertical_margin"
                     android:textSize="@dimen/textsize_xlarge"
                     />
+                <!-- 早退回数 -->
+                <TextView
+                    android:id="@+id/total_attendance_leave_early_situation_textView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="早退"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:textSize="@dimen/textsize_xlarge"
+                    />
             </LinearLayout>
 
         </LinearLayout>

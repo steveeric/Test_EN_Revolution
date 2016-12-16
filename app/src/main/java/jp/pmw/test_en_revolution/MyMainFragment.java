@@ -121,7 +121,6 @@ public class MyMainFragment extends Fragment {
         this.contentLayout.setVisibility(View.VISIBLE);
     }
 
-
     /**
      * Created by scr on 2015/3/12.
      * cancelTimerメソッド

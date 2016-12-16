@@ -1,6 +1,8 @@
 package jp.pmw.test_en_revolution.dialog;
 
 import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -28,6 +31,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import jp.pmw.test_en_revolution.AppController;
 import jp.pmw.test_en_revolution.AttendanceObject;
 import jp.pmw.test_en_revolution.AttendeeFragment;
@@ -40,6 +45,8 @@ import jp.pmw.test_en_revolution.SeatObject;
 import jp.pmw.test_en_revolution.SeatSituationFragment;
 import jp.pmw.test_en_revolution.StudentObject;
 import jp.pmw.test_en_revolution.TransmitStateObject;
+import jp.pmw.test_en_revolution.attendee.FaceImageRealmObject;
+import jp.pmw.test_en_revolution.attendee.FaceImageTask;
 import jp.pmw.test_en_revolution.config.URL;
 import jp.pmw.test_en_revolution.network.MyAsyncTask;
 import jp.pmw.test_en_revolution.network.MyHttpConnection;
@@ -285,7 +292,8 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         //  フレームを描きなおす
         redrawFrame();
         //  顔画像
-        new FaceImage(this);
+        //new FaceImage(this);
+        setFaceImage( tapStudent );
 
         return dialog;
     }
@@ -629,15 +637,19 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         int lateCount   = pac.getLatedCount();
         //  欠席した回数(WEBと同じ手法での欠席回数)
         int absentedCount =pac.getAbsentedCount();
+        //  早退した回数
+        int leaveEarly = pac.getLeaveEarlyCount();
 
         TextView attendedTextView   = getTextView(dialog, R.id.total_attendance_attendee_situation_textView);
         TextView lateTextView       = getTextView(dialog, R.id.total_attendance_late_situation_textView);
         TextView absentedTextView   = getTextView(dialog, R.id.total_attendance_absentee_situation_textView);
+        TextView laveEaryTextView   = getTextView(dialog, R.id.total_attendance_leave_early_situation_textView);
 
         //  出欠席値をセットする.
         attendedTextView.setText(getStrTotalAttended(attenedCount));
         lateTextView.setText(getStrTotalLate(lateCount));
         absentedTextView.setText(getStrTotalAbsended(absentedCount));
+        laveEaryTextView.setText(getStrTotalLeaveEarly(leaveEarly));
 
         //  ローディングレイアウト非表示にする.
         loadingLl.setVisibility(View.GONE);
@@ -686,6 +698,19 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
                 + this.getMainActivity().getString(R.string.number_of_times);
         return str;
     }
+    /**
+     * Created by scr on 2016/12/13.
+     * getStrTotalLeavEarlyメソッド
+     * 早退 〇 回という文字列を返します
+     * return 早退 〇 回
+     */
+    String getStrTotalLeaveEarly(int leaveEarly){
+        String str = this.getMainActivity().getString(R.string.leave_early)
+                + leaveEarly
+                + this.getMainActivity().getString(R.string.number_of_times);
+        return str;
+    }
+
 
 
 
@@ -1301,7 +1326,43 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         }
 
     }
+    //  顔画像をセットする
+    void setFaceImage(StudentObject so){
+        LinearLayout layout = getLinearLayout(dialog, R.id.dialog_custom_face_image_ll);
+        ImageView iv =  (ImageView) dialog.findViewById(R.id.dialog_custom_face_image_iv);
+        layout.setVisibility(View.VISIBLE);
+        String url = so.mFaceUrl;
+        Bitmap bitmap = getFaceImageFromLocalDB( url );
+        if(  bitmap != null ){
+            //  ローカルDBの顔画像を使用する
+            iv.setImageBitmap(bitmap);
+        }else{
+            //  ネットワークに取得しに行く
+            iv.setVisibility(View.INVISIBLE);
+            iv.setTag( url );
+            FaceImageTask mFaceImageTask = new FaceImageTask(this.getActivity().getApplicationContext(), iv, url);
+            mFaceImageTask.execute(url);
+        }
+    }
 
+    Bitmap getFaceImageFromLocalDB(String url){
+        Bitmap bitmap = null;
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        RealmResults<FaceImageRealmObject> results = realm.where(FaceImageRealmObject.class)
+                .equalTo("url", url)
+                .findAll();
+        int registeredCount = results.size();
+        if(registeredCount == 1){
+            byte[] faceImageByts = results.get(0).getFaceImage();
+            if( faceImageByts != null ){
+                bitmap = BitmapFactory.decodeByteArray(faceImageByts, 0, faceImageByts.length);
+            }
+        }
+        realm.commitTransaction();
+        realm.close();
+        return bitmap;
+    }
     /***
      *  出席・遅刻・欠席とみなすゾーン
      * **/

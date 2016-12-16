@@ -2,6 +2,8 @@ package jp.pmw.test_en_revolution;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +20,10 @@ import android.widget.TextView;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+import jp.pmw.test_en_revolution.attendee.FaceImageRealmObject;
+import jp.pmw.test_en_revolution.attendee.FaceImageTask;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
 import jp.pmw.test_en_revolution.confirm_class_plan.RoomInfoObject;
 import jp.pmw.test_en_revolution.room.RoomView;
@@ -62,7 +68,8 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
     private Timer waitTimer;
     /*出欠席者の情報を再取得しに行くためのタイマー*/
     private Timer mTimer;
-
+    //  顔画像取得タスク
+    FaceImageTask mFaceImageTask;
 
     public SeatSituationFragment() {
     }
@@ -358,17 +365,10 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
      * @param student 学生クラス
      */
     public void openDialogFragmentShowCellInfo(StudentObject so){
-        Drawable drawable = null;
-        if( imgCounter % 2 == 0 ){
-            drawable = getResources().getDrawable(R.drawable.k16125);
-        }else{
-            drawable = getResources().getDrawable(R.drawable.k13097);
-        }
-        ++imgCounter;
         TransmitStateObject tso = this.getMainActivity().getClassObject().getTransmitStateObject();
         int attColor = so.getAttendanceObject().getAttendanceStateColor(getMainActivity(), tso);
 
-        mFaceIv.setImageDrawable( drawable );
+        setFaceImage( so );
         mStudentIdNumberTv.setText( so.getStudentIdNumber() );
         setTextColor(attColor, mStudentIdNumberTv);
         mFuriganaTv.setText( so.getFurigana() );
@@ -379,6 +379,42 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
         //studentInfoDialogFragnemt = new StudentInfoCustomDialog();
         //studentInfoDialogFragnemt.showForSeatSituationFragment(this, so);
     }
+    //  顔画像をセットする
+    void setFaceImage(StudentObject so){
+        String url = so.mFaceUrl;
+        Bitmap bitmap = getFaceImageFromLocalDB( url );
+        if(  bitmap != null ){
+            //  ローカルDBの顔画像を使用する
+            mFaceIv.setImageBitmap(bitmap);
+        }else{
+            //  ネットワークに取得しに行く
+            mFaceIv.setVisibility(View.INVISIBLE);
+            mFaceIv.setTag( url );
+            mFaceImageTask = new FaceImageTask(this.getActivity().getApplicationContext(), mFaceIv, url);
+            mFaceImageTask.execute(url);
+        }
+    }
+
+    Bitmap getFaceImageFromLocalDB(String url){
+        Bitmap bitmap = null;
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        RealmResults<FaceImageRealmObject> results = realm.where(FaceImageRealmObject.class)
+                .equalTo("url", url)
+                .findAll();
+        int registeredCount = results.size();
+        if(registeredCount == 1){
+            byte[] faceImageByts = results.get(0).getFaceImage();
+            if( faceImageByts != null ){
+                bitmap = BitmapFactory.decodeByteArray(faceImageByts, 0, faceImageByts.length);
+            }
+        }
+        realm.commitTransaction();
+        realm.close();
+        return bitmap;
+    }
+
+
     /**
      * Created by Shota Ito on 2016/12/13
      * setTextColorメソッド
@@ -416,31 +452,9 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
         return str;
     }
 
-    /*public void openDialogFragmentShowCellInfo(Student student){
-        MainActivity activity = (MainActivity)this.getActivity();
-        CustomDialogFragment customDialog = CustomDialogFragment.newInstance();
-        customDialog.setTargetFragment(SeatSituationFragment.this,1);
-        Bundle bundle = new Bundle();
-        String sameClassNumber = activity.mTeacher.getClassPlan().getSameClassNumber();
-        bundle.putString(CustomDialogFragment.SAME_CLASS_NUMBER,sameClassNumber);
-        bundle.putSerializable(CustomDialogFragment.ATTENDANCE_STUDENT_INFO,student);
-        customDialog.setArguments(bundle);
-        customDialog.show(activity.getSupportFragmentManager(), "customDialog");
-    }*/
-
     @Override
     public void onOkClicked(Bundle args) {
         //座席再描画
         this.roomView.invalidate();
     }
-    /*
-    public void demo(List<Student> attendance){
-       Timer mainTimer = new Timer();
-        MainActivity activity = (MainActivity)this.getActivity();
-        activity.setTimer(mainTimer);
-        DemoReCollTheRollTimer reTimer  = new DemoReCollTheRollTimer(activity,DemoReCollTheRollTimer.MODE_SEATSITUATION_FRAGMENT,attendance);
-        mainTimer.schedule(reTimer, 6000,1000);
-        this.onResume();
-    }
-    */
 }

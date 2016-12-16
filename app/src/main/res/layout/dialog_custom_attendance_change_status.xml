@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="50dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+    <!-- 読み込みレイアウト -->
+    <ProgressBar
+        android:id="@+id/dialog_custom_attendance_change_status_loding_pb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+    <LinearLayout
+        android:id="@+id/dialog_custom_attendance_change_status_ll"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:text="　"
+            android:textSize="@dimen/textsize_medium"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <!-- 欠席者リストを表示する -->
+        <GridView
+            android:numColumns="2"
+            android:layout_width="wrap_content"
+            android:layout_height="800dp"
+            android:id="@+id/dialog_custom_attendance_change_status_gv"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="閉じる"
+            android:gravity="center"
+            android:textSize="@dimen/textsize_xlarge"
+            android:textColor="@color/white"
+            android:id="@+id/dialog_custom_attendance_change_status_close_btn"/>
+    </LinearLayout>
+</LinearLayout>

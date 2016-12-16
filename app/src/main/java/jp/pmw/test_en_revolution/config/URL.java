@@ -96,7 +96,7 @@ public class URL {
         return BASE_URL + JSON_DIR + "/do_grouping.php?class_id="+classId+"&member="+member;
     }*/
 
-    public static final String getForgotAppy(int p,/*String sameClassNumber,*/String attendanceId){
+    public static final String getForgotAppy(int p, String attendanceId){
        // return BASE_URL + JSON_DIR + "/forgot_apply.php?p="+p+"&scn="+sameClassNumber+"&att_id="+attendanceId;
         return TEMP_BASE_URL + "Forgot_Controller/apply?p="+p+"&att_id="+attendanceId;
     }
@@ -205,6 +205,11 @@ public class URL {
     public static final String getUrlGetSurveyAnswers(String surveyId, String selectNumber, String selectedId){
         return TEMP_BASE_URL + "SurveyDevaice_Controller/getSurveyAnswers?sc="+surveyId+"&sn="+selectNumber+"&sl="+selectedId;
     }
+
+    public static final String getOnlyAbsent(String sameClassNumber){
+        return TEMP_BASE_URL + "AttendanceJson_Controller/getOnlyAbsent?scn=" + sameClassNumber;
+    }
+
 
 
 }

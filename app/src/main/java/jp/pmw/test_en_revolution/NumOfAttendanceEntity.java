@@ -21,5 +21,8 @@ public class NumOfAttendanceEntity {
     //  出席者(忘れでない)
     @SerializedName("absent")
     public int mAbsent;
+    //  早退
+    @SerializedName("leav_ealy")
+    public int mLeavEarly = 0;
 
 }
