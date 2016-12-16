@@ -454,29 +454,68 @@
             </LinearLayout>
         </LinearLayout>
      </LinearLayout>
-
-    <!-- 顔画像表示ゾーン (愛工大のみ) -->
-    <LinearLayout
-        android:id="@+id/dialog_custom_face_image_ll"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
-        <TextView
+        <!-- 在室確認ゾーン -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="　顔写真"
-            android:background="@color/whiteSmoke"
-            android:textSize="@dimen/textsize_large"
-            />
-    <ImageView
-        android:id="@+id/dialog_custom_face_image_iv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
-    </LinearLayout>
+            android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin"
+            android:id="@+id/dialog_custom_be_in_room_apply_ll">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="　在室状態"
+                android:background="@color/whiteSmoke"
+                android:textSize="@dimen/textsize_large"
+                />
+            <RadioGroup
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/dialog_custom_be_in_room_apply_rg">
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="在室"
+                    android:textSize="@dimen/textsize_xlarge"
+                    android:id="@+id/dialog_custom_be_in_room_apply_rb" />
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="不在"
+                    android:textSize="@dimen/textsize_xlarge"
+                    android:id="@+id/dialog_custom_not_be_in_room_apply_rb" />
+
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- 顔画像表示ゾーン (愛工大のみ) -->
+        <LinearLayout
+            android:id="@+id/dialog_custom_face_image_ll"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="　顔写真"
+                android:background="@color/whiteSmoke"
+                android:textSize="@dimen/textsize_large"
+                />
+        <ImageView
+            android:id="@+id/dialog_custom_face_image_iv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+        </LinearLayout>
 
     </LinearLayout>
 

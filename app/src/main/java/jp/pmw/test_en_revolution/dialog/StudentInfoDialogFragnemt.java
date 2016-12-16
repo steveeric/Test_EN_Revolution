@@ -289,6 +289,8 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         showMessage();
         //  出席・遅刻・忘れ　手動セットレイアウト
         showRegardedAsCheckBoxLayout();
+        //  在室確認レイアウトを表示する.
+        showBeInRoomLayout();
         //  フレームを描きなおす
         redrawFrame();
         //  顔画像
@@ -1277,6 +1279,34 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         togleBeInRoomBtn();
         //  レイアウト表示
         layout.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Created by scr on 2016/12/16
+     * showBeInRoomLayoutメソッド
+     * 在室確認時に在室確認対象から漏れた学生のみ表示するレイアウト
+     * 在室確認NACKに対する個別対応用
+     * ⓪ 在室確認対象学生 ① 在室確認を手動、② 在室ACK無し
+     * のいずれかを満たす場合、在室ACKを手動で変更可能なレイアウトが表示される
+     */
+    void showBeInRoomLayout(){
+        String reTransmitEndTime = getMainActivity().getClassObject().getTransmitStateObject().getReAttendanceEndTime();
+        String reAttendanceStartTime = tapStudent.getAttendanceObject().getReAttendanceStartTime();
+        int reAttendanceManual = tapStudent.getAttendanceObject().getManualRequestReAttendance();
+        String reAttendanceTime = tapStudent.getAttendanceObject().getReAttendancetime();
+        if( reTransmitEndTime != null && reAttendanceStartTime != null){
+            if( reAttendanceManual == AttendanceObject.MANUAL_ATTENDANCE
+                || reAttendanceTime == null){
+                LinearLayout beInRoomLayout = (LinearLayout) dialog.findViewById(R.id.dialog_custom_be_in_room_apply_ll);
+                beInRoomLayout.setVisibility(View.VISIBLE);
+                RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.dialog_custom_be_in_room_apply_rg);
+                if( reAttendanceTime != null ){
+                    radioGroup.check(R.id.dialog_custom_be_in_room_apply_rb);
+                }else{
+                    radioGroup.check(R.id.dialog_custom_not_be_in_room_apply_rb);
+                }
+            }
+        }
     }
 
 

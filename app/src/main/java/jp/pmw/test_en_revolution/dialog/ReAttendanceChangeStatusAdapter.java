@@ -121,9 +121,11 @@ public class ReAttendanceChangeStatusAdapter extends ArrayAdapter<ReAttendanceNa
         holder.mForgotTv.setText("在室");
 
         if( acs.mBeInRoom ){
+            //  在室していることを確認
             holder.mForgotIv.setVisibility(View.VISIBLE);
             holder.mForgotTv.setTextColor(this.getContext().getResources().getColor(R.color.forestGreen));
         }else{
+            //  在室していることを確認できていない
             holder.mForgotIv.setVisibility(View.INVISIBLE);
             holder.mForgotTv.setTextColor(this.getContext().getResources().getColor(R.color.black));
         }
