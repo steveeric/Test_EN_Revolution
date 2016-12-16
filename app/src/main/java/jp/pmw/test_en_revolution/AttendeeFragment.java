@@ -727,16 +727,18 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
      * CustomDialogFramentからのコールバックで使用します.
      */
     void showAttendanceChangeStatusDialogFrament(){
-        if( mAttendanceChangeStatusDialogFragment == null ){
-            mAttendanceChangeStatusDialogFragment = AttendanceChangeStatusDialogFragment.newInstance();
-        }
-        if( !mAttendanceChangeStatusDialogFragment.oneClose ){
-            mAttendanceChangeStatusDialogFragment.mAttendeeFragment = this;
-            Bundle bundle = new Bundle();
-            String sameClassNumber = getMainActivity().getClassObject().getSameClassNumber();
-            bundle.putString(AttendanceChangeStatusDialogFragment.SAME_CLASS_NUMBER, sameClassNumber);
-            mAttendanceChangeStatusDialogFragment.setArguments(bundle);
-            mAttendanceChangeStatusDialogFragment.show(getActivity().getSupportFragmentManager(), AttendanceChangeStatusDialogFragment.ATTENDANCE_CHANGE_STATUS_DIALOG_FRAGMENT);
+        if( getMainActivity().getClassObject().getTransmitStateObject().mAttendanceBulkChangeEndDateTime == null ){
+            if( mAttendanceChangeStatusDialogFragment == null ){
+                mAttendanceChangeStatusDialogFragment = AttendanceChangeStatusDialogFragment.newInstance();
+            }
+            if( getMainActivity().getClassObject().getTransmitStateObject().mAttendanceBulkChangeEndDateTime == null ){
+                mAttendanceChangeStatusDialogFragment.mAttendeeFragment = this;
+                Bundle bundle = new Bundle();
+                String sameClassNumber = getMainActivity().getClassObject().getSameClassNumber();
+                bundle.putString(AttendanceChangeStatusDialogFragment.SAME_CLASS_NUMBER, sameClassNumber);
+                mAttendanceChangeStatusDialogFragment.setArguments(bundle);
+                mAttendanceChangeStatusDialogFragment.show(getActivity().getSupportFragmentManager(), AttendanceChangeStatusDialogFragment.ATTENDANCE_CHANGE_STATUS_DIALOG_FRAGMENT);
+            }
         }
     }
 }

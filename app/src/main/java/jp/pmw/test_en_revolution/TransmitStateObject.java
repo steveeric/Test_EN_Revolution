@@ -33,6 +33,9 @@ public class TransmitStateObject implements Serializable {
     @SerializedName("attendance_transmit_end_time")
     public String attendanceTranmitEndTime;
 
+    @SerializedName("attendance_bulk_change_end_date_time")
+    public String mAttendanceBulkChangeEndDateTime = null;
+
     @SerializedName("bmp_transmit_id")
     public String bmpTransmitId;
     public void setBmpTransmitId(String bmpTransmitId){

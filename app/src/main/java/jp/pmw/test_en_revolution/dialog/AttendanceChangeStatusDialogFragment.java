@@ -43,7 +43,6 @@ public class AttendanceChangeStatusDialogFragment extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        dismiss();
         this.instance = null;
     }
 
@@ -55,7 +54,6 @@ public class AttendanceChangeStatusDialogFragment extends DialogFragment {
     Button mCloseBtn;
     AttendanceChangeStatusAdapter mAttendanceChangeStatusAdapter;
     Handler mHandler = new Handler(Looper.myLooper());
-    public boolean oneClose = false;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         init();
@@ -122,7 +120,12 @@ public class AttendanceChangeStatusDialogFragment extends DialogFragment {
                 ma.getClassObject().setStudentObject( null );
                 mAttendeeFragment.showWaitFragment();
                 mAttendeeFragment.reGetStudentFlag = true;
-                oneClose = true;
+                mAttendeeFragment.getMainActivity()
+                        .getClassObject()
+                        .getTransmitStateObject()
+                        .mAttendanceBulkChangeEndDateTime = " ";
+                String sameClassNumber = mAttendeeFragment.getMainActivity().getClassObject().getSameClassNumber();
+                new AttendanceBulkChangeEndDateTimeAsyncTask( sameClassNumber ).execute();
             }
             dismiss();
         }

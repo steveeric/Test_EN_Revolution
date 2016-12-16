@@ -205,10 +205,27 @@ public class URL {
     public static final String getUrlGetSurveyAnswers(String surveyId, String selectNumber, String selectedId){
         return TEMP_BASE_URL + "SurveyDevaice_Controller/getSurveyAnswers?sc="+surveyId+"&sn="+selectNumber+"&sl="+selectedId;
     }
-
+    /**
+     * getOnlyAbsentメソッド
+     * 欠席者のみを取得します.(DBのATTENDANCE_TIMEがnullの学生)
+     * @param   String  sameClassNumber 授業識別番号
+     * @author Ito Shota
+     * @since  2016/12/15
+     **/
     public static final String getOnlyAbsent(String sameClassNumber){
         return TEMP_BASE_URL + "AttendanceJson_Controller/getOnlyAbsent?scn=" + sameClassNumber;
     }
+    /**
+     * getUrlRecordAttendanceBulkChangeEndDateTimeメソッド
+     * 出席認定一括変更記録終了日時を記録します.
+     * @param   String  sameClassNumber 授業識別番号
+     * @author Ito Shota
+     * @since  2016/12/16
+     **/
+    public static final String getUrlRecordAttendanceBulkChangeEndDateTime(String sameClassNumber){
+        return TEMP_BASE_URL + "TransmitStateJson_Controller/recordAttendanceBulkChangeEndDateTime?scn=" + sameClassNumber;
+    }
+
 
 
 
