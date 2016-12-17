@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- コンテンツ -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="25dp"
+        android:paddingBottom="20dp"
+        android:background="@drawable/bg_dialog"
+        android:gravity="center_horizontal">
+
+        <!-- タイトル -->
+        <!--<TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_title"
+            android:padding="10dp"
+            android:text="学生情報"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            />-->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/title_linearLayout"
+            android:background="@drawable/bg_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp">
+                    <ImageView
+                        android:src="@drawable/img_sonoda_professor"
+                        android:id="@+id/dialog_custom_face_image_iv"
+                        android:layout_width="120dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/title_orijinal_student_id_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="66"
+                        android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
+                        android:text="学籍番号取得中..."
+                        android:textSize="@dimen/textsize_xlarge"
+                        android:textColor="@android:color/white"
+                        />
+                    <!-- フリガナTextView -->
+                    <!-- add 2016-05-24 09:58 -->
+                    <TextView
+                        android:id="@+id/title_furigana_textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="33"
+                        android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
+                        android:text="フリガナ取得中..."
+                        android:textSize="@dimen/textsize_large"
+                        android:textColor="@android:color/white"
+                        />
+                    <!-- 学生名TextView -->
+                    <TextView
+                        android:id="@+id/title_full_name_textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="66"
+                        android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
+                        android:text="氏名取得中..."
+                        android:textSize="@dimen/textsize_xlarge"
+                        android:textColor="@android:color/white"
+                        />
+                    <!-- 本日の位置に関するテキストビュー(グループ・座席位置) -->
+                    <TextView
+                        android:id="@+id/today_positon_tv"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
+                        android:text=""
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/textsize_large"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <!--<ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:background="@null"
+                    android:src="@drawable/ic_history"
+                    android:id="@+id/dialog_custom_history_confirm_button"
+                    />-->
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 本日のグループゾーンレイアウト -->
+        <!--<LinearLayout
+            android:visibility="gone"
+            android:id="@+id/today_group_info_linearLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
+            <TextView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="　グループ番号"
+                android:background="@color/whiteSmoke"
+                android:textSize="@dimen/textsize_xlarge"
+                />
+            <TextView
+                android:id="@+id/today_group_info_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_xsmall_margin"
+                android:textSize="@dimen/textsize_xlarge"
+                android:gravity="center"
+                android:text="グループ番号取得中..."
+                />
+        </LinearLayout>-->
+
+        <!-- 本日の着席位置ゾーンレイアウト -->
+        <!--<LinearLayout
+            android:visibility="gone"
+            android:id="@+id/today_seat_positon_linearLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
+            <TextView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="　着席位置"
+                android:background="@color/whiteSmoke"
+                android:textSize="@dimen/textsize_xlarge"
+                />
+            <TextView
+                android:id="@+id/today_seat_positon_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_xsmall_margin"
+                android:textSize="@dimen/textsize_xlarge"
+                android:gravity="center"
+                android:text="着席位置取得中..."
+                />
+        </LinearLayout>
+
+    <!- 出席状況レイアウト -->
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/total_attendance_situation_linearLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="　前回までの出欠"
+                android:background="@color/whiteSmoke"
+                android:textSize="@dimen/textsize_large"
+                />
+            <!-- 出・遅・欠　取得　ローディングレイアウト -->
+            <LinearLayout
+                android:id="@+id/total_attendance_situation_loding_display_ll"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textsize_xlarge"/>
+            </LinearLayout>
+            <!-- 出・遅・欠　回数　表示レイアウト -->
+            <LinearLayout
+                android:id="@+id/total_attendance_situation_count_display_ll"
+                android:visibility="gone"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <!-- 出席回数 -->
+                <TextView
+                    android:id="@+id/total_attendance_attendee_situation_textView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="出席..."
+                    android:gravity="center"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:textSize="@dimen/textsize_xlarge"
+                    />
+                <!-- 遅刻回数 -->
+                <TextView
+                    android:id="@+id/total_attendance_late_situation_textView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="遅刻..."
+                    android:gravity="center"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:textSize="@dimen/textsize_xlarge"
+                    />
+                <!-- 欠席回数 -->
+                <TextView
+                    android:id="@+id/total_attendance_absentee_situation_textView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="欠席"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:textSize="@dimen/textsize_xlarge"
+                    />
+                <!-- 早退回数 -->
+                <TextView
+                    android:id="@+id/total_attendance_leave_early_situation_textView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="早退"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:textSize="@dimen/textsize_xlarge"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- メッセージレイアウト -->
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/message_linearLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="　メッセージ"
+                android:background="@color/whiteSmoke"
+                android:textSize="@dimen/textsize_large"
+                />
+            <!-- 簡易メッセージ内容TextView -->
+            <TextView
+                android:id="@+id/simple_message_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="メッセージ取得中..."
+                android:layout_margin="@dimen/activity_horizontal_xsmall_margin"
+                android:textSize="@dimen/textsize_xlarge"
+                />
+        </LinearLayout>
+        <!-- 再調査出席を実行中です,.. -->
+        <LinearLayout
+            android:id="@+id/be_in_room_wait_apply_linearLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/textsize_medium"
+            android:background="@color/semitransparenttranslucent_navy"
+            android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/manual_be_in_wait_room_title"
+                android:textSize="@dimen/textsize_xlarge"
+                />
+        </LinearLayout>
+
+
+
+        <!-- 出席・遅刻・SonoRIs忘れレイアウト -->
+        <LinearLayout
+            android:id="@+id/dialog_custom_regarded_as_checkbox_ll"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="　状態"
+                android:background="@color/whiteSmoke"
+                android:textSize="@dimen/textsize_large"
+                />
+            <!-- 出席・遅刻・SonoRIs忘れ選択レイアウト -->
+            <LinearLayout
+                android:id="@+id/dialog_custom_regarded_as_child1_ll"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <CheckBox
+                            android:id="@+id/dialog_custom_regarded_as_attendance_cb"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="出席"
+                            android:textSize="@dimen/textsize_xlarge" />
+                        <CheckBox
+                            android:id="@+id/dialog_custom_regarded_as_late_cb"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="遅刻"
+                            android:textSize="@dimen/textsize_xlarge" />
+                        <CheckBox
+                            android:id="@+id/dialog_custom_regarded_as_absent_cb"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="欠席"
+                            android:textSize="@dimen/textsize_xlarge" />
+                    </LinearLayout>
+                    <!--<CheckBox
+                        android:id="@+id/dialog_custom_regarded_as_forgot_cb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_regarded_as_forgot"
+                        android:textSize="@dimen/textsize_xlarge" />-->
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/dialog_custom_regarded_as_reason_ll"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="　理由"
+                        android:background="@color/whiteSmoke"
+                        android:textSize="@dimen/textsize_large"
+                        />
+                    <RadioGroup
+                        android:id="@+id/dialog_custom_regarded_as_reason_rg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <RadioButton
+                            android:id="@+id/dialog_custom_regarded_as_reason_did_not_show_rb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/str_regarded_as_reason_did_not_show_rb"
+                            android:textSize="@dimen/textsize_xlarge" />
+                        <!--<RadioButton
+                            android:id="@+id/dialog_custom_regarded_as_reason_ack_no_response_rb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/str_regarded_as_reason_ack_no_response_rb"
+                            android:textSize="@dimen/textsize_xlarge" />-->
+                        <RadioButton
+                            android:id="@+id/dialog_custom_regarded_as_reason_forgot_rb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/str_regarded_as_reason_forgot_rb"
+                            android:textSize="@dimen/textsize_xlarge" />
+                        <RadioButton
+                            android:id="@+id/dialog_custom_regarded_as_reason_other1_rb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/str_regarded_as_reason_other1_rb"
+                            android:textSize="@dimen/textsize_xlarge" />
+                    </RadioGroup>
+                    <!-- 理由未選択の場合に表示するアラートテキストビュー -->
+                    <TextView
+                        android:id="@+id/dialog_custom_regarded_as_reason_alert_unselected_tv"
+                        android:visibility="invisible"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/textsize_large"
+                        android:textColor="@color/red"
+                        android:gravity="center"
+                        android:text="@string/str_regarded_as_reason_alert_unselected"/>
+                </LinearLayout>
+                <!-- CheckBoxに選択された出席・遅刻・忘れを反映するボタンレイアウト -->
+                <LinearLayout
+                    android:id="@+id/dialog_custom_regarded_as_btn"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
+                    <Button
+                        android:id="@+id/dialog_custom_regarded_as_apply_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:background="@drawable/button_design"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="変更適用"
+                        android:textSize="@dimen/textsize_xlarge" />
+                    <Button
+                        android:id="@+id/dialog_custom_regarded_as_return_undo_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:background="@drawable/button_design"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="キャンセル"
+                        android:textSize="@dimen/textsize_xlarge"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <!-- 在室確認ゾーン -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin"
+            android:id="@+id/dialog_custom_be_in_room_apply_ll">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="　在室状態"
+                android:background="@color/whiteSmoke"
+                android:textSize="@dimen/textsize_large"
+                />
+            <RadioGroup
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/dialog_custom_be_in_room_apply_rg">
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="在室"
+                    android:textSize="@dimen/textsize_xlarge"
+                    android:id="@+id/dialog_custom_be_in_room_apply_rb" />
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="不在"
+                    android:textSize="@dimen/textsize_xlarge"
+                    android:id="@+id/dialog_custom_not_be_in_room_apply_rb" />
+
+            </RadioGroup>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Close ボタン -->
+    <Button
+        android:id="@+id/dialog_custom_upper_right_cloase_btn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/bt_dialog_close"
+        android:text="×"
+        android:textSize="@dimen/textsize_xxlarge"
+        android:textColor="@color/black"
+        />
+
+</RelativeLayout>

@@ -219,75 +219,25 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         // フルスクリーン
         dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         //  レイアウトセット
-        dialog.setContentView(R.layout.dialog_custom_1);
+        dialog.setContentView(R.layout.dialog_custom_20161217);
         // 背景を透明にする
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //  ダイアログフラグメント
         setSizeDialogFragment();
-
         //  ダイアログフレーム色
         int dialogFrameColor = getDialogFrameColor();
-
         //  フレーム色セット
         setFrameBackgoundColor(dialogFrameColor);
-
         //
         String studentIdNumber = this.tapStudent.getStudentIdNumber();
         String furigana = this.tapStudent.getFurigana();
         String fullName = this.tapStudent.getFullName();
         //  学籍番号とフリガナと名前をセット
         setFixStudentInfo(studentIdNumber, furigana, fullName);
-
-
-        //TODO:状態におうじてコンテンツが変わる.
-        //switchDialogFragment();
-
         //  位置に関する文字列を表示する.
         showPosition();
-
-        /*//  グループ番号
-        showGroupName();
-        //  着席位置
-        showSitPosition();*/
-
         //  過去(今回の授業除く)の出欠回数
         showPastAttendanceCount();
-
-        //  SOnoRIs.
-        //setForgotESL();
-
-
-        /*if(transmitStateObject.getAttendanceTranmitEndTime() != null
-                && transmitStateObject.getReAttendanceStartTime() == null
-                //&& transmitStateObject.getReAttendanceEndTime() == null
-                && transmitStateObject.getUndoTransmitEndTime() == null){
-            //  自動出席に対する処理
-            this.nowAttendanceStage     =       MANUAL_REQUEST_TYPE_ATTENDANCE;
-            //  手動出席
-            setManualAttendance();
-        }else if(transmitStateObject.getAttendanceTranmitEndTime() != null
-                && transmitStateObject.getReAttendanceStartTime() != null
-                && transmitStateObject.getUndoTransmitEndTime() == null){
-            //  マニュアル再出席に対する処理
-            this.nowAttendanceStage     =       this.MANUAL_REQUEST_TYPE_RE_ATTENDANCE;
-            setReManualAttendance();
-        }else if(transmitStateObject.getAttendanceTranmitEndTime() != null
-                && transmitStateObject.getReAttendanceEndTime() == null
-                && transmitStateObject.getUndoTransmitEndTime() != null){
-            //  授業終了時の自動処理に対する処理
-            this.nowAttendanceStage     =       this.MANUAL_REQUEST_TYPE_UNDO;
-            setUndoManualAttendance();
-        }else if(transmitStateObject.getAttendanceTranmitEndTime() != null
-                && transmitStateObject.getReAttendanceEndTime() != null
-                && transmitStateObject.getUndoTransmitEndTime() != null){
-            //  マニュアル再出席に対する処理
-            this.nowAttendanceStage     =       this.MANUAL_REQUEST_TYPE_UNDO;
-            setUndoManualAttendance();
-        }*/
-
-        // 出席とみなす＆出席とみなさない　と 遅刻とみなす＆遅刻とみなさないの表示をコントロールします.
-        //showRegardedAsLayout();
-
         //  メッセージセット
         showMessage();
         //  出席・遅刻・忘れ　手動セットレイアウト
@@ -297,7 +247,6 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         //  フレームを描きなおす
         redrawFrame();
         //  顔画像
-        //new FaceImage(this);
         setFaceImage( tapStudent );
 
         return dialog;
@@ -460,43 +409,6 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
     }
     /**
      * Created by scr on 2016/02/05
-     * showSitPositionメソッド
-     * 着席位置情報を表示します.
-     */
-    /*private void showSitPosition() {
-        SeatObject so = getSeatObject();
-        String seatName = so.getSeatName();
-        LinearLayout layout = getLinearLayout(dialog, R.id.today_seat_positon_linearLayout);
-        TextView seatNameTV = getTextView(dialog, R.id.today_seat_positon_textView);
-        String sitPositin = this.getString(R.string.seatposition);
-
-        seatName = sitPositin + seatName;
-        seatNameTV.setText(seatName);
-        layout.setVisibility(View.VISIBLE);
-    }*/
-
-    /**
-     * Created by scr on 2016/02/05
-     * showGroupNameメソッド
-     * グループ名を表示します.
-     */
-    /*private void showGroupName() {
-        SeatObject so = getSeatObject();
-        int type = so.getSeatType();
-        if (type != SeatObject.GROUPING) {
-            return;
-        }
-        String groupName = so.getGroupName();
-        LinearLayout layout = getLinearLayout(dialog, R.id.today_group_info_linearLayout);
-        TextView groupNameTV = getTextView(dialog, R.id.today_group_info_textView);
-        groupName = this.getString(R.string.group_number) + groupName;
-        groupNameTV.setText(groupName);
-        layout.setVisibility(View.VISIBLE);
-    }*/
-
-
-    /**
-     * Created by scr on 2016/02/05
      * setMessageメソッド
      * メッセージを表示する
      */
@@ -521,36 +433,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
      * 過去(一つ前の授業まで)の出欠回数を表示します.
      */
     private void showPastAttendanceCount(){
-        /*PastAttendanceCount pac = tapStudent.getPastAttendanceCount();
-        if( pac == null ){
-            //  過去の出欠回数データがない場合は何もしない.
-            return;
-        }
-        //  出席した回数(WEBと同じ手法での出席回数)
-        int attenedCount = pac.getAttendedCount();
-        //  遅刻した回数
-        int lateCount   = pac.getLatedCount();
-        //  欠席した回数(WEBと同じ手法での欠席回数)
-        int absentedCount =pac.getAbsentedCount();
-        */
-        /*
-        //  出・遅・欠 表示ローディング
-        LinearLayout loadingLl = getLinearLayout(dialog, R.id.total_attendance_situation_loding_display_ll);
-        //  出・遅・欠 表示レイアウト
-        LinearLayout ll = getLinearLayout(dialog, R.id.total_attendance_situation_linearLayout);
-        */
-        /*TextView attendedTextView   = getTextView(dialog, R.id.total_attendance_attendee_situation_textView);
-        TextView lateTextView       = getTextView(dialog, R.id.total_attendance_late_situation_textView);
-        TextView absentedTextView   = getTextView(dialog, R.id.total_attendance_absentee_situation_textView);
-        */
-        /*
-        //  出欠席値をセットする.
-        attendedTextView.setText(getStrTotalAttended(attenedCount));
-        lateTextView.setText(getStrTotalLate(lateCount));
-        absentedTextView.setText(getStrTotalAbsended(absentedCount));
-        */
-
-        //  出・遅・欠 表示ローディング
+         //  出・遅・欠 表示ローディング
         LinearLayout loadingLl = getLinearLayout(dialog, R.id.total_attendance_situation_loding_display_ll);
         //  出・遅・欠 表示レイアウト
         LinearLayout ll = getLinearLayout(dialog, R.id.total_attendance_situation_linearLayout);
@@ -1366,9 +1249,22 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
     }
     //  顔画像をセットする
     void setFaceImage(StudentObject so){
-        LinearLayout layout = getLinearLayout(dialog, R.id.dialog_custom_face_image_ll);
+        /*LinearLayout layout = getLinearLayout(dialog, R.id.dialog_custom_face_image_ll);
         ImageView iv =  (ImageView) dialog.findViewById(R.id.dialog_custom_face_image_iv);
         layout.setVisibility(View.VISIBLE);
+        String url = so.mFaceUrl;
+        Bitmap bitmap = getFaceImageFromLocalDB( url );
+        if(  bitmap != null ){
+            //  ローカルDBの顔画像を使用する
+            iv.setImageBitmap(bitmap);
+        }else{
+            //  ネットワークに取得しに行く
+            iv.setVisibility(View.INVISIBLE);
+            iv.setTag( url );
+            FaceImageTask mFaceImageTask = new FaceImageTask(this.getActivity().getApplicationContext(), iv, url);
+            mFaceImageTask.execute(url);
+        }*/
+        ImageView iv =  (ImageView) dialog.findViewById(R.id.dialog_custom_face_image_iv);
         String url = so.mFaceUrl;
         Bitmap bitmap = getFaceImageFromLocalDB( url );
         if(  bitmap != null ){

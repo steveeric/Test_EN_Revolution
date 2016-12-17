@@ -97,8 +97,8 @@
     <string name="before_attendance_status">着席情報配信中です...</string>
 
 
-    <string name="group_number">　グループ </string>
-    <string name="seatposition">　着席位置 </string>
+    <string name="group_number">グループ </string>
+    <string name="seatposition">着席位置 </string>
     <string name="position_delimiter">　</string>
 
 
