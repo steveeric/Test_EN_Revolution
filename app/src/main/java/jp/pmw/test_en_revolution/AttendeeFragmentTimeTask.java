@@ -56,7 +56,6 @@ public class AttendeeFragmentTimeTask extends TimerTask {
             activity.getClassHttpRequest().getAttendanceRelationShipInto();
             //
             activity.chkAttendanceRelationshipInfoRetrieving = true;
-            //getAttendanceRelationShipInto();
         }
     }
 

@@ -23,8 +23,8 @@ public class Indicator {
     public String mSeat;
     @SerializedName("attendance")
     public String mAttendance;
-    @SerializedName("in_room")
-    public String mInRoom;
+    @SerializedName("re_attendance")
+    public String mReAttendance;
     @SerializedName("privacy")
     public String mPrivacy;
 

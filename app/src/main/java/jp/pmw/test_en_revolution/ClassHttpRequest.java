@@ -327,11 +327,6 @@ public class ClassHttpRequest {
         //  出席関係取得中フラグ(false:取得中でない, true:取得中)
         this.activity.chkAttendanceRelationshipInfoRetrieving = false;
     }
-    /*public void chkTrxTranmitState(){
-        activity.chkTrxTranmitState();
-    }*/
-
-
     /**
      * Created by scr on 2015/3/4.
      * setQuestionnaireメソッド

@@ -2,6 +2,7 @@ package jp.pmw.test_en_revolution;
 
 import com.google.gson.annotations.SerializedName;
 
+import jp.pmw.test_en_revolution.attendee.Indicator;
 import jp.pmw.test_en_revolution.dialog.StudentInfoDialogFragnemt;
 
 
@@ -138,10 +139,14 @@ public class AttendanceObject {
         return this.classLastAckTime;
     }
 
-
+    //  ACKインジケーターについて
+    @SerializedName("indicator")
+    public Indicator mIndicator;
 
     //  出席関係情報セット
     public void setAttendanceObject(AttendanceObject ao) {
+        //
+        this.mIndicator = ao.mIndicator;
         //  初回手動パラメータ
         this.manualRequestFirstAccess = ao.manualRequestFirstAccess;
         //

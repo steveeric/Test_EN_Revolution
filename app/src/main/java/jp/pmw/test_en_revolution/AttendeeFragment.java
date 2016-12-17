@@ -139,23 +139,12 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 選択アイテムを取得
                 GridView gridView = (GridView) parent;
-                //Student attendanceStudent = (Student) gridView.getItemAtPosition(position);
-                //testShowCustomDialog(attendanceStudent);
                 StudentObject so = (StudentObject) gridView.getItemAtPosition(position);
-                //testShowCustomDialog(so);
                 showStudentInfoCustomDialog(so);
             }
         });
-        /*
-        MainActivity acitivty = (MainActivity)this.getActivity();
-        AttendeeFragmentTimeTask transmitStateTimerTask = new AttendeeFragmentTimeTask(acitivty, this, attendeeGridView);   //タイマータスククラスのインスタンス
-        java.util.Timer timer = new java.util.Timer();                                      //タイマークラスのインスタンス
-        timer.schedule(transmitStateTimerTask, 0, TimerConfig.TIMER_INTERVAL_TIME_ATTENDANCE);                                    //起動時0秒後から10秒間隔で起動
-        */
-
-        //  学生データ読み込み
+         //  学生データ読み込み
         this.getMainActivity().getClassHttpRequest().getChkAttendance();
-
     }
 
     /*public void testShowCustomDialog(Student student){

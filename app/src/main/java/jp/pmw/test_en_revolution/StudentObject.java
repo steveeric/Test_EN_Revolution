@@ -97,17 +97,4 @@ public class StudentObject implements Serializable {
     @SerializedName("last_update_time")
     public String mLastUpdateTime;
 
-    //  ACKインジケーターについて
-    @SerializedName("indicator")
-    public Indicator mIndicator;
-
-    /*public StudentObject(String studentIdNumber,String furigana, String fullName, SeatObject seatObject,SeatObject seatAfterMoving){
-        this.studentIdNumber = studentIdNumber;
-        this.furigana = furigana;
-        this.fullName = fullName;
-        this.seatObject = seatObject;
-        this.seatAfterMoving = seatAfterMoving;
-    }*/
-
-
 }

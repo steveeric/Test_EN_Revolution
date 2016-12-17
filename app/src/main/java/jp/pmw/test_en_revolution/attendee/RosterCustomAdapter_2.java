@@ -62,6 +62,7 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                 View view = convertView;
                 //      学生情報
                 StudentObject so = getItem(position);
+                AttendanceObject ao = so.getAttendanceObject();
                 if(view == null){
                         view = _inflater.inflate(R.layout.row_roster_item_5, null);
                         holder = new ViewHolder(view);
@@ -111,7 +112,7 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                 initForgotESL(holder, so);
 
                 //      送信信号機に色をセットする.
-                setColorOfSignal(holder, so);
+                setColorOfSignal(holder, ao);
                 return view;
         }
         /**
@@ -119,8 +120,8 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
          * setColorOfSignalメソッド
          * 送信シグナルの色をセットする.
          * **/
-        private void setColorOfSignal(ViewHolder holder, StudentObject so){
-                Indicator indicator = so.mIndicator;
+        private void setColorOfSignal(ViewHolder holder, AttendanceObject ao){
+                Indicator indicator = ao.mIndicator;
                 //      座席指定シグナル
                 Drawable seatIndicatorDrawable = IndicatorEnum.getSignalDrawable(_context, indicator.mSeat);
                 holder.firstSignalTextView.setBackgroundDrawable( seatIndicatorDrawable );
@@ -128,8 +129,8 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                 Drawable attendanceIndicatorDrawable = IndicatorEnum.getSignalDrawable(_context, indicator.mAttendance);
                 holder.secondSignalTextView.setBackgroundDrawable( attendanceIndicatorDrawable );
                 //      在室確認シグナル
-                Drawable inRoomIndicatorDrawable = IndicatorEnum.getSignalDrawable(_context, indicator.mInRoom);
-                holder.thirdSignalTextView.setBackgroundDrawable( inRoomIndicatorDrawable );
+                Drawable reAttendanceIndicatorDrawable = IndicatorEnum.getSignalDrawable(_context, indicator.mReAttendance);
+                holder.thirdSignalTextView.setBackgroundDrawable( reAttendanceIndicatorDrawable );
                 //      プライバシーシグナル
                 Drawable privacyIndicatorDrawable = IndicatorEnum.getSignalDrawable(_context, indicator.mPrivacy);
                 holder.fourthSignalTextView.setBackgroundDrawable( privacyIndicatorDrawable );
