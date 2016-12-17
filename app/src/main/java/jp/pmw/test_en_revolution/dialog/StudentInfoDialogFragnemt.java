@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -43,6 +45,7 @@ import jp.pmw.test_en_revolution.PastAttendanceCount;
 import jp.pmw.test_en_revolution.R;
 import jp.pmw.test_en_revolution.SeatObject;
 import jp.pmw.test_en_revolution.SeatSituationFragment;
+import jp.pmw.test_en_revolution.StudentInfoCustomDialog;
 import jp.pmw.test_en_revolution.StudentObject;
 import jp.pmw.test_en_revolution.TransmitStateObject;
 import jp.pmw.test_en_revolution.attendee.FaceImageRealmObject;
@@ -1025,15 +1028,9 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         this.selectRequestType = this.MANUAL_REQUEST_TYPE_RE_ATTENDANCE;
         selectApplyType = this.MANUAL_NOT_REQUEST;
         String attId = this.getAttObject().getAttendanceId();
-        String url = null;
-        if(this.nowAttendanceStage == this.MANUAL_REQUEST_TYPE_RE_ATTENDANCE){
-            url = URL.getReAttendLeak(attId, selectApplyType);
-        }else if(this.nowAttendanceStage == this.MANUAL_REQUEST_TYPE_UNDO){
-            url = URL.getUndoLeak(attId, selectApplyType);
-        }
-        if(url == null){
-            return;
-        }
+        String url = URL.getReAttendLeak(attId, selectApplyType);
+        this.tapStudent.getAttendanceObject().manualRequestReAttendance = this.MANUAL_NOT_REQUEST;
+        this.tapStudent.getAttendanceObject().reAttendancetime = null;
         ackLeakrequest(url);
     }
 
@@ -1060,15 +1057,9 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         this.selectRequestType = this.nowAttendanceStage;
         selectApplyType = this.MANUAL_REQUEST;
         String attId = this.getAttObject().getAttendanceId();
-        String url = null;
-        if(this.nowAttendanceStage == this.MANUAL_REQUEST_TYPE_RE_ATTENDANCE){
-            url = URL.getReAttendLeak(attId, selectApplyType);
-        }else if(this.nowAttendanceStage == this.MANUAL_REQUEST_TYPE_UNDO){
-            url = URL.getUndoLeak(attId, selectApplyType);
-        }
-        if(url == null){
-            return;
-        }
+        this.tapStudent.getAttendanceObject().manualRequestReAttendance = this.MANUAL_REQUEST;
+        this.tapStudent.getAttendanceObject().reAttendancetime = " ";
+        String url = URL.getReAttendLeak(attId, selectApplyType);
         ackLeakrequest(url);
     }
 
@@ -1300,6 +1291,23 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
                 LinearLayout beInRoomLayout = (LinearLayout) dialog.findViewById(R.id.dialog_custom_be_in_room_apply_ll);
                 beInRoomLayout.setVisibility(View.VISIBLE);
                 RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.dialog_custom_be_in_room_apply_rg);
+                // ラジオグループのチェック状態が変更された時に呼び出されるコールバックリスナーを登録します
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    // ラジオグループのチェック状態が変更された時に呼び出されます
+                    // チェック状態が変更されたラジオボタンのIDが渡されます
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        RadioButton radioButton = (RadioButton) dialog.findViewById(checkedId);
+                        if( checkedId == R.id.dialog_custom_be_in_room_apply_rb ){
+                            //  手動在室申請
+                            beInRoomRequest();
+                        }else if( checkedId == R.id.dialog_custom_not_be_in_room_apply_rb ){
+                            //  手動不在申請
+                            beInRoomRelease();
+                        }
+                        //  授業者一覧リストビューを再描画
+                        af.adapter.notifyDataSetChanged();
+                    }
+                });
                 if( reAttendanceTime != null ){
                     radioGroup.check(R.id.dialog_custom_be_in_room_apply_rb);
                 }else{

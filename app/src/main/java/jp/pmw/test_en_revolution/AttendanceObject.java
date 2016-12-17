@@ -84,22 +84,22 @@ public class AttendanceObject {
 
     //手動再出席時刻
     @SerializedName("manual_request_re_attendance")
-    private int manualRequestReAttendance;
+    public int manualRequestReAttendance;
     public int getManualRequestReAttendance() {
         return this.manualRequestReAttendance;
     }
 
     //再出席確認時刻(出席ACK時刻-そのだ教授+1)の開始時刻
     //↑在室確認対象者のみ値が入ります.それ以外は
-    //@SerializedName("re_attendance_start_time")
-    private String reAttendanceStartTime = "";
+    @SerializedName("re_attendance_start_time")
+    private String reAttendanceStartTime;
     public String getReAttendanceStartTime() {
         return this.reAttendanceStartTime;
     }
 
     //再出席確認時刻(出席ACK時刻-そのだ教授+1)
     @SerializedName("re_attendance_time")
-    private String reAttendancetime;
+    public String reAttendancetime;
     public String getReAttendancetime() {
         return this.reAttendancetime;
     }

@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import jp.pmw.test_en_revolution.attendee.Indicator;
+
 /**
  * Created by si on 2016/01/29.
  * 学生オブジェクトクラス
@@ -94,6 +96,10 @@ public class StudentObject implements Serializable {
     public String mFaceUrl;
     @SerializedName("last_update_time")
     public String mLastUpdateTime;
+
+    //  ACKインジケーターについて
+    @SerializedName("indicator")
+    public Indicator mIndicator;
 
     /*public StudentObject(String studentIdNumber,String furigana, String fullName, SeatObject seatObject,SeatObject seatAfterMoving){
         this.studentIdNumber = studentIdNumber;

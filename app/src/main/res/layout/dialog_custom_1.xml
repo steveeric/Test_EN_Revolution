@@ -457,7 +457,7 @@
         <!-- 在室確認ゾーン -->
         <LinearLayout
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
@@ -474,6 +474,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:id="@+id/dialog_custom_be_in_room_apply_rg">
                 <RadioButton
                     android:layout_width="0dp"
