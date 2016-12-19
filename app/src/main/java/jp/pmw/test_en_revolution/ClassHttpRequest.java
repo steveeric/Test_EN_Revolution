@@ -13,7 +13,6 @@ import jp.pmw.test_en_revolution.config.URL;
 import jp.pmw.test_en_revolution.confirm_class_plan.RoomInfoObject;
 import jp.pmw.test_en_revolution.group_readjustment.ReAdjustmentOjbect;
 import jp.pmw.test_en_revolution.questionnaire.Questionnaire;
-import jp.pmw.test_en_revolution.room.Room;
 import jp.pmw.test_en_revolution.survey.Survey;
 import jp.pmw.test_en_revolution.survey.SurveyState;
 import okhttp3.Request;
@@ -262,15 +261,16 @@ public class ClassHttpRequest {
         }
     }
 
-    /*
-* 学生情報と出欠データ取得で使用クラス
-* */
+    /**
+    * 学生情報と出欠データ取得で使用クラス
+    **/
     class RegistrationObject{
-        //
         @SerializedName("students")
         public StudentObject[] sos;
         @SerializedName("number_of_attendance")
         public NumOfAttendanceEntity numOfAttendanceEntity;
+        @SerializedName("manual_reasons")
+        public ManulReason[] mManulReasons;
     }
 
     /**
@@ -280,6 +280,7 @@ public class ClassHttpRequest {
      *  @param students       学生群
      * **/
     public void doChkAttendance(RegistrationObject ro){
+        activity.getClassObject().mManulReasons = ro.mManulReasons;
         activity.getClassObject().setNumOfAttendanceEnttity(ro.numOfAttendanceEntity);
         activity.getClassObject().setStudentObject(ro.sos);
     }

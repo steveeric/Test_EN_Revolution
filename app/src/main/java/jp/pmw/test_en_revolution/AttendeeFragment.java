@@ -2,7 +2,6 @@ package jp.pmw.test_en_revolution;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,44 +11,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 
-import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
-import java.util.Timer;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import io.realm.RealmResults;
 import jp.pmw.test_en_revolution.attendee.Attendee;
 import jp.pmw.test_en_revolution.attendee.CustomAdapter;
-import jp.pmw.test_en_revolution.attendee.FaceImageRealmObject;
-import jp.pmw.test_en_revolution.attendee.RosterCustomAdapter_1;
 import jp.pmw.test_en_revolution.attendee.RosterCustomAdapter_2;
-import jp.pmw.test_en_revolution.config.Config;
 import jp.pmw.test_en_revolution.config.TimerConfig;
-import jp.pmw.test_en_revolution.config.URL;
 import jp.pmw.test_en_revolution.confirm_class_plan.Roster;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
 import jp.pmw.test_en_revolution.dialog.AttendanceChangeStatusDialogFragment;
 import jp.pmw.test_en_revolution.dialog.ReAttendanceChangeStatusDialogFragment;
-import jp.pmw.test_en_revolution.dialog.StudentInfoDialogFragnemt;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -93,7 +76,9 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
     //private ProgressBar attendeeLoadProgressBar;
     private ListView attendeeListView;
     public GridView attendeeGridView;
-
+    //  出席・遅刻などの状態スタータスを変更時の理由
+    public ManulReason[] mManulReasons;
+    //  受講生アダプター
     public RosterCustomAdapter_2 adapter;
     //  出席者取得タイマー
     private AttendeeFragmentTimeTask transmitStateTimerTask;
@@ -267,6 +252,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
 
     public void showWaitFragment(){
         MainActivity activity = (MainActivity)this.getActivity();
+        this.mManulReasons = activity.getClassObject().mManulReasons;
         NumOfAttendanceEntity noae = activity.getClassObject().getNumOfAttendanceEnttity();
         StudentObject[] sos = activity.getClassObject().getStudentObject();
         if(sos != null){

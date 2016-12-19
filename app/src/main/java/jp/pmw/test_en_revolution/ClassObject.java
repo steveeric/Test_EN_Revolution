@@ -49,6 +49,8 @@ public class ClassObject {
         this.mNumOfAttendanceEnttity = numOfAttendanceEnttity;
     }
     public NumOfAttendanceEntity getNumOfAttendanceEnttity(){return this.mNumOfAttendanceEnttity;}
+    //  出席・遅刻などの手動変更時の理由
+    public ManulReason[] mManulReasons;
 
     //  学生群(本日の履修生)
     private StudentObject[] sos;

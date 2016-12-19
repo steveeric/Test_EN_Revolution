@@ -19,6 +19,8 @@ public class AttendanceObject {
     public static final int STATE_ABSENCE = 2;
     //  遅刻状態
     public static final int STATE_LATE = 3;
+    //  早退状態
+    public static final int STATE_LEAVE = 4;
 
     //  手動でない
     public static final int MANUAL_NOT = 0;
@@ -143,6 +145,10 @@ public class AttendanceObject {
     @SerializedName("indicator")
     public Indicator mIndicator;
 
+    //  早退日時
+    //@SerializedName("leave_time")
+    public String mLeaveTime;
+
     //  出席関係情報セット
     public void setAttendanceObject(AttendanceObject ao) {
         //
@@ -216,10 +222,16 @@ public class AttendanceObject {
      **/
     public int getStateAttendance() {
         int state = this.STATE_ABSENCE;
+        if( this.mLeaveTime != null ){
+            //  早退
+            return this.STATE_LEAVE;
+        }
         if (this.attendanceTime != null) {
             if(this.manualRequestAttendance == MANULA_LATE){
+                //  遅刻
                 state = this.STATE_LATE;
             }else{
+                //  出席
                 state = this.STATE_ATTENDANCE;
             }
         }
@@ -249,11 +261,12 @@ public class AttendanceObject {
                 resorce = context.getResources().getColor(R.color.red);
             } else if(stateAttendance == AttendanceObject.STATE_LATE){
                 resorce = context.getResources().getColor(R.color.tuyukusairo);
+            } else if( stateAttendance == AttendanceObject.STATE_LEAVE ){
+                resorce = context.getResources().getColor(R.color.pink);
             }
         }
         return resorce;
     }
-
     /**
      * Created by si on 2016/02/29.
      * getReturndedResponseメソッド
@@ -269,6 +282,4 @@ public class AttendanceObject {
         }
         return response;
     }
-
-
 }

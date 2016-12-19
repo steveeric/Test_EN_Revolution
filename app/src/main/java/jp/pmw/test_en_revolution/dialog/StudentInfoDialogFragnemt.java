@@ -1305,6 +1305,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
     CheckBox mRegaredeAsAttendanceCb;
     CheckBox mRegaredeAsLateCb;
     CheckBox mRegaredeAsAbsentCb;
+    CheckBox mRegaredeAsLeaveCb;
     LinearLayout mRegaredeAsReasonLl;
     RadioGroup mRegarededAsReasonRg;
     RadioButton mReasonForgotRb;    //  理由のSonoRIs忘れ項目

@@ -357,13 +357,14 @@
                             android:layout_weight="1"
                             android:text="欠席"
                             android:textSize="@dimen/textsize_xlarge" />
+                        <CheckBox
+                            android:id="@+id/dialog_custom_regarded_as_leave_cb"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="早退"
+                            android:textSize="@dimen/textsize_xlarge" />
                     </LinearLayout>
-                    <!--<CheckBox
-                        android:id="@+id/dialog_custom_regarded_as_forgot_cb"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/str_regarded_as_forgot"
-                        android:textSize="@dimen/textsize_xlarge" />-->
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/dialog_custom_regarded_as_reason_ll"
@@ -381,18 +382,12 @@
                         android:id="@+id/dialog_custom_regarded_as_reason_rg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-                        <RadioButton
+                        <!--<RadioButton
                             android:id="@+id/dialog_custom_regarded_as_reason_did_not_show_rb"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/str_regarded_as_reason_did_not_show_rb"
                             android:textSize="@dimen/textsize_xlarge" />
-                        <!--<RadioButton
-                            android:id="@+id/dialog_custom_regarded_as_reason_ack_no_response_rb"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/str_regarded_as_reason_ack_no_response_rb"
-                            android:textSize="@dimen/textsize_xlarge" />-->
                         <RadioButton
                             android:id="@+id/dialog_custom_regarded_as_reason_forgot_rb"
                             android:layout_width="wrap_content"
@@ -404,7 +399,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/str_regarded_as_reason_other1_rb"
-                            android:textSize="@dimen/textsize_xlarge" />
+                            android:textSize="@dimen/textsize_xlarge" />-->
                     </RadioGroup>
                     <!-- 理由未選択の場合に表示するアラートテキストビュー -->
                     <TextView
