@@ -382,7 +382,7 @@
                         android:id="@+id/dialog_custom_regarded_as_reason_rg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-                        <!--<RadioButton
+                        <RadioButton
                             android:id="@+id/dialog_custom_regarded_as_reason_did_not_show_rb"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -399,7 +399,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/str_regarded_as_reason_other1_rb"
-                            android:textSize="@dimen/textsize_xlarge" />-->
+                            android:textSize="@dimen/textsize_xlarge" />
                     </RadioGroup>
                     <!-- 理由未選択の場合に表示するアラートテキストビュー -->
                     <TextView

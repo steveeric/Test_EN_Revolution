@@ -88,6 +88,8 @@ public class MainActivity extends MyFragmentActivity {
 
     //  出席関係取得中フラグ(false:取得中でない, true:取得中)
     public boolean chkAttendanceRelationshipInfoRetrieving = false;
+    //  学生ダイアログで出席状態変更理由をこれまでにいくつ見ているか
+    public int mStudentDialogBrowsedReasonTotalCount = 0;
 
 
     @Override
