@@ -125,7 +125,7 @@ public class URL {
      *  @param int      reason          理由
      *  @param int      forgot          SonoRIs忘れ(0:持っている,1:SonoRIs忘れ)
      * **/
-    public static final String getUrlRegardedAsAttendance(String attendanceId, int reason, int forgot){
+    public static final String getUrlRegardedAsAttendance(String attendanceId, String reason, int forgot){
         return TEMP_BASE_URL + "AckLeakSupport_Controller/attendance?a="+attendanceId+"&r="+reason+"&f="+forgot;
     }
     /**
@@ -135,7 +135,7 @@ public class URL {
      *  @param int      reason          理由
      *  @param int      forgot          SonoRIs忘れ(0:持っている,1:SonoRIs忘れ)
      * **/
-    public static final String getUrlRegardedAsLate(String attendanceId, int reason, int forgot){
+    public static final String getUrlRegardedAsLate(String attendanceId, String reason, int forgot){
         return TEMP_BASE_URL + "AckLeakSupport_Controller/late?a="+attendanceId+"&r="+reason+"&f="+forgot;
     }
     /**
@@ -143,8 +143,8 @@ public class URL {
      *  欠席とみなすURL
      *  @param String   attendanceId    出席ID
      * **/
-    public static final String getUrlRegardedAsAbsent(String attendanceId){
-        return TEMP_BASE_URL + "AckLeakSupport_Controller/absent?a="+attendanceId;
+    public static final String getUrlRegardedAsAbsent(String attendanceId,String reason){
+        return TEMP_BASE_URL + "AckLeakSupport_Controller/absent?a="+attendanceId+"&r="+reason;
     }
     /**
      *  getUrlchkExistenceFaceImageメソッド

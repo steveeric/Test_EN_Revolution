@@ -96,5 +96,8 @@ public class StudentObject implements Serializable {
     public String mFaceUrl;
     @SerializedName("last_update_time")
     public String mLastUpdateTime;
+    //  ACKインジケーターについて
+    @SerializedName("reason_id")
+    public String mReasonId;
 
 }

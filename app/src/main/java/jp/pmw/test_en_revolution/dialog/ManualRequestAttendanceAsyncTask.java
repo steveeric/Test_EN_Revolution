@@ -1,6 +1,9 @@
 package jp.pmw.test_en_revolution.dialog;
 
 import java.io.IOException;
+
+import jp.pmw.test_en_revolution.AttendanceObject;
+import jp.pmw.test_en_revolution.ManulReason;
 import jp.pmw.test_en_revolution.MyAsyncTask;
 import jp.pmw.test_en_revolution.config.URL;
 import jp.pmw.test_en_revolution.network.MyHttpConnection;
@@ -34,11 +37,12 @@ public class ManualRequestAttendanceAsyncTask extends MyAsyncTask {
             String url = null;
             String attendanceId = mAttendanceChangeStatus.getAttendanceObject().getAttendanceId();
             if( CANCEL == mSelected ){
-                url = URL.getUrlRegardedAsAbsent(attendanceId);
+                String reasonId =
+                url = URL.getUrlRegardedAsAbsent(attendanceId,"AB01");
             }else if( NO_RESPONSE == mSelected ){
-                url = URL.getUrlRegardedAsAttendance(attendanceId, NO_RESPONSE, PARAMETA_RELEASE_FORGOT);
+                url = URL.getUrlRegardedAsAttendance(attendanceId, "AT01", PARAMETA_RELEASE_FORGOT);
             }else if( FORGOT == mSelected ){
-                url = URL.getUrlRegardedAsAttendance(attendanceId, FORGOT, PARAMETA_FORGOT_ESL);
+                url = URL.getUrlRegardedAsAttendance(attendanceId, "AT02", PARAMETA_FORGOT_ESL);
             }
             if( url != null ){
                 String result = MyHttpConnection.run(url);

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.List;
 import jp.pmw.test_en_revolution.MainActivity;
+import jp.pmw.test_en_revolution.ManulReason;
 import jp.pmw.test_en_revolution.R;
 import jp.pmw.test_en_revolution.StudentObject;
 import jp.pmw.test_en_revolution.TransmitStateObject;
