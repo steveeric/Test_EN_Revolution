@@ -725,14 +725,16 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
      * 在室確認一括変更ダイアログを表示する.
      */
     void showReAttendanceChangeStatusDialogFrament(){
-        if( getMainActivity().getClassObject().getTransmitStateObject().mReAttendanceBulkChangeShow == TransmitStateObject.RE_ATTENDANCE_BULK_CHANGE_SHOW ) {
-            if( !ReAttendanceChangeStatusDialogFragment.newInstance().browsing ) {
-                ReAttendanceChangeStatusDialogFragment.newInstance().mHandler = this.mHandler;
-                Bundle bundle = new Bundle();
-                String sameClassNumber = getMainActivity().getClassObject().getSameClassNumber();
-                bundle.putString(AttendanceChangeStatusDialogFragment.SAME_CLASS_NUMBER, sameClassNumber);
-                ReAttendanceChangeStatusDialogFragment.newInstance().setArguments(bundle);
-                ReAttendanceChangeStatusDialogFragment.newInstance().show(getActivity().getSupportFragmentManager(), ReAttendanceChangeStatusDialogFragment.RE_ATTENDANCE_CHANGE_STATUS_DIALOG_FRAGMENT);
+        if(getMainActivity().getClassObject().getTransmitStateObject() != null){
+            if( getMainActivity().getClassObject().getTransmitStateObject().mReAttendanceBulkChangeShow == TransmitStateObject.RE_ATTENDANCE_BULK_CHANGE_SHOW ) {
+                if( !ReAttendanceChangeStatusDialogFragment.newInstance().browsing ) {
+                    ReAttendanceChangeStatusDialogFragment.newInstance().mHandler = this.mHandler;
+                    Bundle bundle = new Bundle();
+                    String sameClassNumber = getMainActivity().getClassObject().getSameClassNumber();
+                    bundle.putString(AttendanceChangeStatusDialogFragment.SAME_CLASS_NUMBER, sameClassNumber);
+                    ReAttendanceChangeStatusDialogFragment.newInstance().setArguments(bundle);
+                    ReAttendanceChangeStatusDialogFragment.newInstance().show(getActivity().getSupportFragmentManager(), ReAttendanceChangeStatusDialogFragment.RE_ATTENDANCE_CHANGE_STATUS_DIALOG_FRAGMENT);
+                }
             }
         }
     }

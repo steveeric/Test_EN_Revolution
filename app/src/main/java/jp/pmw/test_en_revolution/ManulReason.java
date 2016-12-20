@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 public class ManulReason {
 
     public static final int ACCEPTED_ATTENDANCE_ACK_AVAILABLE = 1;
-    public static final int ACCEPTED_ATTENDANCE_AACK_AVAILABLE = 2;
+    public static final int ACCEPTED_ATTENDANCE_NACK_AVAILABLE = 2;
     @SerializedName("reason_id")
     public String mReasonId;
     @SerializedName("state")
