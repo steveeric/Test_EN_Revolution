@@ -18,6 +18,8 @@ import jp.pmw.test_en_revolution.confirm_class_plan.Attendance;
 import jp.pmw.test_en_revolution.network.MyOkhttp;
 
 import static java.lang.Math.abs;
+import static jp.pmw.test_en_revolution.ManulReason.ACCEPTED_ATTENDANCE_AACK_AVAILABLE;
+import static jp.pmw.test_en_revolution.ManulReason.ACCEPTED_ATTENDANCE_ACK_AVAILABLE;
 
 /**
  * Created by si on 2016/06/18.
@@ -97,8 +99,71 @@ public class RegardedAsCb {
      * */
     void initCheckBoxState(){
         undoCheckBoxState();
+        setReasonState();
         show();
     }
+    /**
+     * setReasonStateメソッド
+     * 理由状態をラジオボタンにセットする.
+     * */
+    void setReasonState(){
+        ManulReason[] manulReasons = null;
+        //  理由
+        if( mAttendanceCbState ){
+            manulReasons = getManualReasons( AttendanceObject.STATE_ATTENDANCE );
+        }else if( mLateCbState ){
+            manulReasons = getManualReasons( AttendanceObject.STATE_LATE );
+        }else if( mAbsentCbState ){
+            manulReasons = getManualReasons( AttendanceObject.STATE_ABSENCE );
+        }else if( mLeaveCbState ){
+            manulReasons = getManualReasons( AttendanceObject.STATE_LEAVE );
+        }
+        this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.removeAllViews();
+        this.mSelectable.clear();
+        String reasonIds = "";
+        for( int i = 0; i < manulReasons.length; i++ ){
+            String reasonId = manulReasons[i].mReasonId;
+            int showAccordingToACK = manulReasons[i].mShowAccordingToACK;
+            String reason = manulReasons[i].mReason;
+            int mDoNotShowACKResponse = manulReasons[i].mDoNotShowACKResponse;
+            RadioButton radioBtn = null;
+            if( ACCEPTED_ATTENDANCE_ACK_AVAILABLE == showAccordingToACK ){
+                //  出席認定でACKを返しているか調べる
+                boolean chk = this.mStudentInfoDialogFragnemt.tapStudent.getAttendanceObject().getAttendanceByACK();
+                if(chk){
+                    radioBtn  = getReasonRadioButton( manulReasons[i], reason );
+                }
+            }else if(ACCEPTED_ATTENDANCE_AACK_AVAILABLE == showAccordingToACK){
+                //  出席認定でACKを返しているか調べる
+                boolean chk = this.mStudentInfoDialogFragnemt.tapStudent.getAttendanceObject().getAttendanceByACK();
+                if(!chk){
+                    radioBtn  = getReasonRadioButton( manulReasons[i], reason );
+                }
+            }else if( mDoNotShowACKResponse == AttendanceObject.MANUAL_ATTENDANCE ){
+                //  授業内に座席指定・出席認定・在室確認・プライバシー保護でACKが一度でもあったかを調べる.
+                if( !(this.mStudentInfoDialogFragnemt.tapStudent.getAttendanceObject().getReturndedResponse()) ){
+                    reasonIds = reasonIds + reasonId;
+                    radioBtn  = getReasonRadioButton( manulReasons[i], reason );
+                    ++browsReasonCount;
+                }
+            }else{
+                reasonIds = reasonIds + reasonId;
+                radioBtn  = getReasonRadioButton( manulReasons[i], reason );
+                ++browsReasonCount;
+            }
+
+            if( radioBtn != null ){
+                this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.addView( radioBtn );
+                String selectedReasonId = this.mStudentInfoDialogFragnemt.tapStudent.getAttendanceObject().mReasonId;
+                if( selectedReasonId.equals(reasonId)  ){
+                    radioBtn.setChecked(true);
+                }
+            }
+        }
+        int a = this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.getCheckedRadioButtonId();
+        this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.setVisibility(View.VISIBLE);
+    }
+
     /**
      *  showメソッド
      *  ダイアログを表示する.
@@ -283,39 +348,7 @@ public class RegardedAsCb {
         this.mLateCbState = newLateCbState;
         this.mAbsentCbState = newAbsentCbState;
         this.mLeaveCbState = newLeaveCbState;
-        //  理由
-        if( mAttendanceCbState ){
-            manulReasons = getManualReasons( AttendanceObject.STATE_ATTENDANCE );
-        }else if( mLateCbState ){
-            manulReasons = getManualReasons( AttendanceObject.STATE_LATE );
-        }else if( mAbsentCbState ){
-            manulReasons = getManualReasons( AttendanceObject.STATE_ABSENCE );
-        }else if( mLeaveCbState ){
-            manulReasons = getManualReasons( AttendanceObject.STATE_LEAVE );
-        }
-        this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.removeAllViews();
-        this.mSelectable.clear();
-        String reasonIds = "";
-        for( int i = 0; i < manulReasons.length; i++ ){
-            String reasonId = manulReasons[i].mReasonId;
-            String reason = manulReasons[i].mReason;
-            int mDoNotShowACKResponse = manulReasons[i].mDoNotShowACKResponse;
-            RadioButton radioBtn = null;
-            if( mDoNotShowACKResponse == AttendanceObject.MANUAL_ATTENDANCE ){
-                if( !(this.mStudentInfoDialogFragnemt.tapStudent.getAttendanceObject().getReturndedResponse()) ){
-                    reasonIds = reasonIds + reasonId;
-                    radioBtn  = getReasonRadioButton( manulReasons[i], reason );
-                    this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.addView( radioBtn );
-                    ++browsReasonCount;
-                }
-            }else{
-                reasonIds = reasonIds + reasonId;
-                radioBtn  = getReasonRadioButton( manulReasons[i], reason );
-                this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.addView( radioBtn );
-                ++browsReasonCount;
-            }
-        }
-        //mStudentInfoDialogFragnemt.mRegarededAsReasonRg.setTag(reasonIds);
+        setReasonState();
         setChangeSelectedState();
         setAssistMessage();
     }
@@ -431,11 +464,11 @@ public class RegardedAsCb {
         if( same ){
             this.mStudentInfoDialogFragnemt.mRegaredeAsApplyBtn.setVisibility(View.INVISIBLE);
             this.mStudentInfoDialogFragnemt.mRegaredeAsUndoBtn.setVisibility(View.INVISIBLE);
-            this.mStudentInfoDialogFragnemt.mRegaredeAsReasonLl.setVisibility(View.INVISIBLE);
+            //this.mStudentInfoDialogFragnemt.mRegaredeAsReasonLl.setVisibility(View.INVISIBLE);
         }else{
             this.mStudentInfoDialogFragnemt.mRegaredeAsApplyBtn.setVisibility(View.VISIBLE);
             this.mStudentInfoDialogFragnemt.mRegaredeAsUndoBtn.setVisibility(View.VISIBLE);
-            this.mStudentInfoDialogFragnemt.mRegaredeAsReasonLl.setVisibility(View.VISIBLE);
+            //this.mStudentInfoDialogFragnemt.mRegaredeAsReasonLl.setVisibility(View.VISIBLE);
             if( this.mAbsentCbState ){
             }else{
                 //  選択理由を初期化する.

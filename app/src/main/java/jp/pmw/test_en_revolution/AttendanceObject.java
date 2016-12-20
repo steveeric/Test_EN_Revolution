@@ -144,6 +144,9 @@ public class AttendanceObject {
     //  ACKインジケーターについて
     @SerializedName("indicator")
     public Indicator mIndicator;
+    //  ACKインジケーターについて
+    @SerializedName("reason_id")
+    public String mReasonId;
 
     //  早退日時
     //@SerializedName("leave_time")
@@ -157,6 +160,8 @@ public class AttendanceObject {
         this.manualRequestFirstAccess = ao.manualRequestFirstAccess;
         //
         this.firstAccessTime = ao.getFirstAccessTime();
+        //
+        this.mReasonId = ao.mReasonId;
         //
         this.manualRequestAttendance = ao.manualRequestAttendance;
         //
