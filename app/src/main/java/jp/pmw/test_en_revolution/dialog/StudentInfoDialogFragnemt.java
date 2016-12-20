@@ -37,6 +37,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import jp.pmw.test_en_revolution.AppController;
 import jp.pmw.test_en_revolution.AttendanceObject;
+import jp.pmw.test_en_revolution.AttendanceTotal;
 import jp.pmw.test_en_revolution.AttendeeFragment;
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.MessageObject;
@@ -51,6 +52,7 @@ import jp.pmw.test_en_revolution.TransmitStateObject;
 import jp.pmw.test_en_revolution.attendee.FaceImageRealmObject;
 import jp.pmw.test_en_revolution.attendee.FaceImageTask;
 import jp.pmw.test_en_revolution.config.URL;
+import jp.pmw.test_en_revolution.confirm_class_plan.Attendance;
 import jp.pmw.test_en_revolution.network.MyAsyncTask;
 import jp.pmw.test_en_revolution.network.MyHttpConnection;
 import jp.pmw.test_en_revolution.network.MyIOException;
@@ -439,28 +441,15 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         LinearLayout ll = getLinearLayout(dialog, R.id.total_attendance_situation_linearLayout);
         //  前回までの出欠レイアウトを表示する
         ll.setVisibility(View.VISIBLE);
-        //
-        if( tapStudent.getPastAttendanceCount() == null ){
-            //  過去の出・遅・欠席回数を取得する.
-            getPastAttendanceCount();
-        }else{
-            //  過去の出・遅・欠席回数を表示する.
-            setPastAttendanceCount();
-        }
+        //  前回までの出欠遅早数を表示する.
+        setPastAttendanceCount();
+        //  前回までの出欠遅早の内訳を表示する.
+        String total = this.tapStudent.mAttendanceTotal.mTotal;
+        TextView tv = getTextView(dialog, R.id.total_attendance_total_breakdown_tv);
+        tv.setText( total );
+
     }
-    /**
-     * Created by scr on 2016/06/28.
-     * getPastAttendanceCountメソッド
-     * 過去(一つ前の授業まで)の出欠回数をネットワークを介しDBから取得します.
-     */
-    void getPastAttendanceCount(){
-        String attendanceId  =this.tapStudent.getAttendanceObject().getAttendanceId();
-        //  URL
-        String url = URL.getPastTotalAttendanceCount(attendanceId);
-        //  アクセス
-        requestToWebApi(url);
-    }
-    /**
+     /**
      * requestToWebApiメソッド
      * WEBAPIにアクセスします.
      * @param String url URL
@@ -517,16 +506,16 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         //  出・遅・欠 回数レイアウト
         LinearLayout cdLl = getLinearLayout(dialog, R.id.total_attendance_situation_count_display_ll);
         //  過去の出席回数を表示する.
-        PastAttendanceCount pac = tapStudent.getPastAttendanceCount();
-
+        //PastAttendanceCount pac = tapStudent.getPastAttendanceCount();
+        AttendanceTotal at = this.tapStudent.mAttendanceTotal;
         //  出席した回数(WEBと同じ手法での出席回数)
-        int attenedCount = pac.getAttendedCount();
+        int attenedCount = at.mAttendedCount;
         //  遅刻した回数
-        int lateCount   = pac.getLatedCount();
+        int lateCount   = at.mLatedCount;
         //  欠席した回数(WEBと同じ手法での欠席回数)
-        int absentedCount =pac.getAbsentedCount();
+        int absentedCount = at.mAbsentedCount;
         //  早退した回数
-        int leaveEarly = pac.getLeaveEarlyCount();
+        int leavedCount = at.mLeaveCount;
 
         TextView attendedTextView   = getTextView(dialog, R.id.total_attendance_attendee_situation_textView);
         TextView lateTextView       = getTextView(dialog, R.id.total_attendance_late_situation_textView);
@@ -537,7 +526,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         attendedTextView.setText(getStrTotalAttended(attenedCount));
         lateTextView.setText(getStrTotalLate(lateCount));
         absentedTextView.setText(getStrTotalAbsended(absentedCount));
-        laveEaryTextView.setText(getStrTotalLeaveEarly(leaveEarly));
+        laveEaryTextView.setText(getStrTotalLeaveEarly(leavedCount));
 
         //  ローディングレイアウト非表示にする.
         loadingLl.setVisibility(View.GONE);

@@ -99,5 +99,7 @@ public class StudentObject implements Serializable {
     //  ACKインジケーターについて
     @SerializedName("reason_id")
     public String mReasonId;
-
+    //  前回までの出欠回数について
+    @SerializedName("attendance_total")
+    public AttendanceTotal mAttendanceTotal;
 }
