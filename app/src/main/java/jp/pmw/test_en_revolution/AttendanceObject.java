@@ -52,11 +52,9 @@ public class AttendanceObject {
     //初回アクセス時刻(入室ACK時刻)
     @SerializedName("first_access_time")
     private String firstAccessTime;
-
     public void setFirstAccessTime(String firstAccessTime) {
         this.firstAccessTime = firstAccessTime;
     }
-
     public String getFirstAccessTime() {
         return this.firstAccessTime;
     }
@@ -64,11 +62,9 @@ public class AttendanceObject {
     //手動出席時刻
     @SerializedName("manual_request_attendance")
     private int manualRequestAttendance;
-
     public void setManualRequestAttendance(int request) {
         this.manualRequestAttendance = request;
     }
-
     public int getManualRequestAttendance() {
         return this.manualRequestAttendance;
     }
@@ -76,11 +72,9 @@ public class AttendanceObject {
     //出席確認時刻(出席ACK時刻-そのだ教授)
     @SerializedName("attendance_time")
     private String attendanceTime;
-
     public void setAttendanceTime(String attendanceTime) {
         this.attendanceTime = attendanceTime;
     }
-
     public String getAttendanceTime() {
         return this.attendanceTime;
     }
@@ -92,13 +86,9 @@ public class AttendanceObject {
         return this.manualRequestReAttendance;
     }
 
-    //再出席確認時刻(出席ACK時刻-そのだ教授+1)の開始時刻
-    //↑在室確認対象者のみ値が入ります.それ以外は
-    @SerializedName("re_attendance_start_time")
-    private String reAttendanceStartTime;
-    public String getReAttendanceStartTime() {
-        return this.reAttendanceStartTime;
-    }
+    //  再出席調査対象者
+    @SerializedName("re_attendance_target")
+    public String mReAttendanceTarget;
 
     //再出席確認時刻(出席ACK時刻-そのだ教授+1)
     @SerializedName("re_attendance_time")
@@ -110,11 +100,9 @@ public class AttendanceObject {
     //忘れ適用時刻
     @SerializedName("forgotapply_time")
     private String forgotApplyTime;
-
     public void setFogotApplytTime(String forgotApplyTime) {
         this.forgotApplyTime = forgotApplyTime;
     }
-
     public String getForgotApplyTime() {
         return this.forgotApplyTime;
     }
@@ -122,11 +110,9 @@ public class AttendanceObject {
     //手動要求プライバシー保護
     @SerializedName("manual_request_class_last_ack")
     private int manualRequestClassLastAck;
-
     public void setManualRequestClassLastAck(int request) {
         this.manualRequestClassLastAck = request;
     }
-
     public int getManualRequestClassLastAck() {
         return this.manualRequestClassLastAck;
     }

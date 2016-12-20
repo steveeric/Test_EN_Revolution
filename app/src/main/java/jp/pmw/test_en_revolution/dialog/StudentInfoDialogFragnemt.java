@@ -1165,10 +1165,10 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
      */
     void showBeInRoomLayout(){
         String reTransmitEndTime = getMainActivity().getClassObject().getTransmitStateObject().getReAttendanceEndTime();
-        String reAttendanceStartTime = tapStudent.getAttendanceObject().getReAttendanceStartTime();
+        String reAttendanceTarget = tapStudent.getAttendanceObject().mReAttendanceTarget;
         int reAttendanceManual = tapStudent.getAttendanceObject().getManualRequestReAttendance();
         String reAttendanceTime = tapStudent.getAttendanceObject().getReAttendancetime();
-        if( reTransmitEndTime != null && reAttendanceStartTime != null){
+        if( reTransmitEndTime != null && reAttendanceTarget != null){
             if( reAttendanceManual == AttendanceObject.MANUAL_ATTENDANCE
                 || reAttendanceTime == null){
                 LinearLayout beInRoomLayout = (LinearLayout) dialog.findViewById(R.id.dialog_custom_be_in_room_apply_ll);
