@@ -146,7 +146,7 @@ public class AttendanceObject {
     public Indicator mIndicator;
 
     //  早退日時
-    //@SerializedName("leave_time")
+    @SerializedName("leave_time")
     public String mLeaveTime;
 
     //  出席関係情報セット

@@ -142,9 +142,19 @@ public class URL {
      *  getUrlRegardedAsAbsentメソッド
      *  欠席とみなすURL
      *  @param String   attendanceId    出席ID
+     *  @param String   reason          理由ID
      * **/
     public static final String getUrlRegardedAsAbsent(String attendanceId,String reason){
         return TEMP_BASE_URL + "AckLeakSupport_Controller/absent?a="+attendanceId+"&r="+reason;
+    }
+    /**
+     *  getUrlRegardedAsLeaveメソッド
+     *  早退とみなすURL
+     *  @param String   attendanceId    出席ID
+     *  @param String   reason          理由ID
+     * **/
+    public static final String getUrlRegardedAsLeave(String attendanceId,String reason){
+        return TEMP_BASE_URL + "AckLeakSupport_Controller/leave?a="+attendanceId+"&r="+reason;
     }
     /**
      *  getUrlchkExistenceFaceImageメソッド

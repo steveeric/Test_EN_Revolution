@@ -579,20 +579,6 @@ public class RegardedAsCb {
     void clearSelectedRadioGropup(){
         this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.clearCheck();
     }
-
-    /**
-     *  getUndoForgotStateメソッド
-     *  変更適用前の忘れ状態を
-     *  @reutrn {true} 忘れの状態 {false}持っている状態
-     * */
-    boolean getUndoForgotState(){
-        AttendanceObject ao = this.mStudentInfoDialogFragnemt.tapStudent.getAttendanceObject();
-        String forgotTime = ao.getForgotApplyTime();
-        if(forgotTime != null){
-            return true;
-        }
-        return false;
-    }
     /**
      *  undoCheckBoxAttendanceStateメソッド
      *  出席とみなす状態に戻す.
@@ -634,16 +620,6 @@ public class RegardedAsCb {
         this.mAbsentCbState = false;
         this.mLeaveCbState = true;
     }
-
-
-    /**
-     *  getSelectedReasenメソッド
-     *  選択された理由を取得します.
-     * */
-    RegardedAsReasonEnum getSelectedReasen(){
-        int resorceId = this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.getCheckedRadioButtonId();
-        return RegardedAsReasonEnum.valueOf(resorceId);
-    }
     /**
      *  getNowSelectedManulReasonメソッド
      *  現在選択されている理由項目
@@ -655,7 +631,6 @@ public class RegardedAsCb {
         ManulReason selectManulReason = this.mSelectable.get(selectNumber);
         return selectManulReason;
     }
-
     /**
      *  updateCheckBoxメソッド
      *  チェックボックスに選択された状態をDBや端末のメモリデータに反映する.
@@ -674,8 +649,7 @@ public class RegardedAsCb {
             invisibleAlertUnselectedReasenTv();
             if( this.mLeaveCbState ){
                 //  早退
-                int a = 0;
-                a = 12;
+                updateCheckBoxLeaveState( mr );
             }else if( this.mAbsentCbState ){
                 //  欠席とみなします
                 updateCheckBoxAbsentState( mr );
@@ -688,7 +662,6 @@ public class RegardedAsCb {
             }
         }
     }
-
     /**
      *  visibleAlertUnselectedReasenTvメソッド
      *  理由が未選択です.を表示する.
@@ -704,39 +677,6 @@ public class RegardedAsCb {
         this.mStudentInfoDialogFragnemt.mAlertUnselectedReasonTv.setVisibility(View.INVISIBLE);
     }
     /**
-     *  chkSelectedReasonメソッド
-     *  理由が選択されているかを確認します.
-     *  @param RegardedAsReasonEnum     選択理由イーナム
-     *  @return {true} 選択されている. {false} 選択されていない.
-     * */
-    boolean chkSelectedReason(RegardedAsReasonEnum reasonEnum) {        //  理由が選択されていない
-        if (reasonEnum == RegardedAsReasonEnum.NOT_SELECTED) {
-            visibleAlertUnselectedReasenTv();
-            return false;
-        } else {
-            invisibleAlertUnselectedReasenTv();
-            return true;
-        }
-    }
-
-    /**
-     *  updateCheckBoxAttendanceOrLateStateメソッド
-     *  出席又は遅刻状態に振り分けます.
-     * */
-    /*void updateCheckBoxAttendanceOrLateState(RegardedAsReasonEnum reasonEnum){
-        if( !chkSelectedReason(reasonEnum) ){
-            //  遅刻理由未選択のため処理させない
-            return;
-        }
-        if( this.mAttendanceCbState ){
-            //  出席とみなす
-            updateCheckBoxAttendanceState(reasonEnum);
-        }else{
-            //  遅刻とみなす
-            updateCheckBoxLateState(reasonEnum);
-        }
-    }*/
-    /**
      * updateCheckBoxAttendanceStateメソッド
      * 出席とみなす状態に更新します.
      * */
@@ -744,6 +684,7 @@ public class RegardedAsCb {
         AttendanceObject ao = this.mStudentInfoDialogFragnemt.getAttObject();
         ao.setManualRequestAttendance(AttendanceObject.MANUAL_ATTENDANCE);
         ao.setAttendanceTime("");
+        ao.mLeaveTime           = null;
         //  URLパラメータ
         String  attendanceId    =   ao.getAttendanceId();
         int     forgot          =   updateCheckBoxForgotState(ao, mr);
@@ -755,8 +696,6 @@ public class RegardedAsCb {
 
         //  適用後
         apply( mr );
-        //  確定表示
-        //showConfirm(getConfirmMessage(AttendanceObject.STATE_ATTENDANCE, forgot));
     }
     /**
      *  updateCheckBoxLateStateメソッド
@@ -766,6 +705,7 @@ public class RegardedAsCb {
         AttendanceObject ao = this.mStudentInfoDialogFragnemt.getAttObject();
         ao.setManualRequestAttendance(AttendanceObject.MANULA_LATE);
         ao.setAttendanceTime("");
+        ao.mLeaveTime           = null;
         //  URLパラメータ
         String  attendanceId    =   ao.getAttendanceId();
         int     forgot          =   updateCheckBoxForgotState(ao, mr);
@@ -777,8 +717,6 @@ public class RegardedAsCb {
 
         //  適用後
         apply( mr );
-        //  確定表示
-        //showConfirm(getConfirmMessage(AttendanceObject.STATE_LATE, forgot));
     }
     /**
      *  updateCheckBoxAbsentStateメソッド
@@ -789,6 +727,7 @@ public class RegardedAsCb {
         ao.setManualRequestAttendance(0);
         ao.setAttendanceTime(null);
         ao.setFogotApplytTime(null);
+        ao.mLeaveTime           = null;
         String reasonId         =   mr.mReasonId;
         //  URLパラメータ
         String  attendanceId    =   ao.getAttendanceId();
@@ -797,8 +736,22 @@ public class RegardedAsCb {
         MyOkhttp.newInstance().getRequest(getMyContext(), url);
         //  適用後
         apply( mr );
-        //  確定表示
-        //showConfirm(getConfirmMessage(AttendanceObject.STATE_ABSENCE, 0));
+    }
+    /**
+     *  updateCheckBoxLeaveStateメソッド
+     *  早退状態に更新します.
+     * */
+    void updateCheckBoxLeaveState(ManulReason mr) {
+        AttendanceObject ao = this.mStudentInfoDialogFragnemt.getAttObject();
+        ao.mLeaveTime = "";
+        String reasonId = mr.mReasonId;
+        //  URLパラメータ
+        String attendanceId = ao.getAttendanceId();
+        //  httpアクセス
+        String url = URL.getUrlRegardedAsLeave(attendanceId, reasonId);
+        MyOkhttp.newInstance().getRequest(getMyContext(), url);
+        //  適用後
+        apply(mr);
     }
     /**
      *  updateCheckBoxForgotStateメソッド
