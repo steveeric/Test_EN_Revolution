@@ -244,6 +244,7 @@ public class RegardedAsCb {
                 mStudentInfoDialogFragnemt.mRegaredeAsLateCb.setVisibility(View.INVISIBLE);
                 mStudentInfoDialogFragnemt.mRegaredeAsAbsentCb.setVisibility(View.INVISIBLE);
             }
+            //  出席認定日時あり (早退選択可)
             mStudentInfoDialogFragnemt.mRegaredeAsLeaveCb.setVisibility(View.VISIBLE);
         }else{
             //  出席認定日時なし (早退選択不可)
@@ -557,6 +558,7 @@ public class RegardedAsCb {
         }else if( beforeState == AttendanceObject.STATE_LATE ){
             //  遅刻
             undoCheckBoxLateState();
+            this.mLateCbState = true;
         }else if( beforeState == AttendanceObject.STATE_LEAVE ){
             //  早退
             undoCheckBoxLeaveState();
