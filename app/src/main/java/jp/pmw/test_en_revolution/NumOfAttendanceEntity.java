@@ -22,7 +22,7 @@ public class NumOfAttendanceEntity {
     @SerializedName("absent")
     public int mAbsent;
     //  早退
-    @SerializedName("leav_ealy")
-    public int mLeavEarly = 0;
+    @SerializedName("leave")
+    public int mLeave;
 
 }

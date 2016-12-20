@@ -324,7 +324,7 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         int lateNotForgot   = noae.mLateNotForgot;
         int lateForgot      = noae.mLateForgot;
         int absent          = noae.mAbsent;
-        int leave           = noae.mLeavEarly;
+        int leave           = noae.mLeave;
 
         String strAtt = getString(R.string.total_attendee) + " "+ attNotForgot;
         if( attForgot > 0 ){
