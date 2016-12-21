@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.List;
+
+import jp.pmw.test_en_revolution.AttendanceObject;
 import jp.pmw.test_en_revolution.MainActivity;
 import jp.pmw.test_en_revolution.ManulReason;
 import jp.pmw.test_en_revolution.R;
@@ -41,14 +43,17 @@ public class AttendanceChangeStatusAdapter extends ArrayAdapter<AttendanceChange
                     == so.getAttendanceObject().getAttendanceId() ){
                 if( acs.mTapNoResponseStatus == true && acs.mTapForgotStatus == false ){
                     new ManualRequestAttendanceAsyncTask( so, ManualRequestAttendanceAsyncTask.NO_RESPONSE ).execute();
+                    so.getAttendanceObject().setManualRequestAttendance( AttendanceObject.MANUAL_ATTENDANCE );
                     so.getAttendanceObject().setAttendanceTime(" ");
                     so.getAttendanceObject().setFogotApplytTime(null);
                 }else if ( acs.mTapNoResponseStatus == false && acs.mTapForgotStatus == true ){
                     new ManualRequestAttendanceAsyncTask( so, ManualRequestAttendanceAsyncTask.FORGOT ).execute();
+                    so.getAttendanceObject().setManualRequestAttendance( AttendanceObject.MANUAL_ATTENDANCE );
                     so.getAttendanceObject().setAttendanceTime(" ");
                     so.getAttendanceObject().setFogotApplytTime(" ");
                 }else{
                     new ManualRequestAttendanceAsyncTask( so, ManualRequestAttendanceAsyncTask.CANCEL ).execute();
+                    so.getAttendanceObject().setManualRequestAttendance( AttendanceObject.MANUAL_NOT );
                     so.getAttendanceObject().setAttendanceTime(null);
                     so.getAttendanceObject().setFogotApplytTime(null);
                 }
@@ -196,7 +201,7 @@ public class AttendanceChangeStatusAdapter extends ArrayAdapter<AttendanceChange
      * ACK応答が一度でもあった場合、
      * 「ソ忘れ」を表示しない
      * @param   ViewHolder      holder  ビューホルダー
-     * @param   AttendanceChangeStatus      acs  一括変更対象
+     * @param   AttendanceChangeStatus      acs  一括変更対象学生
      * @author Ito Shota
      * @since  2016/12/21
      **/
