@@ -97,8 +97,14 @@ public class AttendanceChangeStatusAdapter extends ArrayAdapter<AttendanceChange
      * @since  2016/08/07
      **/
     void setTag(ViewHolder holder, AttendanceChangeStatus acs) {
+        //  無反応
         holder.mNoResponseTv.setTag( acs );
-        holder.mForgotTv.setTag( acs );
+        //  ソ忘れ
+        boolean firstACKFalg = acs.getAttendanceObject().getReturndedResponse();
+        if( !firstACKFalg ){
+            //  一度もACKを返していない
+            holder.mForgotTv.setTag( acs );
+        }
     }
 
     /**
