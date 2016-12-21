@@ -36,10 +36,10 @@ public class TransmitStateObject implements Serializable {
     public String attendanceTranmitEndTime;
 
     @SerializedName("attendance_result_bulk_change_end_date_time")
-    public String mAttendanceBulkChangeEndDateTime = null;
+    public String mAttendanceBulkChangeEndDateTime;
 
     @SerializedName("re_attendance_bulk_change_show")
-    public int mReAttendanceBulkChangeShow = 0;
+    public int mReAttendanceBulkChangeShow;
 
     @SerializedName("bmp_transmit_id")
     public String bmpTransmitId;
