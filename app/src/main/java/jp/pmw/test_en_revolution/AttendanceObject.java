@@ -268,4 +268,37 @@ public class AttendanceObject {
         }
         return response;
     }
+    /**
+     * Created by si on 2016/12/21.
+     * toStateManualAttendanceメソッド
+     * ローカル上で手動出席認定状態にする.
+     * **/
+    public void toStateManualAttendance(){
+        setManualRequestAttendance( AttendanceObject.MANUAL_ATTENDANCE );
+        setAttendanceTime(" ");
+        setFogotApplytTime(null);
+    }
+    /**
+     * Created by si on 2016/12/21.
+     * toStateManualAttendanceメソッド
+     * ローカル上で手動出席認定状態にする.
+     * **/
+    public void toStateForgotManualAttendance(){
+        setManualRequestAttendance( AttendanceObject.MANUAL_ATTENDANCE );
+        setAttendanceTime(" ");
+        setFogotApplytTime(" ");
+    }
+    /**
+     * Created by si on 2016/12/21.
+     * toStateManualAbsentメソッド
+     * ローカル上で手動欠席状態にする.
+     * **/
+    public void toStateManualAbsent(){
+        setManualRequestAttendance( AttendanceObject.MANUAL_NOT );
+        setAttendanceTime(null);
+        setFogotApplytTime(null);
+    }
+
+
+
 }

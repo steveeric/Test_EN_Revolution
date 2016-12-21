@@ -43,25 +43,18 @@ public class AttendanceChangeStatusAdapter extends ArrayAdapter<AttendanceChange
                     == so.getAttendanceObject().getAttendanceId() ){
                 if( acs.mTapNoResponseStatus == true && acs.mTapForgotStatus == false ){
                     new ManualRequestAttendanceAsyncTask( so, ManualRequestAttendanceAsyncTask.NO_RESPONSE ).execute();
-                    so.getAttendanceObject().setManualRequestAttendance( AttendanceObject.MANUAL_ATTENDANCE );
-                    so.getAttendanceObject().setAttendanceTime(" ");
-                    so.getAttendanceObject().setFogotApplytTime(null);
+                    so.getAttendanceObject().toStateManualAttendance();
                 }else if ( acs.mTapNoResponseStatus == false && acs.mTapForgotStatus == true ){
                     new ManualRequestAttendanceAsyncTask( so, ManualRequestAttendanceAsyncTask.FORGOT ).execute();
-                    so.getAttendanceObject().setManualRequestAttendance( AttendanceObject.MANUAL_ATTENDANCE );
-                    so.getAttendanceObject().setAttendanceTime(" ");
-                    so.getAttendanceObject().setFogotApplytTime(" ");
+                    so.getAttendanceObject().toStateForgotManualAttendance();
                 }else{
                     new ManualRequestAttendanceAsyncTask( so, ManualRequestAttendanceAsyncTask.CANCEL ).execute();
-                    so.getAttendanceObject().setManualRequestAttendance( AttendanceObject.MANUAL_NOT );
-                    so.getAttendanceObject().setAttendanceTime(null);
-                    so.getAttendanceObject().setFogotApplytTime(null);
+                    so.getAttendanceObject().toStateManualAbsent();
                 }
                 this.notifyDataSetChanged();
             }
         }
     }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
@@ -108,20 +101,6 @@ public class AttendanceChangeStatusAdapter extends ArrayAdapter<AttendanceChange
         //  ソ忘れ
         holder.mForgotTv.setTag( acs );
     }
-
-    /**
-     * setItemColorメソッド
-     * 学生情報の文字列に色をセットする.(「はい」は青色,「いいえ」は赤色)
-     * クリッカー回答結果の円グラフに合わせております.
-     * @param   ViewHolder      holder  ビューホルダー
-     * @author Ito Shota
-     * @since  2016/08/10
-     **/
-    /*void setItemColor(ViewHolder holder){
-        holder.mStudentIdNumberTv.setTextColor(Color.parseColor(mColor));
-        holder.mFuriganaTv.setTextColor(Color.parseColor(mColor));
-        holder.mFullNameTv.setTextColor(Color.parseColor(mColor));
-    }*/
     /**
      * setTapColorメソッド
      * タップされた箇所はオレンジにする
