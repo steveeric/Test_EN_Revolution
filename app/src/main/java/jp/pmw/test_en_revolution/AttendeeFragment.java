@@ -265,8 +265,6 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
             setAttendanceStatusLayout();
             //  コンテンツ画面表示
             switchContentScreen();
-            //  出席認定一括変更ダイアログを表示
-            showAttendanceChangeStatusDialogFrament();
         } else{
 
             if(this.reGetStudentFlag){
@@ -704,18 +702,22 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
      * 出席認定一括変更ダイアログを表示する.
      */
     void showAttendanceChangeStatusDialogFrament(){
-        if( getMainActivity().getClassObject().getTransmitStateObject().mAttendanceBulkChangeEndDateTime == null ){
-            if( mAttendanceChangeStatusDialogFragment == null ){
-                mAttendanceChangeStatusDialogFragment = AttendanceChangeStatusDialogFragment.newInstance();
-            }
-            if( getMainActivity().getClassObject().getTransmitStateObject().mAttendanceBulkChangeEndDateTime == null ){
-                mAttendanceChangeStatusDialogFragment.mAttendeeFragment = this;
-                mAttendanceChangeStatusDialogFragment.mHandler = this.mHandler;
-                Bundle bundle = new Bundle();
-                String sameClassNumber = getMainActivity().getClassObject().getSameClassNumber();
-                bundle.putString(AttendanceChangeStatusDialogFragment.SAME_CLASS_NUMBER, sameClassNumber);
-                mAttendanceChangeStatusDialogFragment.setArguments(bundle);
-                mAttendanceChangeStatusDialogFragment.show(getActivity().getSupportFragmentManager(), AttendanceChangeStatusDialogFragment.ATTENDANCE_CHANGE_STATUS_DIALOG_FRAGMENT);
+        if( getMainActivity().getClassObject().getTransmitStateObject() != null ){
+            if( getMainActivity().getClassObject().getTransmitStateObject().getAttendanceTranmitEndTime() != null ){
+                if( getMainActivity().getClassObject().getTransmitStateObject().mAttendanceBulkChangeEndDateTime == null ){
+                    if( mAttendanceChangeStatusDialogFragment == null ){
+                        mAttendanceChangeStatusDialogFragment = AttendanceChangeStatusDialogFragment.newInstance();
+                    }
+                    if( getMainActivity().getClassObject().getTransmitStateObject().mAttendanceBulkChangeEndDateTime == null ){
+                        mAttendanceChangeStatusDialogFragment.mAttendeeFragment = this;
+                        mAttendanceChangeStatusDialogFragment.mHandler = this.mHandler;
+                        Bundle bundle = new Bundle();
+                        String sameClassNumber = getMainActivity().getClassObject().getSameClassNumber();
+                        bundle.putString(AttendanceChangeStatusDialogFragment.SAME_CLASS_NUMBER, sameClassNumber);
+                        mAttendanceChangeStatusDialogFragment.setArguments(bundle);
+                        mAttendanceChangeStatusDialogFragment.show(getActivity().getSupportFragmentManager(), AttendanceChangeStatusDialogFragment.ATTENDANCE_CHANGE_STATUS_DIALOG_FRAGMENT);
+                    }
+                }
             }
         }
     }

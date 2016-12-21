@@ -31,7 +31,9 @@ public class AttendeeFragmentTimeTask extends TimerTask {
         chkReDrawAttendeeFragment();
         //  出席関係の情報を取得する.
         chkAttendanceRelationshipInfo();
-        //
+        //  出席認定一括変更ダイアログを表示(状況に応じて表示されます)
+        attendeeFragment.showAttendanceChangeStatusDialogFrament();
+        //  在室確認NACK一括変更ダイアログを表示(状況に応じて表示されます)
         attendeeFragment.showReAttendanceChangeStatusDialogFrament();
     }
 
