@@ -73,6 +73,7 @@ public class AttendanceChangeStatusAdapter extends ArrayAdapter<AttendanceChange
         setTag( holder, acs );
         setTapColor( holder, acs );
         setBtnLayout( holder, acs );
+        setDoNotShowForgotLayout( holder, acs );
         return view;
     }
     /**
@@ -100,11 +101,7 @@ public class AttendanceChangeStatusAdapter extends ArrayAdapter<AttendanceChange
         //  無反応
         holder.mNoResponseTv.setTag( acs );
         //  ソ忘れ
-        boolean firstACKFalg = acs.getAttendanceObject().getReturndedResponse();
-        if( !firstACKFalg ){
-            //  一度もACKを返していない
-            holder.mForgotTv.setTag( acs );
-        }
+        holder.mForgotTv.setTag( acs );
     }
 
     /**
@@ -194,6 +191,24 @@ public class AttendanceChangeStatusAdapter extends ArrayAdapter<AttendanceChange
             changeAttendanceStatus( acs );
         }
     }
+    /**
+     * setDoNotShowForgotLayoutメソッド
+     * ACK応答が一度でもあった場合、
+     * 「ソ忘れ」を表示しない
+     * @param   ViewHolder      holder  ビューホルダー
+     * @param   AttendanceChangeStatus      acs  一括変更対象
+     * @author Ito Shota
+     * @since  2016/12/21
+     **/
+    void setDoNotShowForgotLayout(ViewHolder holder, AttendanceChangeStatus acs ){
+        boolean ackResponse = acs.getAttendanceObject().getReturndedResponse();
+        if( ackResponse ){
+            holder.mForgotTv.setVisibility(View.INVISIBLE);
+        }else{
+            holder.mForgotTv.setVisibility(View.VISIBLE);
+        }
+    }
+
     /**
      *  ViewHolderクラス
      * */
