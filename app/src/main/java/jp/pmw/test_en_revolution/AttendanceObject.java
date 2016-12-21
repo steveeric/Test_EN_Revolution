@@ -248,7 +248,7 @@ public class AttendanceObject {
             } else if(stateAttendance == AttendanceObject.STATE_LATE){
                 resorce = context.getResources().getColor(R.color.tuyukusairo);
             } else if( stateAttendance == AttendanceObject.STATE_LEAVE ){
-                resorce = context.getResources().getColor(R.color.pink);
+                resorce = context.getResources().getColor(R.color.leave_color);
             }
         }
         return resorce;

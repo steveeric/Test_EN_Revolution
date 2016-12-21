@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:gravity="center"
-                android:textColor="@color/pink"
+                android:textColor="@color/leave_color"
                 android:textSize="@dimen/textsize_xlarge"
                 android:id="@+id/leav_eary_total_status_textView"/>
         </LinearLayout>

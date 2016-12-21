@@ -20,6 +20,8 @@
     <color name="red">#FF0000</color>
     <!-- 半透明赤 -->
     <color name="semitransparenttranslucent_red">#55FF0000</color>
+    <!-- 早退色 -->
+    <color name="leave_color">#ff8484</color>
     <!-- えんじ色 -->
     <color name="darkRed">#B3424A</color>
     <!-- 半透明赤 -->
