@@ -707,8 +707,6 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
                 if( getMainActivity().getClassObject().getTransmitStateObject().mAttendanceBulkChangeEndDateTime == null ){
                     if( mAttendanceChangeStatusDialogFragment == null ){
                         mAttendanceChangeStatusDialogFragment = AttendanceChangeStatusDialogFragment.newInstance();
-                    }
-                    if( getMainActivity().getClassObject().getTransmitStateObject().mAttendanceBulkChangeEndDateTime == null ){
                         mAttendanceChangeStatusDialogFragment.mAttendeeFragment = this;
                         mAttendanceChangeStatusDialogFragment.mHandler = this.mHandler;
                         Bundle bundle = new Bundle();
