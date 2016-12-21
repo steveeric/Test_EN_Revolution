@@ -290,7 +290,7 @@
                 android:layout_height="wrap_content"
                 android:text="メッセージ取得中..."
                 android:layout_margin="@dimen/activity_horizontal_xsmall_margin"
-                android:textSize="@dimen/textsize_xlarge"
+                android:textSize="@dimen/textsize_large"
                 />
         </LinearLayout>
         <!-- 再調査出席を実行中です,.. -->
