@@ -47,8 +47,8 @@
                     <ImageView
                         android:src="@drawable/img_sonoda_professor"
                         android:id="@+id/dialog_custom_face_image_iv"
-                        android:layout_width="120dp"
-                        android:layout_height="150dp"
+                        android:layout_width="160dp"
+                        android:layout_height="200dp"
                         android:layout_gravity="center"/>
                 </LinearLayout>
 
