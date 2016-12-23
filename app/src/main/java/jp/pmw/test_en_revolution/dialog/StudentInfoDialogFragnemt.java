@@ -946,7 +946,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        setAttTime(response);
+                        //setAttTime(response);
                     }
                 }, new Response.ErrorListener() {
             @Override public void onErrorResponse(VolleyError error) {

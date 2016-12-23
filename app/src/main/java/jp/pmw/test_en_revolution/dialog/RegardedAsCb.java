@@ -75,6 +75,7 @@ public class RegardedAsCb {
         mStudentInfoDialogFragnemt.mRegarededAsReasonRg = null;
         mStudentInfoDialogFragnemt.mRegaredeAsReasonLl = mStudentInfoDialogFragnemt.getLinearLayout(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_reason_ll);
         mStudentInfoDialogFragnemt.mRegarededAsReasonRg = (RadioGroup) mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_rg);
+        mStudentInfoDialogFragnemt.mRegarededAsReasonRg.clearCheck();
         mStudentInfoDialogFragnemt.mRegarededAsReasonRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if( checkedId == -1 ){
