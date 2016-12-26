@@ -175,7 +175,6 @@
                 android:text="着席位置取得中..."
                 />
         </LinearLayout>
-
     <!- 出席状況レイアウト -->
         <LinearLayout
             android:visibility="gone"

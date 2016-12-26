@@ -112,7 +112,7 @@ public class RegardedAsCb {
 
         mStudentInfoDialogFragnemt.mRegaredeAsApplyBtn = mStudentInfoDialogFragnemt.getButton(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_apply_btn);
         mStudentInfoDialogFragnemt.mRegaredeAsUndoBtn = mStudentInfoDialogFragnemt.getButton(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_return_undo_btn);
-   }
+    }
     /**
      *  setReasonLayoutメソッド
      * */
@@ -537,8 +537,8 @@ public class RegardedAsCb {
                 this.mStudentInfoDialogFragnemt.mRegaredeAsReasonLl.setVisibility(View.VISIBLE);
             }
         }
-     }
-     /**
+    }
+    /**
      *  getStateAttendanceメソッド
      *  @return int 出席状態(int)
      * */

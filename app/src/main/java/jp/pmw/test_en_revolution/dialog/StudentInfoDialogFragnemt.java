@@ -178,7 +178,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
 
     //  ラジオボタン
     public RadioButton getRadioButton(int resorce){
-       return (RadioButton) dialog.findViewById(resorce);
+        return (RadioButton) dialog.findViewById(resorce);
     }
 
     //  ボタン
@@ -191,7 +191,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
     }
 
 
-            //  テキストビュー取得
+    //  テキストビュー取得
     public TextView getTextView(Dialog d, int resorce) {
         return (TextView) d.findViewById(resorce);
     }
@@ -435,7 +435,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
      * 過去(一つ前の授業まで)の出欠回数を表示します.
      */
     private void showPastAttendanceCount(){
-         //  出・遅・欠 表示ローディング
+        //  出・遅・欠 表示ローディング
         LinearLayout loadingLl = getLinearLayout(dialog, R.id.total_attendance_situation_loding_display_ll);
         //  出・遅・欠 表示レイアウト
         LinearLayout ll = getLinearLayout(dialog, R.id.total_attendance_situation_linearLayout);
@@ -449,7 +449,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         tv.setText( total );
 
     }
-     /**
+    /**
      * requestToWebApiメソッド
      * WEBAPIにアクセスします.
      * @param String url URL
@@ -1159,7 +1159,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         String reAttendanceTime = tapStudent.getAttendanceObject().getReAttendancetime();
         if( reTransmitEndTime != null && reAttendanceTarget != null){
             if( reAttendanceManual > AttendanceObject.MANUAL_NOT
-                || reAttendanceTime == null){
+                    || reAttendanceTime == null){
                 LinearLayout beInRoomLayout = (LinearLayout) dialog.findViewById(R.id.dialog_custom_be_in_room_apply_ll);
                 beInRoomLayout.setVisibility(View.VISIBLE);
                 RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.dialog_custom_be_in_room_apply_rg);
