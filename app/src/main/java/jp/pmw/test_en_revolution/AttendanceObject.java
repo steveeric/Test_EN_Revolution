@@ -298,7 +298,4 @@ public class AttendanceObject {
         setAttendanceTime(null);
         setFogotApplytTime(null);
     }
-
-
-
 }
