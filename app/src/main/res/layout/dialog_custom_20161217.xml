@@ -120,62 +120,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- 本日のグループゾーンレイアウト -->
-        <!--<LinearLayout
-            android:visibility="gone"
-            android:id="@+id/today_group_info_linearLayout"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
-            <TextView
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="　グループ番号"
-                android:background="@color/whiteSmoke"
-                android:textSize="@dimen/textsize_xlarge"
-                />
-            <TextView
-                android:id="@+id/today_group_info_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_xsmall_margin"
-                android:textSize="@dimen/textsize_xlarge"
-                android:gravity="center"
-                android:text="グループ番号取得中..."
-                />
-        </LinearLayout>-->
-
-        <!-- 本日の着席位置ゾーンレイアウト -->
-        <!--<LinearLayout
-            android:visibility="gone"
-            android:id="@+id/today_seat_positon_linearLayout"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_xxxxsmall_margin">
-            <TextView
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="　着席位置"
-                android:background="@color/whiteSmoke"
-                android:textSize="@dimen/textsize_xlarge"
-                />
-            <TextView
-                android:id="@+id/today_seat_positon_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_xsmall_margin"
-                android:textSize="@dimen/textsize_xlarge"
-                android:gravity="center"
-                android:text="着席位置取得中..."
-                />
-        </LinearLayout>
-    <!- 出席状況レイアウト -->
+        <!-- 出席状況レイアウト -->
         <LinearLayout
             android:visibility="gone"
             android:id="@+id/total_attendance_situation_linearLayout"
@@ -208,6 +153,7 @@
                 android:id="@+id/total_attendance_situation_count_display_ll"
                 android:visibility="gone"
                 android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/activity_horizontal_xsmall_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <!-- 出席回数 -->
@@ -258,10 +204,10 @@
             <!-- 出欠の総内訳 -->
             <TextView
                 android:id="@+id/total_attendance_total_breakdown_tv"
+                android:layout_marginLeft="23dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="○○○○○　×○／／×　○"
-                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:text=""
                 android:textSize="@dimen/textsize_large"
                 />
         </LinearLayout>
@@ -287,8 +233,8 @@
                 android:id="@+id/simple_message_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="23dp"
                 android:text="メッセージ取得中..."
-                android:layout_margin="@dimen/activity_horizontal_xsmall_margin"
                 android:textSize="@dimen/textsize_large"
                 />
         </LinearLayout>
@@ -344,6 +290,7 @@
                         android:layout_height="wrap_content">
                         <CheckBox
                             android:id="@+id/dialog_custom_regarded_as_attendance_cb"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -387,6 +334,7 @@
                     <!-- 理由ラジオボタングループ -->
                     <RadioGroup
                         android:id="@+id/dialog_custom_regarded_as_reason_rg"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
@@ -522,6 +470,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
                 android:id="@+id/dialog_custom_be_in_room_apply_rg">
                 <RadioButton
                     android:layout_width="0dp"
