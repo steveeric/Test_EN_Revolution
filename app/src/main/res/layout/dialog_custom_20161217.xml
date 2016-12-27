@@ -317,7 +317,6 @@
         <LinearLayout
             android:id="@+id/dialog_custom_regarded_as_checkbox_ll"
             android:orientation="vertical"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_xxxxsmall_margin"
@@ -390,6 +389,75 @@
                         android:id="@+id/dialog_custom_regarded_as_reason_rg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:text="SonoRIsにより出席認定した"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dialog_custom_regarded_as_reason_attendance_ack_rb"/>
+                        <RadioButton
+                            android:text="SonoRIsから応答がなかった"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dialog_custom_regarded_as_reason_attendance_nack_rb"/>
+                        <RadioButton
+                            android:text="SonoRIs不携帯を確認した"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dialog_custom_regarded_as_reason_attendance_forgot_rb"/>
+                        <RadioButton
+                            android:text="その他の理由による"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dialog_custom_regarded_as_reason_attendance_other_rb"/>
+
+                        <RadioButton
+                            android:text="SonoRIsから応答がなかった"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dialog_custom_regarded_as_reason_late_nack_rb"/>
+                        <RadioButton
+                            android:text="SonoRIs不携帯を確認した"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dialog_custom_regarded_as_reason_late_forgot_rb"/>
+                        <RadioButton
+                            android:text="その他の理由による"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dialog_custom_regarded_as_reason_late_other_rb"/>
+
+                        <RadioButton
+                            android:text="私的理由　　　　　"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dialog_custom_regarded_as_reason_absent_private_rb"/>
+                        <RadioButton
+                            android:text="公欠　　　　　　　　　"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dialog_custom_regarded_as_reason_absent_public_rb"/>
+                        <RadioButton
+                            android:text="忌引き　　　　　　　　"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dialog_custom_regarded_as_reason_absent_bereavement_rb"/>
+
+                        <RadioButton
+                            android:text="その１"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dialog_custom_regarded_as_reason_leave_othr1_rb"/>
+                        <RadioButton
+                            android:text="その２"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dialog_custom_regarded_as_reason_leave_othr2_rb"/>
+                        <RadioButton
+                            android:text="その３"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dialog_custom_regarded_as_reason_leave_othr3_rb"/>
                     </RadioGroup>
                     <!-- 理由未選択の場合に表示するアラートテキストビュー -->
                     <TextView

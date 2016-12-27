@@ -2,24 +2,16 @@ package jp.pmw.test_en_revolution.dialog;
 import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import jp.pmw.test_en_revolution.AttendanceObject;
 import jp.pmw.test_en_revolution.ManulReason;
 import jp.pmw.test_en_revolution.R;
+import jp.pmw.test_en_revolution.StudentObject;
 import jp.pmw.test_en_revolution.config.URL;
-import jp.pmw.test_en_revolution.confirm_class_plan.Attendance;
 import jp.pmw.test_en_revolution.network.MyOkhttp;
-
-import static java.lang.Math.abs;
-import static jp.pmw.test_en_revolution.ManulReason.ACCEPTED_ATTENDANCE_ACK_AVAILABLE;
-import static jp.pmw.test_en_revolution.ManulReason.ACCEPTED_ATTENDANCE_NACK_AVAILABLE;
 
 /**
  * Created by si on 2016/06/18.
@@ -42,76 +34,136 @@ public class RegardedAsCb {
     //  早退チェックボックス状態
     boolean mLeaveCbState = false;
     //
-    List<ManulReason> mSelectable = new ArrayList<ManulReason>();
-    //
-    private int mBrowsReasonStartNumber;
-    //
-    private boolean mBrowReasonFirst = false;
-    //
     private ManulReason mDefaulManulReason;
-
+    //
+    private ManulReason mNowTapManulReason;
+    //
+    private RegardedAsReasonRadioButtonControl mReasonContol;
 
     //  コンストラクタ
     RegardedAsCb(StudentInfoDialogFragnemt sidf){
         this.mStudentInfoDialogFragnemt = sidf;
-        onCreate();
+        StudentObject so = this.mStudentInfoDialogFragnemt.tapStudent;
+        ManulReason[] mrs = this.mStudentInfoDialogFragnemt.af.mManulReasons;
+        this.mReasonContol = new RegardedAsReasonRadioButtonControl( so, mrs );
+        initLayout();
         setOnClickListener();
         initCheckBoxState();
+        this.mReasonContol.initRadioButton(); //(必ずinitLayout後に行うこと)
+        this.mDefaulManulReason = this.mReasonContol.getDefaultCheked();
+        setReasonLayout( mDefaulManulReason );
+        show();
     }
     /**
-     *  onCreateメソッド
+     *  initLayoutメソッド
+     *  レイアウトの初期化を行う
      * */
-    void onCreate(){
-        //  おおもとレイアウト
-        mStudentInfoDialogFragnemt.mRegaredeAsCbLl = mStudentInfoDialogFragnemt.getLinearLayout(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_checkbox_ll);
-        //  選択レイアウト
-        mStudentInfoDialogFragnemt.mRegaredeSelectLl = mStudentInfoDialogFragnemt.getLinearLayout(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_child1_ll);
+    void initLayout(){
+        mStudentInfoDialogFragnemt.mRegaredeAsReasonLl = mStudentInfoDialogFragnemt.getLinearLayout(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_reason_ll);
+        //  出・遅・欠・早のチェックボックス
         mStudentInfoDialogFragnemt.mRegaredeAsAttendanceCb = mStudentInfoDialogFragnemt.getCheckBox(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_attendance_cb);
         mStudentInfoDialogFragnemt.mRegaredeAsLateCb = mStudentInfoDialogFragnemt.getCheckBox(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_late_cb);
         mStudentInfoDialogFragnemt.mRegaredeAsAbsentCb = mStudentInfoDialogFragnemt.getCheckBox(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_absent_cb);
         mStudentInfoDialogFragnemt.mRegaredeAsLeaveCb = mStudentInfoDialogFragnemt.getCheckBox(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_leave_cb);
-        //mStudentInfoDialogFragnemt.mRegaredeAsForgotCb = mStudentInfoDialogFragnemt.getCheckBox(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_forgot_cb);
-        //  理由レイアウト
-        mStudentInfoDialogFragnemt.mRegarededAsReasonRg = null;
-        mStudentInfoDialogFragnemt.mRegaredeAsReasonLl = mStudentInfoDialogFragnemt.getLinearLayout(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_reason_ll);
+        //  理由ラジオグループ
         mStudentInfoDialogFragnemt.mRegarededAsReasonRg = (RadioGroup) mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_rg);
         mStudentInfoDialogFragnemt.mRegarededAsReasonRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if( checkedId == -1 ){
-                    mBrowReasonFirst = true;
-                    if(mDefaulManulReason == null){
-                        mBrowsReasonStartNumber = 0;
-                        mStudentInfoDialogFragnemt.mRegaredeAsApplyBtn.setVisibility(View.INVISIBLE);
-                        mStudentInfoDialogFragnemt.mRegaredeAsUndoBtn.setVisibility(View.INVISIBLE);
-                    }else{
-                        mStudentInfoDialogFragnemt.mRegaredeAsApplyBtn.setVisibility(View.INVISIBLE);
-                        mStudentInfoDialogFragnemt.mRegaredeAsUndoBtn.setVisibility(View.VISIBLE);
-                    }
-                }else{
-                    mBrowsReasonStartNumber = checkedId;
-                    if( mBrowReasonFirst ){
-                        mBrowReasonFirst = false;
-                        if( mDefaulManulReason == null ){
-                            mDefaulManulReason = getNowSelectedManulReason();
-                        }
-                        ManulReason mr = getNowSelectedManulReason();
-                        setReasonLayout( mr );
-                    }else{
-                        ManulReason mr = getNowSelectedManulReason();
+                if( checkedId != -1 ){
+                    RadioButton rb = (RadioButton)mStudentInfoDialogFragnemt.dialog.findViewById(checkedId);
+                    // 選択されている理由IDと同じか
+                    ManulReason mr = mReasonContol.getManualReasonSameResorceId( rb );
+                    if( mr != null ){
+                        mNowTapManulReason = mr;
                         setReasonLayout( mr );
                     }
                 }
             }
         });
-        //  理由項目のSonoRIs忘れ
-        mStudentInfoDialogFragnemt.mReasonForgotRb = (RadioButton) mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_forgot_rb);
-
-        //mStudentInfoDialogFragnemt.mRegaredeAsAssistTv = mStudentInfoDialogFragnemt.getTextView(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_assist_tv);
-        //  理由未選択
-        mStudentInfoDialogFragnemt.mAlertUnselectedReasonTv = mStudentInfoDialogFragnemt.getTextView(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_reason_alert_unselected_tv);
-
+        //  出席関係の理由ラジオボタン
+        initLayoutAttendanceReasonRb();
+        //  遅刻関係の理由ラジオボタン
+        initLayoutLateReasonRb();
+        //  理由ラジオボタン(欠席)
+        initLayoutAbsentReasonRb();
+        //  理由ラジオボタン(早退)
+        initLayoutLeaveReasonRb();
+        //  変更適用ボタン
         mStudentInfoDialogFragnemt.mRegaredeAsApplyBtn = mStudentInfoDialogFragnemt.getButton(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_apply_btn);
+        //  キャンセルボタン
         mStudentInfoDialogFragnemt.mRegaredeAsUndoBtn = mStudentInfoDialogFragnemt.getButton(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_return_undo_btn);
+    }
+    /**
+     *  initLayoutAttendanceReasonRbメソッド
+     *  出席関係の理由ラジオボタン
+     * */
+    void initLayoutAttendanceReasonRb(){
+        //  理由ラジオボタン(出席)
+        mReasonContol.mAttendanceACKRb = (RadioButton)this.mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_attendance_ack_rb);
+        mReasonContol.mAttendanceNACKRb = (RadioButton)this.mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_attendance_nack_rb);
+        mReasonContol.mAttendanceForgotRb = (RadioButton)this.mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_attendance_forgot_rb);
+        mReasonContol.mAttendanceOtherRb = (RadioButton)this.mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_attendance_other_rb);
+        initSetReasonRadioButtonList( RegardedAsReasonRadioButton.AT00, mReasonContol.mAttendanceACKRb );
+        initSetReasonRadioButtonList( RegardedAsReasonRadioButton.AT01, mReasonContol.mAttendanceNACKRb );
+        initSetReasonRadioButtonList( RegardedAsReasonRadioButton.AT02, mReasonContol.mAttendanceForgotRb );
+        initSetReasonRadioButtonList( RegardedAsReasonRadioButton.AT03, mReasonContol.mAttendanceOtherRb );
+    }
+    /**
+     *  initLayoutLateReasonRbメソッド
+     *  遅刻関係の理由ラジオボタン
+     * */
+    void initLayoutLateReasonRb(){
+        //  理由ラジオボタン(遅刻)
+        mReasonContol.mLateNACKRb = (RadioButton)this.mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_late_nack_rb);
+        mReasonContol.mLateForgotRb = (RadioButton)this.mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_late_forgot_rb);
+        mReasonContol.mLateOtherRb = (RadioButton)this.mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_late_other_rb);
+        initSetReasonRadioButtonList( RegardedAsReasonRadioButton.LA01,mReasonContol.mLateNACKRb );
+        initSetReasonRadioButtonList( RegardedAsReasonRadioButton.LA02,mReasonContol.mLateForgotRb );
+        initSetReasonRadioButtonList( RegardedAsReasonRadioButton.LA03,mReasonContol.mLateOtherRb );
+    }
+    /**
+     *  initLayoutAbsentReasonRbメソッド
+     *  欠席関係の理由ラジオボタン
+     * */
+    void initLayoutAbsentReasonRb(){
+        mReasonContol.mAbsentPrivateRb = (RadioButton)this.mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_absent_private_rb);
+        mReasonContol.mAbsentPublicRb = (RadioButton)this.mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_absent_public_rb);
+        mReasonContol.mAbsentBelevementRb = (RadioButton)this.mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_absent_bereavement_rb);
+        initSetReasonRadioButtonList( RegardedAsReasonRadioButton.AB01,mReasonContol.mAbsentPrivateRb );
+        initSetReasonRadioButtonList( RegardedAsReasonRadioButton.AB02,mReasonContol.mAbsentPublicRb );
+        initSetReasonRadioButtonList( RegardedAsReasonRadioButton.AB03,mReasonContol.mAbsentBelevementRb );
+    }
+    /**
+     *  initLayoutLeaveReasonRbメソッド
+     *  早退関係の理由ラジオボタン
+     * */
+    void initLayoutLeaveReasonRb(){
+        mReasonContol.mLeaveOther1Rb = (RadioButton)this.mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_leave_othr1_rb);
+        mReasonContol.mLeaveOther2Rb = (RadioButton)this.mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_leave_othr2_rb);
+        mReasonContol.mLeaveOther3Rb = (RadioButton)this.mStudentInfoDialogFragnemt.dialog.findViewById(R.id.dialog_custom_regarded_as_reason_leave_othr3_rb);
+        initSetReasonRadioButtonList( RegardedAsReasonRadioButton.LE01,mReasonContol.mLeaveOther1Rb );
+        initSetReasonRadioButtonList( RegardedAsReasonRadioButton.LE02,mReasonContol.mLeaveOther2Rb );
+        initSetReasonRadioButtonList( RegardedAsReasonRadioButton.LE03,mReasonContol.mLeaveOther3Rb );
+    }
+    /**
+     *  initSetReasonRadioButtonListメソッド
+     *  理由ラジオボタン配列に格納する.
+     *  一斉に非表示にするときに使用
+     * */
+    void initSetReasonRadioButtonList(String reasonId, RadioButton rb){
+        mReasonContol.mReasonRbList.add( new RegardedAsReasonRadioButton( reasonId, rb ) );
+    }
+    /**
+     *  setOnClickListenerメソッド
+     *  リスナーをセットする
+     * */
+    void setOnClickListener() {
+        mStudentInfoDialogFragnemt.mRegaredeAsAttendanceCb.setOnClickListener(AttendanceCheckBoxClickListener);
+        mStudentInfoDialogFragnemt.mRegaredeAsLateCb.setOnClickListener(LateCheckBoxClickListener);
+        mStudentInfoDialogFragnemt.mRegaredeAsAbsentCb.setOnClickListener(AbsentCheckBoxClickListener);
+        mStudentInfoDialogFragnemt.mRegaredeAsLeaveCb.setOnClickListener(LeaveCheckBoxClickListener);
+        mStudentInfoDialogFragnemt.mRegaredeAsApplyBtn.setOnClickListener(ApplyBtnClickListener);
+        mStudentInfoDialogFragnemt.mRegaredeAsUndoBtn.setOnClickListener(UndoBtnClickListener);
     }
     /**
      *  setReasonLayoutメソッド
@@ -126,95 +178,44 @@ public class RegardedAsCb {
         }
     }
     /**
-     *  setOnClickListenerメソッド
-     * */
-    void setOnClickListener() {
-        mStudentInfoDialogFragnemt.mRegaredeAsAttendanceCb.setOnClickListener(AttendanceCheckBoxClickListener);
-        mStudentInfoDialogFragnemt.mRegaredeAsLateCb.setOnClickListener(LateCheckBoxClickListener);
-        mStudentInfoDialogFragnemt.mRegaredeAsAbsentCb.setOnClickListener(AbsentCheckBoxClickListener);
-        mStudentInfoDialogFragnemt.mRegaredeAsLeaveCb.setOnClickListener(LeaveCheckBoxClickListener);
-        mStudentInfoDialogFragnemt.mRegaredeAsApplyBtn.setOnClickListener(ApplyBtnClickListener);
-        mStudentInfoDialogFragnemt.mRegaredeAsUndoBtn.setOnClickListener(UndoBtnClickListener);
-    }
-    /**
      * initCheckBoxStateメソッド
      * 初期状態にチェックボックスをセットする.
      * */
     void initCheckBoxState(){
         undoCheckBoxState();
-        show();
+        setCheckBoxLayout();
     }
     /**
-     * setReasonStateメソッド
-     * 理由状態をラジオボタンにセットする.
+     * setReasonRadioGroupメソッド
+     * 理由ラジオグループをセットする.
      * */
-    void setReasonState(){
-        ManulReason[] manulReasons = getReason();
-        if( manulReasons == null ){
+    void setReasonRadioGroup() {
+        //  ラジオグループボタンの表示状態を全てGONEする
+        this.mReasonContol.initRadioGroupDisplayState();
+        int checkBoxSelectedState = getCheckBoxSelectedState();
+        if (checkBoxSelectedState == -1) {
             return;
         }
-        this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.removeAllViews();
-        this.mSelectable.clear();
-        for( int i = 0; i < manulReasons.length; i++ ){
-            int showAccordingToACK = manulReasons[i].mShowAccordingToACK;
-            String reason = manulReasons[i].mReason;
-            int mDoNotShowACKResponse = manulReasons[i].mDoNotShowACKResponse;
-            RadioButton radioBtn = null;
-            if( ACCEPTED_ATTENDANCE_ACK_AVAILABLE == showAccordingToACK ){
-                //  出席認定でACKを返しているか調べる
-                boolean chk = this.mStudentInfoDialogFragnemt.tapStudent.getAttendanceObject().getAttendanceByACK();
-                if(chk){
-                    radioBtn  = getReasonRadioButton( manulReasons[i], reason );
-                }
-            }else if( mDoNotShowACKResponse == AttendanceObject.MANUAL_ATTENDANCE ){
-                //  授業内に座席指定・出席認定・在室確認・プライバシー保護でACKが一度でもあったかを調べる.
-                if( !(this.mStudentInfoDialogFragnemt.tapStudent.getAttendanceObject().getReturndedResponse()) ){
-                    radioBtn  = getReasonRadioButton( manulReasons[i], reason );
-                }
-            }else if(ACCEPTED_ATTENDANCE_NACK_AVAILABLE == showAccordingToACK){
-                //  出席認定でACKを返しているか調べる
-                boolean chk = this.mStudentInfoDialogFragnemt.tapStudent.getAttendanceObject().getAttendanceByACK();
-                if(!chk){
-                    radioBtn  = getReasonRadioButton( manulReasons[i], reason );
-                }
-            }else{
-                radioBtn  = getReasonRadioButton( manulReasons[i], reason );
-            }
-
-            if( radioBtn != null ){
-                ++this.mStudentInfoDialogFragnemt.getMainActivity().mStudentDialogBrowsedReasonTotalCount;
-                setReasonRadioGroup( manulReasons[i], radioBtn );
-            }
-        }
-        this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.setVisibility(View.VISIBLE);
+        this.mReasonContol.setReasonRadioGroup(checkBoxSelectedState);
+        this.mReasonContol.setChecked();
     }
     /**
-     *  getReasonメソッド
-     *  選択可能な理由を返します.
+     * getCheckBoxSelectedStateメソッド
+     * チェックボックスで現在選択されている出遅欠早状態を取得する.
+     * @return 出遅欠早状態
      * */
-    ManulReason[] getReason(){
-        ManulReason[] manulReasons = null;
-        if( mAttendanceCbState ){
-            manulReasons = getManualReasons( AttendanceObject.STATE_ATTENDANCE );
-        }else if( mLateCbState ){
-            manulReasons = getManualReasons( AttendanceObject.STATE_LATE );
-        }else if( mAbsentCbState ){
-            manulReasons = getManualReasons( AttendanceObject.STATE_ABSENCE );
-        }else if( mLeaveCbState ){
-            manulReasons = getManualReasons( AttendanceObject.STATE_LEAVE );
+    int getCheckBoxSelectedState(){
+        int checkBoxSelectedState = -1;
+        if( mAttendanceCbState == true && mLateCbState == false && mAbsentCbState == false && mLeaveCbState == false ){
+            checkBoxSelectedState = AttendanceObject.STATE_ATTENDANCE;
+        }else if( mAttendanceCbState == false && mLateCbState == true && mAbsentCbState == false && mLeaveCbState == false ){
+            checkBoxSelectedState = AttendanceObject.STATE_LATE;
+        }else if( mAttendanceCbState == false && mLateCbState == false && mAbsentCbState == true && mLeaveCbState == false ){
+            checkBoxSelectedState = AttendanceObject.STATE_ABSENCE;
+        }else if( mAttendanceCbState == false && mLateCbState == false && mAbsentCbState == false && mLeaveCbState == true ){
+            checkBoxSelectedState = AttendanceObject.STATE_LEAVE;
         }
-        return manulReasons;
-    }
-    /**
-     *  setReasonRadioGroupメソッド
-     *  理由ラジオグループにラジオボタンをセットします.
-     * */
-    void setReasonRadioGroup( ManulReason mr, RadioButton radioBtn ){
-        this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.addView( radioBtn );
-        String selectedReasonId = this.mStudentInfoDialogFragnemt.tapStudent.mReasonId;
-        if( selectedReasonId.equals( mr.mReasonId )  ){
-            radioBtn.setChecked(true);
-        }
+        return checkBoxSelectedState;
     }
     /**
      *  showメソッド
@@ -228,9 +229,6 @@ public class RegardedAsCb {
             //  出席認定が終わっていない
             return;
         }
-        setCheckBoxLayout();
-        //  出席状態ステータス変更レイアウト表示
-        mStudentInfoDialogFragnemt.mRegaredeAsCbLl.setVisibility(View.VISIBLE);
     }
     /**
      *  setCheckBoxLayoutメソッド
@@ -369,7 +367,6 @@ public class RegardedAsCb {
         boolean newLateCbState = getLateCheckBoxCheckedChanged();
         boolean newAbsentCbState = getAbsentCheckBoxCheckedChanged();
         boolean newLeaveCbState = getLeaveCheckBoxCheckedChanged();
-        ManulReason[] manulReasons = null;
         if( newAttendanceCbState == false && newLateCbState == false && newAbsentCbState == false && newLeaveCbState == false ){
             newAttendanceCbState = this.mAttendanceCbState;
             newLateCbState = this.mLateCbState;
@@ -406,73 +403,7 @@ public class RegardedAsCb {
         this.mLateCbState = newLateCbState;
         this.mAbsentCbState = newAbsentCbState;
         this.mLeaveCbState = newLeaveCbState;
-        setReasonState();
         setChangeSelectedState();
-        setAssistMessage();
-    }
-
-    /**
-     *  getReasonRadioButtonメソッド
-     *  変更理由ラジオボタン
-     *  @return 変更理由ラジオボタン
-     * */
-    RadioButton getReasonRadioButton(ManulReason manulReason, String reason){
-        RadioButton radioBtn = new RadioButton( getMyContext() );
-        radioBtn.setText( reason );
-        radioBtn.setTag( manulReason.mReasonId );
-        radioBtn.setTextSize( 35.0f );
-        mSelectable.add( manulReason );
-        return radioBtn;
-    }
-    /**
-     *  getManualReasonsメソッド
-     *  該当の変更理由のみ取得する.
-     *  @return 変更理由群
-     * */
-    ManulReason[] getManualReasons(int state){
-        List<ManulReason> reasons = new ArrayList<ManulReason>();
-        ManulReason[] orijinalReasons = this.mStudentInfoDialogFragnemt.af.mManulReasons;
-        for( int i = 0; i < orijinalReasons.length; i++ ){
-            if(  state == Integer.valueOf( orijinalReasons[i].mState ) ){
-                reasons.add( orijinalReasons[i] );
-            }
-        }
-        return (ManulReason[])reasons.toArray(new ManulReason[0]);
-    }
-
-    /**
-     *  chkTheSameAsLastCheckBoxメソッド
-     *  @return {true}変更適用前と同じ {false}違う
-     * */
-    boolean chkTheSameAsLastCheckBox(){
-        boolean same = false;
-        int beforeState = getStateAttendance();
-        boolean newAttendanceCbState = this.mAttendanceCbState;
-        boolean newLateCbState = this.mLateCbState;
-        boolean newAbsentCbState = this.mAbsentCbState;
-        boolean newLeaveCBState = this.mLeaveCbState;
-        if( beforeState == AttendanceObject.STATE_ATTENDANCE){
-            if( newAttendanceCbState == true && newLateCbState == false && newAbsentCbState == false && newLeaveCBState == false ){
-                //  変更前出席
-                same = true;
-            }
-        }else if( beforeState == AttendanceObject.STATE_LATE){
-            if( newAttendanceCbState == false && newLateCbState == true && newAbsentCbState == false && newLeaveCBState == false ){
-                //   変更前遅刻
-                same = true;
-            }
-        }else if( beforeState == AttendanceObject.STATE_ABSENCE){
-            if( newAttendanceCbState == false && newLateCbState == false && newAbsentCbState == true && newLeaveCBState == false ){
-                //   変更前欠席
-                same = true;
-            }
-        }else if( beforeState == AttendanceObject.STATE_LEAVE ){
-            if( newAttendanceCbState == false && newLateCbState == false && newAbsentCbState == false && newLeaveCBState == true ){
-                //   変更前早退
-                same = true;
-            }
-        }
-        return same;
     }
     /**
      *  setChangeSelectedStateメソッド
@@ -483,60 +414,7 @@ public class RegardedAsCb {
         this.mStudentInfoDialogFragnemt.mRegaredeAsLateCb.setChecked(this.mLateCbState);
         this.mStudentInfoDialogFragnemt.mRegaredeAsAbsentCb.setChecked(this.mAbsentCbState);
         this.mStudentInfoDialogFragnemt.mRegaredeAsLeaveCb.setChecked(this.mLeaveCbState);
-    }
-    /**
-     *  chkYeaACKメソッド
-     *  一度でもACKを返しているか確認する.
-     *  @return {true} 一度でもACKを応答あり {false}一度もACK応答なし
-     * */
-    boolean chkYeaACK(){
-        AttendanceObject ao = this.mStudentInfoDialogFragnemt.getAttObject();
-        if( ao.getFirstAccessTime() != null ){
-            //  入室ACKあり
-            return true;
-        }
-        if( ao.getManualRequestAttendance() == AttendanceObject.MANUAL_NOT
-                && ao.getAttendanceTime() != null ){
-            // 出席ACKあり
-            return true;
-        }
-        if( ao.getManualRequestReAttendance() == AttendanceObject.MANUAL_NOT
-                && ao.getReAttendancetime() != null ){
-            //  再出席ACKあり
-            return true;
-        }
-        if( ao.getManualRequestClassLastAck() == AttendanceObject.MANUAL_NOT
-                && ao.getClassLastAckTime() != null ){
-            //  授業最終ACKあり
-            return true;
-        }
-        return false;
-    }
-    /**
-     * setAssistMessageメソッド
-     * 変更前とチェックボックスの選択内容が事なれば、
-     * 「変更適用」ボタンをタップしてくださいとテキストビューにセットする
-     * */
-    void setAssistMessage(){
-        boolean same = chkTheSameAsLastCheckBox();
-        if( same ){
-            this.mStudentInfoDialogFragnemt.mRegaredeAsApplyBtn.setVisibility(View.INVISIBLE);
-            this.mStudentInfoDialogFragnemt.mRegaredeAsUndoBtn.setVisibility(View.INVISIBLE);
-            //this.mStudentInfoDialogFragnemt.mRegaredeAsReasonLl.setVisibility(View.INVISIBLE);
-        }else{
-            //this.mStudentInfoDialogFragnemt.mRegaredeAsApplyBtn.setVisibility(View.VISIBLE);
-            this.mStudentInfoDialogFragnemt.mRegaredeAsUndoBtn.setVisibility(View.VISIBLE);
-            //this.mStudentInfoDialogFragnemt.mRegaredeAsReasonLl.setVisibility(View.VISIBLE);
-            if( this.mAbsentCbState ){
-            }else{
-                //  選択理由を初期化する.
-                clearSelectedRadioGropup();
-                //  変更理由が選択されていないを非表示にする.
-                invisibleAlertUnselectedReasenTv();
-                //  欠席じゃなければ理由を問うレイアウトを表示する
-                this.mStudentInfoDialogFragnemt.mRegaredeAsReasonLl.setVisibility(View.VISIBLE);
-            }
-        }
+        setReasonRadioGroup();
     }
     /**
      *  getStateAttendanceメソッド
@@ -558,7 +436,6 @@ public class RegardedAsCb {
         }else if( beforeState == AttendanceObject.STATE_LATE ){
             //  遅刻
             undoCheckBoxLateState();
-            this.mLateCbState = true;
         }else if( beforeState == AttendanceObject.STATE_LEAVE ){
             //  早退
             undoCheckBoxLeaveState();
@@ -566,18 +443,8 @@ public class RegardedAsCb {
             //  欠席
             undoCheckBoxAbsentState();
         }
-        clearSelectedRadioGropup();
-        setAssistMessage();
         setChangeSelectedState();
-        setReasonState();
-    }
-    /**
-     *  clearSelectedRadioGropupメソッド
-     *  「キャンセル」ボタンタップ時に、
-     *  ラジオボタン選択内容も初期化する.
-     * */
-    void clearSelectedRadioGropup(){
-        this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.clearCheck();
+        setReasonRadioGroup();
     }
     /**
      *  undoCheckBoxAttendanceStateメソッド
@@ -597,7 +464,7 @@ public class RegardedAsCb {
         this.mAttendanceCbState = false;
         this.mLateCbState = true;
         this.mAbsentCbState = false;
-        this.mLateCbState = false;
+        this.mLeaveCbState = false;
     }
 
     /**
@@ -621,60 +488,25 @@ public class RegardedAsCb {
         this.mLeaveCbState = true;
     }
     /**
-     *  getNowSelectedManulReasonメソッド
-     *  現在選択されている理由項目
-     * */
-    ManulReason getNowSelectedManulReason(){
-        int currentTotalEndIndex = this.mStudentInfoDialogFragnemt.getMainActivity().mStudentDialogBrowsedReasonTotalCount;
-        int currentTotalStartIndex = currentTotalEndIndex - (this.mSelectable.size()-1);
-        int selectNumber = mBrowsReasonStartNumber - currentTotalStartIndex;
-        ManulReason selectManulReason = this.mSelectable.get(selectNumber);
-        return selectManulReason;
-    }
-    /**
      *  updateCheckBoxメソッド
      *  チェックボックスに選択された状態をDBや端末のメモリデータに反映する.
      * */
     void updateCheckBox(){
-        /*if( chkTheSameAsLastCheckBox() ){
-            //前回と同じであればネットワークにアクセスしない.
-            return;
-        }*/
         //  現在選択されている理由
-        ManulReason mr = getNowSelectedManulReason();
-        int  reasonId = this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.getCheckedRadioButtonId();
-        if( reasonId == -1 ){
-            visibleAlertUnselectedReasenTv();
-        }else{
-            invisibleAlertUnselectedReasenTv();
-            if( this.mLeaveCbState ){
-                //  早退
-                updateCheckBoxLeaveState( mr );
-            }else if( this.mAbsentCbState ){
-                //  欠席とみなします
-                updateCheckBoxAbsentState( mr );
-            }else if( this.mLateCbState ){
-                //  遅刻
-                updateCheckBoxLateState( mr );
-            }else if( this.mAttendanceCbState ){
-                //  出席
-                updateCheckBoxAttendanceState( mr );
-            }
+        ManulReason mr = mNowTapManulReason;
+        if( this.mLeaveCbState ){
+            //  早退
+            updateCheckBoxLeaveState( mr );
+        }else if( this.mAbsentCbState ){
+            //  欠席とみなします
+            updateCheckBoxAbsentState( mr );
+        }else if( this.mLateCbState ){
+            //  遅刻
+            updateCheckBoxLateState( mr );
+        }else if( this.mAttendanceCbState ){
+            //  出席
+            updateCheckBoxAttendanceState( mr );
         }
-    }
-    /**
-     *  visibleAlertUnselectedReasenTvメソッド
-     *  理由が未選択です.を表示する.
-     * */
-    void visibleAlertUnselectedReasenTv(){
-        this.mStudentInfoDialogFragnemt.mAlertUnselectedReasonTv.setVisibility(View.VISIBLE);
-    }
-    /**
-     *  invisibleAlertUnselectedReasenTvメソッド
-     *  理由が未選択です.を非表示する.
-     * */
-    void invisibleAlertUnselectedReasenTv(){
-        this.mStudentInfoDialogFragnemt.mAlertUnselectedReasonTv.setVisibility(View.INVISIBLE);
     }
     /**
      * updateCheckBoxAttendanceStateメソッド
@@ -801,14 +633,10 @@ public class RegardedAsCb {
      * */
     void apply(ManulReason mr){
         //
-        setAssistMessage();
-        //  初期化
-        this.mStudentInfoDialogFragnemt.mRegarededAsReasonRg.clearCheck();
-        //
         this.mStudentInfoDialogFragnemt.tapStudent.mReasonId = mr.mReasonId;
         //
         this.mDefaulManulReason = mr;
-        setReasonState();
+        //
         this.setReasonLayout( mr );
         setCheckBoxLayout();
         //  再描画

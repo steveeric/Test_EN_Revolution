@@ -1290,7 +1290,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
      *  出席・遅刻・欠席とみなすゾーン
      * **/
     LinearLayout mRegaredeSelectLl;     //  選択レイアウト
-    LinearLayout mRegaredeAsCbLl;
+    //LinearLayout mRegaredeAsCbLl;
     CheckBox mRegaredeAsAttendanceCb;
     CheckBox mRegaredeAsLateCb;
     CheckBox mRegaredeAsAbsentCb;
