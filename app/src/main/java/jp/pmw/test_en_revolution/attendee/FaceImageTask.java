@@ -25,12 +25,14 @@ public class FaceImageTask extends AsyncTask<String, Void, Bitmap> {
     public String tag;
     public Context context;
     public String mUrl;
+    public String mLastUpdateTime;
 
-    public FaceImageTask(Context context, ImageView imageView, String url) {
+    public FaceImageTask(Context context, ImageView imageView, String url, String lastUpdateTime) {
         this.imageView = imageView;
         this.context = context;
         this.tag = imageView.getTag().toString();
         this.mUrl = url;
+        this.mLastUpdateTime = lastUpdateTime;
     }
     @Override
     protected Bitmap doInBackground(String... urls) {
@@ -72,6 +74,7 @@ public class FaceImageTask extends AsyncTask<String, Void, Bitmap> {
         FaceImageRealmThread fi = new FaceImageRealmThread();
         fi.mUrl = this.mUrl;
         fi.bmp = bmp;
+        fi.mLastUpdateTime = this.mLastUpdateTime;
         fi.start();
     }
 }

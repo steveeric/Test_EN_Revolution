@@ -22,6 +22,7 @@ import java.util.TimerTask;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import jp.pmw.test_en_revolution.attendee.CompareTime;
 import jp.pmw.test_en_revolution.attendee.FaceImageRealmObject;
 import jp.pmw.test_en_revolution.attendee.FaceImageTask;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
@@ -376,13 +377,11 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
         mFullNameTv.setText(  so.getFullName() );
         setTextColor(attColor, mFullNameTv);
         mPositionTv.setText( getSeatPosition(so.getSeatObject()) );
-        //studentInfoDialogFragnemt = new StudentInfoCustomDialog();
-        //studentInfoDialogFragnemt.showForSeatSituationFragment(this, so);
     }
     //  顔画像をセットする
     void setFaceImage(StudentObject so){
         String url = so.mFaceUrl;
-        Bitmap bitmap = getFaceImageFromLocalDB( url );
+        Bitmap bitmap = getFaceImageFromLocalDB( so );
         if(  bitmap != null ){
             //  ローカルDBの顔画像を使用する
             mFaceIv.setImageBitmap(bitmap);
@@ -390,23 +389,27 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
             //  ネットワークに取得しに行く
             mFaceIv.setVisibility(View.INVISIBLE);
             mFaceIv.setTag( url );
-            mFaceImageTask = new FaceImageTask(this.getActivity().getApplicationContext(), mFaceIv, url);
+            mFaceImageTask = new FaceImageTask(this.getActivity().getApplicationContext(), mFaceIv, url, so.mLastUpdateTime);
             mFaceImageTask.execute(url);
         }
     }
 
-    Bitmap getFaceImageFromLocalDB(String url){
+    Bitmap getFaceImageFromLocalDB(StudentObject so){
         Bitmap bitmap = null;
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         RealmResults<FaceImageRealmObject> results = realm.where(FaceImageRealmObject.class)
-                .equalTo("url", url)
+                .equalTo("url", so.mFaceUrl)
                 .findAll();
         int registeredCount = results.size();
         if(registeredCount == 1){
             byte[] faceImageByts = results.get(0).getFaceImage();
-            if( faceImageByts != null ){
-                bitmap = BitmapFactory.decodeByteArray(faceImageByts, 0, faceImageByts.length);
+            String lastUpdateTime = results.get(0).getLastUpdateTime();
+            boolean futureFlag =  CompareTime.newInstance().future( lastUpdateTime, so.mLastUpdateTime );
+            if( !futureFlag ){
+                if( faceImageByts != null ){
+                    bitmap = BitmapFactory.decodeByteArray(faceImageByts, 0, faceImageByts.length);
+                }
             }
         }
         realm.commitTransaction();

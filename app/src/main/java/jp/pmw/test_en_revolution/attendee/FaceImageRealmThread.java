@@ -15,6 +15,7 @@ import io.realm.RealmResults;
 public class FaceImageRealmThread  extends Thread {
     private Realm realm;
     public String mUrl;
+    public String mLastUpdateTime;
     public Bitmap bmp;
     @Override
     public void run() {
@@ -27,13 +28,15 @@ public class FaceImageRealmThread  extends Thread {
                     .equalTo("url", this.mUrl)
                     .findAll();
             int registeredCount = results.size();
+            byte[] bytes = getByte();
             if(registeredCount == 0){
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] bytes = baos.toByteArray();
                 FaceImageRealmObject obj = realm.createObject(FaceImageRealmObject.class);
                 obj.setUrl(mUrl);
                 obj.setFaceImage(bytes);
+                obj.setLastUpdateTime(mLastUpdateTime);
+            }else{
+                results.get(0).setLastUpdateTime( mLastUpdateTime );
+                results.get(0).setFaceImage( bytes );
             }
             realm.commitTransaction();
             Looper.loop();
@@ -43,4 +46,11 @@ public class FaceImageRealmThread  extends Thread {
             }
         }
     }
+    byte[] getByte(){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] bytes = baos.toByteArray();
+        return bytes;
+    }
+
 }

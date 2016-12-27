@@ -82,8 +82,12 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                 int registeredCount = results.size();
                 if(registeredCount == 1){
                         byte[] faceImageByts = results.get(0).getFaceImage();
-                        if( faceImageByts != null ){
-                                bitmap = BitmapFactory.decodeByteArray(faceImageByts, 0, faceImageByts.length);
+                        String lastUpdateTime = results.get(0).getLastUpdateTime();
+                        boolean futureFlag =  CompareTime.newInstance().future( lastUpdateTime, so.mLastUpdateTime );
+                        if( !futureFlag ){
+                                if( faceImageByts != null ){
+                                        bitmap = BitmapFactory.decodeByteArray(faceImageByts, 0, faceImageByts.length);
+                                }
                         }
                 }
                 realm.commitTransaction();
@@ -94,7 +98,7 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
                 }else{
                         Drawable drawable = _context.getResources().getDrawable(R.drawable.img_sonoda_professor);
                         holder.mLoaderFaceImageView.setImageDrawable(drawable);
-                        FaceImageTask fit = new FaceImageTask(getContext(), holder.mLoaderFaceImageView, url);
+                        FaceImageTask fit = new FaceImageTask(getContext(), holder.mLoaderFaceImageView, url, so.mLastUpdateTime);
                         fit.execute(url);
                 }
 

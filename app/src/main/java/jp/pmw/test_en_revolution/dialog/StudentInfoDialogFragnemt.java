@@ -49,6 +49,7 @@ import jp.pmw.test_en_revolution.SeatSituationFragment;
 import jp.pmw.test_en_revolution.StudentInfoCustomDialog;
 import jp.pmw.test_en_revolution.StudentObject;
 import jp.pmw.test_en_revolution.TransmitStateObject;
+import jp.pmw.test_en_revolution.attendee.CompareTime;
 import jp.pmw.test_en_revolution.attendee.FaceImageRealmObject;
 import jp.pmw.test_en_revolution.attendee.FaceImageTask;
 import jp.pmw.test_en_revolution.config.URL;
@@ -1238,11 +1239,9 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
     }
     //  顔画像をセットする
     void setFaceImage(StudentObject so){
-        /*LinearLayout layout = getLinearLayout(dialog, R.id.dialog_custom_face_image_ll);
         ImageView iv =  (ImageView) dialog.findViewById(R.id.dialog_custom_face_image_iv);
-        layout.setVisibility(View.VISIBLE);
         String url = so.mFaceUrl;
-        Bitmap bitmap = getFaceImageFromLocalDB( url );
+        Bitmap bitmap = getFaceImageFromLocalDB( so, url );
         if(  bitmap != null ){
             //  ローカルDBの顔画像を使用する
             iv.setImageBitmap(bitmap);
@@ -1250,25 +1249,12 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
             //  ネットワークに取得しに行く
             iv.setVisibility(View.INVISIBLE);
             iv.setTag( url );
-            FaceImageTask mFaceImageTask = new FaceImageTask(this.getActivity().getApplicationContext(), iv, url);
-            mFaceImageTask.execute(url);
-        }*/
-        ImageView iv =  (ImageView) dialog.findViewById(R.id.dialog_custom_face_image_iv);
-        String url = so.mFaceUrl;
-        Bitmap bitmap = getFaceImageFromLocalDB( url );
-        if(  bitmap != null ){
-            //  ローカルDBの顔画像を使用する
-            iv.setImageBitmap(bitmap);
-        }else{
-            //  ネットワークに取得しに行く
-            iv.setVisibility(View.INVISIBLE);
-            iv.setTag( url );
-            FaceImageTask mFaceImageTask = new FaceImageTask(this.getActivity().getApplicationContext(), iv, url);
+            FaceImageTask mFaceImageTask = new FaceImageTask(this.getActivity().getApplicationContext(), iv, url, so.mLastUpdateTime);
             mFaceImageTask.execute(url);
         }
     }
 
-    Bitmap getFaceImageFromLocalDB(String url){
+    Bitmap getFaceImageFromLocalDB(StudentObject so, String url){
         Bitmap bitmap = null;
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
@@ -1278,8 +1264,12 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         int registeredCount = results.size();
         if(registeredCount == 1){
             byte[] faceImageByts = results.get(0).getFaceImage();
-            if( faceImageByts != null ){
-                bitmap = BitmapFactory.decodeByteArray(faceImageByts, 0, faceImageByts.length);
+            String lastUpdateTime = results.get(0).getLastUpdateTime();
+            boolean futureFlag =  CompareTime.newInstance().future( lastUpdateTime, so.mLastUpdateTime );
+            if( !futureFlag ){
+                if( faceImageByts != null ){
+                    bitmap = BitmapFactory.decodeByteArray(faceImageByts, 0, faceImageByts.length);
+                }
             }
         }
         realm.commitTransaction();
