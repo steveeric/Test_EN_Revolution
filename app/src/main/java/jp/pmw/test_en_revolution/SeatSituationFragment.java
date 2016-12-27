@@ -377,6 +377,7 @@ public class SeatSituationFragment extends MyMainFragment implements CustomDialo
         mFullNameTv.setText(  so.getFullName() );
         setTextColor(attColor, mFullNameTv);
         mPositionTv.setText( getSeatPosition(so.getSeatObject()) );
+        setTextColor(attColor, mPositionTv);
     }
     //  顔画像をセットする
     void setFaceImage(StudentObject so){

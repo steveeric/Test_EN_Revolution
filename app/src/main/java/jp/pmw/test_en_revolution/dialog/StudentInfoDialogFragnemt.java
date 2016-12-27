@@ -496,6 +496,13 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
             }
         });
     }
+    String setEmptyToTop( int num ){
+        String str = ""+num;
+        if( str.length() == 1 ){
+            str = " "+num;
+        }
+        return str;
+    }
     /**
      * Created by scr on 2016/06/28.
      * handlerSetPastAttendanceCountメソッド
@@ -524,10 +531,10 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
         TextView laveEaryTextView   = getTextView(dialog, R.id.total_attendance_leave_early_situation_textView);
 
         //  出欠席値をセットする.
-        attendedTextView.setText(getStrTotalAttended(attenedCount));
-        lateTextView.setText(getStrTotalLate(lateCount));
-        absentedTextView.setText(getStrTotalAbsended(absentedCount));
-        laveEaryTextView.setText(getStrTotalLeaveEarly(leavedCount));
+        attendedTextView.setText(getStrTotalAttended( setEmptyToTop( attenedCount ) ));
+        lateTextView.setText(getStrTotalLate( setEmptyToTop( lateCount ) ));
+        absentedTextView.setText( getStrTotalAbsended( setEmptyToTop( absentedCount ) ));
+        laveEaryTextView.setText( getStrTotalLeaveEarly( setEmptyToTop( leavedCount ) ));
 
         //  ローディングレイアウト非表示にする.
         loadingLl.setVisibility(View.GONE);
@@ -544,7 +551,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
      * 出席 〇 回という文字列を返します
      * return 出席 〇 回
      */
-    String getStrTotalAttended(int attended){
+    String getStrTotalAttended(String attended){
         String str = this.getMainActivity().getString(R.string.total_attendee)
                 + attended
                 + this.getMainActivity().getString(R.string.number_of_times);
@@ -556,7 +563,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
      * 遅刻 〇 回という文字列を返します
      * return 遅刻 〇 回
      */
-    String getStrTotalLate(int late){
+    String getStrTotalLate(String late){
         String str = this.getMainActivity().getString(R.string.total_late)
                 + late
                 + this.getMainActivity().getString(R.string.number_of_times);
@@ -570,7 +577,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
      * 欠席 〇 回という文字列を返します
      * return 欠席 〇 回
      */
-    String getStrTotalAbsended(int absented){
+    String getStrTotalAbsended(String absented){
         String str = this.getMainActivity().getString(R.string.total_absentee)
                 + absented
                 + this.getMainActivity().getString(R.string.number_of_times);
@@ -582,7 +589,7 @@ public class StudentInfoDialogFragnemt extends DialogFragment {
      * 早退 〇 回という文字列を返します
      * return 早退 〇 回
      */
-    String getStrTotalLeaveEarly(int leaveEarly){
+    String getStrTotalLeaveEarly(String leaveEarly){
         String str = this.getMainActivity().getString(R.string.leave_early)
                 + leaveEarly
                 + this.getMainActivity().getString(R.string.number_of_times);

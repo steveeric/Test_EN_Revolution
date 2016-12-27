@@ -134,6 +134,7 @@
                 android:layout_height="wrap_content"
                 android:text="　前回までの出欠"
                 android:background="@color/whiteSmoke"
+                android:textColor="@color/black"
                 android:textSize="@dimen/textsize_large"
                 />
             <!-- 出・遅・欠　取得　ローディングレイアウト -->
@@ -153,7 +154,7 @@
                 android:id="@+id/total_attendance_situation_count_display_ll"
                 android:visibility="gone"
                 android:orientation="horizontal"
-                android:layout_marginLeft="@dimen/activity_horizontal_xsmall_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_xxxsmall_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <!-- 出席回数 -->
@@ -163,9 +164,10 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="出席..."
-                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="17dp"
                     android:layout_marginRight="@dimen/activity_vertical_margin"
-                    android:textSize="@dimen/textsize_xlarge"
+                    android:textSize="@dimen/textsize_large"
                     />
                 <!-- 遅刻回数 -->
                 <TextView
@@ -174,9 +176,10 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="遅刻..."
-                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="17dp"
                     android:layout_marginRight="@dimen/activity_vertical_margin"
-                    android:textSize="@dimen/textsize_xlarge"
+                    android:textSize="@dimen/textsize_large"
                     />
                 <!-- 欠席回数 -->
                 <TextView
@@ -185,9 +188,10 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="欠席"
-                    android:gravity="center"
-                    android:layout_marginLeft="@dimen/activity_vertical_margin"
-                    android:textSize="@dimen/textsize_xlarge"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:textSize="@dimen/textsize_large"
                     />
                 <!-- 早退回数 -->
                 <TextView
@@ -196,18 +200,20 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="早退"
-                    android:gravity="center"
-                    android:layout_marginLeft="@dimen/activity_vertical_margin"
-                    android:textSize="@dimen/textsize_xlarge"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:textSize="@dimen/textsize_large"
                     />
             </LinearLayout>
             <!-- 出欠の総内訳 -->
             <TextView
                 android:id="@+id/total_attendance_total_breakdown_tv"
-                android:layout_marginLeft="23dp"
+                android:layout_marginLeft="22dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:textColor="@color/black"
                 android:textSize="@dimen/textsize_large"
                 />
         </LinearLayout>
@@ -226,6 +232,7 @@
                 android:layout_height="wrap_content"
                 android:text="　メッセージ"
                 android:background="@color/whiteSmoke"
+                android:textColor="@color/black"
                 android:textSize="@dimen/textsize_large"
                 />
             <!-- 簡易メッセージ内容TextView -->
@@ -235,6 +242,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="23dp"
                 android:text="メッセージ取得中..."
+                android:textColor="@color/black"
                 android:textSize="@dimen/textsize_large"
                 />
         </LinearLayout>
@@ -272,6 +280,7 @@
                 android:layout_height="wrap_content"
                 android:text="　状態"
                 android:background="@color/whiteSmoke"
+                android:textColor="@color/black"
                 android:textSize="@dimen/textsize_large"
                 />
             <!-- 出席・遅刻・SonoRIs忘れ選択レイアウト -->
@@ -329,6 +338,7 @@
                         android:layout_height="wrap_content"
                         android:text="　理由"
                         android:background="@color/whiteSmoke"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/textsize_large"
                         />
                     <!-- 理由ラジオボタングループ -->
@@ -462,6 +472,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="　在室状態"
+                android:textColor="@color/black"
                 android:background="@color/whiteSmoke"
                 android:textSize="@dimen/textsize_large"
                 />

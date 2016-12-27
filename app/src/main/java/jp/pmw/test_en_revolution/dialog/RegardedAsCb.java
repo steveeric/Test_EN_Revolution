@@ -4,8 +4,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import java.util.ArrayList;
-import java.util.List;
 import jp.pmw.test_en_revolution.AttendanceObject;
 import jp.pmw.test_en_revolution.ManulReason;
 import jp.pmw.test_en_revolution.R;
