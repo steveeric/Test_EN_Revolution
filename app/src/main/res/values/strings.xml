@@ -88,7 +88,7 @@
     <string name="confirm_not_today_class_but_next_class_re_select">自動でアプリが終了しますので、しばらくお待ち下さい.</string>
 
     <!-- メイン画面のドロワーナビゲーション -->
-    <string name="return_fifty_index_table_page">50音表へ</string>
+    <string name="return_fifty_index_table_page">ログアウト</string>
 
     <!-- 講義内容確認画面 -->
     <string name="main_bottom_top_message">画面左側から右側に向かって\r\n指でスワイプして下さい.</string>
