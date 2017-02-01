@@ -41,7 +41,11 @@ public class ReAttendanceChangeStatusAsyncTask extends MyAsyncTask {
         if( this.mDialogFragment == null ){
             return;
         }
-        this.mDialogFragment.setItme( sos );
+        if( sos.length == 0 ){
+            this.mDialogFragment.cloaseProcess();
+        }else{
+            this.mDialogFragment.setItme( sos );
+        }
     }
 
     public class NackReAttendance{

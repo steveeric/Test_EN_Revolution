@@ -128,11 +128,15 @@ public class ReAttendanceChangeStatusDialogFragment  extends DialogFragment {
     public class CloseBtnListener implements View.OnClickListener {
         @Override
         public void onClick(View v){
-            new ReAttendanceBulkChangeEndDateTimeAsyncTask( mSameClassNumber ).execute();
-            foreverNotBrowsing = true;
-            dismiss();
+            cloaseProcess();
         }
     }
+    public void cloaseProcess(){
+        new ReAttendanceBulkChangeEndDateTimeAsyncTask( mSameClassNumber ).execute();
+        foreverNotBrowsing = true;
+        dismiss();
+    }
+
     public void setItme(final ReAttendanceNackChangeStatus[] rencs){
         mHandler.post(new Runnable() {
             @Override
