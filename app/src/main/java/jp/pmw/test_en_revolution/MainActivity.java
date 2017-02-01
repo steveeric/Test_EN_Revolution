@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.io.Serializable;
 //import com.android.volley.Response;
@@ -35,6 +36,7 @@ import jp.pmw.test_en_revolution.common.CommonDialogFragment;
 import jp.pmw.test_en_revolution.config.TimerConfig;
 import jp.pmw.test_en_revolution.config.TransmitTypeConfig;
 import jp.pmw.test_en_revolution.config.URL;
+import jp.pmw.test_en_revolution.confirm_class_plan.ClassPlan;
 import jp.pmw.test_en_revolution.confirm_class_plan.ConfirmClassPlanActivity;
 import jp.pmw.test_en_revolution.confirm_class_plan.Roster;
 import jp.pmw.test_en_revolution.confirm_class_plan.Student;
@@ -381,6 +383,16 @@ public class MainActivity extends MyFragmentActivity {
         if(this.mNavigationDrawerList==null){
             this.mNavigationDrawerList = (ListView)this.findViewById(R.id.navigation_drawer_list);
             this.mNavigationDrawerList.setVisibility(View.VISIBLE);
+            TextView tv = (TextView)this.findViewById(R.id.navigation_drawer_operation_tv);
+            ClassPlan cp = this.getClassObject().getFacultyObject().getClassPlan();
+            String bst = cp.mBreakStartTime;
+            String ars = cp.mAttendanceResultStartTime;
+            String ust = cp.mUndoStartTime;
+            String com = cp.mChangedSeatOperationMessage;
+            if(com.length() > 0){
+                com = "■連絡事項\r\n" + com;
+            }
+            tv.setText("■赤外線送信時間\r\n座席指定\r\n　"+bst+"～"+ars+"\r\n出席認定\r\n　"+ars+"\r\nPrivacy保護\r\n　"+ust+"\r\n\r\n"+com);
         }
         if(this.mNavigationDrawerButton==null){
             this.mNavigationDrawerButton = (Button)this.findViewById(R.id.fragment_navigation_drawer_return_top_button);

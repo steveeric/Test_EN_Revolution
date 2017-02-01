@@ -34,6 +34,18 @@ public class ClassPlan implements Serializable {
     @SerializedName("transmit_state")
     private TransmitStateObject transmitStateObject;
 
+    //座席指定赤外線開始時時刻
+    @SerializedName("break_Strt_time")
+    public String mBreakStartTime;
+    //出席認定赤外線開始時刻
+    @SerializedName("attendance_result_strat_time")
+    public String mAttendanceResultStartTime;
+    //Privacy保護赤外線送信開始時刻
+    @SerializedName("undo_start_time")
+    public String mUndoStartTime;
+    //着座方法設定の変更メッセージ
+    @SerializedName("changed_seat_operation_message")
+    public String mChangedSeatOperationMessage;
     //何時限目か
     //private String priodName;
     //授業開始時刻

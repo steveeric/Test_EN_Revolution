@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_version">version 0.4.4</string>
+    <string name="app_version">version 0.4.5</string>
     <!--<string name="app_name">授業運営管理ソリューション</string>-->
     <string name="app_name">SonoRIs MT</string>
     <string name="do_not_mistake">間違いありませんか?</string>
@@ -80,9 +80,9 @@
     <string name="confirm_nearest_class_plan_now_brosing">名が出席状況をすでに閲覧中です.</string>
     <string name="confirm_for_class_plan_title_messge">次回の講義案内</string>
     <string name="confirm_not_today_class_but_next_class_message">本日の授業はありません.\r\n次回の授業案内</string>
-    <string name="confirm_for_class_plan_class_date">授業日 : </string>
-    <string name="confirm_for_class_plan_class_in_roomname">教室名 : </string>
-    <string name="confirm_for_class_plan_class_subjectname">科目名 : </string>
+    <string name="confirm_for_class_plan_class_date">授業日</string>
+    <string name="confirm_for_class_plan_class_in_roomname">教室名</string>
+    <string name="confirm_for_class_plan_class_subjectname">科目名</string>
     <string name="confirm_for_class_plan_re_select_prelude">担当の授業開始時間前です.\r\n</string>
     <string name="confirm_for_class_plan_re_select">に再度選択して下さい.</string>
     <string name="confirm_not_today_class_but_next_class_re_select">自動でアプリが終了しますので、しばらくお待ち下さい.</string>

@@ -335,7 +335,7 @@ public class ConfirmClassPlanActivity extends MyActivity {
             String str = "";
             String contents = "";
             String space = getString(R.string.space);
-            str = this.getString(R.string.confirm_for_class_plan_class_date);
+            str = this.getString(R.string.confirm_for_class_plan_class_date) + "\r\n　";
             contents = classPlan.getWhen().getYear()
                     +getString(R.string.year)
                     +classPlan.getWhen().getMonth()
@@ -347,13 +347,13 @@ public class ConfirmClassPlanActivity extends MyActivity {
             doClassDateTextView.setText(str+space+contents);
 
             //教室名
-            str = this.getString(R.string.confirm_for_class_plan_class_in_roomname);
+            str = this.getString(R.string.confirm_for_class_plan_class_in_roomname) + "\r\n　";
             //contents = classPlan.getPlace().getBuilding().getBuildingName()+classPlan.getPlace().getRoom().getRoomName();
             contents = classPlan.getPlace().getBuildingName()+classPlan.getPlace().getRoomName();
             doClassInRoomTextView.setText(str+space+contents);
 
             //科目名
-            str = this.getString(R.string.confirm_for_class_plan_class_subjectname);
+            str = this.getString(R.string.confirm_for_class_plan_class_subjectname) + "\r\n　";
             contents = classPlan.getSubject().getSubjectName();
             doSubjectTextView.setText(str+space+contents);
 

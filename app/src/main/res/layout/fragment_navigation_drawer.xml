@@ -5,11 +5,26 @@
     android:id="@+id/navigation_drawer_relativeLayout"
     android:background="@color/whiteSmoke" tools:context="jp.pmw.test_en_revolution.drawer.NavigationDrawerFragment"
  >
-    <ListView
-        android:visibility="invisible"
-        android:layout_width="match_parent" android:layout_height="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_above="@+id/footer"
-        android:id="@+id/navigation_drawer_list"/>
+        android:layout_alignParentTop="true">
+        <ListView
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/navigation_drawer_list"/>
+        <TextView
+            android:id="@+id/navigation_drawer_operation_tv"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_large"
+            android:textColor="@color/black"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/footer"
@@ -19,17 +34,12 @@
         android:layout_alignParentBottom="true" >
 
         <Button
-            android:visibility="invisible"
+            android:visibility="visible"
             android:id="@+id/fragment_navigation_drawer_return_top_button"
             android:text="@string/return_fifty_index_table_page"
             android:layout_width="match_parent"
             android:textSize="@dimen/textsize_xlarge"
             android:layout_height="100sp"
              />
-        <!--<TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/app_version" />-->
     </LinearLayout>
 </RelativeLayout>
