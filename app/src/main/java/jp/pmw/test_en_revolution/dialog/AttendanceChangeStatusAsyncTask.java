@@ -19,7 +19,6 @@ public class AttendanceChangeStatusAsyncTask extends MyAsyncTask {
         this.mDialogFragment  =   df;
         this.mSameClassNumber = sameClassNumber;
     }
-
     @Override
     protected String doInBackground(Void... params) {
         try {
@@ -33,17 +32,18 @@ public class AttendanceChangeStatusAsyncTask extends MyAsyncTask {
         }
         return null;
     }
-
     void process( AttendanceChangeStatus[] sos ){
         if( this.mDialogFragment == null ){
             return;
         }
-        this.mDialogFragment.setItme( sos );
+        if(sos.length == 0){
+            this.mDialogFragment.notItem();
+        }else{
+            this.mDialogFragment.setItme( sos );
+        }
     }
-
     public class Absent{
         @SerializedName("absents")
         public AttendanceChangeStatus[] mAttendanceChangeStatus;
     }
-
 }

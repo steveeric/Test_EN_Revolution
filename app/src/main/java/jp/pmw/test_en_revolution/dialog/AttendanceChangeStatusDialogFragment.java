@@ -131,6 +131,12 @@ public class AttendanceChangeStatusDialogFragment extends DialogFragment {
             dismiss();
         }
     }
+    public void notItem(){
+        if( mAttendeeFragment != null ) {
+            new AttendanceBulkChangeEndDateTimeAsyncTask( mSameClassNumber ).execute();
+        }
+        dismiss();
+    }
     public void setItme(final AttendanceChangeStatus[] acss){
         if( getActivity() != null ) {
             mHandler.post(new Runnable() {
