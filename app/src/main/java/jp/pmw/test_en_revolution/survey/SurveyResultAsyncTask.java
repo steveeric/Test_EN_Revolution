@@ -39,7 +39,7 @@ public class SurveyResultAsyncTask  extends MyAsyncTask {
         //  アンケートID
         mSurveyId     = mSurvey.mSurveyId;
         //
-        mSelectedId   = getSelectedId( mSurveyId );
+        mSelectedId   = tapStr;//getSelectedId( mSurveyId );
     }
     /**
      * getSelectedIdメソッド

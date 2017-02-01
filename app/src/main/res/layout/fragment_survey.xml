@@ -44,6 +44,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="@dimen/textsize_xxlarge"
+                android:textColor="@color/black"
                 android:text="Q"
                 android:layout_gravity="center|center_horizontal"/>
 
@@ -70,28 +71,57 @@
             android:layout_marginRight="@dimen/activity_vertical_margin"
             android:gravity="left"
             android:textSize="@dimen/textsize_xlarge"
+            android:textColor="@color/black"
             android:text="タイトル"
             android:layout_gravity="center|center_horizontal"/>
-        <!-- 円グラフ -->
-        <com.echo.holographlibrary.PieGraph
-            android:id="@+id/fragment_survey_end_start_piegraph_tv"
+        <!-- 選択式の場合 -->
+        <LinearLayout
+            android:id="@+id/fragment_survey_end_start_selection_ll"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="4"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp" />
-        <!-- 選択肢 -->
-        <GridView
-            android:id="@+id/fragment_survey_end_start_choices_gv"
+            android:layout_weight="6"
+            android:orientation="vertical">
+            <!-- 円グラフ -->
+            <com.echo.holographlibrary.PieGraph
+                android:id="@+id/fragment_survey_end_start_piegraph_tv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp" />
+            <!-- 選択肢 -->
+            <GridView
+                android:id="@+id/fragment_survey_end_start_choices_gv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:numColumns="1"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_horizontal|bottom" />
+        </LinearLayout>
+        <!-- 記述式の場合 -->
+        <LinearLayout
+            android:id="@+id/fragment_survey_end_start_discript_ll"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:numColumns="1"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="center_horizontal|bottom" />
-
+            android:layout_weight="6"
+            android:orientation="vertical">
+            <!-- 記述内容 -->
+            <GridView
+                android:id="@+id/fragment_survey_end_start_discript_gv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:numColumns="1"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_horizontal|bottom" />
+        </LinearLayout>
     </LinearLayout>
 
 

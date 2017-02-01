@@ -19,6 +19,22 @@ public class ChoiceAdapter extends ArrayAdapter<Choice> {
         mFactory = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mItemLayoutResource = resource;
     }
+    public void replaceChoice( Choice[] newChoices ){
+        int total = this.getCount();
+        for( int i = 0; i < total; i++ ){
+            Choice c = getItem(i);
+            for( int j = 0; j < newChoices.length; j++ ){
+                Choice newc = newChoices[j];
+                if( c.mChoiceId.equals( newc.mChoiceId ) ){
+                    getItem(i).mAnswer = newc.mAnswer;
+                    getItem(i).mStrAnswer = newc.mStrAnswer;
+                    getItem(i).mPercentage = newc.mPercentage;
+                }
+            }
+        }
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ChoiceLayout view;

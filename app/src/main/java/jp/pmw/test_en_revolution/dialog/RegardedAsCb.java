@@ -2,6 +2,7 @@ package jp.pmw.test_en_revolution.dialog;
 import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import jp.pmw.test_en_revolution.AttendanceObject;
@@ -223,9 +224,12 @@ public class RegardedAsCb {
      *  ③
      * */
     void show(){
+        LinearLayout layout = mStudentInfoDialogFragnemt.getLinearLayout(mStudentInfoDialogFragnemt.dialog, R.id.dialog_custom_regarded_as_checkbox_ll);
         if(mStudentInfoDialogFragnemt.transmitStateObject.getAttendanceTranmitEndTime() == null){
             //  出席認定が終わっていない
-            return;
+            layout.setVisibility(View.GONE);
+        }else{
+            layout.setVisibility(View.VISIBLE);
         }
     }
     /**

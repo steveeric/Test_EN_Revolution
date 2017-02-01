@@ -256,7 +256,7 @@ public class SurveyResultDialogFragment  extends DialogFragment {
         Question q = this.mSurvey.getQuestion();
         Choice[] choices = q.mChoices;
         for(int i = 0; i < choices.length; i++){
-            String strChoice = choices[i].mChoice;
+            String strChoice = choices[i].mChoiceId;
             if( strChoice.equals(this.mTapStr) ){
                 index = i;
                 break;

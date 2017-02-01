@@ -46,6 +46,8 @@ public class SurveyFragment  extends MyMainFragment {
     Survey          mSurvey;
     //  アダプター
     ChoiceAdapter   mChoiceAdapter;
+    //  アダプター
+    DiscriptAdapter   mDiscriptAdapter;
 
     //  アンケートを開始するボタン
     @BindView(R.id.fragment_survey_before_start_btn)
@@ -65,16 +67,24 @@ public class SurveyFragment  extends MyMainFragment {
     //  アンケート問題をセットする
     @BindView(R.id.fragment_survey_end_start_title_tv)
     TextView    mTitleTv;
+    //  選択式レイアウト
+    @BindView(R.id.fragment_survey_end_start_selection_ll)
+    LinearLayout    mSelectionLl;
     //  円グラフ
     @BindView(R.id.fragment_survey_end_start_piegraph_tv)
     PieGraph    mPieGraph;
     //  アンケート問題をセットする
     @BindView(R.id.fragment_survey_end_start_choices_gv)
     GridView    mChoicesGv;
+    //  記述式レイアウト
+    @BindView(R.id.fragment_survey_end_start_discript_ll)
+    LinearLayout    mDescriptLl;
+    //  記述式内容をセットする
+    @BindView(R.id.fragment_survey_end_start_discript_gv)
+    GridView    mDescriptGv;
 
     //  タイマー処理(アンケートを随時取得します.)
     Timer mSurveyTimer;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -208,6 +218,8 @@ public class SurveyFragment  extends MyMainFragment {
         if( afterViewPage >= 0 ){
             this.mSurvey.mViewPageNumber    =   afterViewPage;
         }
+        initAdapter();
+
         showPageBtn();
     }
     @OnClick(R.id.fragment_survey_end_start_nextpage_btn)
@@ -217,9 +229,23 @@ public class SurveyFragment  extends MyMainFragment {
         if( afterViewPage < this.mSurvey.mQuestions.length ){
             this.mSurvey.mViewPageNumber    =   afterViewPage;
         }
+        initAdapter();
         showPageBtn();
     }
-
+    /**
+     * initAdapterメソッド
+     * アダプターを初期化する.
+     * @author Ito Shota
+     * @since  2017/01/26
+     **/
+    void initAdapter(){
+        if( this.mChoiceAdapter != null ){
+            this.mChoiceAdapter = null;
+        }
+        if( this.mDiscriptAdapter != null ){
+            this.mDiscriptAdapter = null;
+        }
+    }
     /**
      * showPageBtnメソッド
      * ページ送りするボタンを表示する.
@@ -255,28 +281,51 @@ public class SurveyFragment  extends MyMainFragment {
     void setItem(){
         this.mNumberTv.setText( mSurvey.getQuestionNumber() );
         this.mTitleTv.setText( mSurvey.getQuestionTitle() );
-        Choice[] choices     =   this.mSurvey.getQuestion().mChoices;
-        //  円グラフを描く
-        this.mPieGraph.removeSlices();
-        for( int i = 0; i < choices.length; i++ ){
-            if( choices[i].mAnswer > 0 ){
-                PieSlice pieSlice = new PieSlice();
-                Choice choice = choices[i];
-                String color = choice.mChoiceIndexColor;
-                pieSlice.setColor(Color.parseColor(color));
-                pieSlice.setValue(choice.mAnswer);
-                mPieGraph.addSlice(pieSlice);
+
+        this.mSelectionLl.setVisibility(View.GONE);
+        this.mDescriptLl.setVisibility(View.GONE);
+
+        if( this.mSurvey.getQuestion().mType == Question.TYPE_SELECTION ){
+            //  選択式
+            this.mSelectionLl.setVisibility(View.VISIBLE);
+            Choice[] choices     =   this.mSurvey.getQuestion().mChoices;
+            //  円グラフを描く
+            this.mPieGraph.removeSlices();
+            for( int i = 0; i < choices.length; i++ ){
+                if( choices[i].mAnswer > 0 ){
+                    PieSlice pieSlice = new PieSlice();
+                    Choice choice = choices[i];
+                    String color = choice.mChoiceIndexColor;
+                    pieSlice.setColor(Color.parseColor(color));
+                    pieSlice.setValue(choice.mAnswer);
+                    mPieGraph.addSlice(pieSlice);
+                }
+            }
+            if( this.mChoiceAdapter == null ){
+                //  リストビュー
+                this.mChoiceAdapter = new ChoiceAdapter(getActivity(), R.layout.row_survey_answer_result_item, choices);
+                this.mChoicesGv.setAdapter( mChoiceAdapter );
+                this.mChoicesGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Choice c = (Choice)parent.getItemAtPosition(position);
+                        showSurveyResultDialogFragment( position, c.mChoiceId );
+                    }
+                });
+            }else{
+                this.mChoiceAdapter.replaceChoice( choices );
+            }
+
+        }else if( this.mSurvey.getQuestion().mType == Question.TYPE_DESCRIPT ){
+            //  記述式
+            this.mDescriptLl.setVisibility(View.VISIBLE);
+            Discript[] discripts = this.mSurvey.getQuestion().mDiscript;
+            if( this.mDiscriptAdapter == null ){
+                this.mDiscriptAdapter = new DiscriptAdapter(getActivity(), R.layout.row_survey_discript, discripts);
+                this.mDescriptGv.setAdapter( mDiscriptAdapter );
+            }else{
+                this.mDiscriptAdapter.replaceDiscriptAnswer( discripts );
             }
         }
-        //  リストビュー
-        this.mChoiceAdapter = new ChoiceAdapter(getActivity(), R.layout.row_survey_answer_result_item, choices);
-        this.mChoicesGv.setAdapter( mChoiceAdapter );
-        this.mChoicesGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Choice c = (Choice)parent.getItemAtPosition(position);
-                showSurveyResultDialogFragment( position, c.mChoice );
-            }
-        });
     }
     /**
      * showSurveyResultDialogFragmentメソッド

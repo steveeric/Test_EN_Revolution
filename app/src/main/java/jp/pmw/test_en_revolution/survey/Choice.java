@@ -10,6 +10,8 @@ import java.io.Serializable;
  * 選択肢を扱います.
  */
 public class Choice implements Serializable {
+    @SerializedName("choice_id")
+    public String mChoiceId;
     // 選択内容「はい」「いいえ」
     @SerializedName("choice")
     public String mChoice;

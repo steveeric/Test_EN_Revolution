@@ -54,7 +54,7 @@
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/title_orijinal_student_id_textView"
@@ -93,7 +93,7 @@
                     <TextView
                         android:id="@+id/today_positon_tv"
                         android:visibility="gone"
-                        android:layout_width="match_parent"
+                        android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_horizontal_small_margin"
                         android:text=""

@@ -19,32 +19,36 @@
 
     <TextView
         android:layout_width="0dp"
-        android:layout_weight="2"
-        android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_weight="5"
+        android:layout_height="70dp"
         android:text="はい"
-        android:textSize="@dimen/textsize_xxlarge"
-        android:gravity="center"
+        android:gravity="left|center"
+        android:layout_marginLeft="2dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="@dimen/textsize_large"
+        android:textColor="@color/black"
         android:id="@+id/row_questionnaire_answer_result_choice_textView" />
 
     <TextView
         android:layout_width="0dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="○○人"
-        android:textSize="@dimen/textsize_xxlarge"
+        android:textSize="@dimen/textsize_xlarge"
         android:gravity="right"
+        android:textColor="@color/black"
         android:id="@+id/row_questionnaire_answer_result_answer_count_textView" />
 
     <TextView
         android:layout_width="0dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/textsize_xxlarge"
+        android:textSize="@dimen/textsize_xlarge"
         android:gravity="right"
         android:layout_marginRight="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="○○%"
+        android:textColor="@color/black"
         android:id="@+id/row_questionnaire_answer_result_answer_percentage_textView" />
 </jp.pmw.test_en_revolution.survey.ChoiceLayout>

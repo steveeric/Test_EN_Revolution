@@ -38,6 +38,8 @@ public class ChoiceLayout extends LinearLayout {
         this.indexColorTextView.setBackgroundColor(Color.parseColor(answer.mChoiceIndexColor));
         this.choiceTextView.setText(answer.mChoice);
         this.answerCountTextView.setText(answer.mStrAnswer);
+        this.answerCountTextView.setTextColor(Color.parseColor(answer.mChoiceIndexColor));
         this.answerPercentageTextView.setText(answer.mPercentage);
+        this.answerPercentageTextView.setTextColor((Color.parseColor(answer.mChoiceIndexColor)));
     }
 }

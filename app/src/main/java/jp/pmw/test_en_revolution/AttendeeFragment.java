@@ -132,53 +132,11 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         this.getMainActivity().getClassHttpRequest().getChkAttendance();
     }
 
-    /*public void testShowCustomDialog(Student student){
-        MainActivity activity = (MainActivity)this.getActivity();
-        TransmitStateObject tso = activity.mTeacher.getClassPlan().getTransmitStateObject();
-        CustomDialogFragment customDialog = CustomDialogFragment.newInstance();
-        customDialog.setTargetFragment(AttendeeFragment.this, 0);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(CustomDialogFragment.ATTENDANCE_STUDENT_INFO, student);
-        bundle.putSerializable(CustomDialogFragment.TRANSMIT_STATE_INFO, tso);
-        customDialog.setArguments(bundle);
-        customDialog.setAttendeeFragment(this);
-        customDialog.show(activity.getSupportFragmentManager(), "customDialog");
-    }*/
-    public void testShowCustomDialog(StudentObject student){
-        /*MainActivity activity = (MainActivity)this.getActivity();
-        TransmitStateObject tso = activity.getClassObject().getTransmitStateObject();
-        CustomDialogFragment customDialog = CustomDialogFragment.newInstance();
-        customDialog.setTargetFragment(AttendeeFragment.this, 0);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(CustomDialogFragment.ATTENDANCE_STUDENT_INFO, student);
-        bundle.putSerializable(CustomDialogFragment.TRANSMIT_STATE_INFO, tso);
-        customDialog.setArguments(bundle);
-        customDialog.setAttendeeFragment(this);
-        customDialog.show(activity.getSupportFragmentManager(), "customDialog");*/
-    }
-
     //  学生の個別情報を出力
     public void showStudentInfoCustomDialog(StudentObject so){
-
         studentInfoDialogFragnemt = new StudentInfoCustomDialog();
         studentInfoDialogFragnemt.showForAttendeeFragment(this, so);
-
-        /*MainActivity activity = (MainActivity)this.getActivity();
-        String sameClassNumber  =   activity.getClassObject().getSameClassNumber();
-        TransmitStateObject tso = activity.getClassObject().getTransmitStateObject();
-        StudentInfoDialogFragnemt dialogFragment = StudentInfoDialogFragnemt.newInstance();
-        if(dialogFragment != null){
-            dialogFragment.setTargetFragment(AttendeeFragment.this, 0);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(StudentInfoDialogFragnemt.SAME_CLASS_NUMBER, sameClassNumber);
-            bundle.putSerializable(StudentInfoDialogFragnemt.STUDENT_INFO, so);
-            bundle.putSerializable(StudentInfoDialogFragnemt.TRANMIST_STAT_IFNO, tso);
-            dialogFragment.setArguments(bundle);
-            dialogFragment.setAttendeeFragment(this);
-            dialogFragment.show(activity.getSupportFragmentManager(), StudentInfoDialogFragnemt.STUDENT_INFO_DIALOG_FRAGMENT);
-        }*/
     }
-
 
     @Override
     public void onResume(){
@@ -191,18 +149,6 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
             timer.schedule(transmitStateTimerTask, 0, TimerConfig.TIMER_INTERVAL_TIME_ATTENDANCE);                                    //起動時0秒後から10秒間隔で起動
         }
         showWaitFragment();
-
-        //受講者クラス
-        /*Roster roster = activity.mTeacher.getRoster();
-        //出席者の人数を文字列でセットする.
-        setAttendanceStatusTextView(roster);
-        if(roster != null){
-            //受講生一覧表示
-            addRoster(roster);
-        }else{
-            //リロード
-            super.loadFragment();
-        }*/
     }
 
     //  学生が表示されているGridViewの情報を更新するHandlerThreadメソッドです.
@@ -286,36 +232,6 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
         MainActivity activity = (MainActivity)this.getActivity();
         setAttendanceStatusTextView(activity.getClassObject().getNumOfAttendanceEnttity());
     }
-
-    /**
-     * setAttendanceStatusTextViewメソッド
-     * 出席と欠席の人数をTextViewにセットします.
-     * **/
-    /*private void setAttendanceStatusTextView(Roster roster){
-        int[] count = getAttendanceCount(roster);
-        int attendCount = count[0];
-        int absentCount = count[1];
-        int forgotCount = count[2];
-        int totalAttendCount = attendCount + forgotCount;
-        //出席
-        String strAtt = getString(R.string.total_attendee);
-        //欠席
-        String strAbs = getString(R.string.total_absentee);
-        //人
-        String strPer = getString(R.string.number_of_people);
-        //this.attendanceStatusTextView.setText(strAtt + " " + totalAttendCount +  strPer + "("+forgotCount+")" + "   " + strAbs+" "+absentCount+strPer);
-        //  出席者数セット
-        if(forgotCount == 0){
-            //this.attendanceStatusTextView.setText(strAtt + " " + totalAttendCount +  strPer + "   " + strAbs+" "+absentCount+strPer);
-            this.attendanceStatusTextView.setText(strAtt + " " + attendCount);
-        }else{
-            //this.attendanceStatusTextView.setText(strAtt + " " + totalAttendCount + strPer + "(" + forgotCount + ")" + "   " + strAbs + " " + absentCount + strPer);
-            this.attendanceStatusTextView.setText(strAtt + " " + attendCount + " + " +forgotCount);
-        }
-        //  欠席者数セット
-        this.absentStatusTextView.setText(strAbs+" "+absentCount);
-    }*/
-
     void setAttendanceStatusTextView(NumOfAttendanceEntity noae){
         int attNotForgot    = noae.mAttendanceNotForgot;
         int attForgot       = noae.mAttendanceForgot;
@@ -350,142 +266,6 @@ public class AttendeeFragment extends MyMainFragment implements CustomDialogFrag
             }
         });
     }
-
-
-    /*private void setAttendanceStatusTextView(StudentObject[] sos){
-        int[] count = getAttendanceCount(sos);
-        int attendCount = count[0];
-        int absentCount = count[1];
-        int forgotCount = count[2];
-        int totalAttendCount = attendCount + forgotCount;
-        //出席
-        String strAtt = getString(R.string.total_attendee);
-        //欠席
-        String strAbs = getString(R.string.total_absentee);
-        //人
-        String strPer = getString(R.string.number_of_people);
-        //this.attendanceStatusTextView.setText(strAtt + " " + totalAttendCount +  strPer + "("+forgotCount+")" + "   " + strAbs+" "+absentCount+strPer);
-        //  出席者数セット
-        if(forgotCount == 0){
-            //this.attendanceStatusTextView.setText(strAtt + " " + totalAttendCount +  strPer + "   " + strAbs+" "+absentCount+strPer);
-            this.attendanceStatusTextView.setText(strAtt + " " + attendCount);
-        }else{
-            //this.attendanceStatusTextView.setText(strAtt + " " + totalAttendCount + strPer + "(" + forgotCount + ")" + "   " + strAbs + " " + absentCount + strPer);
-            this.attendanceStatusTextView.setText(strAtt + " " + attendCount + " + " +forgotCount);
-        }
-        //  欠席者数セット
-        this.absentStatusTextView.setText(strAbs+" "+absentCount);
-    }*/
-    /**
-     * getAttendanceCountメソッド
-     * 出席と欠席の人数を取得します.
-     * **/
-    /*private int[] getAttendanceCount(Roster roster){
-        int attendCount = 0;
-        int forgotCount = 0;
-        int absentCount = 0;
-        int[] count = new int[3];
-        for(int i = 0; i < roster.getRosterList().size(); i++){
-            Student st = roster.getRosterList().get(i);
-            //if(st.getAttendance().getTime() != null && st.getAttendance().getFogotApplytTime() == null){
-            if(st.getAttendance().getStatus() == Config.ALREADY_ATTENDANCE){
-                ++attendCount;
-            //}else if(st.getAttendance().getTime() != null && st.getAttendance().getFogotApplytTime() != null){
-            }else if(st.getAttendance().getStatus() == Config.FOGOT_ESL_APPLY){
-                ++forgotCount;
-            }else{
-                ++absentCount;
-            }
-        }
-        count[0] = attendCount;
-        count[1] = absentCount;
-        count[2] = forgotCount;
-        return count;
-    }*/
-    private int[] getAttendanceCount(StudentObject[] sos){
-        int attendCount = 0;
-        int forgotCount = 0;
-        int absentCount = 0;
-        int[] count = new int[3];
-        for(int i = 0; i < sos.length; i++){
-            StudentObject so = sos[i];
-            AttendanceObject ao = so.getAttendanceObject();
-            //Student st = roster.getRosterList().get(i);
-            //if(st.getAttendance().getTime() != null && st.getAttendance().getFogotApplytTime() == null){
-            if(ao.getAttendanceTime() != null && ao.getForgotApplyTime() == null){
-                ++attendCount;
-                //}else if(st.getAttendance().getTime() != null && st.getAttendance().getFogotApplytTime() != null){
-            }else if(ao.getAttendanceTime() != null && ao.getForgotApplyTime() != null){
-                ++forgotCount;
-            }else{
-                ++absentCount;
-            }
-        }
-        count[0] = attendCount;
-        count[1] = absentCount;
-        count[2] = forgotCount;
-        return count;
-    }
-
-    /**
-     * Created by scr on 2014/12/14.
-     * getNetworkAttendanceInfoメソッド
-     * ネットワークのデータベースに出席者の情報を取得しにいく.
-     */
-    /*public void getNetworkAttendanceInfo(){
-        MainActivity activity = (MainActivity)this.getActivity();
-        //教室情報を取得しに行く.
-        //String url = URL.ATTENDEE_LIST+"/"+activity.getClassPlanId();
-        String url = URL.ATTENDEE_LIST+"/"+activity.mTeacher.getClassPlan();
-        JsonArrayRequest request = new JsonArrayRequest(
-                url,
-                new Response.Listener<JSONArray>() {
-                    @Override public void onResponse(JSONArray response) {
-                        // レスポンス受け取り時の処理...
-                        attendanceJsonParser(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override public void onErrorResponse(VolleyError error) {
-                        // エラー時の処理...
-                        Toast.makeText(getActivity(), "Unable to fetch data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        faileProcess();
-                    }
-                });
-        AppController.getInstance(this.getActivity()).getRequestQueue().add(request);
-    }*/
-
-    /**
-     * Created by scr on 2014/12/14.
-     * attendanceJsonParserメソッド
-     * ネットワークDBから取得した出欠席Jsonを解析する.
-     * @param jsonArray ネットワークDBから取得した出欠席情報
-     */
-    public void attendanceJsonParser(JSONArray jsonArray){
-        Gson mygson = new Gson();
-        Type collectionType = new TypeToken<Collection<Attendee>>(){}.getType();
-        //出欠席者を取得する
-        List<Attendee> attendance = mygson.fromJson(jsonArray.toString(),collectionType);
-        addAttendandeList(attendance);
-    }
-
-    /**
-     * Created by scr on 2014/12/14.
-     * addAttendandeListメソッド
-     * ネットワークDBから取得した出欠席Jsonを解析する.
-     * @param attendee ネットワークDBから取得した出欠席情報
-     */
-    public void addAttendandeList(List<Attendee> attendee){
-        //アダプター作成
-        CustomAdapter adapter = new CustomAdapter(this.getActivity(),0,attendee);
-        //ListViewにセットする.
-        this.attendeeListView.setAdapter(adapter);
-        //ListViewの再描画
-        this.attendeeListView.invalidate();
-        //処理を無事に終えたのでListViewを表示する.
-        successProcess();
-    }
-
     /**
      * Created by scr on 2014/12/14.
      * successProcessメソッド

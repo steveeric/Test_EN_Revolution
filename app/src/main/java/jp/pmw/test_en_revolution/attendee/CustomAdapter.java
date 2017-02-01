@@ -46,12 +46,9 @@ public class CustomAdapter extends ArrayAdapter<Attendee> {
                 //色を変える必要があるか？
                 ((TextView) view.findViewById(R.id.row_text)).setText(item.mFullName);
             }else if(item.mAttendanceConfirmationReceivetime != null){
-                //出席状態
-                ((TextView) view.findViewById(R.id.row_text)).setText(item.mFullName);
-            }
-        /*}else{
-            ((TextView) view.findViewById(R.id.row_text)).setText("");
-        }*/
+            //出席状態
+            ((TextView) view.findViewById(R.id.row_text)).setText(item.mFullName);
+        }
         return view;
     }
 }
