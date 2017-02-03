@@ -37,6 +37,9 @@ public class StudentObject implements Serializable {
     private String furigana;
     public String getFurigana(){return this.furigana;}
 
+    @SerializedName("shorten_furigana")
+    private String shortenFurigana;
+    public String getShortenFurigana(){return this.shortenFurigana;}
     //苗字
     @SerializedName("family_name")
     private String familyName;
@@ -51,6 +54,11 @@ public class StudentObject implements Serializable {
     @SerializedName("full_name")
     private String fullName;
     public String getFullName(){return this.fullName;}
+
+    //氏名
+    @SerializedName("shorten_full_name")
+    private String shortenFullName;
+    public String getShortenFullName(){return this.shortenFullName;}
 
     //補助者有無
     @SerializedName("assistant")

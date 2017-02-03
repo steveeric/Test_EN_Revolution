@@ -81,7 +81,7 @@
                     <!-- 学生名TextView -->
                     <TextView
                         android:id="@+id/title_full_name_textView"
-                        android:layout_width="match_parent"
+                        android:layout_width="500dp"
                         android:layout_height="0dp"
                         android:layout_weight="66"
                         android:layout_marginLeft="@dimen/activity_horizontal_small_margin"

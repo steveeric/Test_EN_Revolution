@@ -162,8 +162,8 @@ public class RosterCustomAdapter_2 extends ArrayAdapter<StudentObject> {
          * **/
         private void chkBeforeAttendanceSetName(ViewHolder holder,StudentObject so){
                 holder.orijinalStudentIdTextView.setText(so.getStudentIdNumber());
-                holder.furiganaTextView.setText(so.getFurigana());
-                holder.fullNameTextView.setText(so.getFullName());
+                holder.furiganaTextView.setText(so.getShortenFurigana());
+                holder.fullNameTextView.setText(so.getShortenFullName());
         }
         /**
          * Created by si on 2016/02/01.
